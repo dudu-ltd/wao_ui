@@ -11,7 +11,7 @@ class ContainerLayout extends StatefulWidget
   @override
   late BaseOn $on;
   @override
-  ContainerLayoutProp $props;
+  late ContainerLayoutProp $props;
   @override
   late ContainerLayoutSlot $slots;
 
@@ -20,10 +20,12 @@ class ContainerLayout extends StatefulWidget
   ContainerLayout(
     this.main, {
     Key? key,
-    $slots,
-    $props,
-  })  : this.$props = $props ?? ContainerLayoutProp(),
-        this.$slots = $slots ?? ContainerLayoutSlot(),
+    slots,
+    props,
+    on,
+  })  : this.$props = props ?? ContainerLayoutProp(),
+        this.$slots = slots ?? ContainerLayoutSlot(),
+        this.$on = BaseOn(),
         super(key: key);
 
   @override
@@ -151,38 +153,41 @@ class _ContainerLayoutState extends State<ContainerLayout> {
       ));
     }
     var inner = Align(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(children: [
+      child: Column(
+        children: [
           Container(
             constraints: BoxConstraints(minHeight: 0, minWidth: 0),
             child: _widget,
             height: height,
           )
-        ]),
+        ],
       ),
       alignment: Alignment.centerLeft,
     );
     col.children.add(inner);
     if (isHeader) {
-      col.children.add(getEventBarY(
-        heightHandle,
-        SystemMouseCursors.resizeUp,
-        Container(height: $props.barSize, color: ContainerLayout.devideColor),
-        isHeader,
-      ));
+      col.children.add(
+        getEventBarY(
+          heightHandle,
+          SystemMouseCursors.resizeUp,
+          Container(height: $props.barSize, color: ContainerLayout.devideColor),
+          isHeader,
+        ),
+      );
     }
   }
 
   void addVertial(Widget _widget, double width, Function heightHandle, Row row,
       bool isLeft) {
     if (!isLeft) {
-      row.children.add(getEventBarX(
-        heightHandle,
-        SystemMouseCursors.resizeLeft,
-        Container(width: $props.barSize, color: ContainerLayout.devideColor),
-        isLeft,
-      ));
+      row.children.add(
+        getEventBarX(
+          heightHandle,
+          SystemMouseCursors.resizeLeft,
+          Container(width: $props.barSize, color: ContainerLayout.devideColor),
+          isLeft,
+        ),
+      );
     }
     var inner = Row(children: [
       Container(
@@ -193,15 +198,17 @@ class _ContainerLayoutState extends State<ContainerLayout> {
     ]);
     row.children.add(inner);
     if (isLeft) {
-      row.children.add(getEventBarX(
-        heightHandle,
-        SystemMouseCursors.resizeLeftRight,
-        Container(
-          width: $props.barSize,
-          color: ContainerLayout.devideColor,
+      row.children.add(
+        getEventBarX(
+          heightHandle,
+          SystemMouseCursors.resizeLeftRight,
+          Container(
+            width: $props.barSize,
+            color: ContainerLayout.devideColor,
+          ),
+          isLeft,
         ),
-        isLeft,
-      ));
+      );
     }
   }
 
@@ -292,4 +299,10 @@ class ContainerLayoutSlot extends BaseSlot {
   Widget? header;
   Widget? asideRight;
   Widget? footer;
+  ContainerLayoutSlot({
+    this.asideLeft,
+    this.header,
+    this.asideRight,
+    this.footer,
+  }) : super();
 }
