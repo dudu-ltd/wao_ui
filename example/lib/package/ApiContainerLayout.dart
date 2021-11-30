@@ -21,7 +21,7 @@ class ApiContainerLayout extends StatelessWidget {
               ),
             ),
             props: ContainerLayoutProp(
-              barSize: 1.0,
+              barSize: 3.0,
               leftJudge: true,
               rightJudge: true,
               headerJudge: true,
