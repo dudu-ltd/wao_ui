@@ -80,6 +80,7 @@ class _IndexPageState extends State<IndexPage> {
         ),
         props: ContainerLayoutProp(
           leftJudge: true,
+          asideLeftMinWidth: 200.0,
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
