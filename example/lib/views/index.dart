@@ -1,4 +1,5 @@
-import 'package:example/package/ApiContainerLayout.dart';
+import 'package:example/package/api_container_layout.dart';
+import 'package:example/package/api_dialog.dart';
 import 'package:example/package/Index.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/src/layout/container_layout.dart';
@@ -13,8 +14,9 @@ class IndexPage extends StatefulWidget {
 class _IndexPageState extends State<IndexPage> {
   late BuildContext navContext;
 
-  static const Map<String, Widget> _route = {
+  static Map<String, Widget> _route = {
     'ContainerLayout': ApiContainerLayout(),
+    'Dialog': ApiDialog(),
   };
 
   RoutePageBuilder getNext(String routeName) {
@@ -64,14 +66,21 @@ class _IndexPageState extends State<IndexPage> {
                   "id": '1',
                   "text": '布局',
                   'children': [
-                    {'id': '3', 'text': 'ContainerLayout'}
+                    {'id': '1-1', 'text': 'ContainerLayout'}
                   ]
                 },
                 {
                   "id": '2',
                   "text": '树',
                   'children': [
-                    {'id': '4', 'text': 'PlainTree'}
+                    {'id': '2-1', 'text': 'PlainTree'}
+                  ]
+                },
+                {
+                  "id": '3',
+                  "text": '树',
+                  'children': [
+                    {'id': '3-1', 'text': 'Dialog'}
                   ]
                 },
               ],

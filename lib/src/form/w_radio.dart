@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WRadio extends StatelessWidget
     implements BaseWidget<WRadioOn, WRadioProp, WRadioSlot> {
   @override
-  late WRadioOn $on;
+  late final WRadioOn $on;
 
   @override
-  late WRadioProp $props;
+  late final WRadioProp $props;
 
   @override
-  late WRadioSlot $slots;
+  late final WRadioSlot $slots;
+
+  WRadio({
+    Key? key,
+    WRadioOn? on,
+    WRadioProp? props,
+    WRadioSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WRadioOn();
+    $props = props ?? WRadioProp();
+    $slots = slots ?? WRadioSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

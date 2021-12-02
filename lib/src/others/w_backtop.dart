@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WBacktop extends StatelessWidget
     implements BaseWidget<WBacktopOn, WBacktopProp, WBacktopSlot> {
   @override
-  late WBacktopOn $on;
+  late final WBacktopOn $on;
 
   @override
-  late WBacktopProp $props;
+  late final WBacktopProp $props;
 
   @override
-  late WBacktopSlot $slots;
+  late final WBacktopSlot $slots;
+
+  WBacktop({
+    Key? key,
+    WBacktopOn? on,
+    WBacktopProp? props,
+    WBacktopSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WBacktopOn();
+    $props = props ?? WBacktopProp();
+    $slots = slots ?? WBacktopSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

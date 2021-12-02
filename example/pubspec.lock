@@ -102,6 +102,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.8.0"
+  simple_observable:
+    dependency: transitive
+    description:
+      name: simple_observable
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -169,7 +176,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.3"
 sdks:
   dart: ">=2.15.0-172.0.dev <3.0.0"
   flutter: ">=1.17.0"

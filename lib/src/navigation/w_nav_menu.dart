@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WNavMenu extends StatelessWidget
     implements BaseWidget<WNavMenuOn, WNavMenuProp, WNavMenuSlot> {
   @override
-  late WNavMenuOn $on;
+  late final WNavMenuOn $on;
 
   @override
-  late WNavMenuProp $props;
+  late final WNavMenuProp $props;
 
   @override
-  late WNavMenuSlot $slots;
+  late final WNavMenuSlot $slots;
+
+  WNavMenu({
+    Key? key,
+    WNavMenuOn? on,
+    WNavMenuProp? props,
+    WNavMenuSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WNavMenuOn();
+    $props = props ?? WNavMenuProp();
+    $slots = slots ?? WNavMenuSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WDrawer extends StatelessWidget
     implements BaseWidget<WDrawerOn, WDrawerProp, WDrawerSlot> {
   @override
-  late WDrawerOn $on;
+  late final WDrawerOn $on;
 
   @override
-  late WDrawerProp $props;
+  late final WDrawerProp $props;
 
   @override
-  late WDrawerSlot $slots;
+  late final WDrawerSlot $slots;
+
+  WDrawer({
+    Key? key,
+    WDrawerOn? on,
+    WDrawerProp? props,
+    WDrawerSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WDrawerOn();
+    $props = props ?? WDrawerProp();
+    $slots = slots ?? WDrawerSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

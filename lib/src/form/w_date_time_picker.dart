@@ -9,13 +9,24 @@ class WDateTimePicker extends StatelessWidget
         BaseWidget<WDateTimePickerOn, WDateTimePickerProp,
             WDateTimePickerSlot> {
   @override
-  late WDateTimePickerOn $on;
+  late final WDateTimePickerOn $on;
 
   @override
-  late WDateTimePickerProp $props;
+  late final WDateTimePickerProp $props;
 
   @override
-  late WDateTimePickerSlot $slots;
+  late final WDateTimePickerSlot $slots;
+
+  WDateTimePicker({
+    Key? key,
+    WDateTimePickerOn? on,
+    WDateTimePickerProp? props,
+    WDateTimePickerSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WDateTimePickerOn();
+    $props = props ?? WDateTimePickerProp();
+    $slots = slots ?? WDateTimePickerSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WBreadcrumb extends StatelessWidget
     implements BaseWidget<WBreadcrumbOn, WBreadcrumbProp, WBreadcrumbSlot> {
   @override
-  late WBreadcrumbOn $on;
+  late final WBreadcrumbOn $on;
 
   @override
-  late WBreadcrumbProp $props;
+  late final WBreadcrumbProp $props;
 
   @override
-  late WBreadcrumbSlot $slots;
+  late final WBreadcrumbSlot $slots;
+
+  WBreadcrumb({
+    Key? key,
+    WBreadcrumbOn? on,
+    WBreadcrumbProp? props,
+    WBreadcrumbSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WBreadcrumbOn();
+    $props = props ?? WBreadcrumbProp();
+    $slots = slots ?? WBreadcrumbSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

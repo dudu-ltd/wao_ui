@@ -8,13 +8,24 @@ class WNotification extends StatelessWidget
     implements
         BaseWidget<WNotificationOn, WNotificationProp, WNotificationSlot> {
   @override
-  late WNotificationOn $on;
+  late final WNotificationOn $on;
 
   @override
-  late WNotificationProp $props;
+  late final WNotificationProp $props;
 
   @override
-  late WNotificationSlot $slots;
+  late final WNotificationSlot $slots;
+
+  WNotification({
+    Key? key,
+    WNotificationOn? on,
+    WNotificationProp? props,
+    WNotificationSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WNotificationOn();
+    $props = props ?? WNotificationProp();
+    $slots = slots ?? WNotificationSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

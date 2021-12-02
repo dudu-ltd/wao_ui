@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WRate extends StatelessWidget
     implements BaseWidget<WRateOn, WRateProp, WRateSlot> {
   @override
-  late WRateOn $on;
+  late final WRateOn $on;
 
   @override
-  late WRateProp $props;
+  late final WRateProp $props;
 
   @override
-  late WRateSlot $slots;
+  late final WRateSlot $slots;
+
+  WRate({
+    Key? key,
+    WRateOn? on,
+    WRateProp? props,
+    WRateSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WRateOn();
+    $props = props ?? WRateProp();
+    $slots = slots ?? WRateSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

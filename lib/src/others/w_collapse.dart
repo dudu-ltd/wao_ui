@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WCollapse extends StatelessWidget
     implements BaseWidget<WCollapseOn, WCollapseProp, WCollapseSlot> {
   @override
-  late WCollapseOn $on;
+  late final WCollapseOn $on;
 
   @override
-  late WCollapseProp $props;
+  late final WCollapseProp $props;
 
   @override
-  late WCollapseSlot $slots;
+  late final WCollapseSlot $slots;
+
+  WCollapse({
+    Key? key,
+    WCollapseOn? on,
+    WCollapseProp? props,
+    WCollapseSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WCollapseOn();
+    $props = props ?? WCollapseProp();
+    $slots = slots ?? WCollapseSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

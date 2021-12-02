@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WImage extends StatelessWidget
     implements BaseWidget<WImageOn, WImageProp, WImageSlot> {
   @override
-  late WImageOn $on;
+  late final WImageOn $on;
 
   @override
-  late WImageProp $props;
+  late final WImageProp $props;
 
   @override
-  late WImageSlot $slots;
+  late final WImageSlot $slots;
+
+  WImage({
+    Key? key,
+    WImageOn? on,
+    WImageProp? props,
+    WImageSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WImageOn();
+    $props = props ?? WImageProp();
+    $slots = slots ?? WImageSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

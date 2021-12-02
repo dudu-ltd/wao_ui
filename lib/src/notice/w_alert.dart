@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WAlert extends StatelessWidget
     implements BaseWidget<WAlertOn, WAlertProp, WAlertSlot> {
   @override
-  late WAlertOn $on;
+  late final WAlertOn $on;
 
   @override
-  late WAlertProp $props;
+  late final WAlertProp $props;
 
   @override
-  late WAlertSlot $slots;
+  late final WAlertSlot $slots;
+
+  WAlert({
+    Key? key,
+    WAlertOn? on,
+    WAlertProp? props,
+    WAlertSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WAlertOn();
+    $props = props ?? WAlertProp();
+    $slots = slots ?? WAlertSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

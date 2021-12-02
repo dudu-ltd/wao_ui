@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WResult extends StatelessWidget
     implements BaseWidget<WResultOn, WResultProp, WResultSlot> {
   @override
-  late WResultOn $on;
+  late final WResultOn $on;
 
   @override
-  late WResultProp $props;
+  late final WResultProp $props;
 
   @override
-  late WResultSlot $slots;
+  late final WResultSlot $slots;
+
+  WResult({
+    Key? key,
+    WResultOn? on,
+    WResultProp? props,
+    WResultSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WResultOn();
+    $props = props ?? WResultProp();
+    $slots = slots ?? WResultSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

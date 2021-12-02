@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WTransfer extends StatelessWidget
     implements BaseWidget<WTransferOn, WTransferProp, WTransferSlot> {
   @override
-  late WTransferOn $on;
+  late final WTransferOn $on;
 
   @override
-  late WTransferProp $props;
+  late final WTransferProp $props;
 
   @override
-  late WTransferSlot $slots;
+  late final WTransferSlot $slots;
+
+  WTransfer({
+    Key? key,
+    WTransferOn? on,
+    WTransferProp? props,
+    WTransferSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WTransferOn();
+    $props = props ?? WTransferProp();
+    $slots = slots ?? WTransferSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

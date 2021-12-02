@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WSelect extends StatelessWidget
     implements BaseWidget<WSelectOn, WSelectProp, WSelectSlot> {
   @override
-  late WSelectOn $on;
+  late final WSelectOn $on;
 
   @override
-  late WSelectProp $props;
+  late final WSelectProp $props;
 
   @override
-  late WSelectSlot $slots;
+  late final WSelectSlot $slots;
+
+  WSelect({
+    Key? key,
+    WSelectOn? on,
+    WSelectProp? props,
+    WSelectSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WSelectOn();
+    $props = props ?? WSelectProp();
+    $slots = slots ?? WSelectSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

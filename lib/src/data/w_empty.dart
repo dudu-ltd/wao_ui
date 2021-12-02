@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WEmpty extends StatelessWidget
     implements BaseWidget<WEmptyOn, WEmptyProp, WEmptySlot> {
   @override
-  late WEmptyOn $on;
+  late final WEmptyOn $on;
 
   @override
-  late WEmptyProp $props;
+  late final WEmptyProp $props;
 
   @override
-  late WEmptySlot $slots;
+  late final WEmptySlot $slots;
+
+  WEmpty({
+    Key? key,
+    WEmptyOn? on,
+    WEmptyProp? props,
+    WEmptySlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WEmptyOn();
+    $props = props ?? WEmptyProp();
+    $slots = slots ?? WEmptySlot();
+  }
 
   @override
   Widget build(BuildContext context) {

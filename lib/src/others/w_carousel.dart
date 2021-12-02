@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WCarousel extends StatelessWidget
     implements BaseWidget<WCarouselOn, WCarouselProp, WCarouselSlot> {
   @override
-  late WCarouselOn $on;
+  late final WCarouselOn $on;
 
   @override
-  late WCarouselProp $props;
+  late final WCarouselProp $props;
 
   @override
-  late WCarouselSlot $slots;
+  late final WCarouselSlot $slots;
+
+  WCarousel({
+    Key? key,
+    WCarouselOn? on,
+    WCarouselProp? props,
+    WCarouselSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WCarouselOn();
+    $props = props ?? WCarouselProp();
+    $slots = slots ?? WCarouselSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WSteps extends StatelessWidget
     implements BaseWidget<WStepsOn, WStepsProp, WStepsSlot> {
   @override
-  late WStepsOn $on;
+  late final WStepsOn $on;
 
   @override
-  late WStepsProp $props;
+  late final WStepsProp $props;
 
   @override
-  late WStepsSlot $slots;
+  late final WStepsSlot $slots;
+
+  WSteps({
+    Key? key,
+    WStepsOn? on,
+    WStepsProp? props,
+    WStepsSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WStepsOn();
+    $props = props ?? WStepsProp();
+    $slots = slots ?? WStepsSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

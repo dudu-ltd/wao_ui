@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WMessage extends StatelessWidget
     implements BaseWidget<WMessageOn, WMessageProp, WMessageSlot> {
   @override
-  late WMessageOn $on;
+  late final WMessageOn $on;
 
   @override
-  late WMessageProp $props;
+  late final WMessageProp $props;
 
   @override
-  late WMessageSlot $slots;
+  late final WMessageSlot $slots;
+
+  WMessage({
+    Key? key,
+    WMessageOn? on,
+    WMessageProp? props,
+    WMessageSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WMessageOn();
+    $props = props ?? WMessageProp();
+    $slots = slots ?? WMessageSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

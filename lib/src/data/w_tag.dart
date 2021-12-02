@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WTag extends StatelessWidget
     implements BaseWidget<WTagOn, WTagProp, WTagSlot> {
   @override
-  late WTagOn $on;
+  late final WTagOn $on;
 
   @override
-  late WTagProp $props;
+  late final WTagProp $props;
 
   @override
-  late WTagSlot $slots;
+  late final WTagSlot $slots;
+
+  WTag({
+    Key? key,
+    WTagOn? on,
+    WTagProp? props,
+    WTagSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WTagOn();
+    $props = props ?? WTagProp();
+    $slots = slots ?? WTagSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

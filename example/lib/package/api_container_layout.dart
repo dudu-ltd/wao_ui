@@ -9,11 +9,11 @@ class ApiContainerLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        Container(
+        SizedBox(
           height: MediaQuery.of(context).size.height,
           child: ContainerLayout(
             Container(
-              child: Center(
+              child: const Center(
                 child: Text("MAIN"),
               ),
               decoration: BoxDecoration(
@@ -29,7 +29,7 @@ class ApiContainerLayout extends StatelessWidget {
             ),
             slots: ContainerLayoutSlot(
               asideLeft: Container(
-                child: Center(
+                child: const Center(
                   child: Text("LEFT"),
                 ),
                 decoration: BoxDecoration(
@@ -37,7 +37,7 @@ class ApiContainerLayout extends StatelessWidget {
                 ),
               ),
               asideRight: Container(
-                child: Center(
+                child: const Center(
                   child: Text("RIGHT"),
                 ),
                 decoration: BoxDecoration(
@@ -45,7 +45,7 @@ class ApiContainerLayout extends StatelessWidget {
                 ),
               ),
               footer: Container(
-                child: Center(
+                child: const Center(
                   child: Text("FOOTER"),
                 ),
                 decoration: BoxDecoration(
@@ -53,7 +53,7 @@ class ApiContainerLayout extends StatelessWidget {
                 ),
               ),
               header: Container(
-                child: Center(
+                child: const Center(
                   child: Text("HEADER"),
                 ),
                 decoration: BoxDecoration(

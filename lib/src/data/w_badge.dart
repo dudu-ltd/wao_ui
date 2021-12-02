@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WBadge extends StatelessWidget
     implements BaseWidget<WBadgeOn, WBadgeProp, WBadgeSlot> {
   @override
-  late WBadgeOn $on;
+  late final WBadgeOn $on;
 
   @override
-  late WBadgeProp $props;
+  late final WBadgeProp $props;
 
   @override
-  late WBadgeSlot $slots;
+  late final WBadgeSlot $slots;
+
+  WBadge({
+    Key? key,
+    WBadgeOn? on,
+    WBadgeProp? props,
+    WBadgeSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WBadgeOn();
+    $props = props ?? WBadgeProp();
+    $slots = slots ?? WBadgeSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WCard extends StatelessWidget
     implements BaseWidget<WCardOn, WCardProp, WCardSlot> {
   @override
-  late WCardOn $on;
+  late final WCardOn $on;
 
   @override
-  late WCardProp $props;
+  late final WCardProp $props;
 
   @override
-  late WCardSlot $slots;
+  late final WCardSlot $slots;
+
+  WCard({
+    Key? key,
+    WCardOn? on,
+    WCardProp? props,
+    WCardSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WCardOn();
+    $props = props ?? WCardProp();
+    $slots = slots ?? WCardSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

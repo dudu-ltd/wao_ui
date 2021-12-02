@@ -25,5 +25,6 @@
 /pubspec.lock
 **/doc/api/
 .dart_tool/
+.vscode/
 .packages
 build/
