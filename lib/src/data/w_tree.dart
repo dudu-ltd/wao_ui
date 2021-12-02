@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WTree extends StatelessWidget
     implements BaseWidget<WTreeOn, WTreeProp, WTreeSlot> {
   @override
-  late WTreeOn $on;
+  late final WTreeOn $on;
 
   @override
-  late WTreeProp $props;
+  late final WTreeProp $props;
 
   @override
-  late WTreeSlot $slots;
+  late final WTreeSlot $slots;
+
+  WTree({
+    Key? key,
+    WTreeOn? on,
+    WTreeProp? props,
+    WTreeSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WTreeOn();
+    $props = props ?? WTreeProp();
+    $slots = slots ?? WTreeSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

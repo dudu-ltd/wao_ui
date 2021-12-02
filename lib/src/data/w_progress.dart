@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WProgress extends StatelessWidget
     implements BaseWidget<WProgressOn, WProgressProp, WProgressSlot> {
   @override
-  late WProgressOn $on;
+  late final WProgressOn $on;
 
   @override
-  late WProgressProp $props;
+  late final WProgressProp $props;
 
   @override
-  late WProgressSlot $slots;
+  late final WProgressSlot $slots;
+
+  WProgress({
+    Key? key,
+    WProgressOn? on,
+    WProgressProp? props,
+    WProgressSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WProgressOn();
+    $props = props ?? WProgressProp();
+    $slots = slots ?? WProgressSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

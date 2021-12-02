@@ -8,13 +8,24 @@ class WDescriptions extends StatelessWidget
     implements
         BaseWidget<WDescriptionsOn, WDescriptionsProp, WDescriptionsSlot> {
   @override
-  late WDescriptionsOn $on;
+  late final WDescriptionsOn $on;
 
   @override
-  late WDescriptionsProp $props;
+  late final WDescriptionsProp $props;
 
   @override
-  late WDescriptionsSlot $slots;
+  late final WDescriptionsSlot $slots;
+
+  WDescriptions({
+    Key? key,
+    WDescriptionsOn? on,
+    WDescriptionsProp? props,
+    WDescriptionsSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WDescriptionsOn();
+    $props = props ?? WDescriptionsProp();
+    $slots = slots ?? WDescriptionsSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

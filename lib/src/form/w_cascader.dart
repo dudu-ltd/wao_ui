@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WCascader extends StatelessWidget
     implements BaseWidget<WCascaderOn, WCascaderProp, WCascaderSlot> {
   @override
-  late WCascaderOn $on;
+  late final WCascaderOn $on;
 
   @override
-  late WCascaderProp $props;
+  late final WCascaderProp $props;
 
   @override
-  late WCascaderSlot $slots;
+  late final WCascaderSlot $slots;
+
+  WCascader({
+    Key? key,
+    WCascaderOn? on,
+    WCascaderProp? props,
+    WCascaderSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WCascaderOn();
+    $props = props ?? WCascaderProp();
+    $slots = slots ?? WCascaderSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

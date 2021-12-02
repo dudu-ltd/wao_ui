@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WCalendar extends StatelessWidget
     implements BaseWidget<WCalendarOn, WCalendarProp, WCalendarSlot> {
   @override
-  late WCalendarOn $on;
+  late final WCalendarOn $on;
 
   @override
-  late WCalendarProp $props;
+  late final WCalendarProp $props;
 
   @override
-  late WCalendarSlot $slots;
+  late final WCalendarSlot $slots;
+
+  WCalendar({
+    Key? key,
+    WCalendarOn? on,
+    WCalendarProp? props,
+    WCalendarSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WCalendarOn();
+    $props = props ?? WCalendarProp();
+    $slots = slots ?? WCalendarSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

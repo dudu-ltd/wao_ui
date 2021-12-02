@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WUpload extends StatelessWidget
     implements BaseWidget<WUploadOn, WUploadProp, WUploadSlot> {
   @override
-  late WUploadOn $on;
+  late final WUploadOn $on;
 
   @override
-  late WUploadProp $props;
+  late final WUploadProp $props;
 
   @override
-  late WUploadSlot $slots;
+  late final WUploadSlot $slots;
+
+  WUpload({
+    Key? key,
+    WUploadOn? on,
+    WUploadProp? props,
+    WUploadSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WUploadOn();
+    $props = props ?? WUploadProp();
+    $slots = slots ?? WUploadSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WPopconfirm extends StatelessWidget
     implements BaseWidget<WPopconfirmOn, WPopconfirmProp, WPopconfirmSlot> {
   @override
-  late WPopconfirmOn $on;
+  late final WPopconfirmOn $on;
 
   @override
-  late WPopconfirmProp $props;
+  late final WPopconfirmProp $props;
 
   @override
-  late WPopconfirmSlot $slots;
+  late final WPopconfirmSlot $slots;
+
+  WPopconfirm({
+    Key? key,
+    WPopconfirmOn? on,
+    WPopconfirmProp? props,
+    WPopconfirmSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WPopconfirmOn();
+    $props = props ?? WPopconfirmProp();
+    $slots = slots ?? WPopconfirmSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

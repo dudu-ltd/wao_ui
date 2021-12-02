@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WTooltip extends StatelessWidget
     implements BaseWidget<WTooltipOn, WTooltipProp, WTooltipSlot> {
   @override
-  late WTooltipOn $on;
+  late final WTooltipOn $on;
 
   @override
-  late WTooltipProp $props;
+  late final WTooltipProp $props;
 
   @override
-  late WTooltipSlot $slots;
+  late final WTooltipSlot $slots;
+
+  WTooltip({
+    Key? key,
+    WTooltipOn? on,
+    WTooltipProp? props,
+    WTooltipSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WTooltipOn();
+    $props = props ?? WTooltipProp();
+    $slots = slots ?? WTooltipSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

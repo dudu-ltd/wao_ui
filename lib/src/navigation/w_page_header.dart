@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WPageHeader extends StatelessWidget
     implements BaseWidget<WPageHeaderOn, WPageHeaderProp, WPageHeaderSlot> {
   @override
-  late WPageHeaderOn $on;
+  late final WPageHeaderOn $on;
 
   @override
-  late WPageHeaderProp $props;
+  late final WPageHeaderProp $props;
 
   @override
-  late WPageHeaderSlot $slots;
+  late final WPageHeaderSlot $slots;
+
+  WPageHeader({
+    Key? key,
+    WPageHeaderOn? on,
+    WPageHeaderProp? props,
+    WPageHeaderSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WPageHeaderOn();
+    $props = props ?? WPageHeaderProp();
+    $slots = slots ?? WPageHeaderSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

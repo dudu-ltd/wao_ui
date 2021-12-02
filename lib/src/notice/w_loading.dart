@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WLoading extends StatelessWidget
     implements BaseWidget<WLoadingOn, WLoadingProp, WLoadingSlot> {
   @override
-  late WLoadingOn $on;
+  late final WLoadingOn $on;
 
   @override
-  late WLoadingProp $props;
+  late final WLoadingProp $props;
 
   @override
-  late WLoadingSlot $slots;
+  late final WLoadingSlot $slots;
+
+  WLoading({
+    Key? key,
+    WLoadingOn? on,
+    WLoadingProp? props,
+    WLoadingSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WLoadingOn();
+    $props = props ?? WLoadingProp();
+    $slots = slots ?? WLoadingSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

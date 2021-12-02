@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WInputNumber extends StatelessWidget
     implements BaseWidget<WInputNumberOn, WInputNumberProp, WInputNumberSlot> {
   @override
-  late WInputNumberOn $on;
+  late final WInputNumberOn $on;
 
   @override
-  late WInputNumberProp $props;
+  late final WInputNumberProp $props;
 
   @override
-  late WInputNumberSlot $slots;
+  late final WInputNumberSlot $slots;
+
+  WInputNumber({
+    Key? key,
+    WInputNumberOn? on,
+    WInputNumberProp? props,
+    WInputNumberSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WInputNumberOn();
+    $props = props ?? WInputNumberProp();
+    $slots = slots ?? WInputNumberSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

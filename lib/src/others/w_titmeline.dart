@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WTimeline extends StatelessWidget
     implements BaseWidget<WTimelineOn, WTimelineProp, WTimelineSlot> {
   @override
-  late WTimelineOn $on;
+  late final WTimelineOn $on;
 
   @override
-  late WTimelineProp $props;
+  late final WTimelineProp $props;
 
   @override
-  late WTimelineSlot $slots;
+  late final WTimelineSlot $slots;
+
+  WTimeline({
+    Key? key,
+    WTimelineOn? on,
+    WTimelineProp? props,
+    WTimelineSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WTimelineOn();
+    $props = props ?? WTimelineProp();
+    $slots = slots ?? WTimelineSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

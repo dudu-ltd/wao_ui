@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WSwitch extends StatelessWidget
     implements BaseWidget<WSwitchOn, WSwitchProp, WSwitchSlot> {
   @override
-  late WSwitchOn $on;
+  late final WSwitchOn $on;
 
   @override
-  late WSwitchProp $props;
+  late final WSwitchProp $props;
 
   @override
-  late WSwitchSlot $slots;
+  late final WSwitchSlot $slots;
+
+  WSwitch({
+    Key? key,
+    WSwitchOn? on,
+    WSwitchProp? props,
+    WSwitchSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WSwitchOn();
+    $props = props ?? WSwitchProp();
+    $slots = slots ?? WSwitchSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

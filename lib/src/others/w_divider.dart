@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WDivider extends StatelessWidget
     implements BaseWidget<WDividerOn, WDividerProp, WDividerSlot> {
   @override
-  late WDividerOn $on;
+  late final WDividerOn $on;
 
   @override
-  late WDividerProp $props;
+  late final WDividerProp $props;
 
   @override
-  late WDividerSlot $slots;
+  late final WDividerSlot $slots;
+
+  WDivider({
+    Key? key,
+    WDividerOn? on,
+    WDividerProp? props,
+    WDividerSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WDividerOn();
+    $props = props ?? WDividerProp();
+    $slots = slots ?? WDividerSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

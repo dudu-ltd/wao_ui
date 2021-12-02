@@ -1,1 +1,5 @@
-class BaseSlot {}
+import 'package:flutter/material.dart';
+
+class BaseSlot {
+  Widget? defalutSlot;
+}

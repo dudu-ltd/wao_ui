@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WPagination extends StatelessWidget
     implements BaseWidget<WPaginationOn, WPaginationProp, WPaginationSlot> {
   @override
-  late WPaginationOn $on;
+  late final WPaginationOn $on;
 
   @override
-  late WPaginationProp $props;
+  late final WPaginationProp $props;
 
   @override
-  late WPaginationSlot $slots;
+  late final WPaginationSlot $slots;
+
+  WPagination({
+    Key? key,
+    WPaginationOn? on,
+    WPaginationProp? props,
+    WPaginationSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WPaginationOn();
+    $props = props ?? WPaginationProp();
+    $slots = slots ?? WPaginationSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WTabs extends StatelessWidget
     implements BaseWidget<WTabsOn, WTabsProp, WTabsSlot> {
   @override
-  late WTabsOn $on;
+  late final WTabsOn $on;
 
   @override
-  late WTabsProp $props;
+  late final WTabsProp $props;
 
   @override
-  late WTabsSlot $slots;
+  late final WTabsSlot $slots;
+
+  WTabs({
+    Key? key,
+    WTabsOn? on,
+    WTabsProp? props,
+    WTabsSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WTabsOn();
+    $props = props ?? WTabsProp();
+    $slots = slots ?? WTabsSlot();
+  }
 
   @override
   Widget build(BuildContext context) {

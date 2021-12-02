@@ -7,13 +7,24 @@ import 'package:wao_ui/core/base_widget.dart';
 class WAvatar extends StatelessWidget
     implements BaseWidget<WAvatarOn, WAvatarProp, WAvatarSlot> {
   @override
-  late WAvatarOn $on;
+  late final WAvatarOn $on;
 
   @override
-  late WAvatarProp $props;
+  late final WAvatarProp $props;
 
   @override
-  late WAvatarSlot $slots;
+  late final WAvatarSlot $slots;
+
+  WAvatar({
+    Key? key,
+    WAvatarOn? on,
+    WAvatarProp? props,
+    WAvatarSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WAvatarOn();
+    $props = props ?? WAvatarProp();
+    $slots = slots ?? WAvatarSlot();
+  }
 
   @override
   Widget build(BuildContext context) {
