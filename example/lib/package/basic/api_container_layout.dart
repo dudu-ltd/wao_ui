@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:wao_ui/src/layout/container_layout.dart';
+import 'package:wao_ui/src/basic/w_container_layout.dart';
 
 class ApiContainerLayout extends StatelessWidget {
   const ApiContainerLayout({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class ApiContainerLayout extends StatelessWidget {
       children: [
         SizedBox(
           height: MediaQuery.of(context).size.height,
-          child: ContainerLayout(
+          child: WContainerLayout(
             Container(
               child: const Center(
                 child: Text("MAIN"),
@@ -20,14 +20,14 @@ class ApiContainerLayout extends StatelessWidget {
                 color: Colors.orange.shade500,
               ),
             ),
-            props: ContainerLayoutProp(
+            props: WContainerLayoutProp(
               barSize: 3.0,
               leftJudge: true,
               rightJudge: true,
               headerJudge: true,
               footerJudge: true,
             ),
-            slots: ContainerLayoutSlot(
+            slots: WContainerLayoutSlot(
               asideLeft: Container(
                 child: const Center(
                   child: Text("LEFT"),
