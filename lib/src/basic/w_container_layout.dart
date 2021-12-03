@@ -4,43 +4,46 @@ import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 
-class ContainerLayout extends StatefulWidget
-    implements BaseWidget<BaseOn, ContainerLayoutProp, ContainerLayoutSlot> {
+class WContainerLayout extends StatefulWidget
+    implements
+        BaseWidget<WContainerLayoutOn, WContainerLayoutProp,
+            WContainerLayoutSlot> {
   static Color devideColor = Colors.grey.shade50;
 
   @override
-  late BaseOn $on;
+  late WContainerLayoutOn $on;
   @override
-  late ContainerLayoutProp $props;
+  late WContainerLayoutProp $props;
   @override
-  late ContainerLayoutSlot $slots;
+  late WContainerLayoutSlot $slots;
 
   Widget main;
-  _ContainerLayoutState? state;
-  ContainerLayout(
+  _WContainerLayoutState? state;
+  WContainerLayout(
     this.main, {
     Key? key,
     slots,
     props,
     on,
-  })  : this.$props = props ?? ContainerLayoutProp(),
-        this.$slots = slots ?? ContainerLayoutSlot(),
-        this.$on = BaseOn(),
+  })  : this.$props = props ?? WContainerLayoutProp(),
+        this.$slots = slots ?? WContainerLayoutSlot(),
+        this.$on = on ?? WContainerLayoutOn(),
         super(key: key);
 
   @override
-  _ContainerLayoutState createState() => state = _ContainerLayoutState($props);
+  _WContainerLayoutState createState() =>
+      state = _WContainerLayoutState($props);
 
   setMain(main) {
     state!.setMain(main);
   }
 }
 
-class _ContainerLayoutState extends State<ContainerLayout> {
-  ContainerLayoutProp $props;
+class _WContainerLayoutState extends State<WContainerLayout> {
+  WContainerLayoutProp $props;
   double _lastX = 0;
   double _lastY = 0;
-  _ContainerLayoutState(this.$props);
+  _WContainerLayoutState(this.$props);
   setMain(main) {
     setState(() {
       widget.main = main;
@@ -202,7 +205,7 @@ class _ContainerLayoutState extends State<ContainerLayout> {
       col.children.add(getEventBarY(
         heightHandle,
         SystemMouseCursors.resizeUp,
-        Container(height: $props.barSize, color: ContainerLayout.devideColor),
+        Container(height: $props.barSize, color: WContainerLayout.devideColor),
         isHeader,
       ));
     }
@@ -224,7 +227,8 @@ class _ContainerLayoutState extends State<ContainerLayout> {
         getEventBarY(
           heightHandle,
           SystemMouseCursors.resizeUp,
-          Container(height: $props.barSize, color: ContainerLayout.devideColor),
+          Container(
+              height: $props.barSize, color: WContainerLayout.devideColor),
           isHeader,
         ),
       );
@@ -238,7 +242,7 @@ class _ContainerLayoutState extends State<ContainerLayout> {
         getEventBarX(
           heightHandle,
           SystemMouseCursors.resizeLeft,
-          Container(width: $props.barSize, color: ContainerLayout.devideColor),
+          Container(width: $props.barSize, color: WContainerLayout.devideColor),
           isLeft,
         ),
       );
@@ -258,7 +262,7 @@ class _ContainerLayoutState extends State<ContainerLayout> {
           SystemMouseCursors.resizeLeftRight,
           Container(
             width: $props.barSize,
-            color: ContainerLayout.devideColor,
+            color: WContainerLayout.devideColor,
           ),
           isLeft,
         ),
@@ -291,10 +295,12 @@ class _ContainerLayoutState extends State<ContainerLayout> {
   }
 }
 
+class WContainerLayoutOn extends BaseOn {}
+
 ///
 ///布局相关属性
 ///
-class ContainerLayoutProp extends BaseProp {
+class WContainerLayoutProp extends BaseProp {
   /// 调整宽（高）工具条的宽度（高度）
   late double barSize;
 
@@ -334,7 +340,7 @@ class ContainerLayoutProp extends BaseProp {
   /// 底部高度是否可调整
   late bool footerJudge;
 
-  ContainerLayoutProp({
+  WContainerLayoutProp({
     barSize = 3.0,
     asideLeftMinWidth,
     asideRightMinWidth,
@@ -368,12 +374,12 @@ class ContainerLayoutProp extends BaseProp {
 ///
 /// 具名插槽，分别属于上下左右
 ///
-class ContainerLayoutSlot extends BaseSlot {
+class WContainerLayoutSlot extends BaseSlot {
   Widget? asideLeft;
   Widget? header;
   Widget? asideRight;
   Widget? footer;
-  ContainerLayoutSlot({
+  WContainerLayoutSlot({
     this.asideLeft,
     this.header,
     this.asideRight,

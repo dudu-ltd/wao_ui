@@ -1,4 +1,4 @@
-import 'package:example/package/api_container_layout.dart';
+import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/views/index.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +19,10 @@ class Api extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const IndexPage(),
+      themeMode: ThemeMode.dark,
       routes: {
         //路由注册表
-        "ContainerLayout": (BuildContext context) => ApiContainerLayout(),
+        "ContainerLayout": (BuildContext context) => const ApiContainerLayout(),
       },
     );
   }
