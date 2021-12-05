@@ -32,8 +32,26 @@ class WColorPicker extends StatelessWidget
   }
 }
 
-class WColorPickerOn extends BaseOn {}
+class WColorPickerOn extends BaseOn {
+  /**
+      change	当绑定值变化时触发	当前值
+      active-change	面板中当前显示的颜色发生改变时触发	当前显示的颜色值
+   */
+  Function? change;
+  Function? activeChange;
+  WColorPickerOn({this.change, this.activeChange});
+}
 
-class WColorPickerProp extends BaseProp {}
+class WColorPickerProp extends BaseProp {
+  /**
+      value / v-model	绑定值	string	—	—
+      disabled	是否禁用	boolean	—	false
+      size	尺寸	string	medium / small / mini	—
+      show-alpha	是否支持透明度选择	boolean	—	false
+      color-format	写入 v-model 的颜色的格式	string	hsl / hsv / hex / rgb	hex（show-alpha 为 false）/ rgb（show-alpha 为 true）
+      popper-class	ColorPicker 下拉框的类名	string	—	—
+      predefine	预定义颜色	array	—	—
+   */
+}
 
 class WColorPickerSlot extends BaseSlot {}

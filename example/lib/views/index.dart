@@ -1,11 +1,11 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:example/package/basic/api_container_layout.dart';
-import 'package:example/package/others/api_dialog.dart';
 import 'package:example/package/Index.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/src/basic/w_container_layout.dart';
 import 'package:wao_ui/src/tree/tree.dart';
 import 'package:example/package/basic/api_button.dart';
-import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/package/data/api_avatar.dart';
 import 'package:example/package/data/api_badge.dart';
 import 'package:example/package/data/api_descriptions.dart';
@@ -161,6 +161,7 @@ class _IndexPageState extends State<IndexPage> {
               on: PlainTreeOn(
                 nodeClick: (ctx, node) {
                   return () {
+                    if (!kIsWeb) (appWindow.title = node.text);
                     Navigator.pushNamed(navContext, node.id);
                   };
                 },

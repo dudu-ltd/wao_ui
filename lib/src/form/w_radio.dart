@@ -32,8 +32,32 @@ class WRadio extends StatelessWidget
   }
 }
 
-class WRadioOn extends BaseOn {}
+class WRadioOn extends BaseOn {
+  Function? change;
+}
 
-class WRadioProp extends BaseProp {}
+class WRadioProp extends BaseProp {
+  late dynamic value;
+  late dynamic label;
+  late bool disabled;
+  late bool border;
+  late String size;
+  late String name;
+  WRadioProp({
+    dynamic value,
+    dynamic label,
+    bool? disabled,
+    bool? border,
+    String? size,
+    String? name,
+  }) {
+    this.value = this.value;
+    this.label = this.label;
+    this.disabled = this.disabled;
+    this.border = this.border;
+    this.size = this.size;
+    this.name = this.name;
+  }
+}
 
 class WRadioSlot extends BaseSlot {}

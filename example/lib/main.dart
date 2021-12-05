@@ -1,9 +1,19 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/views/index.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:wao_ui/src/basic/w_frame.dart';
 
 void main() {
   runApp(const Api());
+  doWhenWindowReady(() {
+    var minSize = const Size(880, 630);
+    appWindow.minSize = minSize;
+    appWindow.maximize();
+    appWindow.show();
+    appWindow.startDragging();
+  });
 }
 
 class Api extends StatelessWidget {
@@ -12,13 +22,19 @@ class Api extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    var main = const IndexPage();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Wao ui Home',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const IndexPage(),
+      home: kIsWeb
+          ? main
+          : WFrame(
+              slots: WFrameSlot(
+                  header: Text('我是头'), main: main, footer: const Text('我是脚！')),
+            ),
       themeMode: ThemeMode.dark,
       routes: {
         //路由注册表

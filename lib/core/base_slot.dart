@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
 class BaseSlot {
-  Widget? defalutSlot;
+  dynamic defaultSlot;
+  dynamic defaultSlotBefore;
 }
