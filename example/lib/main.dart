@@ -33,7 +33,9 @@ class Api extends StatelessWidget {
           ? main
           : WFrame(
               slots: WFrameSlot(
-                  header: Text('我是头'), main: main, footer: const Text('我是脚！')),
+                  header: Text('Wao ui Api'),
+                  main: main,
+                  footer: const Text('状态栏')),
             ),
       themeMode: ThemeMode.dark,
       routes: {

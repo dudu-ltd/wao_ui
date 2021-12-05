@@ -7,6 +7,7 @@ class CfgGlobal {
   WBorderStyle borderStyle = WBorderStyle();
   WPadding padding = WPadding();
   WColor color = WColor();
+  WAvatarSize avatarSize = WAvatarSize();
 
   CfgGlobal._privateConstrucor();
 
@@ -65,6 +66,28 @@ class WBorderRadius {
                         : k == 'round'
                             ? round
                             : small;
+  }
+}
+
+class WAvatarSize {
+  double large = 40;
+  double medium = 36;
+  double small = 28;
+
+  WAvatarSize._privateConstrucor();
+  static final WAvatarSize _instance = WAvatarSize._privateConstrucor();
+  factory WAvatarSize() {
+    return _instance;
+  }
+
+  double val(String k) {
+    return k == 'large'
+        ? large
+        : k == 'medium'
+            ? medium
+            : k == 'small'
+                ? small
+                : medium;
   }
 }
 

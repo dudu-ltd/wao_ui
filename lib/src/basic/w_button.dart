@@ -4,10 +4,10 @@ import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
+import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 // TODO 修改按钮前景色
-// TODO 修改 hover 时的内容颜色
-// TODO 使 icon 跟 defaultSlot 并村
+// TODO 使 icon 跟 defaultSlot 并存
 class WButton extends StatelessWidget
     implements BaseWidget<WButtonOn, WButtonProp, WButtonSlot> {
   @override
@@ -44,28 +44,30 @@ class WButton extends StatelessWidget
     var paddingV = cfgGlobal.padding.val($props.size);
     var paddingH = paddingV / ($props.circle ? 1 : .5);
     var baseColor = cfgGlobal.color.val($props.type);
-    TypeButtonColor colors = TypeButtonColor.byPlain(baseColor, $props.plain);
-    handleDefaultSlot(colors);
-    return InkWell(
-      splashColor: colors.splashColor.withOpacity(.3),
-      focusColor: colors.focus,
-      hoverColor: colors.hover,
-      // highlightColor: colors.highlight,
-      borderRadius: BorderRadius.all(radius),
-      onTap: $on.click,
-      child: Container(
-        padding: EdgeInsets.fromLTRB(paddingH, paddingV, paddingH, paddingV),
-        decoration: BoxDecoration(
-          // color: colors.display,
-          borderRadius: BorderRadius.all(radius),
-          border: Border.all(
-            width: 1,
-            color: cfgGlobal.color.val($props.type),
+    return MouseStateBuilder(builder: (context, mouseState) {
+      TypeButtonColor colors =
+          TypeButtonColor.byPlain(baseColor, $props.plain, mouseState);
+      handleDefaultSlot(colors);
+      return InkWell(
+        splashColor: colors.splashColor.withOpacity(.3),
+        focusColor: colors.focus,
+        hoverColor: colors.hover,
+        // highlightColor: colors.highlight,
+        borderRadius: BorderRadius.all(radius),
+        onTap: $on.click,
+        child: Container(
+          padding: EdgeInsets.fromLTRB(paddingH, paddingV, paddingH, paddingV),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(radius),
+            border: Border.all(
+              width: 1,
+              color: cfgGlobal.color.val($props.type),
+            ),
           ),
+          child: $slots.defaultSlot!,
         ),
-        child: $slots.defaultSlot!,
-      ),
-    );
+      );
+    });
   }
 
   handleDefaultSlot(TypeButtonColor colors) {
@@ -92,7 +94,6 @@ class TypeButtonColor {
   late Color display;
   late Color hover;
   late Color inner;
-  late Color innerHover;
   late Color focus;
   late Color highlight;
   TypeButtonColor({
@@ -100,19 +101,18 @@ class TypeButtonColor {
     required this.display,
     required this.hover,
     required this.inner,
-    required this.innerHover,
     required this.focus,
     required this.highlight,
   });
-  factory TypeButtonColor.byPlain(MaterialColor baseColor, bool plain) {
+  factory TypeButtonColor.byPlain(
+      MaterialColor baseColor, bool plain, mouseState) {
     TypeButtonColor result;
     if (plain) {
       result = TypeButtonColor(
-        splashColor: baseColor.shade500,
+        splashColor: baseColor.shade100,
         display: baseColor.shade100,
         hover: baseColor.shade400,
-        inner: baseColor.shade400,
-        innerHover: baseColor.shade100,
+        inner: mouseState.isMouseOver ? baseColor.shade50 : baseColor.shade600,
         focus: baseColor.shade500,
         highlight: baseColor.shade700,
       );
@@ -121,10 +121,9 @@ class TypeButtonColor {
         splashColor: baseColor.shade500,
         display: baseColor.shade400,
         hover: baseColor.shade50,
-        inner: baseColor.shade300,
-        innerHover: baseColor.shade400,
+        inner: mouseState.isMouseOver ? baseColor.shade900 : baseColor.shade600,
         focus: baseColor.shade300,
-        highlight: baseColor.shade700,
+        highlight: baseColor.shade100,
       );
     }
     return result;
