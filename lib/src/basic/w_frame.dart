@@ -53,11 +53,7 @@ class WFrame extends StatelessWidget
                       )
                     : Container(),
                 Expanded(child: MoveWindow()),
-                WindowBorder(
-                    width: 0,
-                    color: (Theme.of(context).primaryColor as MaterialColor)
-                        .shade100,
-                    child: getButtions())
+                getButtions()
               ],
             ),
           ),
