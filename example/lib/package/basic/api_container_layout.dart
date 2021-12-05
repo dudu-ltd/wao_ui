@@ -17,7 +17,7 @@ class ApiContainerLayout extends StatelessWidget {
                 child: Text("MAIN"),
               ),
               decoration: BoxDecoration(
-                color: Colors.orange.shade500,
+                color: Colors.grey.shade500,
               ),
             ),
             props: WContainerLayoutProp(
@@ -33,7 +33,7 @@ class ApiContainerLayout extends StatelessWidget {
                   child: Text("LEFT"),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade600,
+                  color: Colors.grey.shade600,
                 ),
               ),
               asideRight: Container(
@@ -41,7 +41,7 @@ class ApiContainerLayout extends StatelessWidget {
                   child: Text("RIGHT"),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade400,
+                  color: Colors.grey.shade400,
                 ),
               ),
               footer: Container(
@@ -49,7 +49,7 @@ class ApiContainerLayout extends StatelessWidget {
                   child: Text("FOOTER"),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade700,
+                  color: Colors.grey.shade700,
                 ),
               ),
               header: Container(
@@ -57,7 +57,7 @@ class ApiContainerLayout extends StatelessWidget {
                   child: Text("HEADER"),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade300,
+                  color: Colors.grey.shade300,
                 ),
               ),
             ),
