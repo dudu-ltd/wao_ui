@@ -30,19 +30,19 @@ class WAvatar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(
-            $props.isCircle
-                ? cfgGlobal.borderRadius.circle
-                : cfgGlobal.borderRadius.val($props.size),
-          ),
-        ),
-      ),
+      // decoration: BoxDecoration(
+      //   borderRadius: BorderRadius.all(
+      //     Radius.circular(
+      //       $props.isCircle
+      //           ? cfgGlobal.borderRadius.circle
+      //           : cfgGlobal.borderRadius.val($props.size),
+      //     ),
+      //   ),
+      // ),
       width: $props.isCustomSize
           ? double.parse($props.size)
           : cfgGlobal.avatarSize.val($props.size),
-      child: sizedBox,
+      child: $props.isCircle ? ClipOval(child: sizedBox) : sizedBox,
     );
   }
 
@@ -61,7 +61,10 @@ class WAvatar extends StatelessWidget
         fit: BoxFit.values.firstWhere((element) => element.name == $props.fit),
       );
     } else {
-      img = $props.icon!;
+      img = Icon(
+        $props.icon!.icon,
+        size: cfgGlobal.avatarSize.val($props.size) * .6,
+      );
     }
     return img;
   }

@@ -44,6 +44,23 @@ class ApiAvatar extends StatelessWidget {
       WAvatar(
           props: WAvatarProp(shape: 'square', src: imgSrc, fit: 'scaleDown')),
     ];
+    var fitSquareAvatarGroup = [
+      WAvatar(
+          props: WAvatarProp(
+              size: '100', shape: 'square', src: imgSrc, fit: 'fill')),
+      WAvatar(
+          props: WAvatarProp(
+              size: '100', shape: 'square', src: imgSrc, fit: 'contain')),
+      WAvatar(
+          props: WAvatarProp(
+              size: '100', shape: 'square', src: imgSrc, fit: 'cover')),
+      WAvatar(
+          props: WAvatarProp(
+              size: '100', shape: 'cirsquarecle', src: imgSrc, fit: 'none')),
+      WAvatar(
+          props: WAvatarProp(
+              size: '100', shape: 'square', src: imgSrc, fit: 'scaleDown')),
+    ];
     var fitCircleAvatarGroup = [
       WAvatar(
           props: WAvatarProp(
@@ -60,14 +77,24 @@ class ApiAvatar extends StatelessWidget {
       WAvatar(
           props: WAvatarProp(
               size: '100', shape: 'circle', src: imgSrc, fit: 'scaleDown')),
+      WAvatar(
+          props: WAvatarProp(
+              size: '100', shape: 'circle', src: imgSrc, fit: 'fitWidth')),
+      WAvatar(
+          props: WAvatarProp(
+              size: '100', shape: 'circle', src: imgSrc, fit: 'fitHeight')),
     ];
-    return ListView(children: [
-      Row(children: defaultIconAvatarGroup),
-      Row(children: customIconAvatarGroup),
-      Row(children: imgAvatarGroup),
-      Row(children: squareAvatarGroup),
-      Row(children: fitAvatarGroup),
-      Row(children: fitCircleAvatarGroup),
-    ]);
+    return Container(
+      decoration: BoxDecoration(color: Colors.grey),
+      child: ListView(children: [
+        Row(children: defaultIconAvatarGroup),
+        Row(children: customIconAvatarGroup),
+        Row(children: imgAvatarGroup),
+        Row(children: squareAvatarGroup),
+        Row(children: fitAvatarGroup),
+        Row(children: fitCircleAvatarGroup),
+        Row(children: fitSquareAvatarGroup),
+      ]),
+    );
   }
 }
