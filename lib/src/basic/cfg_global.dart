@@ -8,6 +8,7 @@ class CfgGlobal {
   WPadding padding = WPadding();
   WColor color = WColor();
   WAvatarSize avatarSize = WAvatarSize();
+  WBadgeFont badgeFont = WBadgeFont();
 
   CfgGlobal._privateConstrucor();
 
@@ -66,6 +67,15 @@ class WBorderRadius {
                         : k == 'round'
                             ? round
                             : small;
+  }
+}
+
+class WBadgeFont {
+  double size = 10;
+  WBadgeFont._privateConstrucor();
+  static final WBadgeFont _instance = WBadgeFont._privateConstrucor();
+  factory WBadgeFont() {
+    return _instance;
   }
 }
 
