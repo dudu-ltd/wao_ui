@@ -35,6 +35,36 @@ class WDescriptions extends StatelessWidget
 
 class WDescriptionsOn extends BaseOn {}
 
-class WDescriptionsProp extends BaseProp {}
+class WDescriptionsProp extends BaseProp {
+  late bool border;
+  late int column;
+  late String direction;
+  late String size;
+  String? title;
+  String? extra;
+  late bool colon;
 
-class WDescriptionsSlot extends BaseSlot {}
+  WDescriptionsProp({
+    border,
+    column,
+    direction,
+    size,
+    title,
+    extra,
+    colon,
+  }) {
+    this.border = border ?? false;
+    this.column = column ?? 3;
+    this.direction = direction ?? 'horizontal';
+    this.size = size ?? 'medium';
+    this.title = title;
+    this.extra = extra;
+    this.colon = colon ?? true;
+  }
+}
+
+class WDescriptionsSlot extends BaseSlot {
+  Widget? title;
+  Widget? extra;
+  WDescriptionsSlot({this.title, this.extra});
+}
