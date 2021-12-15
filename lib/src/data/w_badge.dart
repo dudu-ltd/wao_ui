@@ -38,7 +38,6 @@ class _WBadgeState extends State<WBadge> {
   @override
   Widget build(BuildContext context) {
     widget.$props._state = this;
-    print(rightOffset);
     return Container(
       margin: EdgeInsets.only(right: widget.$props.isDot ? 3 : rightOffset + 3),
       child: Stack(
@@ -76,20 +75,30 @@ class _WBadgeState extends State<WBadge> {
   }
 
   double get rightOffset {
-    return (paddingH * 2 + cfgGlobal.badgeFont.size * badgeNum.length) -
-        (paddingH + cfgGlobal.badgeFont.size);
+    return paddingH * 2 +
+        charWidth * badgeNum.length -
+        paddingH -
+        charWidth / 2;
   }
 
   double get topOffset {
-    return paddingV + cfgGlobal.badgeFont.size;
+    return paddingH + charWidth / 2;
   }
 
   double get paddingH {
-    return cfgGlobal.badgeFont.size / 1.5;
+    return charHeight / 1.5;
   }
 
   double get paddingV {
     return paddingH / 5;
+  }
+
+  double get charWidth {
+    return cfgGlobal.badgeFont.size * 0.7;
+  }
+
+  double get charHeight {
+    return cfgGlobal.badgeFont.size;
   }
 
   Widget get badgeWidget {
