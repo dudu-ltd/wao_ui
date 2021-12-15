@@ -6,9 +6,25 @@ class ApiBreadcrumb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const Text('WBreadcrumb'),
-      WBreadcrumb(),
+    return ListView(children: [
+      Row(children: basicGroup),
     ]);
+  }
+
+  List<Widget> get basicGroup {
+    return [
+      WBreadcrumb(
+        const [
+          {'text': 'tttt1', 'icon': Icons.edit},
+          {'text': 'tttt2', 'icon': Icons.flutter_dash},
+          {'text': 'tttt3', 'icon': Icons.edit},
+          {'text': 'tttt4', 'icon': Icons.edit},
+          {'text': 'tttt5', 'icon': Icons.edit},
+          {'text': 'tttt6', 'icon': Icons.edit},
+          {'text': 'tttt7', 'icon': Icons.edit},
+        ],
+        props: WBreadcrumbProp(separator: '>'),
+      )
+    ];
   }
 }

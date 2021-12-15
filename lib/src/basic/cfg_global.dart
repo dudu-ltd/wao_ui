@@ -10,6 +10,8 @@ class CfgGlobal {
   WAvatarSize avatarSize = WAvatarSize();
   WBadgeFont badgeFont = WBadgeFont();
 
+  WBreadcrumbStyle breadcrumb = WBreadcrumbStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -154,5 +156,16 @@ class WColor {
                     : k == 'info'
                         ? info
                         : info;
+  }
+}
+
+class WBreadcrumbStyle {
+  late EdgeInsets padding = const EdgeInsets.fromLTRB(8, 2, 8, 2);
+
+  WBreadcrumbStyle._privateConstrucor();
+  static final WBreadcrumbStyle _instance =
+      WBreadcrumbStyle._privateConstrucor();
+  factory WBreadcrumbStyle() {
+    return _instance;
   }
 }
