@@ -27,8 +27,7 @@ class WBreadcrumb extends StatelessWidget
     $props = props ?? WBreadcrumbProp();
     $slots = slots ?? WBreadcrumbSlot();
     $slots.defaultSlotBefore = defaultSlot;
-
-    $slots.defaultSlot = defaultSlotAfter;
+    setDefaultSlot();
   }
 
   void checkSlot() {
@@ -45,22 +44,24 @@ class WBreadcrumb extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    // FIXME : 待解决超出宽度时水平滚动问题
     return Row(
       children: slotJoinSep,
     );
   }
 
-  List<Widget> get defaultSlotAfter {
+  void setDefaultSlot() {
     checkSlot();
     var defaultSlot = $slots.defaultSlotBefore;
-    return defaultSlot is List<Widget>
+
+    $slots.defaultSlot = defaultSlot is List<Widget>
         ? defaultSlot
-        : defaultSlot is List<Map> ||
-                defaultSlot is List<WBreadcrumbData> ||
-                defaultSlot is WBreadcrumbData
-            ? breadcrumbItems
-            : defaultSlot is Widget
-                ? [defaultSlot]
+        : defaultSlot is Widget
+            ? [defaultSlot]
+            : defaultSlot is List<Map> ||
+                    defaultSlot is List<WBreadcrumbData> ||
+                    defaultSlot is WBreadcrumbData
+                ? breadcrumbItems
                 : [];
   }
 
@@ -93,11 +94,10 @@ class WBreadcrumb extends StatelessWidget
 
   List<Widget> get slotJoinSep {
     List<Widget> result = [];
-    var slotLen = $slots.defaultSlot.length;
-    print(slotLen);
+    var slotLen = $slots.defaultSlot!.length;
     var _sep = sep;
     for (var i = 0; i < slotLen; i++) {
-      result.add($slots.defaultSlot[i]);
+      result.add($slots.defaultSlot![i]);
       if (i < slotLen - 1) {
         result.add(_sep);
       }
