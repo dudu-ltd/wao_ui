@@ -17,18 +17,19 @@ class WContainerLayout extends StatefulWidget
   @override
   late WContainerLayoutSlot $slots;
 
-  Widget main;
   _WContainerLayoutState? state;
   WContainerLayout(
-    this.main, {
+    main, {
     Key? key,
     slots,
     props,
     on,
-  })  : this.$props = props ?? WContainerLayoutProp(),
-        this.$slots = slots ?? WContainerLayoutSlot(),
-        this.$on = on ?? WContainerLayoutOn(),
-        super(key: key);
+  }) : super(key: key) {
+    this.$props = props ?? WContainerLayoutProp();
+    this.$slots = slots ?? WContainerLayoutSlot();
+    this.$on = on ?? WContainerLayoutOn();
+    this.$slots.defaultSlot = main;
+  }
 
   @override
   _WContainerLayoutState createState() =>
@@ -46,7 +47,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
   _WContainerLayoutState(this.$props);
   setMain(main) {
     setState(() {
-      widget.main = main;
+      widget.$slots.defaultSlot = main;
     });
   }
 
@@ -178,7 +179,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
     // 主窗口
     middle.children.add(Expanded(
       child: FractionallySizedBox(
-        child: widget.main,
+        child: widget.$slots.defaultSlot,
         widthFactor: 1,
         heightFactor: 1,
         alignment: Alignment.topLeft,
