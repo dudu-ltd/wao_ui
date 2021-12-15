@@ -37,8 +37,16 @@ class ApiBadge extends StatelessWidget {
       ),
     ];
 
+    var customGroup = [
+      WBadge(
+        WButton('红点', props: WButtonProp(type: 'text')),
+        props: WBadgeProp(value: 'new', max: 10, type: 'danger'),
+      ),
+    ];
+
     return ListView(children: [
       Row(children: basicGroup),
+      Row(children: customGroup),
     ]);
   }
 }

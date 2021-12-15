@@ -43,7 +43,9 @@ class _WBadgeState extends State<WBadge> {
       child: Stack(
         children: [
           child,
-          if ((widget.$props.isDot && widget.$props.value > 0) ||
+          if ((widget.$props.isDot &&
+                  (widget.$props.value is! String &&
+                      widget.$props.value > 0)) ||
               !widget.$props.isDot)
             widget.$props.isDot ? dotBadge : badge,
         ],
@@ -115,9 +117,11 @@ class _WBadgeState extends State<WBadge> {
   String get badgeNum {
     return widget.$props.isDot
         ? ''
-        : widget.$props.max > widget.$props.value
-            ? '${widget.$props.value}'
-            : '${widget.$props.max}+';
+        : widget.$props.value is String
+            ? widget.$props.value
+            : widget.$props.max > widget.$props.value
+                ? '${widget.$props.value}'
+                : '${widget.$props.max}+';
   }
 
   Widget get child {
