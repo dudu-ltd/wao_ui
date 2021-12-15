@@ -64,28 +64,30 @@ class WButton extends StatelessWidget
               color: cfgGlobal.color.val($props.type),
             ),
           ),
-          child: $slots.defaultSlot!,
+          child: $slots.defaultSlot![0],
         ),
       );
     });
   }
 
   handleDefaultSlot(TypeButtonColor colors) {
-    $slots.defaultSlot = $slots.defaultSlotBefore == null
-        ? Text('', style: TextStyle(color: colors.inner))
-        : $slots.defaultSlotBefore is IconData
-            ? Icon(
-                $slots.defaultSlotBefore,
-                color: colors.inner,
-              )
-            : $slots.defaultSlotBefore is Widget
-                ? $slots.defaultSlotBefore
-                : $slots.defaultSlotBefore is String
-                    ? Text(
-                        $slots.defaultSlotBefore,
-                        style: TextStyle(color: colors.inner),
-                      )
-                    : Container();
+    $slots.defaultSlot = [
+      $slots.defaultSlotBefore == null
+          ? Text('', style: TextStyle(color: colors.inner))
+          : $slots.defaultSlotBefore is IconData
+              ? Icon(
+                  $slots.defaultSlotBefore,
+                  color: colors.inner,
+                )
+              : $slots.defaultSlotBefore is Widget
+                  ? $slots.defaultSlotBefore
+                  : $slots.defaultSlotBefore is String
+                      ? Text(
+                          $slots.defaultSlotBefore,
+                          style: TextStyle(color: colors.inner),
+                        )
+                      : Container(),
+    ];
   }
 }
 
@@ -187,4 +189,7 @@ class WButtonProp extends BaseProp {
   }
 }
 
-class WButtonSlot extends BaseSlot {}
+class WButtonSlot extends BaseSlot {
+  @override
+  setDefaultSlot() {}
+}
