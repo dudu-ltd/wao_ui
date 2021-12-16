@@ -13,14 +13,14 @@ class ApiAvatar extends StatelessWidget {
     ];
     var customIconAvatarGroup = [
       WAvatar(
-          props:
-              WAvatarProp(icon: const Icon(Icons.person_add), size: 'large')),
+        props: WAvatarProp(icon: const Icon(Icons.person_add), size: 'large'),
+      ),
       WAvatar(
-          props:
-              WAvatarProp(icon: const Icon(Icons.person_add), size: 'medium')),
+        props: WAvatarProp(icon: const Icon(Icons.person_add), size: 'medium'),
+      ),
       WAvatar(
-          props:
-              WAvatarProp(icon: const Icon(Icons.person_add), size: 'small')),
+        props: WAvatarProp(icon: const Icon(Icons.person_add), size: 'small'),
+      ),
     ];
     var imgSrc =
         'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png';

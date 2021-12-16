@@ -36,32 +36,56 @@ class ApiButton extends StatelessWidget {
     ];
 
     var iconBtnGroup = [
-      WButton(Icons.search,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'text')),
-      WButton(Icons.edit,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'primary')),
-      WButton(Icons.check,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'success')),
-      WButton(Icons.message,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'info')),
-      WButton(Icons.star,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'warning')),
-      WButton(Icons.delete,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'danger')),
+      WButton(
+        Icons.search,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'text'),
+      ),
+      WButton(
+        Icons.edit,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'primary'),
+      ),
+      WButton(
+        Icons.check,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'success'),
+      ),
+      WButton(
+        Icons.message,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'info'),
+      ),
+      WButton(
+        Icons.star,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'warning'),
+      ),
+      WButton(
+        Icons.delete,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'danger'),
+      ),
     ];
     var iconTextBtnGroup = [
-      WButton('搜索',
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'text')),
-      WButton(Icons.edit,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'primary')),
-      WButton(Icons.check,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'success')),
-      WButton(Icons.message,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'info')),
-      WButton(Icons.star,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'warning')),
-      WButton(Icons.delete,
-          props: WButtonProp(circle: true, icon: Icons.edit, type: 'danger')),
+      WButton(
+        '搜索',
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'text'),
+      ),
+      WButton(
+        Icons.edit,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'primary'),
+      ),
+      WButton(
+        Icons.check,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'success'),
+      ),
+      WButton(
+        Icons.message,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'info'),
+      ),
+      WButton(
+        Icons.star,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'warning'),
+      ),
+      WButton(
+        Icons.delete,
+        props: WButtonProp(circle: true, icon: Icons.edit, type: 'danger'),
+      ),
     ];
 
     var sizeBtnGroup = [
