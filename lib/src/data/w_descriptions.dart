@@ -9,7 +9,10 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/core/utils/is_enum.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 
-var borderSide = BorderSide(width: 1, color: Colors.grey.shade300);
+var borderSide = BorderSide(
+  width: cfgGlobal.descriptions.borderWidth,
+  color: cfgGlobal.descriptions.borderColor,
+);
 
 ///
 class WDescriptions extends StatefulWidget
@@ -131,7 +134,8 @@ class WDescriptions extends StatefulWidget
 
   Border getBorder(i, len) {
     Border border = Border.fromBorderSide(
-        BorderSide(width: 0, color: Colors.grey.shade300));
+      BorderSide(width: 0, color: cfgGlobal.descriptions.borderColor),
+    );
     if (i < $props.column) {
       border = Border.merge(Border(top: borderSide), border);
     }
