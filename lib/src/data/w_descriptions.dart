@@ -328,10 +328,7 @@ class WDescriptionsItem extends StatelessWidget
 
   Widget _colorWrapper(Widget widget) {
     Color color = cfgGlobal.descriptions.labelColor;
-    return ColoredBox(
-      color: color,
-      child: widget,
-    );
+    return colorWrapper(widget, color, true);
   }
 
   Widget get label {

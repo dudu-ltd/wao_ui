@@ -21,3 +21,13 @@ Widget paddingWrapper(Widget child, EdgeInsets padding, needPadding) {
   }
   return child;
 }
+
+Widget colorWrapper(Widget child, Color color, needColor) {
+  if (needColor) {
+    return ColoredBox(
+      color: color,
+      child: child,
+    );
+  }
+  return child;
+}
