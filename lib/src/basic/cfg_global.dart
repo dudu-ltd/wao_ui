@@ -175,6 +175,10 @@ class WBreadcrumbStyle {
 class WDescriptionsStyle {
   double labelWidth = 80;
   Color labelColor = Colors.grey.shade100;
+
+  double borderWidth = 1.0;
+  Color borderColor = Colors.grey.shade300;
+
   late EdgeInsets padding = const EdgeInsets.fromLTRB(3, 2, 3, 2);
 
   WDescriptionsStyle._privateConstrucor();
