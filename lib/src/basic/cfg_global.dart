@@ -12,6 +12,8 @@ class CfgGlobal {
 
   WBreadcrumbStyle breadcrumb = WBreadcrumbStyle();
 
+  WDescriptionsStyle descriptions = WDescriptionsStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -166,6 +168,19 @@ class WBreadcrumbStyle {
   static final WBreadcrumbStyle _instance =
       WBreadcrumbStyle._privateConstrucor();
   factory WBreadcrumbStyle() {
+    return _instance;
+  }
+}
+
+class WDescriptionsStyle {
+  double labelWidth = 80;
+  Color labelColor = Colors.grey.shade100;
+  late EdgeInsets padding = const EdgeInsets.fromLTRB(3, 2, 3, 2);
+
+  WDescriptionsStyle._privateConstrucor();
+  static final WDescriptionsStyle _instance =
+      WDescriptionsStyle._privateConstrucor();
+  factory WDescriptionsStyle() {
     return _instance;
   }
 }
