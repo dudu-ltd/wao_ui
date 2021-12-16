@@ -1,10 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/src/basic/cfg_global.dart';
+import 'package:wao_ui/core/utils/is_enum.dart';
+import 'package:wao_ui/core/utils/wrapper.dart';
 
-class WDescriptions extends StatelessWidget
+var borderSide = BorderSide(width: 1, color: Colors.grey.shade300);
+
+///
+class WDescriptions extends StatefulWidget
     implements
         BaseWidget<WDescriptionsOn, WDescriptionsProp, WDescriptionsSlot> {
   @override
@@ -16,7 +24,11 @@ class WDescriptions extends StatelessWidget
   @override
   late final WDescriptionsSlot $slots;
 
-  WDescriptions({
+  @override
+  _WDescriptionsState createState() => _WDescriptionsState();
+
+  WDescriptions(
+    dynamic defaultSlot, {
     Key? key,
     WDescriptionsOn? on,
     WDescriptionsProp? props,
@@ -25,16 +37,174 @@ class WDescriptions extends StatelessWidget
     $on = on ?? WDescriptionsOn();
     $props = props ?? WDescriptionsProp();
     $slots = slots ?? WDescriptionsSlot();
+    $slots.defaultSlotBefore = defaultSlot;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
+  void checkSlot() {
+    var slot = $slots.defaultSlotBefore;
+    if (slot is! List<Widget> &&
+        slot is! Map &&
+        slot is! Widget &&
+        slot is! List<WDescriptionsData> &&
+        slot is! WDescriptionsData) {
+      throw Exception(
+        "目前 defaultSlot 仅支持以下类型: List<Widget>、Map、Widget、List<WDescriptionsData>、WDescriptionsData。",
+      );
+    }
+  }
+
+  void setDefaultSlot() {
+    checkSlot();
+    var defaultSlot = $slots.defaultSlotBefore;
+    if (defaultSlot is List<Widget>) {
+      $slots.defaultSlot = defaultSlot;
+    } else if (defaultSlot is Widget) {
+      $slots.defaultSlot = [defaultSlot];
+    } else if (defaultSlot is Map ||
+        defaultSlot is List<WDescriptionsData> ||
+        defaultSlot is WDescriptionsData) {
+      $slots.defaultSlot = descriptionsItems;
+    } else {
+      $slots.defaultSlot = [];
+    }
+  }
+
+  List<Widget> get descriptionsItems {
+    var defaultSlot = $slots.defaultSlotBefore;
+    var result = <Widget>[];
+    if (defaultSlot is List<WDescriptionsData>) {
+      var children;
+      for (var i = 0; i < defaultSlot.length; i++) {
+        if (i % $props.column == 0) {
+          children = [];
+          result.add(Row(children: children));
+        }
+        children.add(createItem(defaultSlot[i]));
+      }
+    }
+    if (defaultSlot is Map) {
+      addFromMap(result);
+    }
+    return result;
+  }
+
+  void addFromMap(List<Widget> result) {
+    assert($props.fields != null, '\$props.fields 属性不可为空 !');
+    var defaultSlot = $slots.defaultSlotBefore;
+    var children;
+    var len = $props.fields!.length;
+    for (var i = 0; i < len; i++) {
+      if ((i % $props.column) == 0) {
+        children = <Widget>[];
+        result.add(Row(children: children));
+      }
+      var field = $props.fields![i];
+      var data = WDescriptionsData(
+        label: $props.colon ? '${field['label']}:' : field['label'],
+        value: defaultSlot[field['field']],
+      );
+      if (i == $props.fields!.length - 1) {
+        int span = $props.column - children.length as int;
+        children.add(
+          Expanded(
+            child: borderWrapper(
+              createItem(data),
+              getBorder(i, len),
+              $props.border,
+            ),
+            flex: span,
+          ),
+        );
+      } else {
+        children.add(
+          Expanded(
+            child: borderWrapper(
+              createItem(data),
+              getBorder(i, len),
+              $props.border,
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  Border getBorder(i, len) {
+    Border border = Border.fromBorderSide(
+        BorderSide(width: 0, color: Colors.grey.shade300));
+    if (i < $props.column) {
+      border = Border.merge(Border(top: borderSide), border);
+    }
+    if (i % $props.column == 0) {
+      border = Border.merge(Border(left: borderSide), border);
+    }
+    if (i > len ~/ $props.column * ($props.column - 1)) {
+      border = Border.merge(Border(bottom: borderSide), border);
+    }
+    if (i % $props.column == $props.column - 1) {
+      border = Border.merge(Border(right: borderSide), border);
+    }
+    return border;
+  }
+
+  Widget createItem(WDescriptionsData data) {
+    return WDescriptionsItem(
+      data.value,
+      props: WDescriptionsItemProp(
+        label: data.label is String ? data.label : null,
+        direction: $props.direction,
+        border: $props.border,
+      ),
+      slots: WDescriptionsItemSlot(
+        label: data.label is Widget ? data.label : null,
+      ),
+    );
   }
 }
 
+///
+class _WDescriptionsState extends State<WDescriptions> {
+  @override
+  Widget build(BuildContext context) {
+    widget.setDefaultSlot();
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: Column(
+        children: [header, ...widget.$slots.defaultSlot!],
+      ),
+    );
+  }
+
+  Widget get header {
+    return Row(
+      children: [
+        if (widget.$slots.title != null)
+          Align(
+            child: widget.$slots.title!,
+            alignment: Alignment.centerLeft,
+          ),
+        const Expanded(child: Text('')),
+        if (widget.$slots.extra != null)
+          Align(
+            child: widget.$slots.extra!,
+            alignment: Alignment.centerLeft,
+          ),
+      ],
+    );
+  }
+}
+
+///
+class WDescriptionsData {
+  dynamic label;
+  String? value;
+  WDescriptionsData({this.label, this.value});
+}
+
+///
 class WDescriptionsOn extends BaseOn {}
 
+///
 class WDescriptionsProp extends BaseProp {
   late bool border;
   late int column;
@@ -43,6 +213,7 @@ class WDescriptionsProp extends BaseProp {
   String? title;
   String? extra;
   late bool colon;
+  List<Map<String, dynamic>>? fields;
 
   WDescriptionsProp({
     border,
@@ -52,6 +223,7 @@ class WDescriptionsProp extends BaseProp {
     title,
     extra,
     colon,
+    this.fields,
   }) {
     this.border = border ?? false;
     this.column = column ?? 3;
@@ -63,8 +235,139 @@ class WDescriptionsProp extends BaseProp {
   }
 }
 
+///
 class WDescriptionsSlot extends BaseSlot {
   Widget? title;
   Widget? extra;
   WDescriptionsSlot({this.title, this.extra});
+}
+
+///
+class WDescriptionsItem extends StatelessWidget
+    implements
+        BaseWidget<WDescriptionsItemOn, WDescriptionsItemProp,
+            WDescriptionsItemSlot> {
+  @override
+  late final WDescriptionsItemOn $on;
+
+  @override
+  late final WDescriptionsItemProp $props;
+
+  @override
+  late final WDescriptionsItemSlot $slots;
+
+  WDescriptionsItem(
+    dynamic value, {
+    Key? key,
+    WDescriptionsItemOn? on,
+    WDescriptionsItemProp? props,
+    WDescriptionsItemSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WDescriptionsItemOn();
+    $props = props ?? WDescriptionsItemProp();
+    $slots = slots ?? WDescriptionsItemSlot();
+    $slots.defaultSlotBefore = value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var child;
+    var children = [
+      _colorWrapper(
+        _paddingWrapper(
+          _borderWrapper(label),
+        ),
+      ),
+      _paddingWrapper($slots.defaultSlot![0]),
+    ];
+    if (isVertical($props.direction)) {
+      child = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      );
+    } else {
+      child = Row(children: children);
+    }
+    return child;
+  }
+
+  Widget _paddingWrapper(Widget widget) {
+    return paddingWrapper(
+      widget,
+      cfgGlobal.descriptions.padding,
+      true,
+    );
+  }
+
+  Widget _borderWrapper(Widget label) {
+    var child;
+    if (isVertical($props.direction)) {
+      child = borderWrapper(
+        FractionallySizedBox(widthFactor: 1, child: label),
+        Border(bottom: borderSide),
+        $props.border,
+      );
+    } else {
+      child = borderWrapper(
+        SizedBox(
+          child: label,
+          width: cfgGlobal.descriptions.labelWidth,
+        ),
+        Border(right: borderSide),
+        $props.border,
+      );
+    }
+    return child;
+  }
+
+  Widget _colorWrapper(Widget widget) {
+    Color color = cfgGlobal.descriptions.labelColor;
+    return ColoredBox(
+      color: color,
+      child: widget,
+    );
+  }
+
+  Widget get label {
+    return $slots.label ?? Text($props.label);
+  }
+}
+
+///
+class WDescriptionsItemOn extends BaseOn {}
+
+///
+class WDescriptionsItemProp extends BaseProp {
+  late String label;
+  late int span;
+  late String direction;
+  late bool border;
+  String? labelClassName;
+  String? contentClassName;
+  WDescriptionsItemProp({
+    label,
+    span,
+    direction,
+    border,
+    this.labelClassName,
+    this.contentClassName,
+  }) {
+    this.label = label ?? '';
+    this.span = span ?? 3;
+    this.border = border ?? false;
+    this.direction = direction ?? 'horizontal';
+  }
+}
+
+///
+class WDescriptionsItemSlot extends BaseSlot {
+  Widget? label;
+  WDescriptionsItemSlot({this.label});
+  @override
+  setDefaultSlot() {
+    super.setDefaultSlot();
+    if (defaultSlotBefore is String) {
+      defaultSlot = [SelectableText(defaultSlotBefore)];
+    }
+  }
 }

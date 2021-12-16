@@ -30,6 +30,14 @@ class WBreadcrumb extends StatelessWidget
     setDefaultSlot();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    // FIXME : 待解决超出宽度时水平滚动问题
+    return Row(
+      children: slotJoinSep,
+    );
+  }
+
   void checkSlot() {
     var slot = $slots.defaultSlotBefore;
     if (slot is! List<Widget> &&
@@ -40,14 +48,6 @@ class WBreadcrumb extends StatelessWidget
       throw Exception(
           "目前 defaultSlot 仅支持以下类型: List<Widget>、List<Map>、Widget、List<WBreadcrumbData>、WBreadcrumbData。");
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // FIXME : 待解决超出宽度时水平滚动问题
-    return Row(
-      children: slotJoinSep,
-    );
   }
 
   void setDefaultSlot() {
