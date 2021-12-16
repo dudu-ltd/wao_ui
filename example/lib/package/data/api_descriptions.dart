@@ -40,20 +40,21 @@ class ApiDescriptions extends StatelessWidget {
       data,
       props: WDescriptionsProp(
         fields: fields,
+        title: '带边框列表',
         border: true,
       ),
       slots: WDescriptionsSlot(
-        title:
-            const Text('带边框列表', style: TextStyle(fontWeight: FontWeight.w600)),
-        extra: WButton('操作', props: WButtonProp(type: 'primary', size: 'mini')),
+        extra: WButton('操作', props: WButtonProp(type: 'info', size: 'mini')),
       ),
     );
     var noBorderDesc = WDescriptions(
       data,
       slots: WDescriptionsSlot(
-        title:
-            const Text('无边框列表', style: TextStyle(fontWeight: FontWeight.w600)),
-        extra: WButton('操作', props: WButtonProp(type: 'primary', size: 'mini')),
+        title: const Text(
+          '无边框列表',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        extra: WButton('操作', props: WButtonProp(type: 'info', size: 'mini')),
       ),
       props: WDescriptionsProp(
         fields: fields,

@@ -178,19 +178,21 @@ class _WDescriptionsState extends State<WDescriptions> {
   Widget get header {
     return Row(
       children: [
-        if (widget.$slots.title != null)
-          Align(
-            child: widget.$slots.title!,
-            alignment: Alignment.centerLeft,
-          ),
+        if (title != null) Align(child: title, alignment: Alignment.centerLeft),
         const Expanded(child: Text('')),
-        if (widget.$slots.extra != null)
-          Align(
-            child: widget.$slots.extra!,
-            alignment: Alignment.centerLeft,
-          ),
+        if (extra != null) Align(child: extra, alignment: Alignment.centerLeft),
       ],
     );
+  }
+
+  Widget? get title {
+    return widget.$slots.title ??
+        (widget.$props.title != null ? Text(widget.$props.title!) : null);
+  }
+
+  Widget? get extra {
+    return widget.$slots.extra ??
+        (widget.$props.extra != null ? Text(widget.$props.extra!) : null);
   }
 }
 
