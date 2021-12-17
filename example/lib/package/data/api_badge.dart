@@ -12,7 +12,7 @@ class ApiBadge extends StatelessWidget {
       WBadge(
         WButton(
           '评论',
-          props: WButtonProp(type: 'text'),
+          props: WButtonProp(type: 'info'),
           on: WButtonOn(click: () {
             num.value++;
           }),
@@ -20,26 +20,26 @@ class ApiBadge extends StatelessWidget {
         props: num,
       ),
       WBadge(
-        WButton('回复', props: WButtonProp(type: 'text')),
+        WButton('回复', props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 3, max: 10),
       ),
       WBadge(
-        WButton('评论', props: WButtonProp(type: 'text')),
+        WButton('评论', props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 1, max: 10, type: 'primary'),
       ),
       WBadge(
-        WButton('回复', props: WButtonProp(type: 'text')),
+        WButton('回复', props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 2, max: 10, type: 'warning'),
       ),
       WBadge(
-        WButton('红点', props: WButtonProp(type: 'text')),
+        WButton('红点', props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 1, max: 10, type: 'warning', isDot: true),
       ),
     ];
 
     var customGroup = [
       WBadge(
-        WButton('红点', props: WButtonProp(type: 'text')),
+        WButton('红点', props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 'new', max: 10, type: 'danger'),
       ),
     ];
