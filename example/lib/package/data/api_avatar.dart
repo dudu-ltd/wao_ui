@@ -85,7 +85,6 @@ class ApiAvatar extends StatelessWidget {
               size: '100', shape: 'circle', src: imgSrc, fit: 'fitHeight')),
     ];
     return Container(
-      decoration: BoxDecoration(color: Colors.grey),
       child: ListView(children: [
         Row(children: defaultIconAvatarGroup),
         Row(children: customIconAvatarGroup),
