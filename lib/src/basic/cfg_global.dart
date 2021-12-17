@@ -16,6 +16,10 @@ class CfgGlobal {
 
   WEmptyStyle empty = WEmptyStyle();
 
+  WPaginationStyle pagination = WPaginationStyle();
+
+  WButtonStyle button = WButtonStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -109,10 +113,10 @@ class WAvatarSize {
 
 class WPadding {
   double none = 0.0;
-  double mini = 5.0;
-  double small = 8.0;
-  double medium = 10.0;
-  double large = 12.0;
+  double mini = 3.0;
+  double small = 5.0;
+  double medium = 8.0;
+  double large = 10.0;
 
   WPadding._privateConstrucor();
   static final WPadding _instance = WPadding._privateConstrucor();
@@ -201,6 +205,27 @@ class WEmptyStyle {
   WEmptyStyle._privateConstrucor();
   static final WEmptyStyle _instance = WEmptyStyle._privateConstrucor();
   factory WEmptyStyle() {
+    return _instance;
+  }
+}
+
+class WPaginationStyle {
+  Color totalColor = Colors.grey.shade600;
+
+  WPaginationStyle._privateConstrucor();
+  static final WPaginationStyle _instance =
+      WPaginationStyle._privateConstrucor();
+  factory WPaginationStyle() {
+    return _instance;
+  }
+}
+
+class WButtonStyle {
+  double minWidth = 30;
+
+  WButtonStyle._privateConstrucor();
+  static final WButtonStyle _instance = WButtonStyle._privateConstrucor();
+  factory WButtonStyle() {
     return _instance;
   }
 }

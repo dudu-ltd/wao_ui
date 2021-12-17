@@ -42,32 +42,45 @@ class WButton extends StatelessWidget
               : cfgGlobal.borderRadius.val($props.size),
     );
     var paddingV = cfgGlobal.padding.val($props.size);
-    var paddingH = paddingV / ($props.circle ? 1 : .5);
+    var paddingH = paddingV / ($props.circle ? 1 : .4);
     var baseColor = cfgGlobal.color.val($props.type);
-    return MouseStateBuilder(builder: (context, mouseState) {
-      TypeButtonColor colors =
-          TypeButtonColor.byPlain(baseColor, $props.plain, mouseState);
-      handleDefaultSlot(colors);
-      return InkWell(
-        splashColor: colors.splashColor.withOpacity(.3),
-        focusColor: colors.focus,
-        hoverColor: colors.hover,
-        // highlightColor: colors.highlight,
-        borderRadius: BorderRadius.all(radius),
-        onTap: $on.click,
-        child: Container(
+    return MouseStateBuilder(
+      builder: (context, mouseState) {
+        TypeButtonColor colors =
+            TypeButtonColor.byPlain(baseColor, $props.plain, mouseState);
+        handleDefaultSlot(colors);
+        var btn = Container(
+          alignment: Alignment.center,
+          constraints: BoxConstraints(minWidth: cfgGlobal.button.minWidth),
           padding: EdgeInsets.fromLTRB(paddingH, paddingV, paddingH, paddingV),
           decoration: BoxDecoration(
+            color: $props.active ? colors.focus : null,
             borderRadius: BorderRadius.all(radius),
-            border: Border.all(
-              width: 1,
-              color: cfgGlobal.color.val($props.type),
-            ),
+            border: !$props.typeIsText
+                ? Border.all(
+                    width: 1,
+                    color: cfgGlobal.color.val($props.type),
+                  )
+                : null,
           ),
           child: $slots.defaultSlot![0],
-        ),
-      );
-    });
+        );
+        return _inkWellWrapper(btn, colors, radius);
+      },
+    );
+  }
+
+  Widget _inkWellWrapper(Widget btn, TypeButtonColor colors, Radius radius) {
+    if ($props.loading) return btn;
+    return InkWell(
+      splashColor: colors.splashColor.withOpacity(.3),
+      focusColor: colors.focus,
+      hoverColor: colors.hover,
+      // highlightColor: colors.highlight,
+      borderRadius: BorderRadius.all(radius),
+      onTap: $on.click,
+      child: btn,
+    );
   }
 
   handleDefaultSlot(TypeButtonColor colors) {
@@ -166,6 +179,8 @@ class WButtonProp extends BaseProp {
   IconData? icon;
   late bool autofocus;
 
+  late bool active;
+
   WButtonProp({
     size,
     type,
@@ -176,6 +191,7 @@ class WButtonProp extends BaseProp {
     disabled,
     icon,
     autofocus,
+    active,
   }) {
     this.size = buttonSize.contains(size) ? size : 'small';
     this.type = buttonTypes.contains(type) ? type : 'info';
@@ -186,10 +202,12 @@ class WButtonProp extends BaseProp {
     this.disabled = disabled ?? false;
     this.icon = icon;
     this.autofocus = autofocus ?? false;
+    this.active = active ?? false;
+  }
+
+  bool get typeIsText {
+    return type == 'text';
   }
 }
 
-class WButtonSlot extends BaseSlot {
-  @override
-  setDefaultSlot() {}
-}
+class WButtonSlot extends BaseSlot {}
