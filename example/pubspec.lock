@@ -151,6 +151,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.7.0"
+  mustache_template:
+    dependency: transitive
+    description:
+      name: mustache_template
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   path:
     dependency: transitive
     description:

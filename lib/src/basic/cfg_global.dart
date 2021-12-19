@@ -20,6 +20,8 @@ class CfgGlobal {
 
   WButtonStyle button = WButtonStyle();
 
+  WProgressStyle progress = WProgressStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -159,7 +161,7 @@ class WColor {
             ? success
             : k == 'warning'
                 ? waring
-                : k == 'danger'
+                : k == 'danger' || k == 'exception'
                     ? danger
                     : k == 'info'
                         ? info
@@ -226,6 +228,30 @@ class WButtonStyle {
   WButtonStyle._privateConstrucor();
   static final WButtonStyle _instance = WButtonStyle._privateConstrucor();
   factory WButtonStyle() {
+    return _instance;
+  }
+}
+
+class WProgressStyle {
+  IconData successIcon = Icons.check_circle_outline_rounded;
+  IconData warningIcon = Icons.error_rounded;
+  IconData exceptionIcon = Icons.highlight_remove_rounded;
+
+  IconData? icon(val) {
+    switch (val) {
+      case 'success':
+        return successIcon;
+      case 'warning':
+        return warningIcon;
+      case 'exception':
+        return exceptionIcon;
+    }
+    return null;
+  }
+
+  WProgressStyle._privateConstrucor();
+  static final WProgressStyle _instance = WProgressStyle._privateConstrucor();
+  factory WProgressStyle() {
     return _instance;
   }
 }
