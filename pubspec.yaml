@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^1.0.0
+  mustache_template: ^2.0.0
   simple_observable: ^2.0.0
 
 dev_dependencies:

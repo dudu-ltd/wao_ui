@@ -39,7 +39,7 @@ class ApiProgress extends StatefulWidget {
     return WProgress(
       props: WProgressProp(
         textInside: true,
-        strokeWidth: 26,
+        strokeWidth: 26.0,
         percentage: 70,
       ),
     );
@@ -49,7 +49,7 @@ class ApiProgress extends StatefulWidget {
     return WProgress(
       props: WProgressProp(
         textInside: true,
-        strokeWidth: 24,
+        strokeWidth: 24.0,
         percentage: 100,
         status: 'success',
       ),
@@ -60,7 +60,7 @@ class ApiProgress extends StatefulWidget {
     return WProgress(
       props: WProgressProp(
         textInside: true,
-        strokeWidth: 22,
+        strokeWidth: 22.0,
         percentage: 80,
         status: 'warning',
       ),
@@ -71,7 +71,7 @@ class ApiProgress extends StatefulWidget {
     return WProgress(
       props: WProgressProp(
         textInside: true,
-        strokeWidth: 20,
+        strokeWidth: 20.0,
         percentage: 50,
         status: 'exception',
       ),
@@ -121,7 +121,7 @@ class ApiProgress extends StatefulWidget {
     return WProgress(
       props: WProgressProp(
         color: (p) {
-          return Color.fromARGB(0, 27, 46, p / 100.0);
+          return Color.fromRGBO(0, 27, 46, p / 100.0);
         },
         percentage: percentage,
       ),
@@ -172,30 +172,40 @@ class ApiProgress extends StatefulWidget {
 class _ApiProgressState extends State<ApiProgress> {
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const Text('WProgress'),
-      ...[
-        widget.line1,
-        widget.line2,
-        widget.line3,
-        widget.line4,
-        widget.line5,
-        widget.inner1,
-        widget.inner2,
-        widget.inner3,
-        widget.inner4,
-        widget.color1,
-        widget.color2,
-        widget.color3,
-        widget.circle1,
-        widget.circle2,
-        widget.circle3,
-        widget.circle4,
-        widget.circle5,
-        widget.dashboard,
-        button,
-      ]
-    ]);
+    return FractionallySizedBox(
+      widthFactor: 0.5,
+      child: Column(children: [
+        const Text('WProgress'),
+        ...[
+          marginWrapper(widget.line1),
+          marginWrapper(widget.line2),
+          marginWrapper(widget.line3),
+          marginWrapper(widget.line4),
+          marginWrapper(widget.line5),
+          marginWrapper(widget.inner1),
+          marginWrapper(widget.inner2),
+          marginWrapper(widget.inner3),
+          marginWrapper(widget.inner4),
+          marginWrapper(widget.color1),
+          marginWrapper(widget.color2),
+          marginWrapper(widget.color3),
+          marginWrapper(widget.circle1),
+          marginWrapper(widget.circle2),
+          marginWrapper(widget.circle3),
+          marginWrapper(widget.circle4),
+          marginWrapper(widget.circle5),
+          marginWrapper(widget.dashboard),
+          button,
+        ]
+      ]),
+    );
+  }
+
+  Widget marginWrapper(Widget child) {
+    return Container(
+      margin: const EdgeInsets.all(8),
+      child: child,
+    );
   }
 
   Widget get button {

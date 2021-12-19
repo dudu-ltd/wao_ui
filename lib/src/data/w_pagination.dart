@@ -139,8 +139,12 @@ class _WPaginationState extends State<WPagination> {
 
   Widget get prev {
     return buttonWrapper(
-      const Icon(
-        Icons.arrow_left,
+      Icon(
+        Icons.arrow_back_ios_rounded,
+        size: 19,
+        color: widget.$props.background
+            ? cfgGlobal.color.val('primary')
+            : cfgGlobal.color.val('info'),
       ),
       prevPage,
     );
@@ -180,7 +184,13 @@ class _WPaginationState extends State<WPagination> {
 
   Widget get next {
     return buttonWrapper(
-      const Icon(Icons.arrow_right),
+      Icon(
+        Icons.arrow_forward_ios_rounded,
+        size: 19,
+        color: widget.$props.background
+            ? cfgGlobal.color.val('primary')
+            : cfgGlobal.color.val('info'),
+      ),
       nextPage,
     );
   }

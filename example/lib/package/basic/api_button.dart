@@ -1,3 +1,4 @@
+import 'package:example/main2.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
 
@@ -9,7 +10,13 @@ class ApiButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var defaultBtnGroup = [
-      WButton('默认按钮', props: WButtonProp(type: 'text')),
+      WButton(
+        '默认按钮',
+        props: WButtonProp(type: 'text'),
+        on: WButtonOn(click: () {
+          main2();
+        }),
+      ),
       WButton('主要按钮', props: WButtonProp(type: 'primary')),
       WButton('成功按钮', props: WButtonProp(type: 'success')),
       WButton('警告按钮', props: WButtonProp(type: 'warning')),
