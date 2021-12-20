@@ -22,6 +22,16 @@ Widget paddingWrapper(Widget child, EdgeInsets padding, needPadding) {
   return child;
 }
 
+Widget marginWrapper(Widget child, EdgeInsets margin, {needMargin = true}) {
+  if (needMargin) {
+    return Container(
+      child: child,
+      margin: margin,
+    );
+  }
+  return child;
+}
+
 Widget colorWrapper(Widget child, Color color, needColor) {
   if (needColor) {
     return ColoredBox(

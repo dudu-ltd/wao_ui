@@ -3,6 +3,7 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
 class WResult extends StatelessWidget
@@ -33,10 +34,12 @@ class WResult extends StatelessWidget
       padding: cfgGlobal.result.outPadding,
       child: Column(
         children: [
-          if (icon != null) mT18Wrapper(icon!),
-          if (title != null) mT18Wrapper(title!),
-          if (subTitle != null) mT18Wrapper(subTitle!),
-          if (extra != null) mT18Wrapper(mT18Wrapper(extra!)),
+          if (icon != null) marginWrapper(icon!, cfgGlobal.result.itemMargin),
+          if (title != null) marginWrapper(title!, cfgGlobal.result.itemMargin),
+          if (subTitle != null)
+            marginWrapper(subTitle!, cfgGlobal.result.itemMargin),
+          if (extra != null)
+            marginWrapper(extra!, cfgGlobal.result.extraMargin),
         ],
       ),
     );
