@@ -22,6 +22,8 @@ class CfgGlobal {
 
   WProgressStyle progress = WProgressStyle();
 
+  WResultStyle result = WResultStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -161,7 +163,7 @@ class WColor {
             ? success
             : k == 'warning'
                 ? waring
-                : k == 'danger' || k == 'exception'
+                : k == 'danger' || k == 'exception' || k == 'error'
                     ? danger
                     : k == 'info'
                         ? info
@@ -253,5 +255,37 @@ class WProgressStyle {
   static final WProgressStyle _instance = WProgressStyle._privateConstrucor();
   factory WProgressStyle() {
     return _instance;
+  }
+}
+
+class WResultStyle {
+  IconData successIcon = Icons.check_circle_rounded;
+  IconData warningIcon = Icons.error_rounded;
+  IconData errorIcon = Icons.dangerous_rounded;
+  IconData infoIcon = Icons.info_rounded;
+
+  double titleFontSize = 15;
+  double subTitleFontSize = 14;
+
+  Color titleColor = Colors.grey.shade900;
+  Color subTitleColor = Colors.grey.shade900;
+
+  EdgeInsets itemMargin = const EdgeInsets.only(top: 10);
+
+  EdgeInsets outPadding = const EdgeInsets.all(8);
+
+  IconData? icon(val) {
+    switch (val) {
+      case 'success':
+        return successIcon;
+      case 'warning':
+        return warningIcon;
+      case 'error':
+      case 'exception':
+        return errorIcon;
+      case 'info':
+        return infoIcon;
+    }
+    return null;
   }
 }
