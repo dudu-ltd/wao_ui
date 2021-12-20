@@ -272,6 +272,8 @@ class WResultStyle {
 
   EdgeInsets itemMargin = const EdgeInsets.only(top: 10);
 
+  EdgeInsets extraMargin = const EdgeInsets.only(top: 20);
+
   EdgeInsets outPadding = const EdgeInsets.all(8);
 
   IconData? icon(val) {
