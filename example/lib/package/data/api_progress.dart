@@ -121,7 +121,8 @@ class ApiProgress extends StatefulWidget {
     return WProgress(
       props: WProgressProp(
         color: (p) {
-          return Color.fromRGBO(0, 27, 46, p / 100.0);
+          return Color.fromRGBO(
+              255, (p / 100 * 199).toInt(), (p / 100 * 156).toInt(), p / 100.0);
         },
         percentage: percentage,
       ),
@@ -134,7 +135,7 @@ class ApiProgress extends StatefulWidget {
 
   Widget get circle2 {
     return WProgress(
-      props: WProgressProp(type: 'circle', percentage: 25),
+      props: WProgressProp(type: 'circle', percentage: 75),
     );
   }
 
@@ -146,14 +147,23 @@ class ApiProgress extends StatefulWidget {
 
   Widget get circle4 {
     return WProgress(
-        props:
-            WProgressProp(type: 'circle', percentage: 70, status: 'warning'));
+      props: WProgressProp(
+        type: 'circle',
+        percentage: 70.0,
+        status: 'warning',
+        strokeLinecap: 'butt',
+      ),
+    );
   }
 
   Widget get circle5 {
     return WProgress(
-        props:
-            WProgressProp(type: 'circle', percentage: 50, status: 'exception'));
+        props: WProgressProp(
+      type: 'circle',
+      percentage: 50,
+      status: 'exception',
+      strokeLinecap: 'square',
+    ));
   }
 
   Widget get dashboard {
@@ -161,8 +171,9 @@ class ApiProgress extends StatefulWidget {
       props: WProgressProp(
         type: 'dashboard',
         percentage: percentage,
+        strokeWidth: 30.0,
         color: (p) {
-          return Color.fromARGB(0, 27, 46, p / 100.0);
+          return Color.fromARGB(0, 27, 46, 1);
         },
       ),
     );
@@ -174,7 +185,7 @@ class _ApiProgressState extends State<ApiProgress> {
   Widget build(BuildContext context) {
     return FractionallySizedBox(
       widthFactor: 0.5,
-      child: Column(children: [
+      child: ListView(children: [
         const Text('WProgress'),
         ...[
           marginWrapper(widget.line1),
@@ -189,12 +200,16 @@ class _ApiProgressState extends State<ApiProgress> {
           marginWrapper(widget.color1),
           marginWrapper(widget.color2),
           marginWrapper(widget.color3),
-          marginWrapper(widget.circle1),
-          marginWrapper(widget.circle2),
-          marginWrapper(widget.circle3),
-          marginWrapper(widget.circle4),
-          marginWrapper(widget.circle5),
-          marginWrapper(widget.dashboard),
+          Row(
+            children: [
+              Expanded(child: widget.circle1),
+              Expanded(child: widget.circle2),
+              Expanded(child: widget.circle3),
+              Expanded(child: widget.circle4),
+              Expanded(child: widget.circle5),
+            ],
+          ),
+          widget.dashboard,
           button,
         ]
       ]),
@@ -215,6 +230,7 @@ class _ApiProgressState extends State<ApiProgress> {
           click: () {
             setState(() {
               widget.percentage--;
+              if (widget.percentage < 0) widget.percentage = 0;
             });
           },
         )),
@@ -222,6 +238,7 @@ class _ApiProgressState extends State<ApiProgress> {
           click: () {
             setState(() {
               widget.percentage++;
+              if (widget.percentage >= 100) widget.percentage = 100;
             });
           },
         )),
