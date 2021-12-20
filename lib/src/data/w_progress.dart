@@ -9,6 +9,7 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
+// TODO 修复 stroke-width 值太大时体现出来的百分比偏差，circle
 class WProgress extends StatefulWidget
     implements BaseWidget<WProgressOn, WProgressProp, WProgressSlot> {
   @override
@@ -57,6 +58,17 @@ class _WProgressState extends State<WProgress> {
     var c = widget.$props.color;
     if (c is Color) return c;
     if (c is Function) return c(widget.$props.percentage);
+    if (c is List) {
+      (c as List).sort((a, b) {
+        return a['percentage'] - b['percentage'];
+      });
+      for (var i = 0; i < c.length; i++) {
+        var element = c[i];
+        if (element['percentage'] >= widget.$props.percentage) {
+          return element['color'];
+        }
+      }
+    }
     return cfgGlobal.color.val(widget.$props.status ?? 'primary');
   }
 
@@ -64,7 +76,7 @@ class _WProgressState extends State<WProgress> {
     return Row(
       children: [
         Expanded(child: lineMain),
-        if (lineIcon != null) lineIcon!,
+        if (icon != null) icon!,
       ],
     );
   }
@@ -80,19 +92,40 @@ class _WProgressState extends State<WProgress> {
     });
   }
 
-  Widget? get lineIcon {
+  Widget? get icon {
+    if (widget.$props.textInside) return null;
     var icon = cfgGlobal.progress.icon(widget.$props.status);
-    if (icon != null && !widget.$props.textInside) {
-      return SizedBox(
-        width: sqrt(widget.$props.strokeWidth) * 10,
-        child: Icon(
-          icon,
-          color: color,
-          size: sqrt(widget.$props.strokeWidth) * 8,
-        ),
+    var actualIcon;
+    var fontSize = sqrt(widget.$props.strokeWidth) * 18 / 3;
+    if (icon != null) {
+      actualIcon = Icon(
+        icon,
+        color: color,
+        size: sqrt(widget.$props.strokeWidth) * 8,
+      );
+    } else if (widget.$props.format != null) {
+      actualIcon = Text(
+        widget.$props.format?.call(widget.$props.percentage),
+        style: TextStyle(fontSize: fontSize),
+      );
+    } else {
+      actualIcon = Text(
+        '${widget.$props.percentage}%',
+        style: TextStyle(fontSize: fontSize),
       );
     }
-    return null;
+    return SizedBox(
+      width: sqrt(widget.$props.strokeWidth) * 18,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(4.0, 0, 4.0, 0),
+        child: Align(
+          alignment: widget.$props.typeIsLine
+              ? Alignment.centerLeft
+              : Alignment.center,
+          child: actualIcon,
+        ),
+      ),
+    );
   }
 
   Widget svgByTemplate({width, strokeWidth, color, percentage}) {
@@ -112,6 +145,7 @@ class _WProgressState extends State<WProgress> {
           ry="${strokeWidth / 2}" 
           width="${percentage / 100 * width}" 
           height="$strokeWidth" 
+          stroke-linecap="${widget.$props.strokeLinecap}" 
           style="fill:rgb(${color.red}, ${color.green}, ${color.blue});"
         />
         {{# textInside}}
@@ -126,12 +160,104 @@ class _WProgressState extends State<WProgress> {
     return SvgPicture.string(output);
   }
 
+  // TODO 修改实现
   Widget dashboard() {
-    return Container();
+    var offset = 500 - widget.$props.strokeWidth * 5;
+    var strokeWidth = widget.$props.strokeWidth * 10;
+    var svg = '''
+    <?xml version="1.0" encoding="UTF-8"?>
+      <svg width="1000" height="1000"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:cge="http://iec.ch/TC57/2005/SVG-schema#"
+        xmlns:hzsvg="http://holleygrid.cn/svg">
+        <path d="
+          M 500 500
+          m 0 $offset
+          a $offset $offset 0 1 1 0 -${1000 - strokeWidth}
+          a $offset $offset 0 1 1 0 ${1000 - strokeWidth} 
+          "
+          stroke-width="${strokeWidth * .8}" 
+          stroke="#e5e9f2" 
+          fill="none" stroke-linecap="${widget.$props.strokeLinecap}"  style="stroke-dasharray: 3000px, 3000px; stroke-dashoffset: 750px;"></path>
+          
+        {{# percentage}}
+        <path d="
+          M 500 500
+          m 0 $offset
+          a $offset $offset 0 1 1 0 -${1000 - strokeWidth}
+          a $offset $offset 0 1 1 0  ${1000 - strokeWidth}
+          " stroke="rgb(${color.red}, ${color.green}, ${color.blue});" 
+          fill="none" stroke-linecap="${widget.$props.strokeLinecap}" 
+          stroke-width="${strokeWidth * .8}" 
+          style="stroke-dasharray: ${(widget.$props.percentage / 100 * 3000 - strokeWidth * 2) * .75}px, 3000px; stroke-dashoffset: 750px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;"></path>
+        {{/ percentage}}
+      </svg>''';
+    var template = Template(svg);
+    var output =
+        template.renderString({'percentage': widget.$props.percentage > 0});
+    print(output);
+    return LayoutBuilder(builder: (context, cons) {
+      var chart = SvgPicture.string(output);
+      return AspectRatio(
+        aspectRatio: 1,
+        child: Stack(
+          children: [
+            Center(child: chart),
+            if (icon != null) AspectRatio(aspectRatio: 1, child: icon!)
+          ],
+        ),
+      );
+    });
   }
 
   Widget circle() {
-    return Container();
+    var offset = 500 - widget.$props.strokeWidth * 5;
+    var strokeWidth = widget.$props.strokeWidth * 10;
+    var svg = '''
+    <?xml version="1.0" encoding="UTF-8"?>
+      <svg width="1000" height="1000"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:cge="http://iec.ch/TC57/2005/SVG-schema#"
+        xmlns:hzsvg="http://holleygrid.cn/svg">
+        <path d="
+          M 500 500
+          m 0 -$offset
+          a $offset $offset 0 1 1 0 ${1000 - strokeWidth}
+          a $offset $offset 0 1 1 0 -${1000 - strokeWidth}
+          "
+          stroke-width="${strokeWidth * .8}" 
+          stroke="#e5e9f2" 
+          fill="none" style="stroke-dasharray: 3141.5926px, 3141.5926px; stroke-dashoffset: 0px;"></path>
+          
+        {{# percentage}}
+        <path d="
+          M 500 500
+          m 0 -$offset
+          a $offset $offset 0 1 1 0 ${1000 - strokeWidth}
+          a $offset $offset 0 1 1 0  -${1000 - strokeWidth}
+          " stroke="rgb(${color.red}, ${color.green}, ${color.blue});" 
+          fill="none" stroke-linecap="${widget.$props.strokeLinecap}" 
+          stroke-width="${strokeWidth * .8}" 
+          style="stroke-dasharray: ${widget.$props.percentage / 100 * 3000 - strokeWidth / 2}px, 3141.5926px; stroke-dashoffset: 0px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;"></path>
+        {{/ percentage}}
+      </svg>''';
+    var template = Template(svg);
+    var output =
+        template.renderString({'percentage': widget.$props.percentage > 0});
+    return LayoutBuilder(builder: (context, cons) {
+      var chart = SvgPicture.string(output);
+      return AspectRatio(
+        aspectRatio: 1,
+        child: Stack(
+          children: [
+            Center(child: chart),
+            if (icon != null) AspectRatio(aspectRatio: 1, child: icon!)
+          ],
+        ),
+      );
+    });
   }
 
   update(e) {
@@ -153,6 +279,10 @@ class WProgressProp extends BaseProp {
   late String strokeLinecap;
   late Function(num)? format;
   _WProgressState? _state;
+
+  bool get typeIsLine {
+    return type == 'line';
+  }
 
   set percentage(percentage) {
     _percentage = percentage;
