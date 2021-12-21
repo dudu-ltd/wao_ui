@@ -25,7 +25,7 @@ class WResult extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WResultOn();
     $props = props ?? WResultProp();
-    $slots = slots ?? WResultSlot();
+    $slots = slots ?? WResultSlot(null);
   }
 
   @override
@@ -104,5 +104,7 @@ class WResultSlot extends BaseSlot {
   Widget? title;
   Widget? subTitle;
   Widget? extra;
-  WResultSlot({this.icon, this.title, this.subTitle, this.extra});
+  WResultSlot(defaultSlotBefore,
+      {this.icon, this.title, this.subTitle, this.extra})
+      : super(defaultSlotBefore);
 }

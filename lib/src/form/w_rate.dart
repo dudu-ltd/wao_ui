@@ -23,7 +23,7 @@ class WRate extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WRateOn();
     $props = props ?? WRateProp();
-    $slots = slots ?? WRateSlot();
+    $slots = slots ?? WRateSlot(null);
   }
 
   @override
@@ -59,4 +59,6 @@ class WRateProp extends BaseProp {
    */
 }
 
-class WRateSlot extends BaseSlot {}
+class WRateSlot extends BaseSlot {
+  WRateSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

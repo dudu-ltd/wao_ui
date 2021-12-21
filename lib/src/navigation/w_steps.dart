@@ -23,7 +23,7 @@ class WSteps extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WStepsOn();
     $props = props ?? WStepsProp();
-    $slots = slots ?? WStepsSlot();
+    $slots = slots ?? WStepsSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WStepsOn extends BaseOn {}
 
 class WStepsProp extends BaseProp {}
 
-class WStepsSlot extends BaseSlot {}
+class WStepsSlot extends BaseSlot {
+  WStepsSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

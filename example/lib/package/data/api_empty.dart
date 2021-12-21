@@ -13,7 +13,7 @@ class ApiEmpty extends StatelessWidget {
         const Text('WEmpty'),
         WEmpty(
           WButton(
-            '按钮',
+            slots: WButtonSlot('按钮'),
             props: WButtonProp(size: 'mini'),
           ),
           props: WEmptyProp(description: '内容是空的呦~'),

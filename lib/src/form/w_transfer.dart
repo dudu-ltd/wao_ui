@@ -23,7 +23,7 @@ class WTransfer extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WTransferOn();
     $props = props ?? WTransferProp();
-    $slots = slots ?? WTransferSlot();
+    $slots = slots ?? WTransferSlot(null);
   }
 
   @override
@@ -65,5 +65,6 @@ class WTransferProp extends BaseProp {
 class WTransferSlot extends BaseSlot {
   Widget? leftFooter;
   Widget? rightFooter;
-  WTransferSlot({this.leftFooter, this.rightFooter});
+  WTransferSlot(defaultSlotBefore, {this.leftFooter, this.rightFooter})
+      : super(defaultSlotBefore);
 }

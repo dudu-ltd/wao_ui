@@ -23,7 +23,7 @@ class WDivider extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WDividerOn();
     $props = props ?? WDividerProp();
-    $slots = slots ?? WDividerSlot();
+    $slots = slots ?? WDividerSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WDividerOn extends BaseOn {}
 
 class WDividerProp extends BaseProp {}
 
-class WDividerSlot extends BaseSlot {}
+class WDividerSlot extends BaseSlot {
+  WDividerSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

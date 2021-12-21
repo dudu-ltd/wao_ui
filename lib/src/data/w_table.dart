@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:simple_observable/simple_observable.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/src/data/w_empty.dart';
 
-class WTable extends StatelessWidget
+class WTable extends StatefulWidget
     implements BaseWidget<WTableOn, WTableProp, WTableSlot> {
   @override
   late final WTableOn $on;
@@ -15,7 +19,14 @@ class WTable extends StatelessWidget
   @override
   late final WTableSlot $slots;
 
-  WTable({
+  late Observable<List> _dataListener;
+
+  late List<WTableColumn> columns;
+
+  @override
+  _WTableState createState() => _WTableState();
+  WTable(
+    List<dynamic>? columns, {
     Key? key,
     WTableOn? on,
     WTableProp? props,
@@ -24,11 +35,34 @@ class WTable extends StatelessWidget
     $on = on ?? WTableOn();
     $props = props ?? WTableProp();
     $slots = slots ?? WTableSlot();
+    setColumns(columns);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
+  setColumns(List<dynamic>? columns) {
+    if (columns == null) this.columns = [];
+    if (columns is List<WTableColumn>) {
+      this.columns = columns;
+    } else {
+      var _columns = <WTableColumn>[];
+      columns?.forEach((column) {
+        if (column is WTableColumn) {
+          _columns.add(column);
+        } else if (column is WTableColumnProp) {
+          _columns.add(WTableColumn(props: column));
+        } else {
+          throw Exception('目前仅支持 List<WTableColumnProp> 与 List<WTableColumn> ');
+        }
+      });
+      this.columns = _columns;
+    }
+  }
+
+  List get data {
+    return _dataListener.value;
+  }
+
+  set data(v) {
+    _dataListener.value = v;
   }
 
   /**
@@ -42,6 +76,108 @@ class WTable extends StatelessWidget
       doLayout	对 Table 进行重新布局。当 Table 或其祖先元素由隐藏切换为显示时，可能需要调用此方法	—
       sort	手动对 Table 进行排序。参数prop属性指定排序列，order指定排序顺序。
    */
+}
+
+class _WTableState extends State<WTable> {
+  @override
+  void initState() {
+    super.initState();
+    widget._dataListener = Observable<List>(
+      initialValue: widget.$props.data,
+      onChanged: (d) => setState(() {
+        widget.$props.data = d;
+      }),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (widget.$props.showHeader!) header,
+        if (widget.$props.data.isEmpty && whenEmpty != null)
+          whenEmpty!
+        else
+          ...columns,
+      ],
+    );
+  }
+
+  Widget? get whenEmpty {
+    return WEmpty(null);
+  }
+
+  List<Row> get columns {
+    List<Row> rows = List.generate(widget.$props.data.length, (r) {
+      return Row(
+        children: List.generate(widget.columns.length, (c) {
+          var column = widget.columns[c];
+          dynamic row = widget.$props.data[r];
+          return cellWidget(column, row);
+        }),
+      );
+    });
+    return rows;
+  }
+
+  Widget cellWidget(WTableColumn column, dynamic row) {
+    Widget child = value(column, row);
+    return widthWrapper(child, column);
+  }
+
+  Widget value(WTableColumn column, dynamic row) {
+    var child;
+    if (column.$slots.defaultSlotBefore is Function) {
+      child = (column.$slots.defaultSlotBefore as Function).call(row);
+    } else if (column.$slots.defaultSlot is List<Widget>) {
+      child = column.$slots.defaultSlot;
+    } else {
+      var val = column.$props.prop == null ? '' : column.$props.prop?.call(row);
+      child = Text('$val');
+    }
+    print(child);
+    if (child is List<Widget>) {
+      return Row(children: child);
+    } else {
+      if (child is Widget) {
+        return child;
+      }
+    }
+    throw ArgumentError.value(child, 'slots ', ' 默认插槽需要是部件或者是函数返回部件。');
+  }
+
+  Widget widthWrapper(Widget cell, WTableColumn column) {
+    return column.$props.width == null
+        ? Expanded(child: cell)
+        : SizedBox(
+            child: cell,
+            width: double.parse(column.$props.width!),
+          );
+  }
+
+  Widget get header {
+    return Row(
+      children: List.generate(
+        widget.columns.length,
+        (index) {
+          WTableColumn column = widget.columns[index];
+          Widget th = getHeaderCell(column);
+          return column.$props.width == null
+              ? Expanded(
+                  child: th,
+                )
+              : SizedBox(
+                  child: th,
+                  width: double.parse(column.$props.width!),
+                );
+        },
+      ),
+    );
+  }
+
+  Widget getHeaderCell(WTableColumn column) {
+    return Text(column.$props.label ?? '');
+  }
 }
 
 class WTableOn extends BaseOn {
@@ -67,45 +203,222 @@ class WTableOn extends BaseOn {
 }
 
 class WTableProp extends BaseProp {
-  /**
-      data	显示的数据	array	—	—
-      height	Table 的高度，默认为自动高度。如果 height 为 number 类型，单位 px；如果 height 为 string 类型，则这个高度会设置为 Table 的 style.height 的值，Table 的高度会受控于外部样式。	string/number	—	—
-      max-height	Table 的最大高度。合法的值为数字或者单位为 px 的高度。	string/number	—	—
-      stripe	是否为斑马纹 table	boolean	—	false
-      border	是否带有纵向边框	boolean	—	false
-      size	Table 的尺寸	string	medium / small / mini	—
-      fit	列的宽度是否自撑开	boolean	—	true
-      show-header	是否显示表头	boolean	—	true
-      highlight-current-row	是否要高亮当前行	boolean	—	false
-      current-row-key	当前行的 key，只写属性	String,Number	—	—
-      row-class-name	行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。	Function({row, rowIndex})/String	—	—
-      row-style	行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。	Function({row, rowIndex})/Object	—	—
-      cell-class-name	单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。	Function({row, column, rowIndex, columnIndex})/String	—	—
-      cell-style	单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有单元格设置一样的 Style。	Function({row, column, rowIndex, columnIndex})/Object	—	—
-      header-row-class-name	表头行的 className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className。	Function({row, rowIndex})/String	—	—
-      header-row-style	表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style。	Function({row, rowIndex})/Object	—	—
-      header-cell-class-name	表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className。	Function({row, column, rowIndex, columnIndex})/String	—	—
-      header-cell-style	表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style。	Function({row, column, rowIndex, columnIndex})/Object	—	—
-      row-key	行数据的 Key，用来优化 Table 的渲染；在使用 reserve-selection 功能与显示树形数据时，该属性是必填的。类型为 String 时，支持多层访问：user.info.id，但不支持 user.info[0].id，此种情况请使用 Function。	Function(row)/String	—	—
-      empty-text	空数据时显示的文本内容，也可以通过 slot="empty" 设置	String	—	暂无数据
-      default-expand-all	是否默认展开所有行，当 Table 包含展开行存在或者为树形表格时有效	Boolean	—	false
-      expand-row-keys	可以通过该属性设置 Table 目前的展开行，需要设置 row-key 属性才能使用，该属性为展开行的 keys 数组。	Array	—	
-      default-sort	默认的排序列的 prop 和顺序。它的prop属性指定默认的排序的列，order指定默认排序的顺序	Object	order: ascending, descending	如果只指定了prop, 没有指定order, 则默认顺序是ascending
-      tooltip-effect	tooltip effect 属性	String	dark/light	
-      show-summary	是否在表尾显示合计行	Boolean	—	false
-      sum-text	合计行第一列的文本	String	—	合计
-      summary-method	自定义的合计计算方法	Function({ columns, data })	—	—
-      span-method	合并行或列的计算方法	Function({ row, column, rowIndex, columnIndex })	—	—
-      select-on-indeterminate	在多选表格中，当仅有部分行被选中时，点击表头的多选框时的行为。若为 true，则选中所有行；若为 false，则取消选择所有行	Boolean	—	true
-      indent	展示树形数据时，树节点的缩进	Number	—	16
-      lazy	是否懒加载子节点数据	Boolean	—	—
-      load	加载子节点数据的函数，lazy 为 true 时生效，函数第二个参数包含了节点的层级信息	Function(row, treeNode, resolve)	—	—
-      tree-props	渲染嵌套数据的配置选项	Object	—	{ hasChildren: 'hasChildren', children: 'children' }
-   */
+  late List data;
+  double? height;
+  double? maxHeight;
+  bool? stripe;
+  bool? border;
+  String? size;
+  bool? fit;
+  bool? showHeader;
+  bool? highlightCurrentRow;
+  String? currentRowKey;
+  Function({dynamic row})? rowKey;
+  String? emptyText;
+  bool defaultExpandAll = false;
+  List? expandRowKeys;
+  dynamic defaultSort;
+  String? tooltipEffect;
+  bool? showSummary;
+  String? sumText;
+  Function({List columns, List data})? summaryMethod;
+  Function({dynamic row, String column, int rowIndex, int columnIndex})?
+      spanMethod;
+  bool? selectOnIndeterminate;
+  double? indent;
+  bool? lazy;
+  Function({dynamic row, dynamic treeNode, Function resolve})? load;
+  Map<String, dynamic>? treeProps;
+
+  WTableProp({
+    List? data,
+    double? height,
+    double? maxHeight,
+    bool? stripe,
+    bool? border,
+    String? size,
+    bool? fit,
+    bool? showHeader,
+    bool? highlightCurrentRow,
+    String? currentRowKey,
+    Function({dynamic row})? rowKey,
+    String? emptyText,
+    bool defaultExpandAll = false,
+    List? expandRowKeys,
+    dynamic defaultSort,
+    String? tooltipEffect,
+    bool? showSummary,
+    String? sumText,
+    Function({List columns, List data})? summaryMethod,
+    Function({dynamic row, String column, int rowIndex, int columnIndex})?
+        spanMethod,
+    bool? selectOnIndeterminate,
+    double? indent,
+    bool? lazy,
+    Function({dynamic row, dynamic treeNode, Function resolve})? load,
+    Map<String, dynamic>? treeProps,
+  }) {
+    this.data = data ?? [];
+    this.height = height;
+    this.maxHeight = maxHeight;
+    this.stripe = stripe ?? false;
+    this.border = border ?? false;
+    this.size = size;
+    this.fit = fit ?? true;
+    this.showHeader = showHeader ?? true;
+    this.highlightCurrentRow = highlightCurrentRow ?? false;
+    this.currentRowKey = currentRowKey;
+    this.rowKey = rowKey;
+    this.emptyText = emptyText ?? '暂无数据';
+    this.defaultExpandAll = defaultExpandAll;
+    this.expandRowKeys = expandRowKeys ?? [];
+    this.defaultSort = defaultSort ?? '';
+    this.tooltipEffect = tooltipEffect ?? '';
+    this.showSummary = showSummary ?? false;
+    this.sumText = sumText ?? '';
+    this.summaryMethod = summaryMethod;
+    this.spanMethod = spanMethod;
+    this.selectOnIndeterminate = selectOnIndeterminate ?? true;
+    this.indent = indent ?? 18;
+    this.lazy = lazy ?? false;
+    this.load = load;
+    this.treeProps =
+        treeProps ?? {'hasChildren': 'hasChildren', 'children': 'children'};
+  }
 }
 
 class WTableSlot extends BaseSlot {
   /**
       append	插入至表格最后一行之后的内容，如果需要对表格的内容进行无限滚动操作，可能需要用到这个 slot。若表格有合计行，该 slot 会位于合计行之上。
    */
+
+  WTableSlot() : super(null);
+}
+
+class WTableColumn extends StatelessWidget
+    implements BaseWidget<WTableColumnOn, WTableColumnProp, WTableColumnSlot> {
+  @override
+  late final WTableColumnOn $on;
+
+  @override
+  late final WTableColumnProp $props;
+
+  @override
+  late final WTableColumnSlot $slots;
+
+  WTableColumn({
+    Key? key,
+    WTableColumnOn? on,
+    required WTableColumnProp props,
+    WTableColumnSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WTableColumnOn();
+    $props = props;
+    $slots = slots ?? WTableColumnSlot(null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class WTableColumnOn extends BaseOn {}
+
+class WTableColumnProp extends BaseProp {
+  String? type;
+  late dynamic index;
+  String? columnKey;
+  String? label;
+  dynamic Function(dynamic row)? prop;
+  String? width;
+  String? minWidth;
+  late dynamic fixed;
+  Function(dynamic h, {WTableColumn column, int $index})? renderHeader;
+  late dynamic sortable;
+  late int Function(dynamic a, dynamic b)? sortMethod;
+  late dynamic sortBy;
+  List? sortOrders;
+  late bool resizable;
+  late Function(
+    dynamic row,
+    WTableColumn column,
+    dynamic cellValue,
+    int index,
+  )? formatter;
+  late bool showOverflowTooltip;
+  late String align;
+  String? headerAlign;
+  // late String? className;
+  // late String? labelClassName;
+  Function(dynamic row, int index)? selectable;
+  late bool reserveSelection;
+  List<Map>? filters;
+  String? filterPlacement;
+  late bool filterMultiple;
+  Function(dynamic value, dynamic row, WTableColumn column)? filterMethod;
+  List? filteredValue;
+
+  WTableColumnProp({
+    String? type,
+    dynamic index,
+    String? columnKey,
+    String? label,
+    dynamic Function(dynamic row)? prop,
+    String? width,
+    String? minWidth,
+    dynamic fixed,
+    Function(dynamic h, {WTableColumn column, int $index})? renderHeader,
+    dynamic sortable,
+    int Function(dynamic a, dynamic b)? sortMethod,
+    dynamic sortBy,
+    List? sortOrders,
+    bool? resizable,
+    Function(dynamic row, WTableColumn column, dynamic cellValue, int index)?
+        formatter,
+    bool? showOverflowTooltip,
+    String? align,
+    String? headerAlign,
+    // className,
+    // labelClassName,
+    Function(dynamic row, int index)? selectable,
+    bool? reserveSelection,
+    List<Map>? filters,
+    String? filterPlacement,
+    bool? filterMultiple,
+    Function(dynamic value, dynamic row, WTableColumn column)? filterMethod,
+    List? filteredValue,
+  }) {
+    this.type = type;
+    this.index = index;
+    this.columnKey = columnKey;
+    this.label = label;
+    this.prop = prop;
+    this.width = width;
+    this.minWidth = minWidth;
+    this.fixed = fixed;
+    this.renderHeader = renderHeader;
+    this.sortable = sortable;
+    this.sortMethod = sortMethod;
+    this.sortBy = sortBy;
+    this.sortOrders = sortOrders = ['ascending', 'descending', null];
+    this.resizable = resizable ?? true;
+    this.formatter = formatter;
+    this.showOverflowTooltip = showOverflowTooltip ?? false;
+    this.align = align ?? 'left';
+    this.headerAlign = headerAlign;
+    // this.className = className;
+    // this.labelClassName = labelClassName;
+    this.selectable = selectable;
+    this.reserveSelection = reserveSelection ?? false;
+    this.filters = filters;
+    this.filterPlacement = filterPlacement;
+    this.filterMultiple = filterMultiple ?? true;
+    this.filterMethod = filterMethod;
+    this.filteredValue = filteredValue;
+  }
+}
+
+class WTableColumnSlot extends BaseSlot {
+  WTableColumnSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

@@ -23,7 +23,7 @@ class WTree extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WTreeOn();
     $props = props ?? WTreeProp();
-    $slots = slots ?? WTreeSlot();
+    $slots = slots ?? WTreeSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WTreeOn extends BaseOn {}
 
 class WTreeProp extends BaseProp {}
 
-class WTreeSlot extends BaseSlot {}
+class WTreeSlot extends BaseSlot {
+  WTreeSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

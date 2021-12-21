@@ -23,7 +23,7 @@ class WAlert extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WAlertOn();
     $props = props ?? WAlertProp();
-    $slots = slots ?? WAlertSlot();
+    $slots = slots ?? WAlertSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WAlertOn extends BaseOn {}
 
 class WAlertProp extends BaseProp {}
 
-class WAlertSlot extends BaseSlot {}
+class WAlertSlot extends BaseSlot {
+  WAlertSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

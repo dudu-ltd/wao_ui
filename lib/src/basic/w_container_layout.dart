@@ -18,17 +18,15 @@ class WContainerLayout extends StatefulWidget
   late WContainerLayoutSlot $slots;
 
   _WContainerLayoutState? state;
-  WContainerLayout(
-    main, {
+  WContainerLayout({
     Key? key,
     slots,
     props,
     on,
   }) : super(key: key) {
     $props = props ?? WContainerLayoutProp();
-    $slots = slots ?? WContainerLayoutSlot();
     $on = on ?? WContainerLayoutOn();
-    $slots.defaultSlotBefore = main;
+    $slots = slots ?? WContainerLayoutSlot(null);
   }
 
   @override
@@ -382,10 +380,11 @@ class WContainerLayoutSlot extends BaseSlot {
   Widget? header;
   Widget? asideRight;
   Widget? footer;
-  WContainerLayoutSlot({
+  WContainerLayoutSlot(
+    defaultSlotBefore, {
     this.asideLeft,
     this.header,
     this.asideRight,
     this.footer,
-  }) : super();
+  }) : super(defaultSlotBefore);
 }

@@ -23,7 +23,7 @@ class WDrawer extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WDrawerOn();
     $props = props ?? WDrawerProp();
-    $slots = slots ?? WDrawerSlot();
+    $slots = slots ?? WDrawerSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WDrawerOn extends BaseOn {}
 
 class WDrawerProp extends BaseProp {}
 
-class WDrawerSlot extends BaseSlot {}
+class WDrawerSlot extends BaseSlot {
+  WDrawerSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

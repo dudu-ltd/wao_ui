@@ -23,7 +23,7 @@ class WPopconfirm extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WPopconfirmOn();
     $props = props ?? WPopconfirmProp();
-    $slots = slots ?? WPopconfirmSlot();
+    $slots = slots ?? WPopconfirmSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WPopconfirmOn extends BaseOn {}
 
 class WPopconfirmProp extends BaseProp {}
 
-class WPopconfirmSlot extends BaseSlot {}
+class WPopconfirmSlot extends BaseSlot {
+  WPopconfirmSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

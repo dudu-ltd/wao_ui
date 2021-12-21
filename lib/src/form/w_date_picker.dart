@@ -23,7 +23,7 @@ class WDatePicker extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WDatePickerOn();
     $props = props ?? WDatePickerProp();
-    $slots = slots ?? WDatePickerSlot();
+    $slots = slots ?? WDatePickerSlot(null);
   }
 
   @override
@@ -72,4 +72,6 @@ class WDatePickerProp extends BaseProp {
    */
 }
 
-class WDatePickerSlot extends BaseSlot {}
+class WDatePickerSlot extends BaseSlot {
+  WDatePickerSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

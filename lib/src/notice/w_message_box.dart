@@ -23,7 +23,7 @@ class WMessageBox extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WMessageBoxOn();
     $props = props ?? WMessageBoxProp();
-    $slots = slots ?? WMessageBoxSlot();
+    $slots = slots ?? WMessageBoxSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WMessageBoxOn extends BaseOn {}
 
 class WMessageBoxProp extends BaseProp {}
 
-class WMessageBoxSlot extends BaseSlot {}
+class WMessageBoxSlot extends BaseSlot {
+  WMessageBoxSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

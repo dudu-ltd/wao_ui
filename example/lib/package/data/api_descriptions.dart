@@ -37,24 +37,28 @@ class ApiDescriptions extends StatelessWidget {
       },
     ];
     var borderDesc = WDescriptions(
-      data,
       props: WDescriptionsProp(
         fields: fields,
         title: '带边框列表',
         border: true,
       ),
       slots: WDescriptionsSlot(
-        extra: WButton('操作', props: WButtonProp(type: 'info', size: 'mini')),
+        data,
+        extra: WButton(
+            slots: WButtonSlot('操作'),
+            props: WButtonProp(type: 'info', size: 'mini')),
       ),
     );
     var noBorderDesc = WDescriptions(
-      data,
       slots: WDescriptionsSlot(
+        data,
         title: const Text(
           '无边框列表',
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
-        extra: WButton('操作', props: WButtonProp(type: 'info', size: 'mini')),
+        extra: WButton(
+            slots: WButtonSlot('操作'),
+            props: WButtonProp(type: 'info', size: 'mini')),
       ),
       props: WDescriptionsProp(
         fields: fields,
@@ -62,8 +66,8 @@ class ApiDescriptions extends StatelessWidget {
       ),
     );
     var vBorderDesc = WDescriptions(
-      data,
       slots: WDescriptionsSlot(
+        data,
         title: const Text('垂直带边框列表',
             style: TextStyle(fontWeight: FontWeight.w600)),
       ),
@@ -71,8 +75,8 @@ class ApiDescriptions extends StatelessWidget {
           fields: fields, direction: 'vertical', border: true),
     );
     var vNoBorderDesc = WDescriptions(
-      data,
       slots: WDescriptionsSlot(
+        data,
         title: const Text('垂直无边框列表',
             style: TextStyle(fontWeight: FontWeight.w600)),
       ),

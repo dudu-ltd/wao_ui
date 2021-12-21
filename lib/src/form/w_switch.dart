@@ -23,7 +23,7 @@ class WSwitch extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WSwitchOn();
     $props = props ?? WSwitchProp();
-    $slots = slots ?? WSwitchSlot();
+    $slots = slots ?? WSwitchSlot(null);
   }
 
   @override
@@ -60,4 +60,6 @@ class WSwitchProp extends BaseProp {
    */
 }
 
-class WSwitchSlot extends BaseSlot {}
+class WSwitchSlot extends BaseSlot {
+  WSwitchSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

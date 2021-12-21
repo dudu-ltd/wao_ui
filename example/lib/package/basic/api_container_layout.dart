@@ -12,14 +12,6 @@ class ApiContainerLayout extends StatelessWidget {
         SizedBox(
           height: MediaQuery.of(context).size.height - 50,
           child: WContainerLayout(
-            Container(
-              child: const Center(
-                child: Text("MAIN"),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade500,
-              ),
-            ),
             props: WContainerLayoutProp(
               barSize: 3.0,
               leftJudge: true,
@@ -28,6 +20,14 @@ class ApiContainerLayout extends StatelessWidget {
               footerJudge: true,
             ),
             slots: WContainerLayoutSlot(
+              Container(
+                child: const Center(
+                  child: Text("MAIN"),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade500,
+                ),
+              ),
               asideLeft: Container(
                 child: const Center(
                   child: Text("LEFT"),

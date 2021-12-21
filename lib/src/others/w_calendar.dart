@@ -23,7 +23,7 @@ class WCalendar extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WCalendarOn();
     $props = props ?? WCalendarProp();
-    $slots = slots ?? WCalendarSlot();
+    $slots = slots ?? WCalendarSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WCalendarOn extends BaseOn {}
 
 class WCalendarProp extends BaseProp {}
 
-class WCalendarSlot extends BaseSlot {}
+class WCalendarSlot extends BaseSlot {
+  WCalendarSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

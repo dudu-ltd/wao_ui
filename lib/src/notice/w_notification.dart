@@ -24,7 +24,7 @@ class WNotification extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WNotificationOn();
     $props = props ?? WNotificationProp();
-    $slots = slots ?? WNotificationSlot();
+    $slots = slots ?? WNotificationSlot(null);
   }
 
   @override
@@ -37,4 +37,6 @@ class WNotificationOn extends BaseOn {}
 
 class WNotificationProp extends BaseProp {}
 
-class WNotificationSlot extends BaseSlot {}
+class WNotificationSlot extends BaseSlot {
+  WNotificationSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

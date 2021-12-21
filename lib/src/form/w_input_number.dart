@@ -23,7 +23,7 @@ class WInputNumber extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WInputNumberOn();
     $props = props ?? WInputNumberProp();
-    $slots = slots ?? WInputNumberSlot();
+    $slots = slots ?? WInputNumberSlot(null);
   }
 
   @override
@@ -63,4 +63,6 @@ class WInputNumberProp extends BaseProp {
    */
 }
 
-class WInputNumberSlot extends BaseSlot {}
+class WInputNumberSlot extends BaseSlot {
+  WInputNumberSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

@@ -24,7 +24,7 @@ class WFrame extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WFrameOn();
     $props = props ?? WFrameProp();
-    $slots = slots ?? WFrameSlot();
+    $slots = slots ?? WFrameSlot(null);
   }
 
   @override
@@ -90,10 +90,11 @@ class WFrameSlot extends BaseSlot {
   Widget? header;
   Widget? footer;
   Widget? icon;
-  WFrameSlot({
+  WFrameSlot(
+    defaultSlotBefore, {
     this.main,
     this.header,
     this.footer,
     this.icon,
-  });
+  }) : super(defaultSlotBefore);
 }

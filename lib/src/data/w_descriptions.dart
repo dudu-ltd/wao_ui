@@ -30,8 +30,7 @@ class WDescriptions extends StatefulWidget
   @override
   _WDescriptionsState createState() => _WDescriptionsState();
 
-  WDescriptions(
-    dynamic defaultSlot, {
+  WDescriptions({
     Key? key,
     WDescriptionsOn? on,
     WDescriptionsProp? props,
@@ -39,8 +38,8 @@ class WDescriptions extends StatefulWidget
   }) : super(key: key) {
     $on = on ?? WDescriptionsOn();
     $props = props ?? WDescriptionsProp();
-    $slots = slots ?? WDescriptionsSlot();
-    $slots.defaultSlotBefore = defaultSlot;
+    $slots = slots ?? WDescriptionsSlot(null);
+    setDefaultSlot();
   }
 
   void checkSlot() {
@@ -132,19 +131,24 @@ class WDescriptions extends StatefulWidget
     }
   }
 
+  /// 根据描述项的位次，及每行的列数，获取该元素所应该有的边距
   Border getBorder(i, len) {
     Border border = Border.fromBorderSide(
       BorderSide(width: 0, color: cfgGlobal.descriptions.borderColor),
     );
+    // 头部上边距
     if (i < $props.column) {
       border = Border.merge(Border(top: borderSide), border);
     }
+    // 表格左侧左边距
     if (i % $props.column == 0) {
       border = Border.merge(Border(left: borderSide), border);
     }
+    // 表格底部边距
     if (i > len ~/ $props.column * ($props.column - 1)) {
       border = Border.merge(Border(bottom: borderSide), border);
     }
+    // 表格右侧边距
     if (i % $props.column == $props.column - 1) {
       border = Border.merge(Border(right: borderSide), border);
     }
@@ -153,13 +157,13 @@ class WDescriptions extends StatefulWidget
 
   Widget createItem(WDescriptionsData data) {
     return WDescriptionsItem(
-      data.value,
       props: WDescriptionsItemProp(
         label: data.label is String ? data.label : null,
         direction: $props.direction,
         border: $props.border,
       ),
       slots: WDescriptionsItemSlot(
+        data.value,
         label: data.label is Widget ? data.label : null,
       ),
     );
@@ -245,7 +249,8 @@ class WDescriptionsProp extends BaseProp {
 class WDescriptionsSlot extends BaseSlot {
   Widget? title;
   Widget? extra;
-  WDescriptionsSlot({this.title, this.extra});
+  WDescriptionsSlot(defaultSlotBefore, {this.title, this.extra})
+      : super(defaultSlotBefore);
 }
 
 ///
@@ -262,8 +267,7 @@ class WDescriptionsItem extends StatelessWidget
   @override
   late final WDescriptionsItemSlot $slots;
 
-  WDescriptionsItem(
-    dynamic value, {
+  WDescriptionsItem({
     Key? key,
     WDescriptionsItemOn? on,
     WDescriptionsItemProp? props,
@@ -271,8 +275,7 @@ class WDescriptionsItem extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WDescriptionsItemOn();
     $props = props ?? WDescriptionsItemProp();
-    $slots = slots ?? WDescriptionsItemSlot();
-    $slots.defaultSlotBefore = value;
+    $slots = slots ?? WDescriptionsItemSlot(null);
   }
 
   @override
@@ -365,7 +368,8 @@ class WDescriptionsItemProp extends BaseProp {
 ///
 class WDescriptionsItemSlot extends BaseSlot {
   Widget? label;
-  WDescriptionsItemSlot({this.label});
+  WDescriptionsItemSlot(defaultSlotBefore, {this.label})
+      : super(defaultSlotBefore);
   @override
   setDefaultSlot() {
     super.setDefaultSlot();

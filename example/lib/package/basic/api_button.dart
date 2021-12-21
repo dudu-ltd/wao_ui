@@ -11,95 +11,203 @@ class ApiButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var defaultBtnGroup = [
       WButton(
-        '默认按钮',
+        slots: WButtonSlot('默认按钮'),
         props: WButtonProp(type: 'text'),
         on: WButtonOn(click: () {
           main2();
         }),
       ),
-      WButton('主要按钮', props: WButtonProp(type: 'primary')),
-      WButton('成功按钮', props: WButtonProp(type: 'success')),
-      WButton('警告按钮', props: WButtonProp(type: 'warning')),
-      WButton('危险按钮', props: WButtonProp(type: 'danger')),
-      WButton('信息按钮', props: WButtonProp(type: 'info')),
+      WButton(
+          slots: WButtonSlot(
+            '主要按钮',
+          ),
+          props: WButtonProp(type: 'primary')),
+      WButton(
+          slots: WButtonSlot(
+            '成功按钮',
+          ),
+          props: WButtonProp(type: 'success')),
+      WButton(
+          slots: WButtonSlot(
+            '警告按钮',
+          ),
+          props: WButtonProp(type: 'warning')),
+      WButton(
+          slots: WButtonSlot(
+            '危险按钮',
+          ),
+          props: WButtonProp(type: 'danger')),
+      WButton(
+          slots: WButtonSlot(
+            '信息按钮',
+          ),
+          props: WButtonProp(type: 'info')),
     ];
 
     var plainBtnGroup = [
-      WButton('默认按钮', props: WButtonProp(plain: true, type: 'text')),
-      WButton('主要按钮', props: WButtonProp(plain: true, type: 'primary')),
-      WButton('成功按钮', props: WButtonProp(plain: true, type: 'success')),
-      WButton('警告按钮', props: WButtonProp(plain: true, type: 'warning')),
-      WButton('危险按钮', props: WButtonProp(plain: true, type: 'danger')),
-      WButton('信息按钮', props: WButtonProp(plain: true, type: 'info')),
+      WButton(
+          slots: WButtonSlot(
+            '默认按钮',
+          ),
+          props: WButtonProp(plain: true, type: 'text')),
+      WButton(
+          slots: WButtonSlot(
+            '主要按钮',
+          ),
+          props: WButtonProp(plain: true, type: 'primary')),
+      WButton(
+          slots: WButtonSlot(
+            '成功按钮',
+          ),
+          props: WButtonProp(plain: true, type: 'success')),
+      WButton(
+          slots: WButtonSlot(
+            '警告按钮',
+          ),
+          props: WButtonProp(plain: true, type: 'warning')),
+      WButton(
+          slots: WButtonSlot(
+            '危险按钮',
+          ),
+          props: WButtonProp(plain: true, type: 'danger')),
+      WButton(
+          slots: WButtonSlot(
+            '信息按钮',
+          ),
+          props: WButtonProp(plain: true, type: 'info')),
     ];
 
     var roundBtnGroup = [
-      WButton('默认按钮', props: WButtonProp(round: true, type: 'text')),
-      WButton('主要按钮', props: WButtonProp(round: true, type: 'primary')),
-      WButton('成功按钮', props: WButtonProp(round: true, type: 'success')),
-      WButton('警告按钮', props: WButtonProp(round: true, type: 'warning')),
-      WButton('危险按钮', props: WButtonProp(round: true, type: 'danger')),
-      WButton('信息按钮', props: WButtonProp(round: true, type: 'info')),
+      WButton(
+          slots: WButtonSlot(
+            '默认按钮',
+          ),
+          props: WButtonProp(round: true, type: 'text')),
+      WButton(
+          slots: WButtonSlot(
+            '主要按钮',
+          ),
+          props: WButtonProp(round: true, type: 'primary')),
+      WButton(
+          slots: WButtonSlot(
+            '成功按钮',
+          ),
+          props: WButtonProp(round: true, type: 'success')),
+      WButton(
+          slots: WButtonSlot(
+            '警告按钮',
+          ),
+          props: WButtonProp(round: true, type: 'warning')),
+      WButton(
+          slots: WButtonSlot(
+            '危险按钮',
+          ),
+          props: WButtonProp(round: true, type: 'danger')),
+      WButton(
+          slots: WButtonSlot(
+            '信息按钮',
+          ),
+          props: WButtonProp(round: true, type: 'info')),
     ];
 
     var iconBtnGroup = [
       WButton(
-        Icons.search,
+        slots: WButtonSlot(
+          Icons.search,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'text'),
       ),
       WButton(
-        Icons.edit,
+        slots: WButtonSlot(
+          Icons.edit,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'primary'),
       ),
       WButton(
-        Icons.check,
+        slots: WButtonSlot(
+          Icons.check,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'success'),
       ),
       WButton(
-        Icons.message,
+        slots: WButtonSlot(
+          Icons.message,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'info'),
       ),
       WButton(
-        Icons.star,
+        slots: WButtonSlot(
+          Icons.star,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'warning'),
       ),
       WButton(
-        Icons.delete,
+        slots: WButtonSlot(
+          Icons.delete,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'danger'),
       ),
     ];
     var iconTextBtnGroup = [
       WButton(
-        '搜索',
+        slots: WButtonSlot(
+          '搜索',
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'text'),
       ),
       WButton(
-        Icons.edit,
+        slots: WButtonSlot(
+          Icons.edit,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'primary'),
       ),
       WButton(
-        Icons.check,
+        slots: WButtonSlot(
+          Icons.check,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'success'),
       ),
       WButton(
-        Icons.message,
+        slots: WButtonSlot(
+          Icons.message,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'info'),
       ),
       WButton(
-        Icons.star,
+        slots: WButtonSlot(
+          Icons.star,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'warning'),
       ),
       WButton(
-        Icons.delete,
+        slots: WButtonSlot(
+          Icons.delete,
+        ),
         props: WButtonProp(circle: true, icon: Icons.edit, type: 'danger'),
       ),
     ];
 
     var sizeBtnGroup = [
-      WButton('mini', props: WButtonProp(size: 'mini')),
-      WButton('small', props: WButtonProp(size: 'small')),
-      WButton('medium', props: WButtonProp(size: 'medium')),
-      WButton('large', props: WButtonProp(size: 'large')),
+      WButton(
+          slots: WButtonSlot(
+            'mini',
+          ),
+          props: WButtonProp(size: 'mini')),
+      WButton(
+          slots: WButtonSlot(
+            'small',
+          ),
+          props: WButtonProp(size: 'small')),
+      WButton(
+          slots: WButtonSlot(
+            'medium',
+          ),
+          props: WButtonProp(size: 'medium')),
+      WButton(
+          slots: WButtonSlot(
+            'large',
+          ),
+          props: WButtonProp(size: 'large')),
     ];
 
     var result = ListView(

@@ -25,10 +25,11 @@ class ApiResult extends StatelessWidget {
     return WResult(
       props: WResultProp(icon: 'success', title: '提示', subTitle: '请根据提示进行操作'),
       slots: WResultSlot(
+        null,
         extra: SizedBox(
           width: 80,
           child: WButton(
-            '返回',
+            slots: WButtonSlot('返回'),
             props: WButtonProp(type: 'primary'),
           ),
         ),
@@ -40,10 +41,11 @@ class ApiResult extends StatelessWidget {
     return WResult(
       props: WResultProp(icon: 'warning', title: '提示', subTitle: '请根据提示进行操作'),
       slots: WResultSlot(
+        null,
         extra: SizedBox(
           width: 80,
           child: WButton(
-            '返回',
+            slots: WButtonSlot('返回'),
             props: WButtonProp(type: 'primary'),
           ),
         ),
@@ -59,10 +61,11 @@ class ApiResult extends StatelessWidget {
           subTitle:
               '请根据提示进行操作请根据提示进行操作请根据提示进行操作请根据提示进行操作请根据提示进行操作请根据提示进行操作请根据提示进行操作请根据提示进行操作请根据提示进行操作'),
       slots: WResultSlot(
+        null,
         extra: SizedBox(
           width: 80,
           child: WButton(
-            '返回',
+            slots: WButtonSlot('返回'),
             props: WButtonProp(type: 'primary'),
           ),
         ),
@@ -74,10 +77,11 @@ class ApiResult extends StatelessWidget {
     return WResult(
       props: WResultProp(icon: 'info', title: '提示', subTitle: '请根据提'),
       slots: WResultSlot(
+        null,
         extra: SizedBox(
           width: 80,
           child: WButton(
-            '返回',
+            slots: WButtonSlot('返回'),
             props: WButtonProp(type: 'primary'),
           ),
         ),

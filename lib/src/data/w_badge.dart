@@ -29,8 +29,7 @@ class WBadge extends StatefulWidget
   }) : super(key: key) {
     $on = on ?? WBadgeOn();
     $props = props ?? WBadgeProp();
-    $slots = slots ?? WBadgeSlot();
-    $slots.defaultSlotBefore = defaultSlot;
+    $slots = slots ?? WBadgeSlot(defaultSlot);
   }
 }
 
@@ -162,4 +161,6 @@ class WBadgeProp extends BaseProp {
   }
 }
 
-class WBadgeSlot extends BaseSlot {}
+class WBadgeSlot extends BaseSlot {
+  WBadgeSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

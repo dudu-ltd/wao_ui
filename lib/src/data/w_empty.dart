@@ -27,8 +27,7 @@ class WEmpty extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WEmptyOn();
     $props = props ?? WEmptyProp();
-    $slots = slots ?? WEmptySlot();
-    $slots.defaultSlotBefore = defaultSlot;
+    $slots = slots ?? WEmptySlot(defaultSlot);
   }
 
   @override
@@ -82,8 +81,9 @@ class WEmptyProp extends BaseProp {
 class WEmptySlot extends BaseSlot {
   Widget? image;
   Widget? description;
-  WEmptySlot({
+  WEmptySlot(
+    defaultSlotBefore, {
     this.image,
     this.description,
-  });
+  }) : super(defaultSlotBefore);
 }

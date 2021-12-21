@@ -154,8 +154,8 @@ class _IndexPageState extends State<IndexPage> {
     Navigator nav = createNav();
     return Scaffold(
       body: WContainerLayout(
-        nav,
         slots: WContainerLayoutSlot(
+          nav,
           asideLeft: SingleChildScrollView(
             child: PlainTree(
               on: PlainTreeOn(

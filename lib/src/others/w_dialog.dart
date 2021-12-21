@@ -28,8 +28,7 @@ class WDialog extends StatelessWidget
     $on = on ?? WDialogOn();
     $props = props ?? WDialogProp();
     $props._widget = this;
-    $slots = slots ?? WDialogSlot();
-    $slots.defaultSlotBefore = defaultSlot;
+    $slots = slots ?? WDialogSlot(defaultSlot);
   }
 
   setShow(BuildContext context) {
@@ -207,5 +206,6 @@ class WDialogSlot extends BaseSlot {
   Widget? title;
   List<Widget>? footer;
   Widget? btn;
-  WDialogSlot({this.title, this.footer, this.btn});
+  WDialogSlot(defaultSlotBefroe, {this.title, this.footer, this.btn})
+      : super(defaultSlotBefroe);
 }

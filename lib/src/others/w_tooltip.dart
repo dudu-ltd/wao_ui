@@ -23,7 +23,7 @@ class WTooltip extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WTooltipOn();
     $props = props ?? WTooltipProp();
-    $slots = slots ?? WTooltipSlot();
+    $slots = slots ?? WTooltipSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WTooltipOn extends BaseOn {}
 
 class WTooltipProp extends BaseProp {}
 
-class WTooltipSlot extends BaseSlot {}
+class WTooltipSlot extends BaseSlot {
+  WTooltipSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
