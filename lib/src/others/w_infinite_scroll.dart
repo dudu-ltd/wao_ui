@@ -25,7 +25,7 @@ class WInfiniteScroll extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WInfiniteScrollOn();
     $props = props ?? WInfiniteScrollProp();
-    $slots = slots ?? WInfiniteScrollSlot();
+    $slots = slots ?? WInfiniteScrollSlot(null);
   }
 
   @override
@@ -38,4 +38,6 @@ class WInfiniteScrollOn extends BaseOn {}
 
 class WInfiniteScrollProp extends BaseProp {}
 
-class WInfiniteScrollSlot extends BaseSlot {}
+class WInfiniteScrollSlot extends BaseSlot {
+  WInfiniteScrollSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

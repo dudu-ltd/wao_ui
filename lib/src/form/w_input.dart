@@ -23,7 +23,7 @@ class WInput extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WInputOn();
     $props = props ?? WInputProp();
-    $slots = slots ?? WInputSlot();
+    $slots = slots ?? WInputSlot(null);
   }
 
   @override
@@ -85,4 +85,5 @@ class WInputSlot extends BaseSlot {
       prepend	输入框前置内容，只对 type="text" 有效
       append	输入框后置内容，只对 type="text" 有效
    */
+  WInputSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

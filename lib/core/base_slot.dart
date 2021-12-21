@@ -23,5 +23,7 @@ class BaseSlot {
     }
   }
 
-  BaseSlot();
+  BaseSlot(defaultSlotBefore) {
+    this.defaultSlotBefore = defaultSlotBefore;
+  }
 }

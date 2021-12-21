@@ -23,7 +23,7 @@ class WNavMenu extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WNavMenuOn();
     $props = props ?? WNavMenuProp();
-    $slots = slots ?? WNavMenuSlot();
+    $slots = slots ?? WNavMenuSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WNavMenuOn extends BaseOn {}
 
 class WNavMenuProp extends BaseProp {}
 
-class WNavMenuSlot extends BaseSlot {}
+class WNavMenuSlot extends BaseSlot {
+  WNavMenuSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

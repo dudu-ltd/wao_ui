@@ -23,7 +23,7 @@ class WTimePicker extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WTimePickerOn();
     $props = props ?? WTimePickerProp();
-    $slots = slots ?? WTimePickerSlot();
+    $slots = slots ?? WTimePickerSlot(null);
   }
 
   @override
@@ -69,4 +69,6 @@ class WTimePickerProp extends BaseProp {
    */
 }
 
-class WTimePickerSlot extends BaseSlot {}
+class WTimePickerSlot extends BaseSlot {
+  WTimePickerSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

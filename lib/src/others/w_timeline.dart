@@ -23,7 +23,7 @@ class WTimeline extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WTimelineOn();
     $props = props ?? WTimelineProp();
-    $slots = slots ?? WTimelineSlot();
+    $slots = slots ?? WTimelineSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WTimelineOn extends BaseOn {}
 
 class WTimelineProp extends BaseProp {}
 
-class WTimelineSlot extends BaseSlot {}
+class WTimelineSlot extends BaseSlot {
+  WTimelineSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

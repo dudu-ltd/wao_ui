@@ -29,7 +29,7 @@ class WProgress extends StatefulWidget
   }) : super(key: key) {
     $on = on ?? WProgressOn();
     $props = props ?? WProgressProp();
-    $slots = slots ?? WProgressSlot();
+    $slots = slots ?? WProgressSlot(null);
   }
 
   @override
@@ -321,4 +321,6 @@ class WProgressProp extends BaseProp {
   }
 }
 
-class WProgressSlot extends BaseSlot {}
+class WProgressSlot extends BaseSlot {
+  WProgressSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

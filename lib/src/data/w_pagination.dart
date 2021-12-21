@@ -30,7 +30,7 @@ class WPagination extends StatefulWidget
   }) : super(key: key) {
     $on = on ?? WPaginationOn();
     $props = props ?? WPaginationProp();
-    $slots = slots ?? WPaginationSlot();
+    $slots = slots ?? WPaginationSlot(null);
   }
 }
 
@@ -57,8 +57,7 @@ class _WPaginationState extends State<WPagination> {
     bool active = false,
   }) {
     return WButton(
-      btn,
-      slots: WButtonSlot(),
+      slots: WButtonSlot(btn),
       props: WButtonProp(
         size: 'mini',
         type: widget.$props.background ? 'primary' : 'text',
@@ -329,4 +328,6 @@ class WPaginationSlot extends BaseSlot {
   Widget? prev;
   Widget? next;
   Widget Function(int, WPagination?)? jumper;
+
+  WPaginationSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

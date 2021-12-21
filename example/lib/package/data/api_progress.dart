@@ -226,22 +226,26 @@ class _ApiProgressState extends State<ApiProgress> {
   Widget get button {
     return Row(
       children: [
-        WButton('-', on: WButtonOn(
-          click: () {
-            setState(() {
-              widget.percentage--;
-              if (widget.percentage < 0) widget.percentage = 0;
-            });
-          },
-        )),
-        WButton('+', on: WButtonOn(
-          click: () {
-            setState(() {
-              widget.percentage++;
-              if (widget.percentage >= 100) widget.percentage = 100;
-            });
-          },
-        )),
+        WButton(
+            slots: WButtonSlot('-'),
+            on: WButtonOn(
+              click: () {
+                setState(() {
+                  widget.percentage--;
+                  if (widget.percentage < 0) widget.percentage = 0;
+                });
+              },
+            )),
+        WButton(
+            slots: WButtonSlot('+'),
+            on: WButtonOn(
+              click: () {
+                setState(() {
+                  widget.percentage++;
+                  if (widget.percentage >= 100) widget.percentage = 100;
+                });
+              },
+            )),
       ],
     );
   }

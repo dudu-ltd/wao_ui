@@ -23,7 +23,7 @@ class WCascader extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WCascaderOn();
     $props = props ?? WCascaderProp();
-    $slots = slots ?? WCascaderSlot();
+    $slots = slots ?? WCascaderSlot(null);
   }
 
   @override
@@ -83,4 +83,5 @@ class WCascaderSlot extends BaseSlot {
       -	自定义备选项的节点内容，参数为 { node, data }，分别为当前节点的 Node 对象和数据
       empty	无匹配选项时的内容
    */
+  WCascaderSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

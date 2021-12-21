@@ -23,7 +23,7 @@ class WPopover extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WPopoverOn();
     $props = props ?? WPopoverProp();
-    $slots = slots ?? WPopoverSlot();
+    $slots = slots ?? WPopoverSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WPopoverOn extends BaseOn {}
 
 class WPopoverProp extends BaseProp {}
 
-class WPopoverSlot extends BaseSlot {}
+class WPopoverSlot extends BaseSlot {
+  WPopoverSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

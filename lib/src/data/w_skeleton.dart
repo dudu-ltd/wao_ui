@@ -23,7 +23,7 @@ class WSkeleton extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WSkeletonOn();
     $props = props ?? WSkeletonProp();
-    $slots = slots ?? WSkeletonSlot();
+    $slots = slots ?? WSkeletonSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WSkeletonOn extends BaseOn {}
 
 class WSkeletonProp extends BaseProp {}
 
-class WSkeletonSlot extends BaseSlot {}
+class WSkeletonSlot extends BaseSlot {
+  WSkeletonSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

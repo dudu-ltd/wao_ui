@@ -23,7 +23,7 @@ class WLoading extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WLoadingOn();
     $props = props ?? WLoadingProp();
-    $slots = slots ?? WLoadingSlot();
+    $slots = slots ?? WLoadingSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WLoadingOn extends BaseOn {}
 
 class WLoadingProp extends BaseProp {}
 
-class WLoadingSlot extends BaseSlot {}
+class WLoadingSlot extends BaseSlot {
+  WLoadingSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

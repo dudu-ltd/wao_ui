@@ -25,7 +25,7 @@ class WBreadcrumb extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WBreadcrumbOn();
     $props = props ?? WBreadcrumbProp();
-    $slots = slots ?? WBreadcrumbSlot();
+    $slots = slots ?? WBreadcrumbSlot(defaultSlot);
     $slots.defaultSlotBefore = defaultSlot;
     setDefaultSlot();
   }
@@ -152,7 +152,9 @@ class WBreadcrumbProp extends BaseProp {
   }
 }
 
-class WBreadcrumbSlot extends BaseSlot {}
+class WBreadcrumbSlot extends BaseSlot {
+  WBreadcrumbSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
 
 ///
 ///
@@ -179,7 +181,7 @@ class WBreadcrumbItem extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WBreadcrumbItemOn();
     $props = props ?? WBreadcrumbItemProp();
-    $slots = slots ?? WBreadcrumbItemSlot();
+    $slots = slots ?? WBreadcrumbItemSlot(null);
   }
 
   @override
@@ -215,4 +217,6 @@ class WBreadcrumbItemProp extends BaseProp {
   }
 }
 
-class WBreadcrumbItemSlot extends BaseSlot {}
+class WBreadcrumbItemSlot extends BaseSlot {
+  WBreadcrumbItemSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

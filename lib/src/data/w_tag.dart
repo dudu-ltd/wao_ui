@@ -23,7 +23,7 @@ class WTag extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WTagOn();
     $props = props ?? WTagProp();
-    $slots = slots ?? WTagSlot();
+    $slots = slots ?? WTagSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WTagOn extends BaseOn {}
 
 class WTagProp extends BaseProp {}
 
-class WTagSlot extends BaseSlot {}
+class WTagSlot extends BaseSlot {
+  WTagSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

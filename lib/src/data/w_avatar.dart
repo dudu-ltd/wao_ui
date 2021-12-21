@@ -24,7 +24,7 @@ class WAvatar extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WAvatarOn();
     $props = props ?? WAvatarProp();
-    $slots = slots ?? WAvatarSlot();
+    $slots = slots ?? WAvatarSlot(null);
   }
 
   @override
@@ -107,4 +107,6 @@ class WAvatarProp extends BaseProp {
   }
 }
 
-class WAvatarSlot extends BaseSlot {}
+class WAvatarSlot extends BaseSlot {
+  WAvatarSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

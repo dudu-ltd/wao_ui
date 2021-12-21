@@ -32,7 +32,7 @@ class Api extends StatelessWidget {
       home: kIsWeb
           ? main
           : WFrame(
-              slots: WFrameSlot(
+              slots: WFrameSlot(null,
                   header: Text('Wao ui Api'),
                   main: main,
                   footer: const Text('状态栏')),

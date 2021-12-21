@@ -23,7 +23,7 @@ class WCarousel extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WCarouselOn();
     $props = props ?? WCarouselProp();
-    $slots = slots ?? WCarouselSlot();
+    $slots = slots ?? WCarouselSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WCarouselOn extends BaseOn {}
 
 class WCarouselProp extends BaseProp {}
 
-class WCarouselSlot extends BaseSlot {}
+class WCarouselSlot extends BaseSlot {
+  WCarouselSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

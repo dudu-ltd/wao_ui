@@ -23,7 +23,7 @@ class WRadio extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WRadioOn();
     $props = props ?? WRadioProp();
-    $slots = slots ?? WRadioSlot();
+    $slots = slots ?? WRadioSlot(null);
   }
 
   @override
@@ -60,4 +60,6 @@ class WRadioProp extends BaseProp {
   }
 }
 
-class WRadioSlot extends BaseSlot {}
+class WRadioSlot extends BaseSlot {
+  WRadioSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

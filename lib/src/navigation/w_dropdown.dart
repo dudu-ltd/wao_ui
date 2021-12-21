@@ -23,7 +23,7 @@ class WDropdown extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WDropdownOn();
     $props = props ?? WDropdownProp();
-    $slots = slots ?? WDropdownSlot();
+    $slots = slots ?? WDropdownSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WDropdownOn extends BaseOn {}
 
 class WDropdownProp extends BaseProp {}
 
-class WDropdownSlot extends BaseSlot {}
+class WDropdownSlot extends BaseSlot {
+  WDropdownSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

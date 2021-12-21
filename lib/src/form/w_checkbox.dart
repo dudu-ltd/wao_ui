@@ -23,7 +23,7 @@ class WCheckbox extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WCheckboxOn();
     $props = props ?? WCheckboxProp();
-    $slots = slots ?? WCheckboxSlot();
+    $slots = slots ?? WCheckboxSlot(null);
   }
 
   @override
@@ -51,4 +51,6 @@ class WCheckboxProp extends BaseProp {
    */
 }
 
-class WCheckboxSlot extends BaseSlot {}
+class WCheckboxSlot extends BaseSlot {
+  WCheckboxSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

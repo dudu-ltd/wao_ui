@@ -25,7 +25,7 @@ class WDateTimePicker extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WDateTimePickerOn();
     $props = props ?? WDateTimePickerProp();
-    $slots = slots ?? WDateTimePickerSlot();
+    $slots = slots ?? WDateTimePickerSlot(null);
   }
 
   @override
@@ -77,4 +77,5 @@ class WDateTimePickerSlot extends BaseSlot {
   /**
       range-separator	自定义分隔符
    */
+  WDateTimePickerSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

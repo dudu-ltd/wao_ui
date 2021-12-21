@@ -23,7 +23,7 @@ class WSlider extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WSliderOn();
     $props = props ?? WSliderProp();
-    $slots = slots ?? WSliderSlot();
+    $slots = slots ?? WSliderSlot(null);
   }
 
   @override
@@ -62,4 +62,6 @@ class WSliderProp extends BaseProp {
    */
 }
 
-class WSliderSlot extends BaseSlot {}
+class WSliderSlot extends BaseSlot {
+  WSliderSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

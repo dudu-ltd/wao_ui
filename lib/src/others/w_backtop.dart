@@ -23,7 +23,7 @@ class WBacktop extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WBacktopOn();
     $props = props ?? WBacktopProp();
-    $slots = slots ?? WBacktopSlot();
+    $slots = slots ?? WBacktopSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WBacktopOn extends BaseOn {}
 
 class WBacktopProp extends BaseProp {}
 
-class WBacktopSlot extends BaseSlot {}
+class WBacktopSlot extends BaseSlot {
+  WBacktopSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

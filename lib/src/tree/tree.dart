@@ -39,12 +39,12 @@ class PlainTreeProp extends BaseProp {
 }
 
 class PlainTree extends StatefulWidget
-    implements BaseWidget<PlainTreeOn, PlainTreeProp, BaseSlot> {
+    implements BaseWidget<PlainTreeOn, PlainTreeProp, PlainTreeSlot> {
   _TreeState? state;
   PlainTree({Key? key, on, props})
       : this.$on = on ?? PlainTreeOn(),
         this.$props = props ?? PlainTreeProp(data: []),
-        this.$slots = BaseSlot(),
+        this.$slots = PlainTreeSlot(null),
         super(key: key);
 
   @override
@@ -69,7 +69,7 @@ class PlainTree extends StatefulWidget
   late PlainTreeProp $props;
 
   @override
-  late BaseSlot $slots;
+  late PlainTreeSlot $slots;
 }
 
 class _TreeState extends State<PlainTree> {
@@ -249,4 +249,8 @@ class TreeData {
 class TreeNodeClickNotification extends Notification {
   final TreeData treeData;
   TreeNodeClickNotification(this.treeData);
+}
+
+class PlainTreeSlot extends BaseSlot {
+  PlainTreeSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

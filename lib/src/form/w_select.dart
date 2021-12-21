@@ -23,7 +23,7 @@ class WSelect extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WSelectOn();
     $props = props ?? WSelectProp();
-    $slots = slots ?? WSelectSlot();
+    $slots = slots ?? WSelectSlot(null);
   }
 
   @override
@@ -85,4 +85,5 @@ class WSelectSlot extends BaseSlot {
       prefix	Select 组件头部内容
       empty	无选项时的列表
    */
+  WSelectSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

@@ -23,7 +23,7 @@ class WImage extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WImageOn();
     $props = props ?? WImageProp();
-    $slots = slots ?? WImageSlot();
+    $slots = slots ?? WImageSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WImageOn extends BaseOn {}
 
 class WImageProp extends BaseProp {}
 
-class WImageSlot extends BaseSlot {}
+class WImageSlot extends BaseSlot {
+  WImageSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

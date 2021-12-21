@@ -23,7 +23,7 @@ class WUpload extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WUploadOn();
     $props = props ?? WUploadProp();
-    $slots = slots ?? WUploadSlot();
+    $slots = slots ?? WUploadSlot(null);
   }
 
   @override
@@ -70,4 +70,5 @@ class WUploadProp extends BaseProp {
 class WUploadSlot extends BaseSlot {
   Widget? trigger;
   Widget? tip;
+  WUploadSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

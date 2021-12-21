@@ -23,7 +23,7 @@ class WCollapse extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WCollapseOn();
     $props = props ?? WCollapseProp();
-    $slots = slots ?? WCollapseSlot();
+    $slots = slots ?? WCollapseSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WCollapseOn extends BaseOn {}
 
 class WCollapseProp extends BaseProp {}
 
-class WCollapseSlot extends BaseSlot {}
+class WCollapseSlot extends BaseSlot {
+  WCollapseSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

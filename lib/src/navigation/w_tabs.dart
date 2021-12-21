@@ -23,7 +23,7 @@ class WTabs extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WTabsOn();
     $props = props ?? WTabsProp();
-    $slots = slots ?? WTabsSlot();
+    $slots = slots ?? WTabsSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WTabsOn extends BaseOn {}
 
 class WTabsProp extends BaseProp {}
 
-class WTabsSlot extends BaseSlot {}
+class WTabsSlot extends BaseSlot {
+  WTabsSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

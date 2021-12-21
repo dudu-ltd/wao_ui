@@ -19,8 +19,7 @@ class WButton extends StatelessWidget
   @override
   late WButtonSlot $slots;
 
-  WButton(
-    dynamic defaultSlot, {
+  WButton({
     Key? key,
     WButtonOn? on,
     WButtonProp? props,
@@ -28,8 +27,7 @@ class WButton extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WButtonOn();
     $props = props ?? WButtonProp();
-    $slots = slots ?? WButtonSlot();
-    $slots.defaultSlotBefore = defaultSlot;
+    $slots = slots ?? WButtonSlot(null);
   }
 
   @override
@@ -210,4 +208,6 @@ class WButtonProp extends BaseProp {
   }
 }
 
-class WButtonSlot extends BaseSlot {}
+class WButtonSlot extends BaseSlot {
+  WButtonSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

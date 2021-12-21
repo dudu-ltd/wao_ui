@@ -23,7 +23,7 @@ class WPageHeader extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WPageHeaderOn();
     $props = props ?? WPageHeaderProp();
-    $slots = slots ?? WPageHeaderSlot();
+    $slots = slots ?? WPageHeaderSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WPageHeaderOn extends BaseOn {}
 
 class WPageHeaderProp extends BaseProp {}
 
-class WPageHeaderSlot extends BaseSlot {}
+class WPageHeaderSlot extends BaseSlot {
+  WPageHeaderSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

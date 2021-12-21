@@ -23,7 +23,7 @@ class WColorPicker extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WColorPickerOn();
     $props = props ?? WColorPickerProp();
-    $slots = slots ?? WColorPickerSlot();
+    $slots = slots ?? WColorPickerSlot(null);
   }
 
   @override
@@ -54,4 +54,6 @@ class WColorPickerProp extends BaseProp {
    */
 }
 
-class WColorPickerSlot extends BaseSlot {}
+class WColorPickerSlot extends BaseSlot {
+  WColorPickerSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

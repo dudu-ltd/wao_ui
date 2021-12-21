@@ -23,7 +23,7 @@ class WCard extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WCardOn();
     $props = props ?? WCardProp();
-    $slots = slots ?? WCardSlot();
+    $slots = slots ?? WCardSlot(null);
   }
 
   @override
@@ -36,4 +36,6 @@ class WCardOn extends BaseOn {}
 
 class WCardProp extends BaseProp {}
 
-class WCardSlot extends BaseSlot {}
+class WCardSlot extends BaseSlot {
+  WCardSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
