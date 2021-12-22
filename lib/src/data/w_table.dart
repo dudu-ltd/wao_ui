@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 import 'package:simple_observable/simple_observable.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/utils/wrapper.dart';
+import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/data/w_empty.dart';
 
 class WTable extends StatefulWidget
@@ -21,12 +24,11 @@ class WTable extends StatefulWidget
 
   late Observable<List> _dataListener;
 
-  late List<WTableColumn> columns;
+  final List _selectedRow = [];
 
   @override
   _WTableState createState() => _WTableState();
-  WTable(
-    List<dynamic>? columns, {
+  WTable({
     Key? key,
     WTableOn? on,
     WTableProp? props,
@@ -34,27 +36,7 @@ class WTable extends StatefulWidget
   }) : super(key: key) {
     $on = on ?? WTableOn();
     $props = props ?? WTableProp();
-    $slots = slots ?? WTableSlot();
-    setColumns(columns);
-  }
-
-  setColumns(List<dynamic>? columns) {
-    if (columns == null) this.columns = [];
-    if (columns is List<WTableColumn>) {
-      this.columns = columns;
-    } else {
-      var _columns = <WTableColumn>[];
-      columns?.forEach((column) {
-        if (column is WTableColumn) {
-          _columns.add(column);
-        } else if (column is WTableColumnProp) {
-          _columns.add(WTableColumn(props: column));
-        } else {
-          throw Exception('目前仅支持 List<WTableColumnProp> 与 List<WTableColumn> ');
-        }
-      });
-      this.columns = _columns;
-    }
+    $slots = slots ?? WTableSlot(null);
   }
 
   List get data {
@@ -92,32 +74,110 @@ class _WTableState extends State<WTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (widget.$props.showHeader!) header,
-        if (widget.$props.data.isEmpty && whenEmpty != null)
-          whenEmpty!
-        else
-          ...columns,
-      ],
+    return borderWrapper(
+      constWrapper(
+        Column(
+          children: [
+            if (widget.$props.showHeader!)
+              getHeader(widget.$slots.defaultSlot as List<WTableColumn>),
+            if (widget.$props.data.isEmpty && whenEmpty != null)
+              whenEmpty!
+            else if (widget.$props.height != null)
+              sizedScrollWrapper(rows, widget.$props.height, null, true)
+            else if (widget.$props.maxHeight != null)
+              expandedScrollWrapper(rows, true)
+            else
+              ...rows
+          ],
+        ),
+        BoxConstraints(maxHeight: widget.$props.maxHeight ?? 0),
+        widget.$props.maxHeight != null,
+      ),
+      Border.fromBorderSide(cfgGlobal.table.rowBorder),
+      widget.$props.border,
     );
   }
 
   Widget? get whenEmpty {
-    return WEmpty(null);
+    return WEmpty(const Text('暂无数据'));
   }
 
-  List<Row> get columns {
-    List<Row> rows = List.generate(widget.$props.data.length, (r) {
-      return Row(
-        children: List.generate(widget.columns.length, (c) {
-          var column = widget.columns[c];
-          dynamic row = widget.$props.data[r];
-          return cellWidget(column, row);
-        }),
-      );
+  List<MouseStateBuilder> get rows {
+    var rowLen = widget.$props.data.length;
+    List<MouseStateBuilder> rows = List.generate(rowLen, (r) {
+      dynamic rowData = widget.$props.data[r];
+      return MouseStateBuilder(builder: (context, state) {
+        var columnLen = widget.$slots.defaultSlot!.length;
+        var row = Row(
+          children: List.generate(
+            widget.$slots.defaultSlot!.length,
+            (c) {
+              var column = widget.$slots.defaultSlot![c] as WTableColumn;
+              return _cellBorderWrapper(
+                cellWidget(column, rowData),
+                columnLen,
+                c,
+              );
+            },
+          ),
+        );
+        return _rowWrapper(
+          row,
+          state,
+          rowLen,
+          r,
+        );
+      });
     });
     return rows;
+  }
+
+  _rowWrapper(row, MouseState state, rowLen, r) {
+    row = _backgroundWrapper(row, state, r);
+    row = _divideWrapper(row, rowLen, r);
+    return row;
+  }
+
+  _cellBorderWrapper(Widget cell, columnLen, c) {
+    return borderWrapper(
+      cell,
+      widget.$props.border
+          ? Border(
+              right: cfgGlobal.table.rowBorder,
+            )
+          : null,
+      c != columnLen - 1,
+      margin: cfgGlobal.table.cellMargin,
+    );
+  }
+
+  Widget _divideWrapper(Widget row, rowLen, r) {
+    return borderWrapper(
+      row,
+      r == 0
+          ? Border(
+              bottom: cfgGlobal.table.rowBorder,
+              top: cfgGlobal.table.rowBorder,
+            )
+          : Border(bottom: cfgGlobal.table.rowBorder),
+      true,
+    );
+  }
+
+  Widget _backgroundWrapper(Widget row, MouseState state, r) {
+    if (needBackground(state, r)) {
+      return ColoredBox(
+        color: state.isMouseOver
+            ? cfgGlobal.table.rowHoverColor
+            : cfgGlobal.table.stripeColor,
+        child: row,
+      );
+    }
+    return row;
+  }
+
+  bool needBackground(MouseState state, int r) {
+    return state.isMouseOver || (widget.$props.stripe && r % 2 == 1);
   }
 
   Widget cellWidget(WTableColumn column, dynamic row) {
@@ -135,7 +195,6 @@ class _WTableState extends State<WTable> {
       var val = column.$props.prop == null ? '' : column.$props.prop?.call(row);
       child = Text('$val');
     }
-    print(child);
     if (child is List<Widget>) {
       return Row(children: child);
     } else {
@@ -155,14 +214,15 @@ class _WTableState extends State<WTable> {
           );
   }
 
-  Widget get header {
+  Widget getHeader(List<WTableColumn> columns) {
+    var columnLen = columns.length;
     return Row(
       children: List.generate(
-        widget.columns.length,
+        columnLen,
         (index) {
-          WTableColumn column = widget.columns[index];
+          WTableColumn column = columns[index];
           Widget th = getHeaderCell(column);
-          return column.$props.width == null
+          var header = column.$props.width == null
               ? Expanded(
                   child: th,
                 )
@@ -170,50 +230,81 @@ class _WTableState extends State<WTable> {
                   child: th,
                   width: double.parse(column.$props.width!),
                 );
+          return _cellBorderWrapper(header, columnLen, index);
         },
       ),
     );
   }
 
   Widget getHeaderCell(WTableColumn column) {
+    if (column.$slots.defaultSlot != null &&
+        column.$slots.defaultSlot!.isNotEmpty) {
+      return Column(
+        children: [
+          Text(column.$props.label ?? ''),
+          ...List.generate(
+            column.$slots.defaultSlot!.length,
+            (index) =>
+                getHeader(column.$slots.defaultSlot as List<WTableColumn>),
+          )
+        ],
+      );
+    }
     return Text(column.$props.label ?? '');
   }
 }
 
 class WTableOn extends BaseOn {
-  /**
-      select	当用户手动勾选数据行的 Checkbox 时触发的事件	selection, row
-      select-all	当用户手动勾选全选 Checkbox 时触发的事件	selection
-      selection-change	当选择项发生变化时会触发该事件	selection
-      cell-mouse-enter	当单元格 hover 进入时会触发该事件	row, column, cell, event
-      cell-mouse-leave	当单元格 hover 退出时会触发该事件	row, column, cell, event
-      cell-click	当某个单元格被点击时会触发该事件	row, column, cell, event
-      cell-dblclick	当某个单元格被双击击时会触发该事件	row, column, cell, event
-      row-click	当某一行被点击时会触发该事件	row, column, event
-      row-contextmenu	当某一行被鼠标右键点击时会触发该事件	row, column, event
-      row-dblclick	当某一行被双击时会触发该事件	row, column, event
-      header-click	当某一列的表头被点击时会触发该事件	column, event
-      header-contextmenu	当某一列的表头被鼠标右键点击时触发该事件	column, event
-      sort-change	当表格的排序条件发生变化的时候会触发该事件	{ column, prop, order }
-      filter-change	当表格的筛选条件发生变化的时候会触发该事件，参数的值是一个对象，对象的 key 是 column 的 columnKey，对应的 value 为用户选择的筛选条件的数组。	filters
-      current-change	当表格的当前行发生变化的时候会触发该事件，如果要高亮当前行，请打开表格的 highlight-current-row 属性	currentRow, oldCurrentRow
-      header-dragend	当拖动表头改变了列的宽度的时候会触发该事件	newWidth, oldWidth, column, event
-      expand-change	当用户对某一行展开或者关闭的时候会触发该事件（展开行时，回调的第二个参数为 expandedRows；树形表格时第二参数为 expanded）	row, (expandedRows | expanded)
-   */
+  Function? select;
+  Function? selectAll;
+  Function? selectionChange;
+  Function? cellMouseEnter;
+  Function? cellMouseLeave;
+  Function? cellClick;
+  Function? cellDblclick;
+  Function? rowClick;
+  Function? rowContextmenu;
+  Function? rowDblclick;
+  Function? headerClick;
+  Function? headerContextmenu;
+  Function? sortChange;
+  Function? filterChange;
+  Function? currentChange;
+  Function? headerDragend;
+  Function? expandChange;
+  WTableOn({
+    this.select,
+    this.selectAll,
+    this.selectionChange,
+    this.cellMouseEnter,
+    this.cellMouseLeave,
+    this.cellClick,
+    this.cellDblclick,
+    this.rowClick,
+    this.rowContextmenu,
+    this.rowDblclick,
+    this.headerClick,
+    this.headerContextmenu,
+    this.sortChange,
+    this.filterChange,
+    this.currentChange,
+    this.headerDragend,
+    this.expandChange,
+  });
 }
 
 class WTableProp extends BaseProp {
   late List data;
   double? height;
   double? maxHeight;
-  bool? stripe;
-  bool? border;
+  late bool stripe;
+  late bool border;
   String? size;
   bool? fit;
   bool? showHeader;
   bool? highlightCurrentRow;
   String? currentRowKey;
-  Function({dynamic row})? rowKey;
+  Function(dynamic row)? rowKey;
   String? emptyText;
   bool defaultExpandAll = false;
   List? expandRowKeys;
@@ -221,13 +312,13 @@ class WTableProp extends BaseProp {
   String? tooltipEffect;
   bool? showSummary;
   String? sumText;
-  Function({List columns, List data})? summaryMethod;
-  Function({dynamic row, String column, int rowIndex, int columnIndex})?
+  Function(List columns, List data)? summaryMethod;
+  Function(dynamic row, String column, int rowIndex, int columnIndex)?
       spanMethod;
   bool? selectOnIndeterminate;
   double? indent;
   bool? lazy;
-  Function({dynamic row, dynamic treeNode, Function resolve})? load;
+  Function(dynamic row, dynamic treeNode, Function resolve)? load;
   Map<String, dynamic>? treeProps;
 
   WTableProp({
@@ -241,7 +332,7 @@ class WTableProp extends BaseProp {
     bool? showHeader,
     bool? highlightCurrentRow,
     String? currentRowKey,
-    Function({dynamic row})? rowKey,
+    Function(dynamic row)? rowKey,
     String? emptyText,
     bool defaultExpandAll = false,
     List? expandRowKeys,
@@ -249,13 +340,13 @@ class WTableProp extends BaseProp {
     String? tooltipEffect,
     bool? showSummary,
     String? sumText,
-    Function({List columns, List data})? summaryMethod,
-    Function({dynamic row, String column, int rowIndex, int columnIndex})?
+    Function(List columns, List data)? summaryMethod,
+    Function(dynamic row, String column, int rowIndex, int columnIndex)?
         spanMethod,
     bool? selectOnIndeterminate,
     double? indent,
     bool? lazy,
-    Function({dynamic row, dynamic treeNode, Function resolve})? load,
+    Function(dynamic row, dynamic treeNode, Function resolve)? load,
     Map<String, dynamic>? treeProps,
   }) {
     this.data = data ?? [];
@@ -292,7 +383,27 @@ class WTableSlot extends BaseSlot {
       append	插入至表格最后一行之后的内容，如果需要对表格的内容进行无限滚动操作，可能需要用到这个 slot。若表格有合计行，该 slot 会位于合计行之上。
    */
 
-  WTableSlot() : super(null);
+  WTableSlot(columns) : super(columns);
+  @override
+  setDefaultSlot() {
+    var columns = defaultSlotBefore;
+    if (columns == null) defaultSlot = [];
+    if (columns is List<WTableColumn>) {
+      defaultSlot = columns;
+    } else {
+      var _columns = <WTableColumn>[];
+      columns?.forEach((column) {
+        if (column is WTableColumn) {
+          _columns.add(column);
+        } else if (column is WTableColumnProp) {
+          _columns.add(WTableColumn(props: column));
+        } else {
+          throw Exception('目前仅支持 List<WTableColumnProp> 与 List<WTableColumn> ');
+        }
+      });
+      defaultSlot = _columns;
+    }
+  }
 }
 
 class WTableColumn extends StatelessWidget
@@ -309,11 +420,11 @@ class WTableColumn extends StatelessWidget
   WTableColumn({
     Key? key,
     WTableColumnOn? on,
-    required WTableColumnProp props,
+    WTableColumnProp? props,
     WTableColumnSlot? slots,
   }) : super(key: key) {
     $on = on ?? WTableColumnOn();
-    $props = props;
+    $props = props ?? WTableColumnProp();
     $slots = slots ?? WTableColumnSlot(null);
   }
 
@@ -328,7 +439,7 @@ class WTableColumnOn extends BaseOn {}
 class WTableColumnProp extends BaseProp {
   String? type;
   late dynamic index;
-  String? columnKey;
+  dynamic Function(dynamic row)? columnKey;
   String? label;
   dynamic Function(dynamic row)? prop;
   String? width;
@@ -362,7 +473,7 @@ class WTableColumnProp extends BaseProp {
   WTableColumnProp({
     String? type,
     dynamic index,
-    String? columnKey,
+    dynamic Function(dynamic row)? columnKey,
     String? label,
     dynamic Function(dynamic row)? prop,
     String? width,
@@ -420,5 +531,38 @@ class WTableColumnProp extends BaseProp {
 }
 
 class WTableColumnSlot extends BaseSlot {
-  WTableColumnSlot(defaultSlotBefore) : super(defaultSlotBefore);
+  Widget Function(dynamic row)? header;
+  // Function([dynamic value, dynamic row, WTableColumn column])? cellBuilder;
+  WTableColumnSlot(defaultSlotBefore, {this.header}) : super(defaultSlotBefore);
+
+  // @override
+  // setDefaultSlot() {
+  //   super.setDefaultSlot();
+  //   if (defaultSlot != null && defaultSlot!.isNotEmpty) return;
+  //   var columns = defaultSlotBefore;
+  //   if (columns == null) defaultSlot = [];
+  //   if (columns is List<WTableColumn>) {
+  //     defaultSlot = columns;
+  //   } else if (columns is List<dynamic>) {
+  //     var _columns = <WTableColumn>[];
+  //     columns.forEach((column) {
+  //       if (column is WTableColumn) {
+  //         _columns.add(column);
+  //       } else if (column is WTableColumnProp) {
+  //         _columns.add(WTableColumn(props: column));
+  //       } else {
+  //         throw Exception('目前仅支持 List<WTableColumnProp> 与 List<WTableColumn> ');
+  //       }
+  //     });
+  //     defaultSlot = _columns;
+  //   } else {}
+  // }
+
+  // @override
+  // setDefaultSlot() {
+  //   super.setDefaultSlot();
+  //   if (defaultSlotBefore is Function) {
+  //     cellBuilder = defaultSlotBefore;
+  //   }
+  // }
 }
