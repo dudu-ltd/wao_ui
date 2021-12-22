@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 CfgGlobal cfgGlobal = CfgGlobal();
 
 class CfgGlobal {
+  static MaterialColor primaryColor = Colors.blue;
   WBorderRadius borderRadius = WBorderRadius();
   WBorderStyle borderStyle = WBorderStyle();
   WPadding padding = WPadding();
@@ -23,6 +24,8 @@ class CfgGlobal {
   WProgressStyle progress = WProgressStyle();
 
   WResultStyle result = WResultStyle();
+
+  WTableStyle table = WTableStyle();
 
   CfgGlobal._privateConstrucor();
 
@@ -290,4 +293,12 @@ class WResultStyle {
     }
     return null;
   }
+}
+
+class WTableStyle {
+  Color stripeColor = Colors.grey.shade100;
+  Color rowHoverColor = CfgGlobal.primaryColor.shade50;
+  BorderSide rowNoBorder = const BorderSide(width: 0);
+  BorderSide rowBorder = BorderSide(width: .5, color: Colors.grey.shade300);
+  EdgeInsets cellMargin = const EdgeInsets.fromLTRB(5, 2, 5, 2);
 }
