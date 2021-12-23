@@ -20,8 +20,12 @@ class BaseSlot {
       defaultSlot = [_defaultSlotBefore];
     } else if (_defaultSlotBefore is List<Widget>) {
       defaultSlot = _defaultSlotBefore;
+    } else {
+      setDefaultSlotSub();
     }
   }
+
+  setDefaultSlotSub() {}
 
   BaseSlot(defaultSlotBefore) {
     this.defaultSlotBefore = defaultSlotBefore;

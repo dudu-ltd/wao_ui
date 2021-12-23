@@ -165,10 +165,49 @@ class ApiTable extends StatelessWidget {
     baseTable = WTable(slots: WTableSlot(testColumns), props: prop);
   }
 
+  Widget get originTable {
+    return DataTable(
+      columns: const [
+        DataColumn(label: Text('日期')),
+        DataColumn(label: Text('姓名')),
+        DataColumn(label: Text('地址')),
+      ],
+      rows: const [
+        DataRow(cells: [
+          DataCell(Text('2016-05-03')),
+          DataCell(Text('王小虎')),
+          DataCell(Text('上海市普陀区金沙江路1516弄')),
+        ]),
+        DataRow(cells: [
+          DataCell(Text('2016-05-03')),
+          DataCell(Text('王小虎')),
+          DataCell(Text('上海市普陀区金沙江路1516弄')),
+        ]),
+        DataRow(cells: [
+          DataCell(Text('2016-05-03')),
+          DataCell(Text('王小虎')),
+          DataCell(Text('上海市普陀区金沙江路1516弄')),
+        ]),
+        DataRow(cells: [
+          DataCell(Text('2016-05-03')),
+          DataCell(Text('王小虎')),
+          DataCell(Text('上海市普陀区金沙江路1516弄')),
+        ]),
+        DataRow(cells: [
+          DataCell(Text('2016-05-03')),
+          DataCell(Text('王小虎')),
+          DataCell(Text('上海市普陀区金沙江路1516弄')),
+        ]),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(children: [
       const Text('WTable'),
+      const Text('原生表格'),
+      marginWrapper(originTable, const EdgeInsets.all(8.0)),
       const Text('基础表格'),
       marginWrapper(baseTable, const EdgeInsets.all(8.0)),
       const Text('带斑马纹表格'),
@@ -294,6 +333,7 @@ class ApiTable extends StatelessWidget {
               width: '120',
             ),
             WTableColumn(
+              props: WTableColumnProp(label: '地址'),
               slots: WTableColumnSlot(
                 [
                   WTableColumnProp(
@@ -321,8 +361,21 @@ class ApiTable extends StatelessWidget {
             )
           ]),
         ),
+        // TODO FIXME 修复多级后再追加列无法渲染的问题
+        // WTableColumn(
+        //   props: WTableColumnProp(label: '配送状态', width: '180'),
+        //   slots: WTableColumnSlot((row) {
+        //     return WButton(
+        //       props: WButtonProp(type: 'primary', round: true),
+        //       on: WButtonOn(click: () {
+        //         print(row);
+        //       }),
+        //       slots: WButtonSlot('送达'),
+        //     );
+        //   }),
+        // ),
       ]),
-      props: WTableProp(data: testData2),
+      props: WTableProp(data: testData2, border: true),
     );
   }
 

@@ -72,6 +72,21 @@ class _WTableState extends State<WTable> {
     );
   }
 
+  List<DataColumn> get columns2 {
+    return List.generate(
+        widget.$slots.defaultSlot!.length,
+        (i) => DataColumn(
+            label: getHeader(widget.$slots.defaultSlot as List<WTableColumn>)));
+  }
+
+  List<DataRow> get rows2 {
+    return List.generate(
+        widget.$props.data.length,
+        (index) => DataRow(
+            cells:
+                List.generate(rows.length, (index) => DataCell(rows[index]))));
+  }
+
   @override
   Widget build(BuildContext context) {
     return borderWrapper(
@@ -102,17 +117,38 @@ class _WTableState extends State<WTable> {
     return WEmpty(const Text('暂无数据'));
   }
 
+  addActualFields(
+      List<WTableColumn> _columns, List<WTableColumn> actualFields) {
+    for (var column in _columns) {
+      if (column.$slots.defaultSlot is List<WTableColumn>) {
+        addActualFields(
+            column.$slots.defaultSlot as List<WTableColumn>, actualFields);
+      } else {
+        actualFields.add(column);
+      }
+    }
+  }
+
+  List<WTableColumn> get actualFields {
+    List<WTableColumn> columns = widget.$slots.defaultSlot != null
+        ? widget.$slots.defaultSlot as List<WTableColumn>
+        : <WTableColumn>[];
+    var actualFields = <WTableColumn>[];
+    addActualFields(columns, actualFields);
+    return actualFields;
+  }
+
   List<MouseStateBuilder> get rows {
     var rowLen = widget.$props.data.length;
     List<MouseStateBuilder> rows = List.generate(rowLen, (r) {
       dynamic rowData = widget.$props.data[r];
       return MouseStateBuilder(builder: (context, state) {
-        var columnLen = widget.$slots.defaultSlot!.length;
+        var columnLen = actualFields.length;
         var row = Row(
           children: List.generate(
-            widget.$slots.defaultSlot!.length,
+            columnLen,
             (c) {
-              var column = widget.$slots.defaultSlot![c] as WTableColumn;
+              var column = actualFields[c];
               return _cellBorderWrapper(
                 cellWidget(column, rowData),
                 columnLen,
@@ -242,11 +278,7 @@ class _WTableState extends State<WTable> {
       return Column(
         children: [
           Text(column.$props.label ?? ''),
-          ...List.generate(
-            column.$slots.defaultSlot!.length,
-            (index) =>
-                getHeader(column.$slots.defaultSlot as List<WTableColumn>),
-          )
+          getHeader(column.$slots.defaultSlot as List<WTableColumn>)
         ],
       );
     }
@@ -387,7 +419,7 @@ class WTableSlot extends BaseSlot {
   @override
   setDefaultSlot() {
     var columns = defaultSlotBefore;
-    if (columns == null) defaultSlot = [];
+    if (columns == null && defaultSlot == null) defaultSlot = [];
     if (columns is List<WTableColumn>) {
       defaultSlot = columns;
     } else {
@@ -535,28 +567,28 @@ class WTableColumnSlot extends BaseSlot {
   // Function([dynamic value, dynamic row, WTableColumn column])? cellBuilder;
   WTableColumnSlot(defaultSlotBefore, {this.header}) : super(defaultSlotBefore);
 
-  // @override
-  // setDefaultSlot() {
-  //   super.setDefaultSlot();
-  //   if (defaultSlot != null && defaultSlot!.isNotEmpty) return;
-  //   var columns = defaultSlotBefore;
-  //   if (columns == null) defaultSlot = [];
-  //   if (columns is List<WTableColumn>) {
-  //     defaultSlot = columns;
-  //   } else if (columns is List<dynamic>) {
-  //     var _columns = <WTableColumn>[];
-  //     columns.forEach((column) {
-  //       if (column is WTableColumn) {
-  //         _columns.add(column);
-  //       } else if (column is WTableColumnProp) {
-  //         _columns.add(WTableColumn(props: column));
-  //       } else {
-  //         throw Exception('目前仅支持 List<WTableColumnProp> 与 List<WTableColumn> ');
-  //       }
-  //     });
-  //     defaultSlot = _columns;
-  //   } else {}
-  // }
+  @override
+  setDefaultSlot() {
+    if (defaultSlot != null && defaultSlot!.isNotEmpty) return;
+    var columns = defaultSlotBefore;
+    if (columns == null && defaultSlot != null) {
+      defaultSlot = [];
+    } else if (columns is List<WTableColumn>) {
+      defaultSlot = columns;
+    } else if (columns is List<dynamic>) {
+      var _columns = <WTableColumn>[];
+      columns.forEach((column) {
+        if (column is WTableColumn) {
+          _columns.add(column);
+        } else if (column is WTableColumnProp) {
+          _columns.add(WTableColumn(props: column));
+        } else {
+          throw Exception('目前仅支持 List<WTableColumnProp> 与 List<WTableColumn> ');
+        }
+      });
+      defaultSlot = _columns;
+    }
+  }
 
   // @override
   // setDefaultSlot() {
