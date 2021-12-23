@@ -273,7 +273,9 @@ class _WTableState extends State<WTable> {
   }
 
   Widget getHeaderCell(WTableColumn column) {
-    if (column.$slots.defaultSlot != null &&
+    if (column.$slots.header != null) {
+      return column.$slots.header!.call(column);
+    } else if (column.$slots.defaultSlot != null &&
         column.$slots.defaultSlot!.isNotEmpty) {
       return Column(
         children: [
@@ -563,7 +565,7 @@ class WTableColumnProp extends BaseProp {
 }
 
 class WTableColumnSlot extends BaseSlot {
-  Widget Function(dynamic row)? header;
+  Widget Function(dynamic column)? header;
   // Function([dynamic value, dynamic row, WTableColumn column])? cellBuilder;
   WTableColumnSlot(defaultSlotBefore, {this.header}) : super(defaultSlotBefore);
 

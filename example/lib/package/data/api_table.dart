@@ -7,10 +7,10 @@ import 'package:wao_ui/src/basic/w_button.dart';
 
 class ApiTable extends StatelessWidget {
   var testData = <Map<dynamic, dynamic>>[
-    {'date': '2016-05-03', 'name': '王小虎', 'address': '上海市普陀区金沙江路 1516 弄'},
-    {'date': '2016-05-01', 'name': '王小虎', 'address': '上海市普陀区金沙江路 1519 弄'},
-    {'date': '2016-05-02', 'name': '王小虎', 'address': '上海市普陀区金沙江路 1518 弄'},
-    {'date': '2016-05-04', 'name': '王小虎', 'address': '上海市普陀区金沙江路 1517 弄'},
+    {'date': '2016-05-03', 'name': '王小虎1', 'address': '上海市普陀区金沙江路 1516 弄'},
+    {'date': '2016-05-01', 'name': '王小虎2', 'address': '上海市普陀区金沙江路 1519 弄'},
+    {'date': '2016-05-02', 'name': '王小虎3', 'address': '上海市普陀区金沙江路 1518 弄'},
+    {'date': '2016-05-04', 'name': '王小虎4', 'address': '上海市普陀区金沙江路 1517 弄'},
   ];
 
   var testData2 = [
@@ -403,7 +403,7 @@ class ApiTable extends StatelessWidget {
         [
           WTableColumnProp(
             type: 'selection',
-            width: '55',
+            width: '40',
           ),
           ...testColumns2
         ],
@@ -597,7 +597,7 @@ class ApiTable extends StatelessWidget {
     );
   }
 
-  var lacyTreeData = [
+  var lazyTreeData = [
     {
       "id": 1,
       "date": "2016-05-02",
@@ -628,7 +628,7 @@ class ApiTable extends StatelessWidget {
   Widget get lazyTreeTable {
     return WTable(
       props: WTableProp(
-        data: lacyTreeData,
+        data: lazyTreeData,
         rowKey: (row) => row['id'],
         border: true,
         lazy: true,
@@ -658,22 +658,27 @@ class ApiTable extends StatelessWidget {
   }
 
   Widget get headerSlotTable {
-    var search;
-    return WTable(
+    var search = TextEditingController();
+    late WTable table;
+
+    getData() {
+      var d = [];
+      var filted = testData.where(
+        (data) {
+          var _search = search.text;
+          print(
+              '过滤了 ${(data['name'].toLowerCase() as String).contains(_search.toLowerCase())}');
+          return (data['name'].toLowerCase() as String)
+              .contains(_search.toLowerCase());
+        },
+      );
+      d.addAll(filted);
+      return d;
+    }
+
+    return table = WTable(
       props: WTableProp(
-        data: () {
-          var d = [];
-          var filted = testData.where(
-            (data) {
-              return search == null ||
-                  search.length == 0 ||
-                  (data['name'].toLowerCase() as String)
-                      .contains(search.toLowerCase() as String);
-            },
-          );
-          d.addAll(filted);
-          return d;
-        }(),
+        data: getData(),
       ),
       slots: WTableSlot(
         [
@@ -682,9 +687,12 @@ class ApiTable extends StatelessWidget {
           WTableColumn(
             props: WTableColumnProp(align: 'right'),
             slots: WTableColumnSlot(testColumns2.last, header: (row) {
-              return FormField(builder: (context) {
-                return Text('');
-              });
+              print('custom header invoked!');
+              return TextField(
+                  controller: search,
+                  onChanged: (e) {
+                    table.data = getData();
+                  });
             }),
           )
         ],
