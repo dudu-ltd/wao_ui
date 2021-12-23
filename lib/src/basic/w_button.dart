@@ -74,7 +74,7 @@ class WButton extends StatelessWidget
       splashColor: colors.splashColor.withOpacity(.3),
       focusColor: colors.focus,
       hoverColor: colors.hover,
-      // highlightColor: colors.highlight,
+      highlightColor: colors.highlight,
       borderRadius: BorderRadius.all(radius),
       onTap: $on.click,
       child: btn,

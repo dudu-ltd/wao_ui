@@ -55,6 +55,13 @@ class WBorderStyle {
   }
 }
 
+class WBorder {
+  static Border all(String? k, [String? type]) {
+    double radius = cfgGlobal.borderStyle.val(k);
+    return Border.all(width: radius, color: cfgGlobal.color.val(type).shade300);
+  }
+}
+
 class WBorderRadius {
   double none = 0.0;
   double mini = 2.0;
@@ -131,7 +138,7 @@ class WPadding {
     return _instance;
   }
 
-  double val(String k) {
+  double val(String? k) {
     return k == 'none'
         ? none
         : k == 'mini'
