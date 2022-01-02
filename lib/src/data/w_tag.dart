@@ -41,56 +41,15 @@ class WTag extends StatelessWidget
     );
   }
 
-  EdgeInsets get padding {
-    return EdgeInsets.fromLTRB(paddingH, paddingV, paddingH, paddingV);
-  }
-
-  double get paddingV {
-    return cfgGlobal.padding.val($props.size!);
-  }
-
-  double get paddingH {
-    return paddingV / .4;
-  }
-
-  BoxDecoration get decoration {
-    BoxDecoration decoration = BoxDecoration(
-        color: backgroundColor,
-        border: WBorder.all($props.size, $props.type),
-        borderRadius: BorderRadius.all(
-            Radius.circular(cfgGlobal.borderRadius.val($props.size))));
-    return decoration;
-  }
-
-  Color get backgroundColor {
-    return $props.isDark
-        ? color
-        : $props.isPlain
-            ? Colors.white
-            : color.shade100;
-  }
-
-  Color get fontColor {
-    return $props.isDark ? Colors.white : color.shade700;
-  }
-
-  MaterialColor get color {
-    return cfgGlobal.color.val($props.type);
-  }
-
   List<Widget> get closeButton {
     return $props.closable
         ? [
             marginWrapper(
               closeButtonMain,
-              EdgeInsets.only(left: paddingV),
+              EdgeInsets.only(left: paddingH),
             )
           ]
         : [];
-  }
-
-  Color get closeButtonBackground {
-    return $props.isDark ? color.shade200 : color;
   }
 
   Widget get closeButtonMain {
@@ -131,6 +90,48 @@ class WTag extends StatelessWidget
       }
     }
     return [];
+  }
+
+  EdgeInsets get padding {
+    return EdgeInsets.fromLTRB(
+        paddingH, paddingV, $props.closable ? paddingV : paddingH, paddingV);
+  }
+
+  double get paddingV {
+    return cfgGlobal.padding.val($props.size!);
+  }
+
+  double get paddingH {
+    return paddingV / .4;
+  }
+
+  BoxDecoration get decoration {
+    BoxDecoration decoration = BoxDecoration(
+        color: backgroundColor,
+        border: WBorder.all($props.size, $props.type),
+        borderRadius: BorderRadius.all(
+            Radius.circular(cfgGlobal.borderRadius.val($props.size))));
+    return decoration;
+  }
+
+  Color get backgroundColor {
+    return $props.isDark
+        ? color
+        : $props.isPlain
+            ? Colors.white
+            : color.shade50;
+  }
+
+  Color get fontColor {
+    return $props.isDark ? Colors.white : color.shade700;
+  }
+
+  MaterialColor get color {
+    return cfgGlobal.color.val($props.type);
+  }
+
+  Color get closeButtonBackground {
+    return $props.isDark ? color.shade200 : color;
   }
 }
 

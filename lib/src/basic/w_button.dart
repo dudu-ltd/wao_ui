@@ -50,7 +50,14 @@ class WButton extends StatelessWidget
         var btn = Container(
           alignment: Alignment.center,
           constraints: BoxConstraints(minWidth: cfgGlobal.button.minWidth),
-          padding: EdgeInsets.fromLTRB(paddingH, paddingV, paddingH, paddingV),
+          padding: EdgeInsets.fromLTRB(
+            $props.icon != null && !$props.circle ? paddingH - 4 : paddingH,
+            paddingV,
+            $props.iconRight != null && !$props.circle
+                ? paddingH - 4
+                : paddingH,
+            paddingV,
+          ),
           decoration: BoxDecoration(
             color: $props.active ? colors.focus : null,
             borderRadius: BorderRadius.all(radius),
@@ -61,7 +68,23 @@ class WButton extends StatelessWidget
                   )
                 : null,
           ),
-          child: $slots.defaultSlot![0],
+          child: Row(
+            children: [
+              if ($props.icon != null)
+                Icon(
+                  $props.icon,
+                  color: colors.inner,
+                  size: 16,
+                ),
+              $slots.defaultSlot![0],
+              if ($props.iconRight != null)
+                Icon(
+                  $props.iconRight,
+                  color: colors.inner,
+                  size: 16,
+                ),
+            ],
+          ),
         );
         return _inkWellWrapper(btn, colors, radius);
       },
@@ -175,6 +198,7 @@ class WButtonProp extends BaseProp {
   late bool loading;
   late bool disabled;
   IconData? icon;
+  IconData? iconRight;
   late bool autofocus;
 
   late bool active;
@@ -188,6 +212,7 @@ class WButtonProp extends BaseProp {
     loading,
     disabled,
     icon,
+    iconRight,
     autofocus,
     active,
   }) {
@@ -199,6 +224,7 @@ class WButtonProp extends BaseProp {
     this.loading = loading ?? false;
     this.disabled = disabled ?? false;
     this.icon = icon;
+    this.iconRight = iconRight;
     this.autofocus = autofocus ?? false;
     this.active = active ?? false;
   }
