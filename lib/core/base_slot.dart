@@ -10,6 +10,10 @@ class BaseSlot {
     return _defaultSlotBefore;
   }
 
+  Widget get first {
+    return defaultSlot == null ? Container() : defaultSlot![0];
+  }
+
   set defaultSlotBefore(defaultSlotBefore) {
     _defaultSlotBefore = defaultSlotBefore;
     setDefaultSlot();

@@ -115,37 +115,37 @@ class ApiButton extends StatelessWidget {
         slots: WButtonSlot(
           Icons.search,
         ),
-        props: WButtonProp(circle: true, icon: Icons.edit, type: 'text'),
+        props: WButtonProp(circle: true, type: 'text'),
       ),
       WButton(
         slots: WButtonSlot(
           Icons.edit,
         ),
-        props: WButtonProp(circle: true, icon: Icons.edit, type: 'primary'),
+        props: WButtonProp(circle: true, type: 'primary'),
       ),
       WButton(
         slots: WButtonSlot(
           Icons.check,
         ),
-        props: WButtonProp(circle: true, icon: Icons.edit, type: 'success'),
+        props: WButtonProp(circle: true, type: 'success'),
       ),
       WButton(
         slots: WButtonSlot(
           Icons.message,
         ),
-        props: WButtonProp(circle: true, icon: Icons.edit, type: 'info'),
+        props: WButtonProp(circle: true, type: 'info'),
       ),
       WButton(
         slots: WButtonSlot(
           Icons.star,
         ),
-        props: WButtonProp(circle: true, icon: Icons.edit, type: 'warning'),
+        props: WButtonProp(circle: true, type: 'warning'),
       ),
       WButton(
         slots: WButtonSlot(
           Icons.delete,
         ),
-        props: WButtonProp(circle: true, icon: Icons.edit, type: 'danger'),
+        props: WButtonProp(circle: true, type: 'danger'),
       ),
     ];
     var iconTextBtnGroup = [
@@ -153,7 +153,7 @@ class ApiButton extends StatelessWidget {
         slots: WButtonSlot(
           '搜索',
         ),
-        props: WButtonProp(circle: true, icon: Icons.edit, type: 'text'),
+        props: WButtonProp(circle: true, icon: Icons.search, type: 'text'),
       ),
       WButton(
         slots: WButtonSlot(
@@ -223,6 +223,9 @@ class ApiButton extends StatelessWidget {
         ),
         Row(
           children: iconBtnGroup,
+        ),
+        Row(
+          children: iconTextBtnGroup,
         ),
         Row(
           children: sizeBtnGroup,

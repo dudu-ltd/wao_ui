@@ -58,7 +58,7 @@ class WBorderStyle {
 class WBorder {
   static Border all(String? k, [String? type]) {
     double radius = cfgGlobal.borderStyle.val(k);
-    return Border.all(width: radius, color: cfgGlobal.color.val(type).shade300);
+    return Border.all(width: .5, color: cfgGlobal.color.val(type).shade200);
   }
 }
 
