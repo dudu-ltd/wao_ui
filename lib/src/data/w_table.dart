@@ -229,7 +229,11 @@ class _WTableState extends State<WTable> {
       child = column.$slots.defaultSlot;
     } else {
       var val = column.$props.prop == null ? '' : column.$props.prop?.call(row);
-      child = Text('$val');
+      child = Text(
+        '$val',
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      );
     }
     if (child is List<Widget>) {
       return Row(children: child);

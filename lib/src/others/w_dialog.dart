@@ -18,8 +18,7 @@ class WDialog extends StatelessWidget
 
   Function(bool value)? show;
 
-  WDialog(
-    Widget defaultSlot, {
+  WDialog({
     Key? key,
     WDialogOn? on,
     WDialogProp? props,
@@ -28,7 +27,7 @@ class WDialog extends StatelessWidget
     $on = on ?? WDialogOn();
     $props = props ?? WDialogProp();
     $props._widget = this;
-    $slots = slots ?? WDialogSlot(defaultSlot);
+    $slots = slots ?? WDialogSlot(null);
   }
 
   setShow(BuildContext context) {
@@ -59,7 +58,7 @@ class WDialog extends StatelessWidget
         alignment: getAlign(context),
         title:
             $slots.title ?? ($props.title != null ? Text($props.title!) : null),
-        content: $slots.defaultSlot![0],
+        content: $slots.first,
         actions: $slots.footer == null
             ? []
             : List.generate(

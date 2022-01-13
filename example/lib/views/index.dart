@@ -1,6 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/package/Index.dart';
+import 'package:example/package/opengl/api_gl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/src/basic/w_container_layout.dart';
@@ -121,6 +122,7 @@ class _IndexPageState extends State<IndexPage> {
     'WPopover': ApiPopover(),
     'WTimeline': ApiTimeline(),
     'WTooltip': ApiTooltip(),
+    'ApiGl': ApiGl(),
   };
 
   RoutePageBuilder getNext(String routeName) {
@@ -134,7 +136,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'WDropdown',
+      initialRoute: 'WRadio',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -235,6 +237,13 @@ class _IndexPageState extends State<IndexPage> {
                       {"id": "WMessage", "text": "WMessage"},
                       {"id": "WMessageBox", "text": "WMessageBox"},
                       {"id": "WNotification", "text": "WNotification"}
+                    ]
+                  },
+                  {
+                    "id": "opengl",
+                    "text": "opengl",
+                    "children": [
+                      {"id": "ApiGl", "text": "ApiGl"},
                     ]
                   },
                   {
