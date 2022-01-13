@@ -27,6 +27,8 @@ class CfgGlobal {
 
   WTableStyle table = WTableStyle();
 
+  WRadioStyle radio = WRadioStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -65,9 +67,9 @@ class WBorder {
 class WBorderRadius {
   double none = 0.0;
   double mini = 2.0;
-  double small = 4.0;
-  double medium = 6.0;
-  double large = 8.0;
+  double small = 3.0;
+  double medium = 4.0;
+  double large = 5.0;
   double circle = 30.0;
   double round = 30.0;
 
@@ -308,4 +310,22 @@ class WTableStyle {
   BorderSide rowNoBorder = const BorderSide(width: 0);
   BorderSide rowBorder = BorderSide(width: .5, color: Colors.grey.shade300);
   EdgeInsets cellMargin = const EdgeInsets.fromLTRB(5, 2, 5, 2);
+}
+
+class WRadioStyle {
+  double iconRadioMini = 4.0;
+  double iconRadioSmall = 5.0;
+  double iconRadioMedium = 6.0;
+  double iconRadioLarge = 7.0;
+  double val(String k) {
+    return k == 'large'
+        ? iconRadioLarge
+        : k == 'medium'
+            ? iconRadioMedium
+            : k == 'small'
+                ? iconRadioSmall
+                : k == 'mini'
+                    ? iconRadioMini
+                    : iconRadioLarge;
+  }
 }

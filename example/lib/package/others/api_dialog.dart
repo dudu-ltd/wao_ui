@@ -4,13 +4,12 @@ import 'package:wao_ui/src/others/w_dialog.dart';
 
 class ApiDialog extends StatelessWidget {
   late WDialog baseDialog = WDialog(
-    const Text('无标题弹窗'),
     props: WDialogProp(btn: '无标题弹窗', top: '20vh'),
+    slots: WDialogSlot(const Text('无标题弹窗')),
   );
 
   late WDialog titleDialog = WDialog(
-    const Text('标题弹窗'),
-    slots: WDialogSlot(null,
+    slots: WDialogSlot(Text('标题弹窗'),
         title: Row(
           children: const [
             Icon(Icons.flutter_dash),
@@ -21,14 +20,12 @@ class ApiDialog extends StatelessWidget {
   );
 
   late WDialog customBtnDialog = WDialog(
-    const Text('自定义按钮弹窗'),
-    slots: WDialogSlot(null, btn: const Icon(Icons.ac_unit)),
+    slots: WDialogSlot(const Text('自定义按钮弹窗'), btn: const Icon(Icons.ac_unit)),
   );
   late WDialog nestedBtnDialog = WDialog(
-    const Text('自定义按钮弹窗'),
     props: WDialogProp(title: "我是标题", appendToBody: true),
     slots: WDialogSlot(
-      null,
+      Text('自定义按钮弹窗'),
       btn: const Icon(Icons.edit_location_rounded),
       footer: [
         TextButton(
@@ -46,9 +43,8 @@ class ApiDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     late WDialog customActionDialog;
     customActionDialog = WDialog(
-      const Text('自定义按钮弹窗'),
       slots: WDialogSlot(
-        null,
+        const Text('自定义按钮弹窗'),
         btn: const Icon(Icons.ac_unit),
         footer: [
           TextButton(

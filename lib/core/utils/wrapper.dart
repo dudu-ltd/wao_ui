@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 Widget borderWrapper(Widget child, Border? border, bool needBorder,
-    {EdgeInsets? padding, EdgeInsets? margin}) {
+    {EdgeInsets? padding, EdgeInsets? margin, BorderRadius? borderRadius}) {
   if (needBorder) {
     return Container(
       decoration: BoxDecoration(
+        borderRadius: borderRadius,
         border: border,
       ),
       padding: padding,

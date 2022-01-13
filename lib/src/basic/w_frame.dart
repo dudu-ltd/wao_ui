@@ -46,10 +46,7 @@ class WFrame extends StatelessWidget
                     : Container(),
                 $slots.header != null
                     ? MoveWindow(
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: $slots.header,
-                        ),
+                        child: $slots.header,
                       )
                     : Container(),
                 Expanded(child: MoveWindow()),

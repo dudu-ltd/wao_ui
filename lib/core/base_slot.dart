@@ -10,6 +10,10 @@ class BaseSlot {
     return _defaultSlotBefore;
   }
 
+  bool get hasDefault {
+    return defaultSlot != null;
+  }
+
   Widget get first {
     return defaultSlot == null ? Container() : defaultSlot![0];
   }

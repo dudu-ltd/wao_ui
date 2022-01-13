@@ -1,8 +1,14 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/src/basic/w_button.dart';
 
 class WUpload extends StatelessWidget
     implements BaseWidget<WUploadOn, WUploadProp, WUploadSlot> {
@@ -14,6 +20,11 @@ class WUpload extends StatelessWidget
 
   @override
   late final WUploadSlot $slots;
+
+  Map<String, WFilePicker> platformPicker = {
+    'web': WebFilePicker(),
+    'pc': PcFilePicker(),
+  };
 
   WUpload({
     Key? key,
@@ -28,7 +39,30 @@ class WUpload extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: WButton(
+        on: WButtonOn(
+          click: () async {
+            String? outputFile = await FilePicker.platform.saveFile(
+              dialogTitle: 'Please select an output file:',
+              fileName: 'output-file.pdf',
+            );
+
+            print(outputFile);
+            if (outputFile == null) {
+              // User canceled the picker
+            }
+            platformPicker[platform]?.doPicker((result) {
+              print(result);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  String get platform {
+    return kIsWeb ? 'web' : 'pc';
   }
 
   clearFiles() {}
@@ -71,4 +105,39 @@ class WUploadSlot extends BaseSlot {
   Widget? trigger;
   Widget? tip;
   WUploadSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+abstract class WFilePicker {
+  doPicker(Function(FilePickerResult) callback);
+}
+
+class PcFilePicker extends WFilePicker {
+  doPicker(Function(FilePickerResult) callback) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      print(result.files.single.path!);
+      File file = File(result.files.single.path!);
+      print(file);
+      callback.call(result);
+      print('pc');
+    } else {
+      // User canceled the picker
+    }
+  }
+}
+
+class WebFilePicker extends WFilePicker {
+  doPicker(Function(FilePickerResult) callback) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      Uint8List fileBytes = result.files.first.bytes!;
+      String fileName = result.files.first.name;
+
+      callback.call(result);
+      print(fileName);
+      print('web');
+    }
+  }
 }
