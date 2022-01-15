@@ -46,21 +46,48 @@ class WInputNumberOn extends BaseOn {
 }
 
 class WInputNumberProp extends BaseProp {
-  /**
-      value / v-model	绑定值	number	—	0
-      min	设置计数器允许的最小值	number	—	-Infinity
-      max	设置计数器允许的最大值	number	—	Infinity
-      step	计数器步长	number	—	1
-      step-strictly	是否只能输入 step 的倍数	boolean	—	false
-      precision	数值精度	number	—	—
-      size	计数器尺寸	string	large, small	—
-      disabled	是否禁用计数器	boolean	—	false
-      controls	是否使用控制按钮	boolean	—	true
-      controls-position	控制按钮位置	string	right	-
-      name	原生属性	string	—	—
-      label	输入框关联的label文字	string	—	—
-      placeholder	输入框默认 placeholder	string	-	-
-   */
+  late ValueNotifier<num> value;
+  late num min;
+  late num max;
+  late num step;
+  late bool stepStrictly;
+  num? precision;
+  String? size;
+  late bool disabled;
+  late bool controls;
+  String? controlsPosition;
+  String? name;
+  String? label;
+  String? placeholder;
+  WInputNumberProp({
+    value,
+    num? min,
+    num? max,
+    num? step,
+    bool? stepStrictly,
+    num? precision,
+    String? size,
+    bool? disabled,
+    bool? controls,
+    String? controlsPosition,
+    String? name,
+    String? label,
+    String? placeholder,
+  }) {
+    this.value = value;
+    this.min = min ?? -double.infinity;
+    this.max = max ?? double.infinity;
+    this.step = step ?? 1;
+    this.stepStrictly = stepStrictly ?? false;
+    this.precision = precision;
+    this.size = size;
+    this.disabled = disabled ?? false;
+    this.controls = controls ?? true;
+    this.controlsPosition = controlsPosition;
+    this.name = name;
+    this.label = label;
+    this.placeholder = placeholder;
+  }
 }
 
 class WInputNumberSlot extends BaseSlot {

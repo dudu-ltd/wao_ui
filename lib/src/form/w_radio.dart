@@ -3,6 +3,7 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
@@ -281,10 +282,10 @@ class WRadioGroupProp extends BaseProp {
     this.value = value ?? ValueNotifier('');
     this.disabled = disabled ?? false;
     textColor = textColor ?? '#FFFFFF';
-    this.textColor = Color(int.parse(textColor.replaceAll('#', '0xFF')));
+    this.textColor = ColorUtil.hexToColor(textColor);
     this.size = size ?? 'medium';
     fill = fill ?? '#409EFF';
-    this.fill = Color(int.parse(fill.replaceAll('#', '0xFF')));
+    this.fill = ColorUtil.hexToColor(fill);
   }
 }
 

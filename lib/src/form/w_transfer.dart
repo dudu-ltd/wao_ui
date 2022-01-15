@@ -60,6 +60,51 @@ class WTransferProp extends BaseProp {
       left-default-checked	初始状态下左侧列表的已勾选项的 key 数组	array	—	[ ]
       right-default-checked	初始状态下右侧列表的已勾选项的 key 数组	array	—	[ ]
    */
+  late ValueNotifier<List> value;
+  late List<WTransferData> data;
+  late bool filterable;
+  late String filterPlaceholder;
+  late Function? filterMethod;
+  late String targetOrder;
+  late List<String> titles;
+  late List<String> buttonTexts;
+  late Function(Function, dynamic)? renderContent;
+  late String format;
+  late WTransferData props;
+  late List leftDefaultChecked;
+  late List rightDefaultChecked;
+
+  WTransferProp({
+    ValueNotifier<List>? value,
+    List<WTransferData>? data,
+    bool? filterable,
+    String? filterPlaceholder,
+    Function? filterMethod,
+    String? targetOrder,
+    List<String>? titles,
+    List<String>? buttonTexts,
+    Function(Function, dynamic)? renderContent,
+    String? format,
+    WTransferData? props,
+    List? leftDefaultChecked,
+    List? rightDefaultChecked,
+  }) {
+    this.value = value ?? ValueNotifier<List>([]);
+    this.data = data ?? [];
+    this.filterable = filterable ?? false;
+    this.filterPlaceholder = filterPlaceholder ?? '请输入搜索内容';
+    this.filterMethod = filterMethod;
+    this.targetOrder = targetOrder ?? 'original';
+    this.titles = titles ?? ['列表 1', '列表 2'];
+    this.buttonTexts = buttonTexts ?? [];
+    this.renderContent = renderContent;
+    this.format = format ??
+        '{ noChecked: \'\${checked}/\${total}\', hasChecked: \'\${checked}/\${total}\' }';
+    this.props = props ??
+        WTransferData(key: 'key', label: 'label', disabled: 'disabled');
+    this.leftDefaultChecked = leftDefaultChecked ?? [];
+    this.rightDefaultChecked = rightDefaultChecked ?? [];
+  }
 }
 
 class WTransferSlot extends BaseSlot {
@@ -67,4 +112,15 @@ class WTransferSlot extends BaseSlot {
   Widget? rightFooter;
   WTransferSlot(defaultSlotBefore, {this.leftFooter, this.rightFooter})
       : super(defaultSlotBefore);
+}
+
+class WTransferData {
+  dynamic key;
+  dynamic label;
+  dynamic disabled;
+  WTransferData({
+    this.key,
+    this.label,
+    this.disabled = false,
+  });
 }

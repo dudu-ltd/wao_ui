@@ -40,26 +40,64 @@ class WSliderOn extends BaseOn {
 }
 
 class WSliderProp extends BaseProp {
-  /**
-      value / v-model	绑定值	number	—	0
-      min	最小值	number	—	0
-      max	最大值	number	—	100
-      disabled	是否禁用	boolean	—	false
-      step	步长	number	—	1
-      show-input	是否显示输入框，仅在非范围选择时有效	boolean	—	false
-      show-input-controls	在显示输入框的情况下，是否显示输入框的控制按钮	boolean	—	true
-      input-size	输入框的尺寸	string	large / medium / small / mini	small
-      show-stops	是否显示间断点	boolean	—	false
-      show-tooltip	是否显示 tooltip	boolean	—	true
-      format-tooltip	格式化 tooltip message	function(value)	—	—
-      range	是否为范围选择	boolean	—	false
-      vertical	是否竖向模式	boolean	—	false
-      height	Slider 高度，竖向模式时必填	string	—	—
-      label	屏幕阅读器标签	string	—	—
-      debounce	输入时的去抖延迟，毫秒，仅在show-input等于true时有效	number	—	300
-      tooltip-class	tooltip 的自定义类名	string	—	—
-      marks	标记， key 的类型必须为 number 且取值在闭区间 [min, max] 内，每个标记可以单独设置样式	object	—	—
-   */
+  late ValueNotifier<num> value;
+  late num min;
+  late num max;
+  late bool disabled;
+  late num step;
+  late bool showInput;
+  late bool showInputControls;
+  late String inputSize;
+  late bool showStops;
+  late bool showTooltip;
+  String Function(num)? formatTooltip;
+  late bool range;
+  late bool vertical;
+  String? height;
+  String? label;
+  late num debounce;
+  String? tooltipClass;
+  late dynamic marks;
+
+  WSliderProp({
+    ValueNotifier<num>? value,
+    num? min,
+    num? max,
+    bool? disabled,
+    num? step,
+    bool? showInput,
+    bool? showInputControls,
+    String? inputSize,
+    bool? showStops,
+    bool? showTooltip,
+    String Function(num)? formatTooltip,
+    bool? range,
+    bool? vertical,
+    String? height,
+    String? label,
+    num? debounce,
+    String? tooltipClass,
+    dynamic marks,
+  }) {
+    this.value = value ?? ValueNotifier<num>(0);
+    this.min = min ?? 0;
+    this.max = max ?? 100;
+    this.disabled = disabled ?? false;
+    this.step = step ?? 1;
+    this.showInput = showInput ?? false;
+    this.showInputControls = showInputControls ?? true;
+    this.inputSize = inputSize ?? 'small';
+    this.showStops = showStops ?? false;
+    this.showTooltip = showTooltip ?? true;
+    this.formatTooltip = formatTooltip;
+    this.range = range ?? false;
+    this.vertical = vertical ?? false;
+    this.height = height;
+    this.label = label;
+    this.debounce = debounce ?? 300;
+    this.tooltipClass = tooltipClass;
+    this.marks = marks;
+  }
 }
 
 class WSliderSlot extends BaseSlot {
