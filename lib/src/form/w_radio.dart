@@ -83,7 +83,7 @@ class _WRadioState extends State<WRadio> {
             )
           ]),
         ),
-        Border.fromBorderSide(BorderSide(width: 1, color: labelColor)),
+        Border.fromBorderSide(BorderSide(width: 1, color: borderColor)),
         widget.$props.border,
         borderRadius: BorderRadius.all(
           Radius.circular(
@@ -92,6 +92,14 @@ class _WRadioState extends State<WRadio> {
         ),
       ),
     );
+  }
+
+  Color get borderColor {
+    return widget.$props.disabled && widget.$props.isSelected
+        ? CfgGlobal.primaryColor.shade300
+        : widget.$props.isSelected
+            ? CfgGlobal.primaryColor
+            : Colors.grey.shade300;
   }
 
   double get height {
