@@ -49,34 +49,88 @@ class WSelectOn extends BaseOn {
 }
 
 class WSelectProp extends BaseProp {
-  /**
-      value / v-model	绑定值	boolean / string / number	—	—
-      multiple	是否多选	boolean	—	false
-      disabled	是否禁用	boolean	—	false
-      value-key	作为 value 唯一标识的键名，绑定值为对象类型时必填	string	—	value
-      size	输入框尺寸	string	medium/small/mini	—
-      clearable	是否可以清空选项	boolean	—	false
-      collapse-tags	多选时是否将选中值按文字的形式展示	boolean	—	false
-      multiple-limit	多选时用户最多可以选择的项目数，为 0 则不限制	number	—	0
-      name	select input 的 name 属性	string	—	—
-      autocomplete	select input 的 autocomplete 属性	string	—	off
-      auto-complete	下个主版本弃用	string	—	off
-      placeholder	占位符	string	—	请选择
-      filterable	是否可搜索	boolean	—	false
-      allow-create	是否允许用户创建新条目，需配合 filterable 使用	boolean	—	false
-      filter-method	自定义搜索方法	function	—	—
-      remote	是否为远程搜索	boolean	—	false
-      remote-method	远程搜索方法	function	—	—
-      loading	是否正在从远程获取数据	boolean	—	false
-      loading-text	远程加载时显示的文字	string	—	加载中
-      no-match-text	搜索条件无匹配时显示的文字，也可以使用slot="empty"设置	string	—	无匹配数据
-      no-data-text	选项为空时显示的文字，也可以使用slot="empty"设置	string	—	无数据
-      popper-class	Select 下拉框的类名	string	—	—
-      reserve-keyword	多选且可搜索时，是否在选中一个选项后保留当前的搜索关键词	boolean	—	false
-      default-first-option	在输入框按下回车，选择第一个匹配项。需配合 filterable 或 remote 使用	boolean	-	false
-      popper-append-to-body	是否将弹出框插入至 body 元素。在弹出框的定位出现问题时，可将该属性设置为 false	boolean	-	true
-      automatic-dropdown	对于不可搜索的 Select，是否在输入框获得焦点后自动弹出选项菜单	boolean	-	false
-  */
+  late ValueNotifier<dynamic> value;
+  late bool multiple;
+  late bool disabled;
+  late String valueKey;
+  String? size;
+  late bool clearable;
+  late bool collapseTags;
+  late num multipleLimit;
+  String? name;
+  late String autocomplete;
+  late String autoComplete;
+  late String placeholder;
+  late bool filterable;
+  late bool allowCreate;
+  Function? filterMethod;
+  late bool remote;
+  Function? remoteMethod;
+  late bool loading;
+  late String loadingText;
+  late String noMatchText;
+  late String noDataText;
+  String? popperClass;
+  late bool reserveKeyword;
+  late bool defaultFirstOption;
+  late bool popperAppendToBody;
+  late bool automaticDropdown;
+
+  WSelectProp({
+    ValueNotifier<dynamic>? value,
+    bool? multiple,
+    bool? disabled,
+    String? valueKey,
+    String? size,
+    bool? clearable,
+    bool? collapseTags,
+    num? multipleLimit,
+    String? name,
+    String? autocomplete,
+    String? autoComplete,
+    String? placeholder,
+    bool? filterable,
+    bool? allowCreate,
+    Function? filterMethod,
+    bool? remote,
+    Function? remoteMethod,
+    bool? loading,
+    String? loadingText,
+    String? noMatchText,
+    String? noDataText,
+    String? popperClass,
+    bool? reserveKeyword,
+    bool? defaultFirstOption,
+    bool? popperAppendToBody,
+    bool? automaticDropdown,
+  }) {
+    this.value = value ?? ValueNotifier('');
+    this.multiple = multiple ?? false;
+    this.disabled = disabled ?? false;
+    this.valueKey = valueKey ?? 'value';
+    this.size = size;
+    this.clearable = clearable ?? false;
+    this.collapseTags = collapseTags ?? false;
+    this.multipleLimit = multipleLimit ?? 0;
+    this.name = name;
+    this.autocomplete = autocomplete ?? 'off';
+    this.autoComplete = autoComplete ?? 'off';
+    this.placeholder = placeholder ?? '请选择';
+    this.filterable = filterable ?? false;
+    this.allowCreate = allowCreate ?? false;
+    this.filterMethod = filterMethod;
+    this.remote = remote ?? false;
+    this.remoteMethod = remoteMethod;
+    this.loading = loading ?? false;
+    this.loadingText = loadingText ?? '加载中';
+    this.noMatchText = noMatchText ?? '无匹配数据';
+    this.noDataText = noDataText ?? '无数据';
+    this.popperClass = popperClass;
+    this.reserveKeyword = reserveKeyword ?? false;
+    this.defaultFirstOption = defaultFirstOption ?? false;
+    this.popperAppendToBody = popperAppendToBody ?? true;
+    this.automaticDropdown = automaticDropdown ?? false;
+  }
 }
 
 class WSelectSlot extends BaseSlot {

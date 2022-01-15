@@ -43,15 +43,31 @@ class WColorPickerOn extends BaseOn {
 }
 
 class WColorPickerProp extends BaseProp {
-  /**
-      value / v-model	绑定值	string	—	—
-      disabled	是否禁用	boolean	—	false
-      size	尺寸	string	medium / small / mini	—
-      show-alpha	是否支持透明度选择	boolean	—	false
-      color-format	写入 v-model 的颜色的格式	string	hsl / hsv / hex / rgb	hex（show-alpha 为 false）/ rgb（show-alpha 为 true）
-      popper-class	ColorPicker 下拉框的类名	string	—	—
-      predefine	预定义颜色	array	—	—
-   */
+  late ValueNotifier<dynamic> value;
+  late bool disabled;
+  String? size;
+  late bool showAlpha;
+  late String colorFormat;
+  String? popperClass;
+  List<Color>? predefine;
+
+  WColorPickerProp({
+    ValueNotifier<Color>? value,
+    bool? disabled,
+    String? size,
+    bool? showAlpha,
+    String? colorFormat,
+    String? popperClass,
+    List<Color>? predefine,
+  }) {
+    this.value = value ?? ValueNotifier(null);
+    this.disabled = disabled ?? false;
+    this.size = size;
+    this.showAlpha = showAlpha ?? false;
+    this.colorFormat = colorFormat ?? (this.showAlpha ? 'hex' : 'rgb');
+    this.popperClass = popperClass;
+    this.predefine = predefine;
+  }
 }
 
 class WColorPickerSlot extends BaseSlot {
