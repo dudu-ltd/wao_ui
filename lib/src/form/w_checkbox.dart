@@ -260,10 +260,12 @@ class WCheckboxGroup extends StatelessWidget
         if (child is WCheckbox) {
           child.$props.value = $props.value;
           child.$props.disabled |= $props.disabled;
+          child.$props._disabled = child.$props.disabled;
           child.$props.size = $props.size;
         } else if (child is WCheckboxButton) {
           child.$props._value = $props.value;
           child.$props.disabled |= $props.disabled;
+          child.$props._disabled = child.$props.disabled;
           child.$props._size = $props.size;
           child.$props.isFirst = i == 0;
           child.$props.isLast = i == len - 1;

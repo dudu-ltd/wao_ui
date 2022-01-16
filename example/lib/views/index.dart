@@ -122,7 +122,7 @@ class _IndexPageState extends State<IndexPage> {
     'WPopover': ApiPopover(),
     'WTimeline': ApiTimeline(),
     'WTooltip': ApiTooltip(),
-    'ApiGl': ApiGl(),
+    // 'ApiGl': ApiGl(),
   };
 
   RoutePageBuilder getNext(String routeName) {
