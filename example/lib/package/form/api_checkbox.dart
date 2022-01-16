@@ -127,8 +127,6 @@ class ApiCheckbox extends StatelessWidget {
         WCheckboxGroup(
           props: WCheckboxGroupProp(
             value: checkedCities1,
-            min: 1,
-            max: 3,
           ),
           slots: WCheckboxGroupSlot(
             List.generate(cityOptions.length, (index) {
