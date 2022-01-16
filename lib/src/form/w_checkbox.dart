@@ -40,8 +40,7 @@ class _WCheckboxState extends State<WCheckbox> {
   @override
   void initState() {
     super.initState();
-    indeterminate.value = widget.$props.indeterminate;
-    indeterminate.addListener(() {
+    widget.$props._indeterminate.addListener(() {
       setState(() {});
     });
     widget.$props.value.addListener(() {
@@ -182,7 +181,15 @@ class WCheckboxProp extends BaseProp {
   late String size;
   late String name;
   late bool checked;
-  late bool indeterminate;
+  late ValueNotifier _indeterminate;
+
+  set indeterminate(val) {
+    _indeterminate.value = val;
+  }
+
+  bool get indeterminate {
+    return _indeterminate.value;
+  }
 
   WCheckboxProp({
     ValueNotifier<dynamic>? value,
@@ -209,7 +216,7 @@ class WCheckboxProp extends BaseProp {
     // 没有选中时的值
     this.falseLabel = falseLabel;
     this.checked = checked ?? false;
-    this.indeterminate = indeterminate ?? false;
+    _indeterminate = ValueNotifier(indeterminate ?? false);
   }
   bool get isSelected {
     if (label == null && value.value is bool) return value.value;
@@ -280,7 +287,6 @@ class WCheckboxGroup extends StatelessWidget
       }
       if (checked > $props.min &&
           ($props.max == null || checked < $props.max!)) {
-        print('1rt');
         for (var i = 0; i < len; i++) {
           var child = $slots.defaultSlot![i];
           if (child is WCheckbox) {
@@ -290,7 +296,6 @@ class WCheckboxGroup extends StatelessWidget
           }
         }
       } else if (($props.max != null && checked >= $props.max!)) {
-        print('2nd');
         for (var i = 0; i < len; i++) {
           var child = $slots.defaultSlot![i];
           if (child is WCheckbox) {
@@ -308,7 +313,6 @@ class WCheckboxGroup extends StatelessWidget
           }
         }
       } else if (checked == $props.min) {
-        print('3th');
         for (var i = 0; i < len; i++) {
           var child = $slots.defaultSlot![i];
           if (child is WCheckbox) {
@@ -423,6 +427,14 @@ class WCheckboxButton extends StatefulWidget
 }
 
 class _WCheckboxButtonState extends State<WCheckboxButton> {
+  @override
+  void initState() {
+    super.initState();
+    widget.$props._value.addListener(() {
+      setState(() {});
+    });
+  }
+
   double get paddingV {
     return cfgGlobal.padding.val(widget.$props._size);
   }
