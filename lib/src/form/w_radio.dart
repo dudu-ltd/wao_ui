@@ -427,11 +427,11 @@ class WRadioButton extends StatefulWidget
 class WRadioButtonOn extends BaseOn {}
 
 class WRadioButtonProp extends BaseProp {
-  late ValueNotifier _value;
   late dynamic label;
   late bool disabled;
   late bool isFirst;
   late bool isLast;
+  late ValueNotifier _value;
   String? _size;
   String? name;
   WRadioButtonProp({

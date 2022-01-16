@@ -29,6 +29,8 @@ class CfgGlobal {
 
   WRadioStyle radio = WRadioStyle();
 
+  WCheckboxStyle checkbox = WCheckboxStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -327,5 +329,27 @@ class WRadioStyle {
                 : k == 'mini'
                     ? iconRadioMini
                     : iconRadioLarge;
+  }
+}
+
+class WCheckboxStyle {
+  double iconCheckboxMini = 10.0;
+  double iconCheckboxSmall = 12.0;
+  double iconCheckboxMedium = 14.0;
+  double iconCheckboxLarge = 16.0;
+  double val(String size) {
+    return size == 'large'
+        ? iconCheckboxLarge
+        : size == 'medium'
+            ? iconCheckboxMedium
+            : size == 'small'
+                ? iconCheckboxSmall
+                : size == 'mini'
+                    ? iconCheckboxMini
+                    : iconCheckboxLarge;
+  }
+
+  double borderRadius(String size) {
+    return val(size) * .2;
   }
 }
