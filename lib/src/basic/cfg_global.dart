@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 CfgGlobal cfgGlobal = CfgGlobal();
 
 class CfgGlobal {
+  // static MaterialColor primaryColor = Colors.deepPurple;
   static MaterialColor primaryColor = Colors.blue;
+  WFont font = WFont();
   WBorderRadius borderRadius = WBorderRadius();
   WBorderStyle borderStyle = WBorderStyle();
   WPadding padding = WPadding();
   WColor color = WColor();
   WAvatarSize avatarSize = WAvatarSize();
+
   WBadgeFont badgeFont = WBadgeFont();
 
   WBreadcrumbStyle breadcrumb = WBreadcrumbStyle();
@@ -37,6 +40,20 @@ class CfgGlobal {
 
   factory CfgGlobal() {
     return _instance;
+  }
+}
+
+class WFont {
+  double mini = 12.0;
+  double small = 13.0;
+  double medium = 14.0;
+
+  double val(String? k) {
+    return k == 'mini'
+        ? mini
+        : k == 'small'
+            ? small
+            : medium;
   }
 }
 
@@ -131,8 +148,8 @@ class WAvatarSize {
 
 class WPadding {
   double none = 0.0;
-  double mini = 3.0;
-  double small = 5.0;
+  double mini = 4.0;
+  double small = 6.0;
   double medium = 8.0;
   double large = 10.0;
 
