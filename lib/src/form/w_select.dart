@@ -141,3 +141,39 @@ class WSelectSlot extends BaseSlot {
    */
   WSelectSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
+
+class WOption extends StatelessWidget
+    implements BaseWidget<WOptionOn, WOptionProp, WOptionSlot> {
+  @override
+  late final WOptionOn $on;
+
+  @override
+  late final WOptionProp $props;
+
+  @override
+  late final WOptionSlot $slots;
+
+  WOption({
+    Key? key,
+    WOptionOn? on,
+    WOptionProp? props,
+    WOptionSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WOptionOn();
+    $props = props ?? WOptionProp();
+    $slots = slots ?? WOptionSlot(null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class WOptionOn extends BaseOn {}
+
+class WOptionProp extends BaseProp {}
+
+class WOptionSlot extends BaseSlot {
+  WOptionSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}

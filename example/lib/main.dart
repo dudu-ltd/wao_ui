@@ -3,7 +3,7 @@ import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/views/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:wao_ui/src/basic/w_frame.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 void main() {
   runApp(const Api());
@@ -27,13 +27,13 @@ class Api extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Wao ui Home',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: CfgGlobal.primaryColor,
       ),
       home: kIsWeb
           ? main
           : WFrame(
               slots: WFrameSlot(null,
-                  header: Text('Wao ui Api'),
+                  header: const Text('Wao ui Api'),
                   main: main,
                   footer: const Text('状态栏')),
             ),
