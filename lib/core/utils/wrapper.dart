@@ -83,3 +83,23 @@ Widget constWrapper(child, BoxConstraints constraints, needConst) {
   }
   return child;
 }
+
+Widget fitHeightWrapper(Widget child, {aspectRatio = 1.0, need = true}) {
+  if (need) {
+    return AspectRatio(
+      aspectRatio: aspectRatio,
+      child: FractionallySizedBox(heightFactor: 1.0, child: child),
+    );
+  }
+  return child;
+}
+
+Widget fitWidthWrapper(Widget child, {aspectRatio = 1.0, need = true}) {
+  if (need) {
+    return AspectRatio(
+      aspectRatio: aspectRatio,
+      child: FractionallySizedBox(widthFactor: 1.0, child: child),
+    );
+  }
+  return child;
+}

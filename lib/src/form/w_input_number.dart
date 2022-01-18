@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
-import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/utils/color_util.dart';
+import 'package:wao_ui/core/utils/wrapper.dart';
+
+import 'w_input.dart';
 
 class WInputNumber extends StatelessWidget
     implements BaseWidget<WInputNumberOn, WInputNumberProp, WInputNumberSlot> {
@@ -28,7 +31,101 @@ class WInputNumber extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return WInput(
+      props: $props,
+      slots: WInputSlot(
+        null,
+        prefix: controls[0],
+        suffix: controls[1],
+      ),
+    );
+  }
+
+  List<Widget?> get controls {
+    return $props.controllerIsRight
+        ? positionRightControls
+        : positionDefaultControls;
+  }
+
+  List<Widget> get positionDefaultControls {
+    return [
+      minusWrapper(
+        _fitHeightWrapper(const Icon(Icons.horizontal_rule_rounded)),
+      )!,
+      addWrapper(
+        _fitHeightWrapper(const Icon(Icons.add_rounded)),
+      )!,
+    ];
+  }
+
+  Widget _marginWapper(Widget? child) {
+    return marginWrapper(child!, const EdgeInsets.all(2));
+  }
+
+  List<Widget?> get positionRightControls {
+    return [
+      null,
+      _fitHeightWrapper(
+        Column(
+          children: [
+            Expanded(child: addWrapper(Icon(Icons.expand_less_rounded))!),
+            Divider(color: Colors.grey.shade300, height: 1),
+            Expanded(child: minusWrapper(Icon(Icons.expand_more_rounded))!),
+          ],
+        ),
+      )
+    ];
+  }
+
+  Widget? _fitHeightWrapper(Widget? child, {aspectRatio = 1.5}) {
+    if (child == null) return null;
+    return _marginWapper(
+      colorWrapper(
+        fitHeightWrapper(child, aspectRatio: aspectRatio),
+        ColorUtil.hexToColor('#F5F5F5'),
+        true,
+      ),
+    );
+  }
+
+  get newVal {
+    return double.parse($props.value) - $props.step;
+  }
+
+  newValStr(double newVal) {
+    // TODO 处理 stepStrictly 属性
+    return newVal.toStringAsFixed($props.precision);
+  }
+
+  minusFn() {
+    var newVal = (double.parse($props.value) - $props.step);
+    if ($props.min != null && newVal < $props.min!) return;
+    $props.value = newValStr(newVal);
+  }
+
+  addFn() {
+    var newVal = (double.parse($props.value) + $props.step);
+    if ($props.max != null && newVal > $props.max!) return;
+    $props.value = newValStr(newVal);
+  }
+
+  Widget? addWrapper(Widget? child) {
+    return handleWrapper(child, addFn);
+  }
+
+  Widget? minusWrapper(Widget? child) {
+    return handleWrapper(child, minusFn);
+  }
+
+  Widget? handleWrapper(Widget? child, Function() onTap, {need = true}) {
+    if (child != null && need) {
+      var handle = InkWell(
+        child: child,
+        onTap: onTap,
+      );
+      return handle;
+    }
+    return null;
   }
 
   /**
@@ -43,29 +140,28 @@ class WInputNumberOn extends BaseOn {
       blur	在组件 Input 失去焦点时触发	(event: Event)
       focus	在组件 Input 获得焦点时触发	(event: Event)
    */
+  Function? change;
+  Function? blur;
+  Function? focus;
+  WInputNumberOn({this.change, this.blur, this.focus});
 }
 
-class WInputNumberProp extends BaseProp {
-  late ValueNotifier<num> value;
-  late num min;
-  late num max;
+class WInputNumberProp extends WInputProp {
   late num step;
   late bool stepStrictly;
-  num? precision;
-  String? size;
+  late int precision;
   late bool disabled;
   late bool controls;
   String? controlsPosition;
   String? name;
   String? label;
-  String? placeholder;
   WInputNumberProp({
-    value,
+    num? value,
     num? min,
     num? max,
     num? step,
     bool? stepStrictly,
-    num? precision,
+    int? precision,
     String? size,
     bool? disabled,
     bool? controls,
@@ -73,20 +169,30 @@ class WInputNumberProp extends BaseProp {
     String? name,
     String? label,
     String? placeholder,
-  }) {
-    this.value = value;
-    this.min = min ?? -double.infinity;
-    this.max = max ?? double.infinity;
+  }) : super(
+          min: min,
+          max: max,
+          step: step,
+          size: size,
+          disabled: disabled,
+          name: name,
+          label: label,
+          placeholder: placeholder,
+          $textAlign: TextAlign.center,
+        ) {
     this.step = step ?? 1;
     this.stepStrictly = stepStrictly ?? false;
-    this.precision = precision;
-    this.size = size;
-    this.disabled = disabled ?? false;
+    this.precision = precision ?? 0;
     this.controls = controls ?? true;
     this.controlsPosition = controlsPosition;
     this.name = name;
     this.label = label;
-    this.placeholder = placeholder;
+    value = value ?? 0;
+    this.value = value.toStringAsFixed(this.precision);
+  }
+
+  bool get controllerIsRight {
+    return controlsPosition == 'right';
   }
 }
 

@@ -10,6 +10,37 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 
 import '../../core/utils/collect_util.dart';
 
+class WInput extends StatefulWidget
+    implements BaseWidget<WInputOn, WInputProp, WInputSlot> {
+  @override
+  late final WInputOn $on;
+
+  @override
+  late final WInputProp $props;
+
+  @override
+  late final WInputSlot $slots;
+
+  @override
+  _WInputState createState() => _WInputState();
+  WInput({
+    Key? key,
+    WInputOn? on,
+    WInputProp? props,
+    WInputSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WInputOn();
+    $props = props ?? WInputProp();
+    $slots = slots ?? WInputSlot(null);
+  }
+
+  /**
+      focus	使 input 获取焦点	—
+      blur	使 input 失去焦点	—
+      select	选中 input 中的文字	—
+   */
+}
+
 class _WInputState extends State<WInput> {
   bool visiblePassword = false;
 
@@ -27,8 +58,11 @@ class _WInputState extends State<WInput> {
       onChanged: (e) {
         setState(() {});
       },
+      textInputAction: widget.$props.isTextarea
+          ? TextInputAction.newline
+          : TextInputAction.next,
       controller: widget.$props._value,
-      cursorHeight: fontSize * 1.6,
+      // cursorHeight: fontSize * 1.6,
       cursorColor: Colors.grey.shade900,
       cursorWidth: 1,
       obscureText: widget.$props.showPassword && !visiblePassword,
@@ -39,6 +73,11 @@ class _WInputState extends State<WInput> {
       decoration: decoration,
       maxLength: widget.$props.maxlength,
       maxLengthEnforcement: MaxLengthEnforcement.none,
+
+      textAlignVertical: TextAlignVertical.center,
+
+      keyboardType: widget.$props.$keyboardType,
+      textAlign: widget.$props.$textAlign,
     );
   }
 
@@ -53,23 +92,33 @@ class _WInputState extends State<WInput> {
               offstage: true,
             )
           : null,
+      //
       enabled: !widget.$props.disabled,
       filled: widget.$props.disabled,
+      //
       isDense: true,
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
       prefixIconColor: placeholderColor,
       suffixIconColor: placeholderColor,
-      contentPadding: EdgeInsets.fromLTRB(fontSize, padding, padding, padding),
+      contentPadding: hasSlot
+          ? const EdgeInsets.fromLTRB(0, 0, 0, 0)
+          : EdgeInsets.fromLTRB(fontSize, padding, padding, padding),
+      // contentPadding: EdgeInsets.fromLTRB(fontSize, padding, padding, padding),
       hintStyle: TextStyle(color: placeholderColor, fontSize: fontSize),
       hintText: widget.$props.placeholder,
+      label: label,
+      alignLabelWithHint: false,
+      floatingLabelAlignment: FloatingLabelAlignment.start,
       constraints: widget.$props.isTextarea
           ? null
-          : BoxConstraints(maxHeight: maxHeight, maxWidth: 200),
+          : BoxConstraints(
+              maxHeight: maxHeight, maxWidth: 200, minHeight: maxHeight),
       focusedBorder: baseBorder,
       focusedErrorBorder: baseBorder.copyWith(
         borderSide: BorderSide(color: cfgGlobal.color.danger),
       ),
+      hoverColor: Colors.red,
       border: baseBorder.copyWith(
         borderSide: BorderSide(color: Colors.grey.shade300),
       ),
@@ -82,19 +131,14 @@ class _WInputState extends State<WInput> {
     );
   }
 
-  // Widget? get counterPainter {
-  //   var ml = widget.$props.maxlength;
-  //   return widget.$props.maxlength == null
-  //       ? null
-  //       : CustomPaint(
-  //           painter: CountPainter(
-  //             current: widget.$props._value.text.length,
-  //             total: widget.$props.maxlength ?? 0,
-  //             invalidColor: cfgGlobal.color.danger,
-  //             validColor: placeholderColor,
-  //           ),
-  //         );
-  // }
+  Widget? get label {
+    var lab = widget.$props.label;
+    return lab is String
+        ? Text(lab)
+        : lab is Widget
+            ? lab
+            : null;
+  }
 
   Widget? get counter {
     var count = widget.$props._value.text.length;
@@ -116,6 +160,10 @@ class _WInputState extends State<WInput> {
 
   bool get showCursor {
     return !widget.$props.disabled && !widget.$props.readonly;
+  }
+
+  bool get hasSlot {
+    return prefixIcon != null && suffixIcon != null;
   }
 
   Widget? get prefixIcon {
@@ -236,81 +284,6 @@ class _WInputState extends State<WInput> {
     }
     return widget.$props.rows;
   }
-
-  /**
-      focus	使 input 获取焦点	—
-      blur	使 input 失去焦点	—
-      select	选中 input 中的文字	—
-   */
-}
-
-// class CountPainter extends CustomPainter {
-//   late Color validColor;
-//   late Color invalidColor;
-//   late int total;
-//   late int current;
-
-//   CountPainter({
-//     required this.validColor,
-//     required this.invalidColor,
-//     required this.total,
-//     required this.current,
-//   });
-
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     Paint p = Paint();
-//     p.color = current > total ? invalidColor : validColor;
-//     final paragraphStyle = ParagraphStyle(
-//       // 字体方向，有些国家语言是从右往左排版的
-//       textDirection: TextDirection.ltr,
-//       // 字体对齐方式
-//       textAlign: TextAlign.justify,
-//       fontSize: 14,
-//       fontWeight: FontWeight.bold,
-//       height: 15,
-//     );
-
-//     final paragraphBuilder = ParagraphBuilder(paragraphStyle);
-//     paragraphBuilder.addText('$current/$total 111111111111');
-//     var paragraph = paragraphBuilder.build();
-//     paragraph.layout(const ParagraphConstraints(width: 30));
-//     canvas.drawParagraph(
-//       paragraph,
-//       const Offset(0, 0),
-//     );
-//   }
-
-//   @override
-//   bool shouldRepaint(CountPainter oldDelegate) => true;
-
-//   @override
-//   bool shouldRebuildSemantics(CountPainter oldDelegate) => false;
-// }
-
-class WInput extends StatefulWidget
-    implements BaseWidget<WInputOn, WInputProp, WInputSlot> {
-  @override
-  late final WInputOn $on;
-
-  @override
-  late final WInputProp $props;
-
-  @override
-  late final WInputSlot $slots;
-
-  @override
-  _WInputState createState() => _WInputState();
-  WInput({
-    Key? key,
-    WInputOn? on,
-    WInputProp? props,
-    WInputSlot? slots,
-  }) : super(key: key) {
-    $on = on ?? WInputOn();
-    $props = props ?? WInputProp();
-    $slots = slots ?? WInputSlot(null);
-  }
 }
 
 class WInputOn extends BaseOn {
@@ -342,9 +315,9 @@ class WInputProp extends BaseProp {
   late String autoComplete;
   String? name;
   late bool readonly;
-  int? max;
-  int? min;
-  int? step;
+  num? max;
+  num? min;
+  late num step;
   String? resize;
   late bool autofocus;
   late String? form;
@@ -352,12 +325,17 @@ class WInputProp extends BaseProp {
   late String? tabindex;
   late bool validateEvent;
 
+  /// 键盘类型，ElementUI 中没有的属性，加了前缀 $ 以区分
+  late TextInputType $keyboardType;
+
+  TextAlign $textAlign;
+
   set value(value) {
     _value.text = value;
   }
 
   dynamic get value {
-    return _value.value;
+    return _value.text;
   }
 
   WInputProp({
@@ -379,15 +357,18 @@ class WInputProp extends BaseProp {
     String? autoComplete,
     String? name,
     bool? readonly,
-    int? max,
-    int? min,
-    int? step,
+    num? max,
+    num? min,
+    num? step,
     String? resize,
     bool? autofocus,
     String? form,
     String? label,
     String? tabindex,
     bool? validateEvent,
+    // ElementUI 中没有的属性，加了前缀 $ 以区分
+    TextInputType? $keyboardType,
+    this.$textAlign = TextAlign.left,
   }) {
     this.type = type ?? 'text';
     this._value =
@@ -410,13 +391,17 @@ class WInputProp extends BaseProp {
     this.readonly = readonly ?? false;
     this.max = max;
     this.min = min;
-    this.step = step;
+    this.step = step ?? 1;
     this.resize = resize;
     this.autofocus = autofocus ?? false;
     this.form = form;
     this.label = label;
     this.tabindex = tabindex;
     this.validateEvent = validateEvent ?? true;
+
+    this.$keyboardType = isTextarea
+        ? TextInputType.multiline
+        : $keyboardType ?? TextInputType.text;
   }
 
   bool get isTextarea {
