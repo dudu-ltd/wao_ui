@@ -7,6 +7,7 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 
 import 'w_input.dart';
 
+// TODO 添加对键盘上下键的监听
 class WInputNumber extends StatelessWidget
     implements BaseWidget<WInputNumberOn, WInputNumberProp, WInputNumberSlot> {
   @override
@@ -68,9 +69,10 @@ class WInputNumber extends StatelessWidget
       _fitHeightWrapper(
         Column(
           children: [
-            Expanded(child: addWrapper(Icon(Icons.expand_less_rounded))!),
+            Expanded(child: addWrapper(const Icon(Icons.expand_less_rounded))!),
             Divider(color: Colors.grey.shade300, height: 1),
-            Expanded(child: minusWrapper(Icon(Icons.expand_more_rounded))!),
+            Expanded(
+                child: minusWrapper(const Icon(Icons.expand_more_rounded))!),
           ],
         ),
       )
@@ -135,26 +137,23 @@ class WInputNumber extends StatelessWidget
 }
 
 class WInputNumberOn extends BaseOn {
-  /**
-      change	绑定值被改变时触发	currentValue, oldValue
-      blur	在组件 Input 失去焦点时触发	(event: Event)
-      focus	在组件 Input 获得焦点时触发	(event: Event)
-   */
+  /// change 绑定值被改变时触发	currentValue, oldValue
   Function? change;
+
+  /// blur 在组件 Input 失去焦点时触发	(event: Event)
   Function? blur;
+
+  /// focus	在组件 Input 获得焦点时触发	(event: Event)
   Function? focus;
+
   WInputNumberOn({this.change, this.blur, this.focus});
 }
 
 class WInputNumberProp extends WInputProp {
-  late num step;
   late bool stepStrictly;
   late int precision;
-  late bool disabled;
   late bool controls;
   String? controlsPosition;
-  String? name;
-  String? label;
   WInputNumberProp({
     num? value,
     num? min,
@@ -165,7 +164,7 @@ class WInputNumberProp extends WInputProp {
     String? size,
     bool? disabled,
     bool? controls,
-    String? controlsPosition,
+    this.controlsPosition,
     String? name,
     String? label,
     String? placeholder,
@@ -184,7 +183,6 @@ class WInputNumberProp extends WInputProp {
     this.stepStrictly = stepStrictly ?? false;
     this.precision = precision ?? 0;
     this.controls = controls ?? true;
-    this.controlsPosition = controlsPosition;
     this.name = name;
     this.label = label;
     value = value ?? 0;
