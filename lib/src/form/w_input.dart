@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wao_ui/core/base_on.dart';
@@ -22,7 +20,7 @@ class WInput extends StatefulWidget
   late final WInputSlot $slots;
 
   @override
-  _WInputState createState() => _WInputState();
+  WInputState createState() => WInputState();
   WInput({
     Key? key,
     WInputOn? on,
@@ -34,15 +32,17 @@ class WInput extends StatefulWidget
     $slots = slots ?? WInputSlot(null);
   }
 
-  /**
+  /* // TODO 赋鹬组件基本的操作能力
       focus	使 input 获取焦点	—
       blur	使 input 失去焦点	—
       select	选中 input 中的文字	—
    */
 }
 
-class _WInputState extends State<WInput> {
+class WInputState extends State<WInput> {
   bool visiblePassword = false;
+  bool isHover = false;
+  bool isFocus = false;
 
   @override
   void initState() {
@@ -54,7 +54,8 @@ class _WInputState extends State<WInput> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    var textFormField = TextFormField(
+      onTap: widget.$on.click,
       onChanged: (e) {
         setState(() {});
       },
@@ -79,6 +80,28 @@ class _WInputState extends State<WInput> {
       keyboardType: widget.$props.$keyboardType,
       textAlign: widget.$props.$textAlign,
     );
+
+    var focus = Focus(
+      child: textFormField,
+      onFocusChange: (hasFocus) {
+        isFocus = hasFocus;
+        var handle = hasFocus ? widget.$on.focus : widget.$on.blur;
+        handle?.call();
+        setState(() {});
+      },
+    );
+
+    return MouseRegion(
+      child: focus,
+      onEnter: (e) {
+        isHover = true;
+        setState(() {});
+      },
+      onExit: (e) {
+        isHover = false;
+        setState(() {});
+      },
+    );
   }
 
   InputDecoration get decoration {
@@ -86,7 +109,7 @@ class _WInputState extends State<WInput> {
       borderSide: BorderSide(color: CfgGlobal.primaryColor, width: 1),
     );
 
-    return InputDecoration(
+    var inputDecoration = InputDecoration(
       counter: widget.$props.maxlength != null
           ? const Offstage(
               offstage: true,
@@ -103,8 +126,7 @@ class _WInputState extends State<WInput> {
       suffixIconColor: placeholderColor,
       contentPadding: hasSlot
           ? const EdgeInsets.fromLTRB(0, 0, 0, 0)
-          : EdgeInsets.fromLTRB(fontSize, padding, padding, padding),
-      // contentPadding: EdgeInsets.fromLTRB(fontSize, padding, padding, padding),
+          : EdgeInsets.fromLTRB(fontSize, padding, fontSize, padding),
       hintStyle: TextStyle(color: placeholderColor, fontSize: fontSize),
       hintText: widget.$props.placeholder,
       label: label,
@@ -129,6 +151,7 @@ class _WInputState extends State<WInput> {
         borderSide: BorderSide(color: Colors.grey.shade300),
       ),
     );
+    return inputDecoration;
   }
 
   Widget? get label {
@@ -191,11 +214,12 @@ class _WInputState extends State<WInput> {
       if (widget.$props.suffixIcon != null)
         Icon(widget.$props.suffixIcon, size: iconSize),
       ...widget.$slots.suffix,
-      if (widget.$props.clearable && widget.$props._value.text.isNotEmpty)
+      if (showClearIcon)
         InkWell(
           child: Icon(Icons.close_rounded, size: iconSize),
           onTap: () {
             widget.$props._value.text = '';
+            widget.$on.clear?.call();
             setState(() {});
           },
         ),
@@ -239,6 +263,12 @@ class _WInputState extends State<WInput> {
             children: [...widget.$slots.append],
           )
         : null;
+  }
+
+  bool get showClearIcon {
+    return widget.$props.clearable &&
+        widget.$props._value.text.isNotEmpty &&
+        (isHover || isFocus);
   }
 
   double get maxHeight {
@@ -287,13 +317,30 @@ class _WInputState extends State<WInput> {
 }
 
 class WInputOn extends BaseOn {
-  /**
-      blur	在 Input 失去焦点时触发	(event: Event)
-      focus	在 Input 获得焦点时触发	(event: Event)
-      change	仅在输入框失去焦点或用户按下回车时触发	(value: string | number)
-      input	在 Input 值改变时触发	(value: string | number)
-      clear	在点击由 clearable 属性生成的清空按钮时触发	—
-   */
+  Function()? click;
+
+  /// blur在 Input 失去焦点时触发	(event: Event)
+  Function()? blur;
+
+  /// focus	在 Input 获得焦点时触发	(event: Event)
+  Function()? focus;
+
+  /// change	仅在输入框失去焦点或用户按下回车时触发	(value: string | number)
+  Function(dynamic)? change;
+
+  /// input	在 Input 值改变时触发	(value: string | number)
+  Function()? input;
+
+  /// clear	在点击由 clearable 属性生成的清空按钮时触发	—
+  Function()? clear;
+  WInputOn({
+    this.click,
+    this.blur,
+    this.focus,
+    this.change,
+    this.input,
+    this.clear,
+  });
 }
 
 class WInputProp extends BaseProp {
@@ -341,62 +388,50 @@ class WInputProp extends BaseProp {
   WInputProp({
     String? type,
     value,
-    int? maxlength,
-    int? minlength,
+    this.maxlength,
+    this.minlength,
     bool? showWordLimit,
     String? placeholder,
     bool? clearable,
     bool? showPassword,
     bool? disabled,
     String? size,
-    IconData? prefixIcon,
-    IconData? suffixIcon,
+    this.prefixIcon,
+    this.suffixIcon,
     int? rows,
     dynamic autosize,
     String? autocomplete,
     String? autoComplete,
-    String? name,
+    this.name,
     bool? readonly,
-    num? max,
-    num? min,
+    this.max,
+    this.min,
     num? step,
-    String? resize,
+    this.resize,
     bool? autofocus,
-    String? form,
-    String? label,
-    String? tabindex,
+    this.form,
+    this.label,
+    this.tabindex,
     bool? validateEvent,
     // ElementUI 中没有的属性，加了前缀 $ 以区分
     TextInputType? $keyboardType,
     this.$textAlign = TextAlign.left,
   }) {
     this.type = type ?? 'text';
-    this._value =
-        TextEditingController(text: value != null ? value.toString() : '');
-    this.maxlength = maxlength;
-    this.minlength = minlength;
+    _value = TextEditingController(text: value != null ? value.toString() : '');
     this.showWordLimit = showWordLimit ?? false;
     this.placeholder = placeholder ?? '';
     this.clearable = clearable ?? false;
     this.showPassword = showPassword ?? false;
     this.disabled = disabled ?? false;
     this.size = size ?? 'large';
-    this.prefixIcon = prefixIcon;
-    this.suffixIcon = suffixIcon;
     this.rows = rows ?? 2;
     this.autosize = autosize ?? false;
     this.autocomplete = autocomplete ?? 'off';
     this.autoComplete = autoComplete ?? 'off';
-    this.name = name;
-    this.readonly = readonly ?? false;
-    this.max = max;
-    this.min = min;
     this.step = step ?? 1;
-    this.resize = resize;
+    this.readonly = readonly ?? false;
     this.autofocus = autofocus ?? false;
-    this.form = form;
-    this.label = label;
-    this.tabindex = tabindex;
     this.validateEvent = validateEvent ?? true;
 
     this.$keyboardType = isTextarea
@@ -410,15 +445,16 @@ class WInputProp extends BaseProp {
 }
 
 class WInputSlot extends BaseSlot {
-  /**
-      prefix	输入框头部内容，只对 type="text" 有效
-      suffix	输入框尾部内容，只对 type="text" 有效
-      prepend	输入框前置内容，只对 type="text" 有效
-      append	输入框后置内容，只对 type="text" 有效
-   */
+  /// prefix	输入框头部内容，只对 type="text" 有效
   List<Widget> prefix = [];
+
+  /// suffix	输入框尾部内容，只对 type="text" 有效
   List<Widget> suffix = [];
+
+  /// prepend	输入框前置内容，只对 type="text" 有效
   List<Widget> prepend = [];
+
+  /// append	输入框后置内容，只对 type="text" 有效
   List<Widget> append = [];
 
   WInputSlot(

@@ -103,3 +103,24 @@ Widget fitWidthWrapper(Widget child, {aspectRatio = 1.0, need = true}) {
   }
   return child;
 }
+
+Widget shadowWrapper(
+  Widget child, {
+  shadow = const [
+    BoxShadow(
+      color: Color.fromARGB(25, 0, 0, 0),
+      offset: Offset(0.0, 2.0),
+      blurRadius: 12.0,
+      spreadRadius: 0.0,
+    ),
+  ],
+}) {
+  return Container(
+    child: child,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8.0),
+      boxShadow: shadow,
+    ),
+  );
+}

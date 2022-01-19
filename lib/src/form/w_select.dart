@@ -1,10 +1,17 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/utils/color_util.dart';
+import 'package:wao_ui/core/utils/wrapper.dart';
+import 'package:wao_ui/src/form/w_input.dart';
+import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
-class WSelect extends StatelessWidget
+class WSelect extends StatefulWidget
     implements BaseWidget<WSelectOn, WSelectProp, WSelectSlot> {
   @override
   late final WSelectOn $on;
@@ -15,26 +22,211 @@ class WSelect extends StatelessWidget
   @override
   late final WSelectSlot $slots;
 
+  double panelHeight;
+
+  @override
+  _WSelectState createState() => _WSelectState();
   WSelect({
     Key? key,
     WSelectOn? on,
     WSelectProp? props,
     WSelectSlot? slots,
+    this.panelHeight = 274.0,
   }) : super(key: key) {
     $on = on ?? WSelectOn();
     $props = props ?? WSelectProp();
     $slots = slots ?? WSelectSlot(null);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-
   /**
       focus	使 input 获取焦点	-
       blur	使 input 失去焦点，并隐藏下拉框	-
    */
+}
+
+class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
+  late AnimationController iconSpinController;
+  late Animation<double> spin;
+  late Animation<double> panelHeight;
+  late Animation<double> panelOpacity;
+  final ValueNotifier<bool> _isExpand = ValueNotifier(false);
+  GlobalKey<WInputState> selectKey = GlobalKey<WInputState>();
+  late Offset panelOffset = Offset(0, 110);
+
+  late OverlayEntry panelOverlay;
+
+  showPanel() {
+    isExpand = true;
+  }
+
+  hidePanel() {
+    isExpand = false;
+  }
+
+  showPanelAction() {
+    OverlayEntry overlayEntry = OverlayEntry(builder: (content) {
+      return panel;
+    });
+    panelOverlay = overlayEntry;
+    Overlay.of(context)?.insert(overlayEntry);
+  }
+
+  hidePanelAction() {
+    panelOverlay.remove();
+  }
+
+  set isExpand(expand) {
+    _isExpand.value = expand;
+  }
+
+  get isExpand {
+    return _isExpand.value;
+  }
+
+  changePanel() {
+    isExpand = !isExpand;
+  }
+
+  changePanelAction() {
+    if (isExpand) {
+      showPanelAction();
+      iconSpinController.forward();
+    } else {
+      iconSpinController.reverse().then((value) => hidePanelAction());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isExpand.addListener(changePanelAction);
+
+    iconSpinController = AnimationController(
+        duration: const Duration(milliseconds: 200), vsync: this);
+
+    spin = Tween(begin: 0.0, end: -pi).animate(iconSpinController);
+
+    panelOpacity = Tween(begin: 255.0, end: 255.0).animate(iconSpinController);
+
+    panelHeight = Tween(begin: widget.panelHeight, end: widget.panelHeight)
+        .animate(iconSpinController)
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var select = WInput(
+      key: selectKey,
+      props: widget.$props,
+      on: widget.$props.disabled
+          ? null
+          : WInputOn(
+              focus: showPanel,
+              blur: hidePanel,
+            ),
+      slots: WInputSlot(
+        null,
+        suffix: Transform.rotate(
+          angle: spin.value,
+          child: const Icon(Icons.expand_more),
+        ),
+      ),
+    );
+
+    return GestureDetector(
+      child: select,
+      onTapDown: (e) {
+        panelOffset = e.globalPosition;
+        print(panelOffset);
+        print(e);
+        changePanel();
+        setState(() {});
+      },
+    );
+  }
+
+  Widget get panel {
+    return StatefulBuilder(builder: (a, b) {
+      // var offset = panelOffset;
+      return Positioned(
+        top: panelOffset.dy,
+        left: panelOffset.dx,
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: panelHeight.value,
+          ),
+          width: 200,
+          decoration: BoxDecoration(
+            color: Color.fromARGB(panelOpacity.value ~/ 1, 255, 255, 255),
+          ),
+          child: angleWrapper(panelOutside),
+        ),
+      );
+    });
+  }
+
+  Widget angleWrapper(child) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        child,
+        Positioned(
+          left: 35,
+          top: -sqrt(12 * 12 * 2) / 2.8,
+          child: Transform.rotate(
+            angle: pi / 4,
+            child: borderWrapper(
+              ColoredBox(
+                color: Colors.white,
+                child: SizedBox(
+                  height: 12,
+                  width: 12,
+                  child: Text(''),
+                ),
+              ),
+              Border(
+                top: BorderSide(
+                  color: Colors.grey.shade300,
+                ),
+                left: BorderSide(
+                  color: Colors.grey.shade300,
+                ),
+              ),
+              true,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget get panelOutside {
+    return shadowWrapper(borderWrapper(
+      colorWrapper(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
+          child: panelInside,
+        ),
+        Colors.white,
+        true,
+      ),
+      Border.all(color: Colors.grey.shade300, width: 1),
+      true,
+    ));
+  }
+
+  Widget get panelInside {
+    return widget.$slots.defalutEmpty
+        ? Text(widget.$props.noDataText)
+        : SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: widget.$slots.defaultSlot ?? [],
+            ),
+          );
+  }
 }
 
 class WSelectOn extends BaseOn {
@@ -48,19 +240,11 @@ class WSelectOn extends BaseOn {
    */
 }
 
-class WSelectProp extends BaseProp {
-  late ValueNotifier<dynamic> value;
+class WSelectProp extends WInputProp {
   late bool multiple;
-  late bool disabled;
   late String valueKey;
-  String? size;
-  late bool clearable;
   late bool collapseTags;
   late num multipleLimit;
-  String? name;
-  late String autocomplete;
-  late String autoComplete;
-  late String placeholder;
   late bool filterable;
   late bool allowCreate;
   Function? filterMethod;
@@ -77,7 +261,7 @@ class WSelectProp extends BaseProp {
   late bool automaticDropdown;
 
   WSelectProp({
-    ValueNotifier<dynamic>? value,
+    dynamic value,
     bool? multiple,
     bool? disabled,
     String? valueKey,
@@ -91,45 +275,59 @@ class WSelectProp extends BaseProp {
     String? placeholder,
     bool? filterable,
     bool? allowCreate,
-    Function? filterMethod,
+    this.filterMethod,
     bool? remote,
-    Function? remoteMethod,
+    this.remoteMethod,
     bool? loading,
     String? loadingText,
     String? noMatchText,
     String? noDataText,
-    String? popperClass,
+    this.popperClass,
     bool? reserveKeyword,
     bool? defaultFirstOption,
     bool? popperAppendToBody,
     bool? automaticDropdown,
-  }) {
-    this.value = value ?? ValueNotifier('');
+  }) : super(
+          value: value,
+          disabled: disabled,
+          size: size,
+          clearable: clearable,
+          name: name,
+          autocomplete: autocomplete,
+          autoComplete: autoComplete,
+          placeholder: placeholder,
+        ) {
     this.multiple = multiple ?? false;
+    this.value = value;
     this.disabled = disabled ?? false;
     this.valueKey = valueKey ?? 'value';
-    this.size = size;
     this.clearable = clearable ?? false;
     this.collapseTags = collapseTags ?? false;
     this.multipleLimit = multipleLimit ?? 0;
-    this.name = name;
     this.autocomplete = autocomplete ?? 'off';
     this.autoComplete = autoComplete ?? 'off';
     this.placeholder = placeholder ?? '请选择';
     this.filterable = filterable ?? false;
     this.allowCreate = allowCreate ?? false;
-    this.filterMethod = filterMethod;
     this.remote = remote ?? false;
-    this.remoteMethod = remoteMethod;
     this.loading = loading ?? false;
     this.loadingText = loadingText ?? '加载中';
     this.noMatchText = noMatchText ?? '无匹配数据';
     this.noDataText = noDataText ?? '无数据';
-    this.popperClass = popperClass;
     this.reserveKeyword = reserveKeyword ?? false;
     this.defaultFirstOption = defaultFirstOption ?? false;
     this.popperAppendToBody = popperAppendToBody ?? true;
     this.automaticDropdown = automaticDropdown ?? false;
+
+    readonly = !this.allowCreate && !this.remote;
+  }
+
+  set value(value) {
+    super.value = value is List ? value.join(',') : value;
+  }
+
+  dynamic get value {
+    return super.value;
   }
 }
 
@@ -166,14 +364,74 @@ class WOption extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return MouseStateBuilder(builder: (context, state) {
+      return Container(
+        alignment: Alignment.centerLeft,
+        height: 34,
+        color:
+            state.isMouseOver ? ColorUtil.hexToColor('#f5f7fa') : Colors.white,
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Text(
+          $props.label,
+          style: TextStyle(
+            fontSize: 14,
+            color: ColorUtil.hexToColor('#606266'),
+          ),
+        ),
+      );
+    });
   }
 }
 
 class WOptionOn extends BaseOn {}
 
-class WOptionProp extends BaseProp {}
+class WOptionProp extends BaseProp {
+  late dynamic value;
+  late dynamic label;
+  late bool disabled;
+  WOptionProp({this.value, this.label, this.disabled = false});
+}
 
 class WOptionSlot extends BaseSlot {
   WOptionSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+class WOptionGroup extends StatelessWidget
+    implements BaseWidget<WOptionGroupOn, WOptionGroupProp, WOptionGroupSlot> {
+  @override
+  late final WOptionGroupOn $on;
+
+  @override
+  late final WOptionGroupProp $props;
+
+  @override
+  late final WOptionGroupSlot $slots;
+
+  WOptionGroup({
+    Key? key,
+    WOptionGroupOn? on,
+    WOptionGroupProp? props,
+    WOptionGroupSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WOptionGroupOn();
+    $props = props ?? WOptionGroupProp(label: '');
+    $slots = slots ?? WOptionGroupSlot(null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text($props.label);
+  }
+}
+
+class WOptionGroupOn extends BaseOn {}
+
+class WOptionGroupProp extends BaseProp {
+  late String label;
+  late bool disabled;
+  WOptionGroupProp({required this.label, this.disabled = false});
+}
+
+class WOptionGroupSlot extends BaseSlot {
+  WOptionGroupSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

@@ -14,6 +14,10 @@ class BaseSlot {
     return defaultSlot != null;
   }
 
+  bool get defalutEmpty {
+    return !hasDefault || defaultSlot!.isEmpty;
+  }
+
   Widget get first {
     return defaultSlot == null ? Container() : defaultSlot![0];
   }
