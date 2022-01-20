@@ -1,5 +1,8 @@
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, implementation_imports
+
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -8,6 +11,7 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
+import 'package:wao_ui/src/data/w_tag.dart';
 import 'package:wao_ui/src/form/w_input.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
@@ -54,6 +58,8 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
   late Offset panelOffset = const Offset(0, 0);
 
   late OverlayEntry panelOverlay;
+
+  List options = [];
 
   showPanel() {
     isExpand = true;
@@ -102,15 +108,15 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  onSelect(option, select) {
-    if (select.multiple) {
-      var v = select.value as List;
+  onSelect(option) {
+    if (widget.$props.multiple) {
+      var v = widget.$props.value as List;
       var contains = v.contains(option.value);
       contains ? v.remove(option.value) : v.add(option.value);
-      widget.$props.value = select._value.value;
+      widget.$props.value = widget.$props._valueListener.value;
       setState(() {});
     } else {
-      select.value = option.value;
+      widget.$props.value = option.value;
     }
   }
 
@@ -143,21 +149,28 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
 
   setEvent() {
     if (!widget.$slots.defalutEmpty) {
-      widget.$slots.defaultSlot?.forEach(
-        (slot) {
-          if (slot is WOption) {
-            var fn = slot.$on.click ?? (e) {};
-            slot.$props._value = widget.$props._value;
-            slot.$props._multiple = widget.$props.multiple;
-            slot.$on.click = (e) {
-              onSelect(e, widget.$props);
-              fn(e);
-              if (!widget.$props.multiple) hidePanel();
-            };
-          }
-        },
-      );
+      _setEvent(widget.$slots.defaultSlot);
     }
+  }
+
+  _setEvent(List? slots) {
+    slots?.forEach(
+      (slot) {
+        if (slot is WOption) {
+          slot.$props._multiple = widget.$props.multiple;
+          options.add(slot);
+          var fn = slot.$on.click ?? (e) {};
+          slot.$props._valueListener = widget.$props._valueListener;
+          slot.$on.click = (e) {
+            onSelect(e);
+            fn(e);
+            if (!widget.$props.multiple) hidePanel();
+          };
+        } else if (slot is WOptionGroup) {
+          _setEvent(slot.$slots.defaultSlot);
+        }
+      },
+    );
   }
 
   /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
@@ -189,15 +202,116 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
             ),
       slots: WInputSlot(
         null,
+        prefix: multipleValues,
         suffix: Transform.rotate(
           angle: spin.value,
           child: const Icon(Icons.expand_more),
         ),
       ),
       $prefixSize: MainAxisSize.max,
+      $prefixAlignment: MainAxisAlignment.start,
     );
 
     return select;
+  }
+
+  Widget? get multipleValues {
+    return needMultiLabel ? multiLabel : singleLabel;
+  }
+
+  Widget? get singleLabel {
+    var labels = valueLabels;
+    if (labels.isEmpty) return null;
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            labels.first['v'],
+            style: TextStyle(fontSize: singleLabelFontSize),
+          ),
+        ),
+        editInput,
+      ],
+    );
+  }
+
+  // TODO 兼容可编辑的属性
+  Widget get editInput {
+    return Container();
+    // return Expanded(child: TextFormField());
+  }
+
+  double get singleLabelFontSize {
+    return cfgGlobal.font.val(widget.$props.size);
+  }
+
+  Widget? get multiLabel {
+    var labels = valueLabels;
+    if (labels.isEmpty) return null;
+    var children = <Widget>[];
+    if (!widget.$props.collapseTags) {
+      children = List.generate(labels.length, (i) {
+        var m = labels[i];
+        return toTag(m);
+      });
+    } else {
+      var c = '+${labels.length - 1}';
+      children = [
+        toTag(labels[0]),
+        if (labels.length > 1) toTag({'k': c, 'v': c}, closable: false),
+      ];
+    }
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: SizedBox(
+        width: 170,
+        child: Wrap(
+          direction: Axis.horizontal,
+          spacing: 4,
+          runSpacing: 4,
+          // mainAxisSize: MainAxisSize.min,
+          // mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ...children,
+            editInput,
+          ],
+        ),
+      ),
+    );
+  }
+
+  toTag(m, {closable = true}) {
+    return WTag(
+      on: closable
+          ? WTagOn(
+              close: () {
+                widget.$props._valueListener.value.remove(m['k']);
+                setState(() {});
+              },
+            )
+          : null,
+      props: WTagProp(
+        closable: closable,
+        size: 'mini',
+        type: 'info',
+      ),
+      slots: WTagSlot(m['v']),
+    );
+  }
+
+  bool get needMultiLabel {
+    return widget.$props.multiple;
+  }
+
+  List<dynamic> get valueLabels {
+    var result = [];
+    for (var element in options) {
+      if (element is WOption && element.$props.isSelected) {
+        result.add({'k': element.$props.value, 'v': element.$props.label});
+      }
+    }
+    return result;
   }
 
   Widget get panel {
@@ -323,7 +437,7 @@ class WSelectProp extends WInputProp {
   late bool defaultFirstOption;
   late bool popperAppendToBody;
   late bool automaticDropdown;
-  late ValueNotifier<dynamic> _value;
+  late ValueNotifier<dynamic> _valueListener;
 
   WSelectProp({
     dynamic value,
@@ -361,7 +475,7 @@ class WSelectProp extends WInputProp {
           autoComplete: autoComplete,
           placeholder: placeholder,
         ) {
-    _value = ValueNotifier(null);
+    _valueListener = ValueNotifier(null);
     this.multiple = multiple ?? false;
     this.value = value;
     this.disabled = disabled ?? false;
@@ -387,19 +501,20 @@ class WSelectProp extends WInputProp {
     readonly = !this.allowCreate && !this.remote;
   }
 
+  @override
   set value(value) {
-    print(value);
-    _value.value = value;
+    _valueListener.value = value;
     super.value = multiple ? value.join(',') : value;
   }
 
+  @override
   dynamic get value {
-    return _value.value;
+    return _valueListener.value;
   }
 }
 
 class WSelectSlot extends BaseSlot {
-  /**
+  /*
       —	Option 组件列表
       prefix	Select 组件头部内容
       empty	无选项时的列表
@@ -431,7 +546,26 @@ class WOptionGroup extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Text($props.label);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(18.0, 8, 18, 8),
+          child: Text(
+            $props.label,
+            style: TextStyle(color: Theme.of(context).hintColor, fontSize: 12),
+          ),
+        ),
+        if (!$slots.defalutEmpty) ...$slots.defaultSlot!,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(18, 8, 18, 8),
+          child: Divider(
+            color: Colors.grey.shade300,
+            height: 1,
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -476,7 +610,7 @@ class WOption extends StatelessWidget
         return InkWell(
           onTap: () {
             $on.click?.call($props);
-            if ($props._multiple) $props._value.notifyListeners();
+            if ($props._multiple) $props._valueListener.notifyListeners();
           },
           child: Container(
             alignment: Alignment.centerLeft,
@@ -484,7 +618,7 @@ class WOption extends StatelessWidget
             color: state.isMouseOver
                 ? ColorUtil.hexToColor('#f5f7fa')
                 : Colors.white,
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Text(
               $props.label,
               style: TextStyle(
@@ -507,7 +641,7 @@ class WOptionOn extends BaseOn {
 }
 
 class WOptionProp extends BaseProp {
-  late ValueNotifier _value;
+  late ValueNotifier _valueListener;
   late bool _multiple;
   late dynamic value;
   late dynamic label;
@@ -520,12 +654,22 @@ class WOptionProp extends BaseProp {
     dynamic selectValue,
   }) {
     _multiple = multiple ?? false;
-    _value = ValueNotifier(selectValue);
+    _valueListener = ValueNotifier(selectValue);
   }
 
   bool get isSelected {
-    print('${_value.value} contains $value = ${_value.value.contains(value)}');
-    return _multiple ? _value.value.contains(value) : _value.value == value;
+    if (kDebugMode) {
+      if (_multiple) {
+        print(
+            '${_valueListener.value} contains $value is ${_valueListener.value.contains(value)}');
+      } else {
+        print(
+            '${_valueListener.value} equals $value = ${_valueListener.value == value}');
+      }
+    }
+    return _multiple
+        ? _valueListener.value.contains(value)
+        : _valueListener.value == value;
   }
 }
 
