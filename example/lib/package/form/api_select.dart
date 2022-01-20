@@ -121,7 +121,11 @@ class ApiSelect extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         WSelect(
-          props: WSelectProp(clearable: true, value: '选项1', multiple: true),
+          props: WSelectProp(
+            clearable: true,
+            value: ['选项1'],
+            multiple: true,
+          ),
           slots: WSelectSlot(
             List.generate(
               option.length,
@@ -137,7 +141,7 @@ class ApiSelect extends StatelessWidget {
         WSelect(
           props: WSelectProp(
             clearable: true,
-            value: '选项1',
+            value: ['选项1'],
             multiple: true,
             collapseTags: true,
           ),
@@ -159,7 +163,11 @@ class ApiSelect extends StatelessWidget {
 
   Widget get customTpl {
     return WSelect(
-      props: WSelectProp(clearable: true, value: '选项1', multiple: true),
+      props: WSelectProp(
+        clearable: true,
+        value: ['选项1'],
+        multiple: true,
+      ),
       slots: WSelectSlot(
         List.generate(
           option.length,
@@ -236,7 +244,7 @@ class ApiSelect extends StatelessWidget {
     return WSelect(
       props: WSelectProp(
         placeholder: '请选择',
-        value: '选项1',
+        value: ['选项1'],
         multiple: true,
         filterable: true,
         remote: true,
@@ -327,6 +335,23 @@ class ApiSelect extends StatelessWidget {
           const Text('创建条目'),
           ____________________________________,
           creatable,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
+          ____________________________________,
           ____________________________________,
         ]),
       ],

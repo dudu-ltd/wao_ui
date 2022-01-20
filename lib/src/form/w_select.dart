@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
+import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/form/w_input.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
@@ -51,7 +51,7 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
   late Animation<double> panelOpacity;
   final ValueNotifier<bool> _isExpand = ValueNotifier(false);
   GlobalKey<WInputState> selectKey = GlobalKey<WInputState>();
-  late Offset panelOffset = Offset(0, 110);
+  late Offset panelOffset = const Offset(0, 0);
 
   late OverlayEntry panelOverlay;
 
@@ -97,6 +97,24 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    hidePanel();
+    super.dispose();
+  }
+
+  onSelect(option, select) {
+    if (select.multiple) {
+      var v = select.value as List;
+      var contains = v.contains(option.value);
+      contains ? v.remove(option.value) : v.add(option.value);
+      widget.$props.value = select._value.value;
+      setState(() {});
+    } else {
+      select.value = option.value;
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     _isExpand.addListener(changePanelAction);
@@ -113,6 +131,48 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
       ..addListener(() {
         setState(() {});
       });
+
+    /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
+    // 在控件渲染完成后执行的回调
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _findRenderObject();
+    });
+
+    setEvent();
+  }
+
+  setEvent() {
+    if (!widget.$slots.defalutEmpty) {
+      widget.$slots.defaultSlot?.forEach(
+        (slot) {
+          if (slot is WOption) {
+            var fn = slot.$on.click ?? (e) {};
+            slot.$props._value = widget.$props._value;
+            slot.$props._multiple = widget.$props.multiple;
+            slot.$on.click = (e) {
+              onSelect(e, widget.$props);
+              fn(e);
+              if (!widget.$props.multiple) hidePanel();
+            };
+          }
+        },
+      );
+    }
+  }
+
+  /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
+  // 如果控件用了Transform平移旋转等, 获取到的坐标也会变化
+  _findRenderObject() {
+    dynamic renderBox = selectKey.currentContext?.findRenderObject();
+
+    // offset.dx , offset.dy 就是控件的左上角坐标
+    var offset = renderBox.localToGlobal(Offset.zero);
+
+    setState(() {
+      var dx = offset.dx - (renderBox.size.width);
+      var dy = offset.dy;
+      panelOffset = Offset(dx, dy);
+    });
   }
 
   @override
@@ -123,6 +183,7 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
       on: widget.$props.disabled
           ? null
           : WInputOn(
+              click: changePanel,
               focus: showPanel,
               blur: hidePanel,
             ),
@@ -133,18 +194,10 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
           child: const Icon(Icons.expand_more),
         ),
       ),
+      $prefixSize: MainAxisSize.max,
     );
 
-    return GestureDetector(
-      child: select,
-      onTapDown: (e) {
-        panelOffset = e.globalPosition;
-        print(panelOffset);
-        print(e);
-        changePanel();
-        setState(() {});
-      },
-    );
+    return select;
   }
 
   Widget get panel {
@@ -167,6 +220,7 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
     });
   }
 
+  // 为浮窗添加小箭头角标
   Widget angleWrapper(child) {
     return Stack(
       clipBehavior: Clip.none,
@@ -174,27 +228,37 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
         child,
         Positioned(
           left: 35,
-          top: -sqrt(12 * 12 * 2) / 2.8,
+          top: -(sqrt(12 * 12 * 2) / 2 - 2),
           child: Transform.rotate(
             angle: pi / 4,
-            child: borderWrapper(
-              ColoredBox(
-                color: Colors.white,
-                child: SizedBox(
-                  height: 12,
-                  width: 12,
-                  child: Text(''),
+            child: shadowWrapper(
+              borderWrapper(
+                const ColoredBox(
+                  color: Color.fromARGB(0, 255, 255, 255),
+                  child: SizedBox(
+                    height: 12,
+                    width: 12,
+                    child: Text(''),
+                  ),
                 ),
+                Border(
+                  top: BorderSide(
+                    color: Colors.grey.shade300,
+                  ),
+                  left: BorderSide(
+                    color: Colors.grey.shade300,
+                  ),
+                ),
+                true,
               ),
-              Border(
-                top: BorderSide(
-                  color: Colors.grey.shade300,
+              shadow: [
+                const BoxShadow(
+                  color: Color.fromARGB(25, 0, 0, 0),
+                  offset: Offset(-1.0, -1.0),
+                  blurRadius: 12.0,
+                  spreadRadius: 0.0,
                 ),
-                left: BorderSide(
-                  color: Colors.grey.shade300,
-                ),
-              ),
-              true,
+              ],
             ),
           ),
         ),
@@ -259,6 +323,7 @@ class WSelectProp extends WInputProp {
   late bool defaultFirstOption;
   late bool popperAppendToBody;
   late bool automaticDropdown;
+  late ValueNotifier<dynamic> _value;
 
   WSelectProp({
     dynamic value,
@@ -288,7 +353,6 @@ class WSelectProp extends WInputProp {
     bool? popperAppendToBody,
     bool? automaticDropdown,
   }) : super(
-          value: value,
           disabled: disabled,
           size: size,
           clearable: clearable,
@@ -297,6 +361,7 @@ class WSelectProp extends WInputProp {
           autoComplete: autoComplete,
           placeholder: placeholder,
         ) {
+    _value = ValueNotifier(null);
     this.multiple = multiple ?? false;
     this.value = value;
     this.disabled = disabled ?? false;
@@ -323,11 +388,13 @@ class WSelectProp extends WInputProp {
   }
 
   set value(value) {
-    super.value = value is List ? value.join(',') : value;
+    print(value);
+    _value.value = value;
+    super.value = multiple ? value.join(',') : value;
   }
 
   dynamic get value {
-    return super.value;
+    return _value.value;
   }
 }
 
@@ -338,62 +405,6 @@ class WSelectSlot extends BaseSlot {
       empty	无选项时的列表
    */
   WSelectSlot(defaultSlotBefore) : super(defaultSlotBefore);
-}
-
-class WOption extends StatelessWidget
-    implements BaseWidget<WOptionOn, WOptionProp, WOptionSlot> {
-  @override
-  late final WOptionOn $on;
-
-  @override
-  late final WOptionProp $props;
-
-  @override
-  late final WOptionSlot $slots;
-
-  WOption({
-    Key? key,
-    WOptionOn? on,
-    WOptionProp? props,
-    WOptionSlot? slots,
-  }) : super(key: key) {
-    $on = on ?? WOptionOn();
-    $props = props ?? WOptionProp();
-    $slots = slots ?? WOptionSlot(null);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseStateBuilder(builder: (context, state) {
-      return Container(
-        alignment: Alignment.centerLeft,
-        height: 34,
-        color:
-            state.isMouseOver ? ColorUtil.hexToColor('#f5f7fa') : Colors.white,
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-        child: Text(
-          $props.label,
-          style: TextStyle(
-            fontSize: 14,
-            color: ColorUtil.hexToColor('#606266'),
-          ),
-        ),
-      );
-    });
-  }
-}
-
-class WOptionOn extends BaseOn {}
-
-class WOptionProp extends BaseProp {
-  late dynamic value;
-  late dynamic label;
-  late bool disabled;
-  WOptionProp({this.value, this.label, this.disabled = false});
-}
-
-class WOptionSlot extends BaseSlot {
-  WOptionSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
 class WOptionGroup extends StatelessWidget
@@ -434,4 +445,90 @@ class WOptionGroupProp extends BaseProp {
 
 class WOptionGroupSlot extends BaseSlot {
   WOptionGroupSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+class WOption extends StatelessWidget
+    implements BaseWidget<WOptionOn, WOptionProp, WOptionSlot> {
+  @override
+  late final WOptionOn $on;
+
+  @override
+  late final WOptionProp $props;
+
+  @override
+  late final WOptionSlot $slots;
+
+  WOption({
+    Key? key,
+    WOptionOn? on,
+    WOptionProp? props,
+    WOptionSlot? slots,
+  }) : super(key: key) {
+    $on = on ?? WOptionOn();
+    $props = props ?? WOptionProp();
+    $slots = slots ?? WOptionSlot(null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseStateBuilder(
+      builder: (context, state) {
+        return InkWell(
+          onTap: () {
+            $on.click?.call($props);
+            if ($props._multiple) $props._value.notifyListeners();
+          },
+          child: Container(
+            alignment: Alignment.centerLeft,
+            height: 34,
+            color: state.isMouseOver
+                ? ColorUtil.hexToColor('#f5f7fa')
+                : Colors.white,
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Text(
+              $props.label,
+              style: TextStyle(
+                fontSize: 14,
+                color: $props.isSelected
+                    ? CfgGlobal.primaryColor
+                    : ColorUtil.hexToColor('#606266'),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class WOptionOn extends BaseOn {
+  Function(WOptionProp)? click;
+  WOptionOn({this.click});
+}
+
+class WOptionProp extends BaseProp {
+  late ValueNotifier _value;
+  late bool _multiple;
+  late dynamic value;
+  late dynamic label;
+  late bool disabled;
+  WOptionProp({
+    this.value,
+    this.label,
+    this.disabled = false,
+    bool? multiple,
+    dynamic selectValue,
+  }) {
+    _multiple = multiple ?? false;
+    _value = ValueNotifier(selectValue);
+  }
+
+  bool get isSelected {
+    print('${_value.value} contains $value = ${_value.value.contains(value)}');
+    return _multiple ? _value.value.contains(value) : _value.value == value;
+  }
+}
+
+class WOptionSlot extends BaseSlot {
+  WOptionSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

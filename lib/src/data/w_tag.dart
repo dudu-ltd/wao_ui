@@ -119,7 +119,7 @@ class WTag extends StatelessWidget
         ? color
         : $props.isPlain
             ? Colors.white
-            : color.shade50;
+            : color.shade200;
   }
 
   Color get fontColor {
