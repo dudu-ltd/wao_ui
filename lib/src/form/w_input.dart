@@ -9,34 +9,38 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import '../../core/utils/collect_util.dart';
 
 class WInput extends StatefulWidget
-    implements BaseWidget<WInputOn, WInputProp, WInputSlot> {
+    implements BaseWidget<WInputOn, WInputProp, WInputSlot, WInputStyle> {
   @override
   late final WInputOn $on;
-
   @override
   late final WInputProp $props;
-
   @override
   late final WInputSlot $slots;
-
-  MainAxisSize? $prefixSize;
-  MainAxisAlignment? $prefixAlignment;
-
   @override
-  WInputState createState() => WInputState();
+  late WInputStyle $style;
+
   WInput({
     Key? key,
     WInputOn? on,
     WInputProp? props,
     WInputSlot? slots,
+    WInputStyle? style,
     this.$prefixSize = MainAxisSize.min,
     this.$prefixAlignment = MainAxisAlignment.center,
+    this.$strictOneRow = true,
   }) : super(key: key) {
     $on = on ?? WInputOn();
     $props = props ?? WInputProp();
     $slots = slots ?? WInputSlot(null);
+    $style = style ?? WInputStyle();
   }
 
+  MainAxisSize? $prefixSize;
+  MainAxisAlignment? $prefixAlignment;
+
+  bool $strictOneRow;
+  @override
+  WInputState createState() => WInputState();
   /* // TODO 赋鹬组件基本的操作能力
       focus	使 input 获取焦点	—
       blur	使 input 失去焦点	—
@@ -147,7 +151,11 @@ class WInputState extends State<WInput> {
       floatingLabelAlignment: FloatingLabelAlignment.start,
       constraints: widget.$props.isTextarea
           ? null
-          : BoxConstraints(maxWidth: 200, minHeight: maxHeight),
+          : BoxConstraints(
+              maxWidth: 200,
+              minHeight: minHeight,
+              maxHeight: widget.$strictOneRow ? minHeight : double.infinity,
+            ),
       focusedBorder: baseBorder,
       focusedErrorBorder: baseBorder.copyWith(
         borderSide: BorderSide(color: cfgGlobal.color.danger),
@@ -284,7 +292,7 @@ class WInputState extends State<WInput> {
         (isHover || isFocus);
   }
 
-  double get maxHeight {
+  double get minHeight {
     return fontSize + cfgGlobal.padding.val(widget.$props.size) * 2;
   }
 
@@ -486,25 +494,28 @@ class WInputSlot extends BaseSlot {
 
 class WAutocomplete extends StatelessWidget
     implements
-        BaseWidget<WAutocompleteOn, WAutocompleteProp, WAutocompleteSlot> {
+        BaseWidget<WAutocompleteOn, WAutocompleteProp, WAutocompleteSlot,
+            WAutocompleteStyle> {
   @override
   late final WAutocompleteOn $on;
-
   @override
   late final WAutocompleteProp $props;
-
   @override
   late final WAutocompleteSlot $slots;
+  @override
+  late WAutocompleteStyle $style;
 
   WAutocomplete({
     Key? key,
     WAutocompleteOn? on,
     WAutocompleteProp? props,
     WAutocompleteSlot? slots,
+    WAutocompleteStyle? style,
   }) : super(key: key) {
     $on = on ?? WAutocompleteOn();
     $props = props ?? WAutocompleteProp(value: '');
     $slots = slots ?? WAutocompleteSlot(null);
+    $style = style ?? WAutocompleteStyle();
   }
 
   @override

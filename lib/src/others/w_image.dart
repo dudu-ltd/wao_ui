@@ -3,27 +3,30 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WImage extends StatelessWidget
-    implements BaseWidget<WImageOn, WImageProp, WImageSlot> {
+    implements BaseWidget<WImageOn, WImageProp, WImageSlot, WImageStyle> {
   @override
   late final WImageOn $on;
-
   @override
   late final WImageProp $props;
-
   @override
   late final WImageSlot $slots;
+  @override
+  late WImageStyle $style;
 
   WImage({
     Key? key,
     WImageOn? on,
     WImageProp? props,
     WImageSlot? slots,
+    WImageStyle? style,
   }) : super(key: key) {
     $on = on ?? WImageOn();
     $props = props ?? WImageProp();
     $slots = slots ?? WImageSlot(null);
+    $style = style ?? WImageStyle();
   }
 
   @override

@@ -8,34 +8,36 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
-import 'package:wao_ui/src/basic/w_button.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WUpload extends StatelessWidget
-    implements BaseWidget<WUploadOn, WUploadProp, WUploadSlot> {
+    implements BaseWidget<WUploadOn, WUploadProp, WUploadSlot, WUploadStyle> {
   @override
   late final WUploadOn $on;
-
   @override
   late final WUploadProp $props;
-
   @override
   late final WUploadSlot $slots;
-
-  Map<String, WFilePicker> platformPicker = {
-    'web': WebFilePicker(),
-    'pc': PcFilePicker(),
-  };
+  @override
+  late WUploadStyle $style;
 
   WUpload({
     Key? key,
     WUploadOn? on,
     WUploadProp? props,
     WUploadSlot? slots,
+    WUploadStyle? style,
   }) : super(key: key) {
     $on = on ?? WUploadOn();
     $props = props ?? WUploadProp();
     $slots = slots ?? WUploadSlot(null);
+    $style = style ?? WUploadStyle();
   }
+
+  Map<String, WFilePicker> platformPicker = {
+    'web': WebFilePicker(),
+    'pc': PcFilePicker(),
+  };
 
   @override
   Widget build(BuildContext context) {

@@ -118,27 +118,28 @@ class _WDropdownState extends State<WDropdown>
 }
 
 class WDropdown extends StatefulWidget
-    implements BaseWidget<WDropdownOn, WDropdownProp, WDropdownSlot> {
+    implements
+        BaseWidget<WDropdownOn, WDropdownProp, WDropdownSlot, WDropdownStyle> {
   @override
   late final WDropdownOn $on;
-
   @override
   late final WDropdownProp $props;
-
   @override
   late final WDropdownSlot $slots;
   @override
-  _WDropdownState createState() => _WDropdownState();
+  late WDropdownStyle $style;
 
   WDropdown({
     Key? key,
     WDropdownOn? on,
     WDropdownProp? props,
     WDropdownSlot? slots,
+    WDropdownStyle? style,
   }) : super(key: key) {
     $on = on ?? WDropdownOn();
     $props = props ?? WDropdownProp();
     $slots = slots ?? WDropdownSlot(null);
+    $style = style ?? WDropdownStyle();
     if ($slots.defaultSlotBefore is String) {
       $slots.defaultSlot = [
         WButton(
@@ -148,6 +149,8 @@ class WDropdown extends StatefulWidget
       ];
     }
   }
+  @override
+  _WDropdownState createState() => _WDropdownState();
 }
 
 class WDropdownOn extends BaseOn {
@@ -203,25 +206,28 @@ class WDropdownSlot extends BaseSlot {
 
 class WDropdownMenu extends StatelessWidget
     implements
-        BaseWidget<WDropdownMenuOn, WDropdownMenuProp, WDropdownMenuSlot> {
+        BaseWidget<WDropdownMenuOn, WDropdownMenuProp, WDropdownMenuSlot,
+            WDropdownMenuStyle> {
   @override
   late final WDropdownMenuOn $on;
-
   @override
   late final WDropdownMenuProp $props;
-
   @override
   late final WDropdownMenuSlot $slots;
+  @override
+  late WDropdownMenuStyle $style;
 
   WDropdownMenu({
     Key? key,
     WDropdownMenuOn? on,
     WDropdownMenuProp? props,
     WDropdownMenuSlot? slots,
+    WDropdownMenuStyle? style,
   }) : super(key: key) {
     $on = on ?? WDropdownMenuOn();
     $props = props ?? WDropdownMenuProp();
     $slots = slots ?? WDropdownMenuSlot(null);
+    $style = style ?? WDropdownMenuStyle();
   }
 
   @override
@@ -244,25 +250,28 @@ class WDropdownMenuSlot extends BaseSlot {
 
 class WDropdownItem extends StatelessWidget
     implements
-        BaseWidget<WDropdownItemOn, WDropdownItemProp, WDropdownItemSlot> {
+        BaseWidget<WDropdownItemOn, WDropdownItemProp, WDropdownItemSlot,
+            WDropdownItemStyle> {
   @override
   late final WDropdownItemOn $on;
-
   @override
   late final WDropdownItemProp $props;
-
   @override
   late final WDropdownItemSlot $slots;
+  @override
+  late WDropdownItemStyle $style;
 
   WDropdownItem({
     Key? key,
     WDropdownItemOn? on,
     WDropdownItemProp? props,
     WDropdownItemSlot? slots,
+    WDropdownItemStyle? style,
   }) : super(key: key) {
     $on = on ?? WDropdownItemOn();
     $props = props ?? WDropdownItemProp();
     $slots = slots ?? WDropdownItemSlot(null);
+    $style = style ?? WDropdownItemStyle();
   }
 
   @override

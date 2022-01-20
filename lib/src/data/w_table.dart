@@ -12,32 +12,32 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/data/w_empty.dart';
 
 class WTable extends StatefulWidget
-    implements BaseWidget<WTableOn, WTableProp, WTableSlot> {
+    implements BaseWidget<WTableOn, WTableProp, WTableSlot, WTableStyle> {
   @override
   late final WTableOn $on;
-
   @override
   late final WTableProp $props;
-
   @override
   late final WTableSlot $slots;
-
-  late Observable<List> _dataListener;
-
-  final List _selectedRow = [];
-
   @override
-  _WTableState createState() => _WTableState();
+  late WTableStyle $style;
+
   WTable({
     Key? key,
     WTableOn? on,
     WTableProp? props,
     WTableSlot? slots,
+    WTableStyle? style,
   }) : super(key: key) {
     $on = on ?? WTableOn();
     $props = props ?? WTableProp();
     $slots = slots ?? WTableSlot(null);
+    $style = style ?? WTableStyle();
   }
+
+  late Observable<List> _dataListener;
+
+  final List _selectedRow = [];
 
   List get data {
     return _dataListener.value;
@@ -46,6 +46,9 @@ class WTable extends StatefulWidget
   set data(v) {
     _dataListener.value = v;
   }
+
+  @override
+  _WTableState createState() => _WTableState();
 
   /**
       clearSelection	用于多选表格，清空用户的选择	—
@@ -114,7 +117,7 @@ class _WTableState extends State<WTable> {
   }
 
   Widget? get whenEmpty {
-    return WEmpty(const Text('暂无数据'));
+    return WEmpty(slots: WEmptySlot(const Text('暂无数据')));
   }
 
   addActualFields(
@@ -445,25 +448,29 @@ class WTableSlot extends BaseSlot {
 }
 
 class WTableColumn extends StatelessWidget
-    implements BaseWidget<WTableColumnOn, WTableColumnProp, WTableColumnSlot> {
+    implements
+        BaseWidget<WTableColumnOn, WTableColumnProp, WTableColumnSlot,
+            WTableColumnStyle> {
   @override
   late final WTableColumnOn $on;
-
   @override
   late final WTableColumnProp $props;
-
   @override
   late final WTableColumnSlot $slots;
+  @override
+  late WTableColumnStyle $style;
 
   WTableColumn({
     Key? key,
     WTableColumnOn? on,
     WTableColumnProp? props,
     WTableColumnSlot? slots,
+    WTableColumnStyle? style,
   }) : super(key: key) {
     $on = on ?? WTableColumnOn();
     $props = props ?? WTableColumnProp();
     $slots = slots ?? WTableColumnSlot(null);
+    $style = style ?? WTableColumnStyle();
   }
 
   @override

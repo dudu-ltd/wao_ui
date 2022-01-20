@@ -3,27 +3,30 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WForm extends StatelessWidget
-    implements BaseWidget<WFormOn, WFormProp, WFormSlot> {
+    implements BaseWidget<WFormOn, WFormProp, WFormSlot, WFormStyle> {
   @override
   late final WFormOn $on;
-
   @override
   late final WFormProp $props;
-
   @override
   late final WFormSlot $slots;
+  @override
+  late WFormStyle $style;
 
   WForm({
     Key? key,
     WFormOn? on,
     WFormProp? props,
     WFormSlot? slots,
+    WFormStyle? style,
   }) : super(key: key) {
     $on = on ?? WFormOn();
     $props = props ?? WFormProp(model: {});
     $slots = slots ?? WFormSlot(null);
+    $style = style ?? WFormStyle();
   }
 
   @override

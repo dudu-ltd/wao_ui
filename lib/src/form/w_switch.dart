@@ -4,27 +4,30 @@ import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WSwitch extends StatelessWidget
-    implements BaseWidget<WSwitchOn, WSwitchProp, WSwitchSlot> {
+    implements BaseWidget<WSwitchOn, WSwitchProp, WSwitchSlot, WSwitchStyle> {
   @override
   late final WSwitchOn $on;
-
   @override
   late final WSwitchProp $props;
-
   @override
   late final WSwitchSlot $slots;
+  @override
+  late WSwitchStyle $style;
 
   WSwitch({
     Key? key,
     WSwitchOn? on,
     WSwitchProp? props,
     WSwitchSlot? slots,
+    WSwitchStyle? style,
   }) : super(key: key) {
     $on = on ?? WSwitchOn();
     $props = props ?? WSwitchProp();
     $slots = slots ?? WSwitchSlot(null);
+    $style = style ?? WSwitchStyle();
   }
 
   @override

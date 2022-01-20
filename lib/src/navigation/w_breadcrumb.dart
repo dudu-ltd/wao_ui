@@ -6,26 +6,29 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
 class WBreadcrumb extends StatelessWidget
-    implements BaseWidget<WBreadcrumbOn, WBreadcrumbProp, WBreadcrumbSlot> {
+    implements
+        BaseWidget<WBreadcrumbOn, WBreadcrumbProp, WBreadcrumbSlot,
+            WBreadcrumbStyle> {
   @override
   late final WBreadcrumbOn $on;
-
   @override
   late final WBreadcrumbProp $props;
-
   @override
   late final WBreadcrumbSlot $slots;
-
+  @override
+  late WBreadcrumbStyle $style;
   WBreadcrumb(
     dynamic defaultSlot, {
     Key? key,
     WBreadcrumbOn? on,
     WBreadcrumbProp? props,
     WBreadcrumbSlot? slots,
+    WBreadcrumbStyle? style,
   }) : super(key: key) {
     $on = on ?? WBreadcrumbOn();
     $props = props ?? WBreadcrumbProp();
     $slots = slots ?? WBreadcrumbSlot(defaultSlot);
+    $style = style ?? WBreadcrumbStyle();
     $slots.defaultSlotBefore = defaultSlot;
     setDefaultSlot();
   }
@@ -162,26 +165,28 @@ class WBreadcrumbSlot extends BaseSlot {
 ///
 class WBreadcrumbItem extends StatelessWidget
     implements
-        BaseWidget<WBreadcrumbItemOn, WBreadcrumbItemProp,
-            WBreadcrumbItemSlot> {
+        BaseWidget<WBreadcrumbItemOn, WBreadcrumbItemProp, WBreadcrumbItemSlot,
+            WBreadcrumbItemStyle> {
   @override
   late final WBreadcrumbItemOn $on;
-
   @override
   late final WBreadcrumbItemProp $props;
-
   @override
   late final WBreadcrumbItemSlot $slots;
+  @override
+  late WBreadcrumbItemStyle $style;
 
   WBreadcrumbItem({
     Key? key,
     WBreadcrumbItemOn? on,
     WBreadcrumbItemProp? props,
     WBreadcrumbItemSlot? slots,
+    WBreadcrumbItemStyle? style,
   }) : super(key: key) {
     $on = on ?? WBreadcrumbItemOn();
     $props = props ?? WBreadcrumbItemProp();
     $slots = slots ?? WBreadcrumbItemSlot(null);
+    $style = style ?? WBreadcrumbItemStyle();
   }
 
   @override

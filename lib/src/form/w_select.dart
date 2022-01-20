@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
+import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
@@ -16,32 +17,34 @@ import 'package:wao_ui/src/form/w_input.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 class WSelect extends StatefulWidget
-    implements BaseWidget<WSelectOn, WSelectProp, WSelectSlot> {
+    implements BaseWidget<WSelectOn, WSelectProp, WSelectSlot, WSelectStyle> {
   @override
   late final WSelectOn $on;
-
   @override
   late final WSelectProp $props;
-
   @override
   late final WSelectSlot $slots;
-
-  double panelHeight;
-
   @override
-  _WSelectState createState() => _WSelectState();
+  late WSelectStyle $style;
+
   WSelect({
     Key? key,
     WSelectOn? on,
     WSelectProp? props,
     WSelectSlot? slots,
+    WSelectStyle? style,
     this.panelHeight = 274.0,
   }) : super(key: key) {
     $on = on ?? WSelectOn();
     $props = props ?? WSelectProp();
     $slots = slots ?? WSelectSlot(null);
+    $style = style ?? WSelectStyle();
   }
 
+  double panelHeight;
+
+  @override
+  _WSelectState createState() => _WSelectState();
   /**
       focus	使 input 获取焦点	-
       blur	使 input 失去焦点，并隐藏下拉框	-
@@ -210,6 +213,7 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
       ),
       $prefixSize: MainAxisSize.max,
       $prefixAlignment: MainAxisAlignment.start,
+      $strictOneRow: false,
     );
 
     return select;
@@ -324,7 +328,7 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
           constraints: BoxConstraints(
             maxHeight: panelHeight.value,
           ),
-          width: 200,
+          width: _width,
           decoration: BoxDecoration(
             color: Color.fromARGB(panelOpacity.value ~/ 1, 255, 255, 255),
           ),
@@ -332,6 +336,10 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
         ),
       );
     });
+  }
+
+  double get _width {
+    return widget.$style.width ?? cfgGlobal.select.width ?? 240;
   }
 
   // 为浮窗添加小箭头角标
@@ -523,7 +531,9 @@ class WSelectSlot extends BaseSlot {
 }
 
 class WOptionGroup extends StatelessWidget
-    implements BaseWidget<WOptionGroupOn, WOptionGroupProp, WOptionGroupSlot> {
+    implements
+        BaseWidget<WOptionGroupOn, WOptionGroupProp, WOptionGroupSlot,
+            WOptionGroupStyle> {
   @override
   late final WOptionGroupOn $on;
 
@@ -532,16 +542,20 @@ class WOptionGroup extends StatelessWidget
 
   @override
   late final WOptionGroupSlot $slots;
+  @override
+  late final WOptionGroupStyle $style;
 
   WOptionGroup({
     Key? key,
     WOptionGroupOn? on,
     WOptionGroupProp? props,
     WOptionGroupSlot? slots,
+    WOptionGroupStyle? style,
   }) : super(key: key) {
     $on = on ?? WOptionGroupOn();
     $props = props ?? WOptionGroupProp(label: '');
     $slots = slots ?? WOptionGroupSlot(null);
+    $style = style ?? WOptionGroupStyle();
   }
 
   @override
@@ -582,25 +596,27 @@ class WOptionGroupSlot extends BaseSlot {
 }
 
 class WOption extends StatelessWidget
-    implements BaseWidget<WOptionOn, WOptionProp, WOptionSlot> {
+    implements BaseWidget<WOptionOn, WOptionProp, WOptionSlot, WOptionStyle> {
   @override
   late final WOptionOn $on;
-
   @override
   late final WOptionProp $props;
-
   @override
   late final WOptionSlot $slots;
+  @override
+  late WOptionStyle $style;
 
   WOption({
     Key? key,
     WOptionOn? on,
     WOptionProp? props,
     WOptionSlot? slots,
+    WOptionStyle? style,
   }) : super(key: key) {
     $on = on ?? WOptionOn();
     $props = props ?? WOptionProp();
     $slots = slots ?? WOptionSlot(null);
+    $style = style ?? WOptionStyle();
   }
 
   @override

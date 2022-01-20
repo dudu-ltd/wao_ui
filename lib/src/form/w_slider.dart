@@ -3,27 +3,30 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WSlider extends StatelessWidget
-    implements BaseWidget<WSliderOn, WSliderProp, WSliderSlot> {
+    implements BaseWidget<WSliderOn, WSliderProp, WSliderSlot, WSliderStyle> {
   @override
   late final WSliderOn $on;
-
   @override
   late final WSliderProp $props;
-
   @override
   late final WSliderSlot $slots;
+  @override
+  late WSliderStyle $style;
 
   WSlider({
     Key? key,
     WSliderOn? on,
     WSliderProp? props,
     WSliderSlot? slots,
+    WSliderStyle? style,
   }) : super(key: key) {
     $on = on ?? WSliderOn();
     $props = props ?? WSliderProp();
     $slots = slots ?? WSliderSlot(null);
+    $style = style ?? WSliderStyle();
   }
 
   @override

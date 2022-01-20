@@ -3,31 +3,36 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WContainerLayout extends StatefulWidget
     implements
         BaseWidget<WContainerLayoutOn, WContainerLayoutProp,
-            WContainerLayoutSlot> {
-  static Color devideColor = Colors.grey.shade50;
+            WContainerLayoutSlot, WContainerLayoutStyle> {
+  @override
+  late final WContainerLayoutOn $on;
+  @override
+  late final WContainerLayoutProp $props;
+  @override
+  late final WContainerLayoutSlot $slots;
+  @override
+  late WContainerLayoutStyle $style;
 
-  @override
-  late WContainerLayoutOn $on;
-  @override
-  late WContainerLayoutProp $props;
-  @override
-  late WContainerLayoutSlot $slots;
-
-  _WContainerLayoutState? state;
   WContainerLayout({
     Key? key,
-    slots,
-    props,
-    on,
+    WContainerLayoutOn? on,
+    WContainerLayoutProp? props,
+    WContainerLayoutSlot? slots,
+    WContainerLayoutStyle? style,
   }) : super(key: key) {
-    $props = props ?? WContainerLayoutProp();
     $on = on ?? WContainerLayoutOn();
+    $props = props ?? WContainerLayoutProp();
     $slots = slots ?? WContainerLayoutSlot(null);
+    $style = style ?? WContainerLayoutStyle();
   }
+
+  static Color devideColor = Colors.grey.shade50;
+  _WContainerLayoutState? state;
 
   @override
   _WContainerLayoutState createState() =>
