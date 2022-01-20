@@ -19,6 +19,8 @@ class WInput extends StatefulWidget
   @override
   late final WInputSlot $slots;
 
+  MainAxisSize? $prefixSize;
+
   @override
   WInputState createState() => WInputState();
   WInput({
@@ -26,6 +28,7 @@ class WInput extends StatefulWidget
     WInputOn? on,
     WInputProp? props,
     WInputSlot? slots,
+    this.$prefixSize = MainAxisSize.min,
   }) : super(key: key) {
     $on = on ?? WInputOn();
     $props = props ?? WInputProp();
@@ -45,8 +48,16 @@ class WInputState extends State<WInput> {
   bool isFocus = false;
 
   @override
+  void dispose() {
+    //为了避免内存泄露，需要调用_controller.dispose
+    widget.$props._value.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
+
     widget.$props._value.addListener(() {
       setState(() {});
     });
@@ -201,7 +212,7 @@ class WInputState extends State<WInput> {
             padding:
                 EdgeInsets.fromLTRB(children.length > 1 ? padding : 0, 0, 0, 0),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: widget.$prefixSize ?? MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: children,
             ),
