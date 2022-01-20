@@ -12,9 +12,11 @@ class ApiEmpty extends StatelessWidget {
       children: [
         const Text('WEmpty'),
         WEmpty(
-          WButton(
-            slots: WButtonSlot('按钮'),
-            props: WButtonProp(size: 'mini'),
+          slots: WEmptySlot(
+            WButton(
+              slots: WButtonSlot('按钮'),
+              props: WButtonProp(size: 'mini'),
+            ),
           ),
           props: WEmptyProp(description: '内容是空的呦~'),
         ),

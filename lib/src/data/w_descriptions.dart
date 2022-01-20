@@ -17,30 +17,32 @@ var borderSide = BorderSide(
 ///
 class WDescriptions extends StatefulWidget
     implements
-        BaseWidget<WDescriptionsOn, WDescriptionsProp, WDescriptionsSlot> {
+        BaseWidget<WDescriptionsOn, WDescriptionsProp, WDescriptionsSlot,
+            WDescriptionsStyle> {
   @override
   late final WDescriptionsOn $on;
-
   @override
   late final WDescriptionsProp $props;
-
   @override
   late final WDescriptionsSlot $slots;
-
   @override
-  _WDescriptionsState createState() => _WDescriptionsState();
+  late WDescriptionsStyle $style;
 
   WDescriptions({
     Key? key,
     WDescriptionsOn? on,
     WDescriptionsProp? props,
     WDescriptionsSlot? slots,
+    WDescriptionsStyle? style,
   }) : super(key: key) {
     $on = on ?? WDescriptionsOn();
     $props = props ?? WDescriptionsProp();
     $slots = slots ?? WDescriptionsSlot(null);
-    setDefaultSlot();
+    $style = style ?? WDescriptionsStyle();
   }
+
+  @override
+  _WDescriptionsState createState() => _WDescriptionsState();
 
   void checkSlot() {
     var slot = $slots.defaultSlotBefore;
@@ -257,25 +259,27 @@ class WDescriptionsSlot extends BaseSlot {
 class WDescriptionsItem extends StatelessWidget
     implements
         BaseWidget<WDescriptionsItemOn, WDescriptionsItemProp,
-            WDescriptionsItemSlot> {
+            WDescriptionsItemSlot, WDescriptionsItemStyle> {
   @override
   late final WDescriptionsItemOn $on;
-
   @override
   late final WDescriptionsItemProp $props;
-
   @override
   late final WDescriptionsItemSlot $slots;
+  @override
+  late WDescriptionsItemStyle $style;
 
   WDescriptionsItem({
     Key? key,
     WDescriptionsItemOn? on,
     WDescriptionsItemProp? props,
     WDescriptionsItemSlot? slots,
+    WDescriptionsItemStyle? style,
   }) : super(key: key) {
     $on = on ?? WDescriptionsItemOn();
     $props = props ?? WDescriptionsItemProp();
     $slots = slots ?? WDescriptionsItemSlot(null);
+    $style = style ?? WDescriptionsItemStyle();
   }
 
   @override

@@ -9,7 +9,7 @@ import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 // TODO 修改按钮前景色
 // TODO 使 icon 跟 defaultSlot 并存
 class WButton extends StatelessWidget
-    implements BaseWidget<WButtonOn, WButtonProp, WButtonSlot> {
+    implements BaseWidget<WButtonOn, WButtonProp, WButtonSlot, WButtonStyle> {
   @override
   late WButtonOn $on;
 
@@ -19,15 +19,20 @@ class WButton extends StatelessWidget
   @override
   late WButtonSlot $slots;
 
+  @override
+  late WButtonStyle $style;
+
   WButton({
     Key? key,
     WButtonOn? on,
     WButtonProp? props,
     WButtonSlot? slots,
+    WButtonStyle? style,
   }) : super(key: key) {
     $on = on ?? WButtonOn();
     $props = props ?? WButtonProp();
     $slots = slots ?? WButtonSlot(null);
+    $style = style ?? WButtonStyle();
   }
 
   @override

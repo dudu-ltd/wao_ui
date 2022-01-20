@@ -3,6 +3,7 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class PlainTreeOn extends BaseOn {
   Function? nodeClick;
@@ -39,14 +40,24 @@ class PlainTreeProp extends BaseProp {
 }
 
 class PlainTree extends StatefulWidget
-    implements BaseWidget<PlainTreeOn, PlainTreeProp, PlainTreeSlot> {
-  _TreeState? state;
+    implements
+        BaseWidget<PlainTreeOn, PlainTreeProp, PlainTreeSlot, PlainTreeStyle> {
+  @override
+  late PlainTreeOn $on;
+  @override
+  late PlainTreeProp $props;
+  @override
+  late PlainTreeSlot $slots;
+  @override
+  late PlainTreeStyle $style;
+
   PlainTree({Key? key, on, props})
       : this.$on = on ?? PlainTreeOn(),
         this.$props = props ?? PlainTreeProp(data: []),
         this.$slots = PlainTreeSlot(null),
         super(key: key);
 
+  _TreeState? state;
   @override
   _TreeState createState() => state = _TreeState();
 
@@ -61,15 +72,6 @@ class PlainTree extends StatefulWidget
   removeNode() {
     return state!.removeNode();
   }
-
-  @override
-  late PlainTreeOn $on;
-
-  @override
-  late PlainTreeProp $props;
-
-  @override
-  late PlainTreeSlot $slots;
 }
 
 class _TreeState extends State<PlainTree> {

@@ -3,27 +3,32 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WColorPicker extends StatelessWidget
-    implements BaseWidget<WColorPickerOn, WColorPickerProp, WColorPickerSlot> {
+    implements
+        BaseWidget<WColorPickerOn, WColorPickerProp, WColorPickerSlot,
+            WColorPickerStyle> {
   @override
   late final WColorPickerOn $on;
-
   @override
   late final WColorPickerProp $props;
-
   @override
   late final WColorPickerSlot $slots;
+  @override
+  late WColorPickerStyle $style;
 
   WColorPicker({
     Key? key,
     WColorPickerOn? on,
     WColorPickerProp? props,
     WColorPickerSlot? slots,
+    WColorPickerStyle? style,
   }) : super(key: key) {
     $on = on ?? WColorPickerOn();
     $props = props ?? WColorPickerProp();
     $slots = slots ?? WColorPickerSlot(null);
+    $style = style ?? WColorPickerStyle();
   }
 
   @override

@@ -9,25 +9,28 @@ import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 class WCheckbox extends StatefulWidget
-    implements BaseWidget<WCheckboxOn, WCheckboxProp, WCheckboxSlot> {
+    implements
+        BaseWidget<WCheckboxOn, WCheckboxProp, WCheckboxSlot, WCheckboxStyle> {
   @override
   late final WCheckboxOn $on;
-
   @override
   late final WCheckboxProp $props;
-
   @override
   late final WCheckboxSlot $slots;
+  @override
+  late WCheckboxStyle $style;
 
   WCheckbox({
     Key? key,
     WCheckboxOn? on,
     WCheckboxProp? props,
     WCheckboxSlot? slots,
+    WCheckboxStyle? style,
   }) : super(key: key) {
     $on = on ?? WCheckboxOn();
     $props = props ?? WCheckboxProp();
     $slots = slots ?? WCheckboxSlot(null);
+    $style = style ?? WCheckboxStyle();
   }
 
   @override
@@ -230,25 +233,28 @@ class WCheckboxSlot extends BaseSlot {
 
 class WCheckboxGroup extends StatelessWidget
     implements
-        BaseWidget<WCheckboxGroupOn, WCheckboxGroupProp, WCheckboxGroupSlot> {
+        BaseWidget<WCheckboxGroupOn, WCheckboxGroupProp, WCheckboxGroupSlot,
+            WCheckboxGroupStyle> {
   @override
   late final WCheckboxGroupOn $on;
-
   @override
   late final WCheckboxGroupProp $props;
-
   @override
   late final WCheckboxGroupSlot $slots;
+  @override
+  late WCheckboxGroupStyle $style;
 
   WCheckboxGroup({
     Key? key,
     WCheckboxGroupOn? on,
     WCheckboxGroupProp? props,
     WCheckboxGroupSlot? slots,
+    WCheckboxGroupStyle? style,
   }) : super(key: key) {
     $on = on ?? WCheckboxGroupOn();
     $props = props ?? WCheckboxGroupProp();
     $slots = slots ?? WCheckboxGroupSlot(null);
+    $style = style ?? WCheckboxGroupStyle();
     $props.value.addListener(() {
       $on.change?.call($props.value.value);
       sizeLimit();
@@ -402,26 +408,28 @@ class WCheckboxGroupSlot extends BaseSlot {
 
 class WCheckboxButton extends StatefulWidget
     implements
-        BaseWidget<WCheckboxButtonOn, WCheckboxButtonProp,
-            WCheckboxButtonSlot> {
+        BaseWidget<WCheckboxButtonOn, WCheckboxButtonProp, WCheckboxButtonSlot,
+            WCheckboxButtonStyle> {
   @override
   late final WCheckboxButtonOn $on;
-
   @override
   late final WCheckboxButtonProp $props;
-
   @override
   late final WCheckboxButtonSlot $slots;
+  @override
+  late WCheckboxButtonStyle $style;
 
   WCheckboxButton({
     Key? key,
     WCheckboxButtonOn? on,
     WCheckboxButtonProp? props,
     WCheckboxButtonSlot? slots,
+    WCheckboxButtonStyle? style,
   }) : super(key: key) {
     $on = on ?? WCheckboxButtonOn();
     $props = props ?? WCheckboxButtonProp();
     $slots = slots ?? WCheckboxButtonSlot(null);
+    $style = style ?? WCheckboxButtonStyle();
   }
 
   @override

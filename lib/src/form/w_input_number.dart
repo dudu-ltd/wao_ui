@@ -4,30 +4,35 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 import 'w_input.dart';
 
 // TODO 添加对键盘上下键的监听
 class WInputNumber extends StatelessWidget
-    implements BaseWidget<WInputNumberOn, WInputNumberProp, WInputNumberSlot> {
+    implements
+        BaseWidget<WInputNumberOn, WInputNumberProp, WInputNumberSlot,
+            WInputNumberStyle> {
   @override
   late final WInputNumberOn $on;
-
   @override
   late final WInputNumberProp $props;
-
   @override
   late final WInputNumberSlot $slots;
+  @override
+  late WInputNumberStyle $style;
 
   WInputNumber({
     Key? key,
     WInputNumberOn? on,
     WInputNumberProp? props,
     WInputNumberSlot? slots,
+    WInputNumberStyle? style,
   }) : super(key: key) {
     $on = on ?? WInputNumberOn();
     $props = props ?? WInputNumberProp();
     $slots = slots ?? WInputNumberSlot(null);
+    $style = style ?? WInputNumberStyle();
   }
 
   @override

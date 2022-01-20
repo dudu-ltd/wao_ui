@@ -3,27 +3,31 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WCascader extends StatelessWidget
-    implements BaseWidget<WCascaderOn, WCascaderProp, WCascaderSlot> {
+    implements
+        BaseWidget<WCascaderOn, WCascaderProp, WCascaderSlot, WCascaderStyle> {
   @override
   late final WCascaderOn $on;
-
   @override
   late final WCascaderProp $props;
-
   @override
   late final WCascaderSlot $slots;
+  @override
+  late WCascaderStyle $style;
 
   WCascader({
     Key? key,
     WCascaderOn? on,
     WCascaderProp? props,
     WCascaderSlot? slots,
+    WCascaderStyle? style,
   }) : super(key: key) {
     $on = on ?? WCascaderOn();
     $props = props ?? WCascaderProp(options: []);
     $slots = slots ?? WCascaderSlot(null);
+    $style = style ?? WCascaderStyle();
   }
 
   @override

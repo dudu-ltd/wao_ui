@@ -4,31 +4,34 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WDialog extends StatelessWidget
-    implements BaseWidget<WDialogOn, WDialogProp, WDialogSlot> {
+    implements BaseWidget<WDialogOn, WDialogProp, WDialogSlot, WDialogStyle> {
   @override
   late final WDialogOn $on;
-
   @override
   late final WDialogProp $props;
-
   @override
   late final WDialogSlot $slots;
-
-  Function(bool value)? show;
+  @override
+  late WDialogStyle $style;
 
   WDialog({
     Key? key,
     WDialogOn? on,
     WDialogProp? props,
     WDialogSlot? slots,
+    WDialogStyle? style,
   }) : super(key: key) {
     $on = on ?? WDialogOn();
     $props = props ?? WDialogProp();
-    $props._widget = this;
     $slots = slots ?? WDialogSlot(null);
+    $style = style ?? WDialogStyle();
+    $props._widget = this;
   }
+
+  Function(bool value)? show;
 
   setShow(BuildContext context) {
     show = (bool visible) {

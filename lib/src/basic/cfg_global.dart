@@ -1,4 +1,7 @@
+// ignore_for_file: overridden_fields
+
 import 'package:flutter/material.dart';
+import 'package:wao_ui/core/base_style.dart';
 
 CfgGlobal cfgGlobal = CfgGlobal();
 
@@ -33,6 +36,10 @@ class CfgGlobal {
   WRadioStyle radio = WRadioStyle();
 
   WCheckboxStyle checkbox = WCheckboxStyle();
+
+  WInputStyle input = WInputStyle();
+
+  WSelectStyle select = WSelectStyle();
 
   CfgGlobal._privateConstrucor();
 
@@ -202,7 +209,7 @@ class WColor {
   }
 }
 
-class WBreadcrumbStyle {
+class WBreadcrumbStyle extends BaseStyle {
   late EdgeInsets padding = const EdgeInsets.fromLTRB(8, 2, 8, 2);
 
   WBreadcrumbStyle._privateConstrucor();
@@ -213,7 +220,7 @@ class WBreadcrumbStyle {
   }
 }
 
-class WDescriptionsStyle {
+class WDescriptionsStyle extends BaseStyle {
   double labelWidth = 80;
   Color labelColor = Colors.grey.shade100;
 
@@ -230,7 +237,7 @@ class WDescriptionsStyle {
   }
 }
 
-class WEmptyStyle {
+class WEmptyStyle extends BaseStyle {
   double imageSize = 160;
   EdgeInsets descriptionPadding = const EdgeInsets.all(8);
   Color descriptionColor = Colors.grey.shade500;
@@ -244,7 +251,7 @@ class WEmptyStyle {
   }
 }
 
-class WPaginationStyle {
+class WPaginationStyle extends BaseStyle {
   Color totalColor = Colors.grey.shade600;
 
   WPaginationStyle._privateConstrucor();
@@ -255,7 +262,7 @@ class WPaginationStyle {
   }
 }
 
-class WButtonStyle {
+class WButtonStyle extends BaseStyle {
   double minWidth = 30;
 
   WButtonStyle._privateConstrucor();
@@ -265,7 +272,7 @@ class WButtonStyle {
   }
 }
 
-class WProgressStyle {
+class WProgressStyle extends BaseStyle {
   IconData successIcon = Icons.check_circle_outline_rounded;
   IconData warningIcon = Icons.error_rounded;
   IconData exceptionIcon = Icons.highlight_remove_rounded;
@@ -289,7 +296,7 @@ class WProgressStyle {
   }
 }
 
-class WResultStyle {
+class WResultStyle extends BaseStyle {
   IconData successIcon = Icons.check_circle_rounded;
   IconData warningIcon = Icons.error_rounded;
   IconData errorIcon = Icons.dangerous_rounded;
@@ -323,7 +330,7 @@ class WResultStyle {
   }
 }
 
-class WTableStyle {
+class WTableStyle extends BaseStyle {
   Color stripeColor = Colors.grey.shade100;
   Color rowHoverColor = CfgGlobal.primaryColor.shade50;
   BorderSide rowNoBorder = const BorderSide(width: 0);
@@ -331,7 +338,7 @@ class WTableStyle {
   EdgeInsets cellMargin = const EdgeInsets.fromLTRB(5, 2, 5, 2);
 }
 
-class WRadioStyle {
+class WRadioStyle extends BaseStyle {
   double iconRadioMini = 4.0;
   double iconRadioSmall = 5.0;
   double iconRadioMedium = 6.0;
@@ -349,7 +356,7 @@ class WRadioStyle {
   }
 }
 
-class WCheckboxStyle {
+class WCheckboxStyle extends BaseStyle {
   double iconCheckboxMini = 10.0;
   double iconCheckboxSmall = 12.0;
   double iconCheckboxMedium = 14.0;
@@ -369,4 +376,566 @@ class WCheckboxStyle {
   double borderRadius(String size) {
     return val(size) * .2;
   }
+}
+
+class WInputStyle extends BaseStyle {
+  @override
+  double? width = 180;
+}
+
+class WSelectStyle extends BaseStyle {
+  @override
+  double? width = 240;
+}
+
+class WOptionGroupStyle extends BaseStyle {}
+
+class WContainerLayoutStyle extends BaseStyle {
+  WContainerLayoutStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WFrameStyle extends BaseStyle {
+  WFrameStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WAvatarStyle extends BaseStyle {
+  WAvatarStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WBadgeStyle extends BaseStyle {
+  WBadgeStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WDescriptionsItemStyle extends BaseStyle {
+  WDescriptionsItemStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WSkeletonStyle extends BaseStyle {
+  WSkeletonStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTableColumnStyle extends BaseStyle {
+  WTableColumnStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTagStyle extends BaseStyle {
+  WTagStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTreeStyle extends BaseStyle {
+  WTreeStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WFormStyle extends BaseStyle {
+  WFormStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCascaderStyle extends BaseStyle {
+  WCascaderStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCheckboxGroupStyle extends BaseStyle {
+  WCheckboxGroupStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCheckboxButtonStyle extends BaseStyle {
+  WCheckboxButtonStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WColorPickerStyle extends BaseStyle {
+  WColorPickerStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WDatePickerStyle extends BaseStyle {
+  WDatePickerStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WDateTimePickerStyle extends BaseStyle {
+  WDateTimePickerStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WInputNumberStyle extends BaseStyle {
+  WInputNumberStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WAutocompleteStyle extends BaseStyle {
+  WAutocompleteStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WRadioGroupStyle extends BaseStyle {
+  WRadioGroupStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WRadioButtonStyle extends BaseStyle {
+  WRadioButtonStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WRateStyle extends BaseStyle {
+  WRateStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WOptionStyle extends BaseStyle {
+  WOptionStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WSliderStyle extends BaseStyle {
+  WSliderStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WSwitchStyle extends BaseStyle {
+  WSwitchStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTimePickerStyle extends BaseStyle {
+  WTimePickerStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTransferStyle extends BaseStyle {
+  WTransferStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WUploadStyle extends BaseStyle {
+  WUploadStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WBreadcrumbItemStyle extends BaseStyle {
+  WBreadcrumbItemStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WDropdownStyle extends BaseStyle {
+  WDropdownStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WDropdownMenuStyle extends BaseStyle {
+  WDropdownMenuStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WDropdownItemStyle extends BaseStyle {
+  WDropdownItemStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WNavMenuStyle extends BaseStyle {
+  WNavMenuStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WPageHeaderStyle extends BaseStyle {
+  WPageHeaderStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WStepsStyle extends BaseStyle {
+  WStepsStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTabsStyle extends BaseStyle {
+  WTabsStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WAlertStyle extends BaseStyle {
+  WAlertStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WLoadingStyle extends BaseStyle {
+  WLoadingStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WMessageStyle extends BaseStyle {
+  WMessageStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WMessageBoxStyle extends BaseStyle {
+  WMessageBoxStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WNotificationStyle extends BaseStyle {
+  WNotificationStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WBacktopStyle extends BaseStyle {
+  WBacktopStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCalendarStyle extends BaseStyle {
+  WCalendarStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCardStyle extends BaseStyle {
+  WCardStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCarouselStyle extends BaseStyle {
+  WCarouselStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCollapseStyle extends BaseStyle {
+  WCollapseStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WDialogStyle extends BaseStyle {
+  WDialogStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WDividerStyle extends BaseStyle {
+  WDividerStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WDrawerStyle extends BaseStyle {
+  WDrawerStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WImageStyle extends BaseStyle {
+  WImageStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WInfiniteScrollStyle extends BaseStyle {
+  WInfiniteScrollStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WPopconfirmStyle extends BaseStyle {
+  WPopconfirmStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WPopoverStyle extends BaseStyle {
+  WPopoverStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTimelineStyle extends BaseStyle {
+  WTimelineStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTooltipStyle extends BaseStyle {
+  WTooltipStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class PlainTreeStyle extends BaseStyle {
+  PlainTreeStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
 }

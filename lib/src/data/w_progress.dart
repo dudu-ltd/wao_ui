@@ -11,25 +11,28 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 
 // TODO 修复 stroke-width 值太大时体现出来的百分比偏差，circle
 class WProgress extends StatefulWidget
-    implements BaseWidget<WProgressOn, WProgressProp, WProgressSlot> {
+    implements
+        BaseWidget<WProgressOn, WProgressProp, WProgressSlot, WProgressStyle> {
   @override
   late final WProgressOn $on;
-
   @override
   late final WProgressProp $props;
-
   @override
   late final WProgressSlot $slots;
+  @override
+  late WProgressStyle $style;
 
   WProgress({
     Key? key,
     WProgressOn? on,
     WProgressProp? props,
     WProgressSlot? slots,
+    WProgressStyle? style,
   }) : super(key: key) {
     $on = on ?? WProgressOn();
     $props = props ?? WProgressProp();
     $slots = slots ?? WProgressSlot(null);
+    $style = style ?? WProgressStyle();
   }
 
   @override
