@@ -20,6 +20,7 @@ class WInput extends StatefulWidget
   late final WInputSlot $slots;
 
   MainAxisSize? $prefixSize;
+  MainAxisAlignment? $prefixAlignment;
 
   @override
   WInputState createState() => WInputState();
@@ -29,6 +30,7 @@ class WInput extends StatefulWidget
     WInputProp? props,
     WInputSlot? slots,
     this.$prefixSize = MainAxisSize.min,
+    this.$prefixAlignment = MainAxisAlignment.center,
   }) : super(key: key) {
     $on = on ?? WInputOn();
     $props = props ?? WInputProp();
@@ -145,8 +147,7 @@ class WInputState extends State<WInput> {
       floatingLabelAlignment: FloatingLabelAlignment.start,
       constraints: widget.$props.isTextarea
           ? null
-          : BoxConstraints(
-              maxHeight: maxHeight, maxWidth: 200, minHeight: maxHeight),
+          : BoxConstraints(maxWidth: 200, minHeight: maxHeight),
       focusedBorder: baseBorder,
       focusedErrorBorder: baseBorder.copyWith(
         borderSide: BorderSide(color: cfgGlobal.color.danger),
@@ -213,7 +214,8 @@ class WInputState extends State<WInput> {
                 EdgeInsets.fromLTRB(children.length > 1 ? padding : 0, 0, 0, 0),
             child: Row(
               mainAxisSize: widget.$prefixSize ?? MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment:
+                  widget.$prefixAlignment ?? MainAxisAlignment.center,
               children: children,
             ),
           )

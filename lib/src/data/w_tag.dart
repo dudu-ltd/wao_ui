@@ -36,6 +36,7 @@ class WTag extends StatelessWidget
       decoration: decoration,
       padding: padding,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [...tagMain, ...closeButton],
       ),
     );
@@ -84,6 +85,7 @@ class WTag extends StatelessWidget
             $slots.defaultSlotBefore as String,
             style: TextStyle(
               color: fontColor,
+              fontSize: fontSize,
             ),
           )
         ];
@@ -124,6 +126,10 @@ class WTag extends StatelessWidget
 
   Color get fontColor {
     return $props.isDark ? Colors.white : color.shade700;
+  }
+
+  double get fontSize {
+    return cfgGlobal.font.val($props.size);
   }
 
   MaterialColor get color {

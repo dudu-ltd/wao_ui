@@ -148,10 +148,10 @@ class WAvatarSize {
 
 class WPadding {
   double none = 0.0;
-  double mini = 4.0;
-  double small = 6.0;
-  double medium = 8.0;
-  double large = 10.0;
+  double mini = 2.0;
+  double small = 4.0;
+  double medium = 6.0;
+  double large = 8.0;
 
   WPadding._privateConstrucor();
   static final WPadding _instance = WPadding._privateConstrucor();

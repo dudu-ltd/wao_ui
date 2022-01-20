@@ -196,7 +196,8 @@ class ApiSelect extends StatelessWidget {
 
   Widget get group {
     return WSelect(
-      props: WSelectProp(placeholder: '请选择', value: 'Shanghai'),
+      props:
+          WSelectProp(placeholder: '请选择', value: ['Shanghai'], multiple: true),
       slots: WSelectSlot(
         List.generate(
           cityTree.length,
