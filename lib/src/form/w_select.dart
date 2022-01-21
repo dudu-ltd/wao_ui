@@ -60,6 +60,7 @@ class _WSelectState extends State<WSelect>
   late Offset panelOffset = const Offset(0, 0);
 
   Function(void Function())? panelSetState;
+  BuildContext? panelContext;
 
   late OverlayEntry panelOverlay;
 
@@ -82,12 +83,6 @@ class _WSelectState extends State<WSelect>
           ..addListener(() {
             panelSetState?.call(() {});
           });
-
-    /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
-    // 在控件渲染完成后执行的回调
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _findRenderObject();
-    });
 
     setEvent();
   }
@@ -182,13 +177,27 @@ class _WSelectState extends State<WSelect>
     setState(() {});
   }
 
-  _findRenderObject() {
+  _updatePanel(panelContext, panelSetState) {
     var itemRect = getPosition(context);
     var selectRect = getPosition(selectKey.currentContext!);
+    var panelRect = getPosition(panelContext);
 
-    setState(() {
+    panelSetState(() {
       var dx = itemRect.left - panelBorder;
       var dy = itemRect.top + selectRect.height;
+      if (dx < 0) {
+        dx = 0;
+      }
+      var win = MediaQuery.of(context).size;
+      var screenWidth = win.width;
+      var screenHeight = win.height;
+      if (itemRect.left + panelRect.width > MediaQuery.of(context).size.width) {
+        dx = screenWidth - panelRect.width;
+      }
+
+      if (dy + panelHeight > screenHeight) {
+        dy = dy - panelRect.height - selectRect.height;
+      }
       panelOffset = Offset(dx, dy);
     });
   }
@@ -322,8 +331,14 @@ class _WSelectState extends State<WSelect>
 
   Widget get panel {
     return StatefulBuilder(builder: (context, setState) {
-      // TODO
       panelSetState = setState;
+      panelContext = context;
+
+      /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
+      // 在控件渲染完成后执行的回调
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _updatePanel(context, setState);
+      });
       // var offset = panelOffset;
       return Positioned(
         top: panelOffset.dy,
