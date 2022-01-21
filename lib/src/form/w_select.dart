@@ -7,15 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
+import 'package:wao_ui/core/utils/layout_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/data/w_tag.dart';
 import 'package:wao_ui/src/form/w_input.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
+// TODO FIXME 修复值清空与实际展示值不一致的问题
 class WSelect extends StatefulWidget
     implements BaseWidget<WSelectOn, WSelectProp, WSelectSlot, WSelectStyle> {
   @override
@@ -33,15 +34,12 @@ class WSelect extends StatefulWidget
     WSelectProp? props,
     WSelectSlot? slots,
     WSelectStyle? style,
-    this.panelHeight = 274.0,
   }) : super(key: key) {
     $on = on ?? WSelectOn();
     $props = props ?? WSelectProp();
     $slots = slots ?? WSelectSlot(null);
     $style = style ?? WSelectStyle();
   }
-
-  double panelHeight;
 
   @override
   _WSelectState createState() => _WSelectState();
@@ -51,18 +49,74 @@ class WSelect extends StatefulWidget
    */
 }
 
-class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
+class _WSelectState extends State<WSelect>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController iconSpinController;
   late Animation<double> spin;
-  late Animation<double> panelHeight;
+  late Animation<double> panelHeightAnimation;
   late Animation<double> panelOpacity;
   final ValueNotifier<bool> _isExpand = ValueNotifier(false);
   GlobalKey<WInputState> selectKey = GlobalKey<WInputState>();
   late Offset panelOffset = const Offset(0, 0);
 
+  Function(void Function())? panelSetState;
+
   late OverlayEntry panelOverlay;
 
   List options = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _isExpand.addListener(changePanelAction);
+
+    iconSpinController = AnimationController(
+        duration: const Duration(milliseconds: 200), vsync: this);
+
+    spin = Tween(begin: 0.0, end: -pi).animate(iconSpinController);
+
+    panelOpacity = Tween(begin: 255.0, end: 255.0).animate(iconSpinController);
+
+    panelHeightAnimation =
+        Tween(begin: 0.0, end: panelHeight).animate(iconSpinController)
+          ..addListener(() {
+            panelSetState?.call(() {});
+          });
+
+    /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
+    // 在控件渲染完成后执行的回调
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _findRenderObject();
+    });
+
+    setEvent();
+  }
+
+  setEvent() {
+    if (!widget.$slots.defalutEmpty) {
+      _setEvent(widget.$slots.defaultSlot);
+    }
+  }
+
+  _setEvent(List? slots) {
+    slots?.forEach(
+      (slot) {
+        if (slot is WOption) {
+          slot.$props._multiple = widget.$props.multiple;
+          options.add(slot);
+          var fn = slot.$on.click ?? (e) {};
+          slot.$props._valueListener = widget.$props._valueListener;
+          slot.$on.click = (e) {
+            onSelect(e);
+            fn(e);
+            if (!widget.$props.multiple) hidePanel();
+          };
+        } else if (slot is WOptionGroup) {
+          _setEvent(slot.$slots.defaultSlot);
+        }
+      },
+    );
+  }
 
   showPanel() {
     isExpand = true;
@@ -107,6 +161,11 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    // WidgetsBinding.instance!.focusManager
+    //     .removeHighlightModeListener(_handleFocusHighlightModeChange);
+    // focusNode!.removeListener(_handleFocusChanged);
+    // _internalNode?.dispose();
     hidePanel();
     super.dispose();
   }
@@ -117,76 +176,19 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
       var contains = v.contains(option.value);
       contains ? v.remove(option.value) : v.add(option.value);
       widget.$props.value = widget.$props._valueListener.value;
-      setState(() {});
     } else {
       widget.$props.value = option.value;
     }
+    setState(() {});
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _isExpand.addListener(changePanelAction);
-
-    iconSpinController = AnimationController(
-        duration: const Duration(milliseconds: 200), vsync: this);
-
-    spin = Tween(begin: 0.0, end: -pi).animate(iconSpinController);
-
-    panelOpacity = Tween(begin: 255.0, end: 255.0).animate(iconSpinController);
-
-    panelHeight = Tween(begin: widget.panelHeight, end: widget.panelHeight)
-        .animate(iconSpinController)
-      ..addListener(() {
-        setState(() {});
-      });
-
-    /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
-    // 在控件渲染完成后执行的回调
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _findRenderObject();
-    });
-
-    setEvent();
-  }
-
-  setEvent() {
-    if (!widget.$slots.defalutEmpty) {
-      _setEvent(widget.$slots.defaultSlot);
-    }
-  }
-
-  _setEvent(List? slots) {
-    slots?.forEach(
-      (slot) {
-        if (slot is WOption) {
-          slot.$props._multiple = widget.$props.multiple;
-          options.add(slot);
-          var fn = slot.$on.click ?? (e) {};
-          slot.$props._valueListener = widget.$props._valueListener;
-          slot.$on.click = (e) {
-            onSelect(e);
-            fn(e);
-            if (!widget.$props.multiple) hidePanel();
-          };
-        } else if (slot is WOptionGroup) {
-          _setEvent(slot.$slots.defaultSlot);
-        }
-      },
-    );
-  }
-
-  /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
-  // 如果控件用了Transform平移旋转等, 获取到的坐标也会变化
   _findRenderObject() {
-    dynamic renderBox = selectKey.currentContext?.findRenderObject();
-
-    // offset.dx , offset.dy 就是控件的左上角坐标
-    var offset = renderBox.localToGlobal(Offset.zero);
+    var itemRect = getPosition(context);
+    var selectRect = getPosition(selectKey.currentContext!);
 
     setState(() {
-      var dx = offset.dx - (renderBox.size.width);
-      var dy = offset.dy;
+      var dx = itemRect.left - panelBorder;
+      var dy = itemRect.top + selectRect.height;
       panelOffset = Offset(dx, dy);
     });
   }
@@ -319,20 +321,23 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
   }
 
   Widget get panel {
-    return StatefulBuilder(builder: (a, b) {
+    return StatefulBuilder(builder: (context, setState) {
+      // TODO
+      panelSetState = setState;
       // var offset = panelOffset;
       return Positioned(
         top: panelOffset.dy,
         left: panelOffset.dx,
         child: Container(
           constraints: BoxConstraints(
-            maxHeight: panelHeight.value,
+            maxHeight: panelHeightAnimation.value,
           ),
           width: _width,
           decoration: BoxDecoration(
             color: Color.fromARGB(panelOpacity.value ~/ 1, 255, 255, 255),
           ),
-          child: angleWrapper(panelOutside),
+          //  TODO 为下拉框添加角标，child: angleWrapper(panelOutside),
+          child: panelOutside,
         ),
       );
     });
@@ -344,13 +349,14 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
 
   // 为浮窗添加小箭头角标
   Widget angleWrapper(child) {
+    var yOffset = (sqrt(12 * 12 * 2) / 2 - 2);
     return Stack(
       clipBehavior: Clip.none,
       children: [
         child,
         Positioned(
           left: 35,
-          top: -(sqrt(12 * 12 * 2) / 2 - 2),
+          top: -yOffset,
           child: Transform.rotate(
             angle: pi / 4,
             child: shadowWrapper(
@@ -372,12 +378,13 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 true,
+                borderRadius: BorderRadius.circular(8.0),
               ),
               shadow: [
                 const BoxShadow(
                   color: Color.fromARGB(25, 0, 0, 0),
-                  offset: Offset(-1.0, -1.0),
-                  blurRadius: 12.0,
+                  offset: Offset(-3.0, -3.0),
+                  blurRadius: 6.0,
                   spreadRadius: 0.0,
                 ),
               ],
@@ -398,9 +405,17 @@ class _WSelectState extends State<WSelect> with SingleTickerProviderStateMixin {
         Colors.white,
         true,
       ),
-      Border.all(color: Colors.grey.shade300, width: 1),
+      Border.all(color: Colors.grey.shade300, width: panelBorder),
       true,
     ));
+  }
+
+  double get panelBorder {
+    return widget.$style.panelBorder ?? cfgGlobal.select.panelBorder ?? 1;
+  }
+
+  double get panelHeight {
+    return widget.$style.panelHeight ?? cfgGlobal.select.panelHeight ?? 274.0;
   }
 
   Widget get panelInside {

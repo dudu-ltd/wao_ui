@@ -386,6 +386,10 @@ class WInputStyle extends BaseStyle {
 class WSelectStyle extends BaseStyle {
   @override
   double? width = 240;
+
+  double? panelBorder = 1;
+
+  double? panelHeight = 274.0;
 }
 
 class WOptionGroupStyle extends BaseStyle {}
