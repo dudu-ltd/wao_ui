@@ -65,6 +65,7 @@ class WInputState extends State<WInput> {
     super.initState();
 
     widget.$props._value.addListener(() {
+      print('change');
       setState(() {});
     });
   }

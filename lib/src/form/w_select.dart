@@ -314,6 +314,8 @@ class _WSelectState extends State<WSelect>
           ? WTagOn(
               close: () {
                 widget.$props._valueListener.value.remove(m['k']);
+                widget.$props.value =
+                    widget.$props._valueListener.value.sublist(0);
                 setState(() {});
               },
             )
