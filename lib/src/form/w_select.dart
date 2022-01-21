@@ -2,7 +2,6 @@
 
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -25,7 +24,7 @@ class WSelect extends StatefulWidget
   @override
   late final WSelectSlot $slots;
   @override
-  late WSelectStyle $style;
+  late final WSelectStyle $style;
 
   WSelect({
     Key? key,
@@ -80,6 +79,7 @@ class _WSelectState extends State<WSelect>
     panelHeightAnimation =
         Tween(begin: 0.0, end: panelHeight).animate(iconSpinController)
           ..addListener(() {
+            setState(() {});
             panelSetState?.call(() {});
           });
 
@@ -647,7 +647,7 @@ class WOption extends StatelessWidget
   @override
   late final WOptionSlot $slots;
   @override
-  late WOptionStyle $style;
+  late final WOptionStyle $style;
 
   WOption({
     Key? key,

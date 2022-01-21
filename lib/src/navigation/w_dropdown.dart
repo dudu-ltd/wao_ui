@@ -7,6 +7,7 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
+// ignore: implementation_imports
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 class _WDropdownState extends State<WDropdown>
@@ -39,7 +40,7 @@ class _WDropdownState extends State<WDropdown>
             Duration(milliseconds: widget.$props.hideTimeout ~/ 1),
             () {
               if (!state.isMouseOver) {
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
                 open = false;
               }
             },
@@ -127,7 +128,7 @@ class WDropdown extends StatefulWidget
   @override
   late final WDropdownSlot $slots;
   @override
-  late WDropdownStyle $style;
+  late final WDropdownStyle $style;
 
   WDropdown({
     Key? key,
@@ -215,7 +216,7 @@ class WDropdownMenu extends StatelessWidget
   @override
   late final WDropdownMenuSlot $slots;
   @override
-  late WDropdownMenuStyle $style;
+  late final WDropdownMenuStyle $style;
 
   WDropdownMenu({
     Key? key,
@@ -259,7 +260,7 @@ class WDropdownItem extends StatelessWidget
   @override
   late final WDropdownItemSlot $slots;
   @override
-  late WDropdownItemStyle $style;
+  late final WDropdownItemStyle $style;
 
   WDropdownItem({
     Key? key,
