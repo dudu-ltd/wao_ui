@@ -4,6 +4,7 @@ import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
+import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 // TODO 修改按钮前景色
@@ -54,7 +55,7 @@ class WButton extends StatelessWidget
         handleDefaultSlot(colors);
         var btn = Container(
           alignment: Alignment.center,
-          constraints: BoxConstraints(minWidth: cfgGlobal.button.minWidth),
+          constraints: BoxConstraints(minWidth: buttonMinWidth),
           padding: EdgeInsets.fromLTRB(
             $props.icon != null && !$props.circle ? paddingH - 4 : paddingH,
             paddingV,
@@ -94,6 +95,10 @@ class WButton extends StatelessWidget
         return _inkWellWrapper(btn, colors, radius);
       },
     );
+  }
+
+  double get buttonMinWidth {
+    return $style.minWidth ?? cfgGlobal.button.minWidth ?? 30;
   }
 
   Widget _inkWellWrapper(Widget btn, TypeButtonColor colors, Radius radius) {

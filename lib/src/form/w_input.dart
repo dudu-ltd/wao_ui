@@ -17,7 +17,7 @@ class WInput extends StatefulWidget
   @override
   late final WInputSlot $slots;
   @override
-  late WInputStyle $style;
+  late final WInputStyle $style;
 
   WInput({
     Key? key,
@@ -405,7 +405,7 @@ class WInputProp extends BaseProp {
   TextAlign $textAlign;
 
   set value(value) {
-    _value.text = value;
+    _value.text = value ?? '';
   }
 
   dynamic get value {

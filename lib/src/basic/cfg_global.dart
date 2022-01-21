@@ -43,7 +43,21 @@ class CfgGlobal {
     width: 240,
     panelBorder: 1,
     panelHeight: 274.0,
+    panelMaxWidth: 240.0,
+    panelMinWidth: 180.0,
     panelOffset: 8.0,
+    noDataTextColor: Colors.grey.shade600,
+  );
+
+  WCascaderStyle cascader = WCascaderStyle();
+
+  WCascaderPanelStyle cascaderPanel = WCascaderPanelStyle(
+    levelBorderColor: Colors.grey.shade200,
+    levelPanelMinWidth: 180,
+  );
+
+  WOptionStyle option = WOptionStyle(
+    disabledColor: Colors.grey.shade400,
   );
 
   CfgGlobal._privateConstrucor();
@@ -268,13 +282,23 @@ class WPaginationStyle extends BaseStyle {
 }
 
 class WButtonStyle extends BaseStyle {
-  double minWidth = 30;
+  double? minWidth = 30;
 
-  WButtonStyle._privateConstrucor();
-  static final WButtonStyle _instance = WButtonStyle._privateConstrucor();
-  factory WButtonStyle() {
-    return _instance;
-  }
+  WButtonStyle({
+    double? width,
+    double? height,
+    double? minWidth,
+    double? minHeight,
+    double? maxWidth,
+    double? maxHeight,
+  }) : super(
+          height: height,
+          width: width,
+          minHeight: minHeight,
+          minWidth: minWidth,
+          maxHeight: maxHeight,
+          maxWidth: maxWidth,
+        );
 }
 
 class WProgressStyle extends BaseStyle {
@@ -385,14 +409,18 @@ class WCheckboxStyle extends BaseStyle {
 
 class WInputStyle extends BaseStyle {
   @override
-  double? width = 180;
+  double? width;
   WInputStyle({
     double? width,
     double? height,
   }) : super(
           height: height,
           width: width,
-        );
+        ) {
+    if (width == -1) {
+      width = double.infinity;
+    }
+  }
 }
 
 class WSelectStyle extends BaseStyle {
@@ -402,11 +430,22 @@ class WSelectStyle extends BaseStyle {
   double? panelBorder;
 
   double? panelHeight;
+  double? panelMaxWidth;
+  double? panelMinWidth;
 
   double? panelOffset;
 
-  WSelectStyle(
-      {this.width, this.panelBorder, this.panelHeight, this.panelOffset});
+  Color? noDataTextColor;
+
+  WSelectStyle({
+    this.width,
+    this.panelBorder,
+    this.panelHeight,
+    this.panelMaxWidth,
+    this.panelMinWidth,
+    this.panelOffset,
+    this.noDataTextColor,
+  });
 }
 
 class WOptionGroupStyle extends BaseStyle {}
@@ -521,6 +560,23 @@ class WCascaderStyle extends BaseStyle {
         );
 }
 
+class WCascaderPanelStyle extends BaseStyle {
+  Color? levelBorderColor;
+  double? levelPanelMinWidth;
+  double? levelPanelMaxWidth;
+
+  WCascaderPanelStyle({
+    double? width,
+    double? height,
+    this.levelBorderColor,
+    this.levelPanelMinWidth,
+    this.levelPanelMaxWidth,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
 class WCheckboxGroupStyle extends BaseStyle {
   WCheckboxGroupStyle({
     double? width,
@@ -622,9 +678,11 @@ class WRateStyle extends BaseStyle {
 }
 
 class WOptionStyle extends BaseStyle {
+  Color? disabledColor;
   WOptionStyle({
     double? width,
     double? height,
+    this.disabledColor,
   }) : super(
           height: height,
           width: width,
