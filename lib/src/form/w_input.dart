@@ -55,7 +55,7 @@ class WInputState extends State<WInput> {
 
   @override
   void dispose() {
-    //为了避免内存泄露，需要调用_controller.dispose
+    widget.$props._value.removeListener(valueChange);
     widget.$props._value.dispose();
     super.dispose();
   }
@@ -64,11 +64,10 @@ class WInputState extends State<WInput> {
   void initState() {
     super.initState();
 
-    widget.$props._value.addListener(() {
-      print('change');
-      setState(() {});
-    });
+    widget.$props._value.addListener(valueChange);
   }
+
+  void valueChange() => setState;
 
   @override
   Widget build(BuildContext context) {
