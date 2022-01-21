@@ -234,9 +234,6 @@ class WInputState extends State<WInput> {
 
   Widget? get suffixIcon {
     var children = [
-      if (widget.$props.suffixIcon != null)
-        Icon(widget.$props.suffixIcon, size: iconSize),
-      ...widget.$slots.suffix,
       if (showClearIcon)
         InkWell(
           child: Icon(Icons.close_rounded, size: iconSize),
@@ -246,6 +243,9 @@ class WInputState extends State<WInput> {
             setState(() {});
           },
         ),
+      if (widget.$props.suffixIcon != null)
+        Icon(widget.$props.suffixIcon, size: iconSize),
+      if (!showClearIcon) ...widget.$slots.suffix,
       if (widget.$props.showPassword)
         InkWell(
           child: Icon(Icons.remove_red_eye_rounded, size: iconSize),
@@ -254,7 +254,7 @@ class WInputState extends State<WInput> {
             setState(() {});
           },
         ),
-      if (suffix != null) suffix!,
+      if (!showClearIcon && suffix != null) suffix!,
       if (counter != null) counter!,
     ];
     return children.isNotEmpty
@@ -291,7 +291,7 @@ class WInputState extends State<WInput> {
   bool get showClearIcon {
     return widget.$props.clearable &&
         widget.$props._value.text.isNotEmpty &&
-        (isHover || isFocus);
+        isHover; //  || isFocus 聚焦时将不再响应清空按钮
   }
 
   double get maxWidth {

@@ -174,7 +174,7 @@ class WBreadcrumbItem extends StatelessWidget
   @override
   late final WBreadcrumbItemSlot $slots;
   @override
-  late WBreadcrumbItemStyle $style;
+  late final WBreadcrumbItemStyle $style;
 
   WBreadcrumbItem({
     Key? key,
