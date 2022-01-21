@@ -39,7 +39,12 @@ class CfgGlobal {
 
   WInputStyle input = WInputStyle();
 
-  WSelectStyle select = WSelectStyle();
+  WSelectStyle select = WSelectStyle(
+    width: 240,
+    panelBorder: 1,
+    panelHeight: 274.0,
+    panelOffset: 8.0,
+  );
 
   CfgGlobal._privateConstrucor();
 
@@ -381,15 +386,27 @@ class WCheckboxStyle extends BaseStyle {
 class WInputStyle extends BaseStyle {
   @override
   double? width = 180;
+  WInputStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
 }
 
 class WSelectStyle extends BaseStyle {
   @override
-  double? width = 240;
+  double? width;
 
-  double? panelBorder = 1;
+  double? panelBorder;
 
-  double? panelHeight = 274.0;
+  double? panelHeight;
+
+  double? panelOffset;
+
+  WSelectStyle(
+      {this.width, this.panelBorder, this.panelHeight, this.panelOffset});
 }
 
 class WOptionGroupStyle extends BaseStyle {}
