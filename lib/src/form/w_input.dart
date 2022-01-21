@@ -73,7 +73,8 @@ class WInputState extends State<WInput> {
   Widget build(BuildContext context) {
     var textFormField = TextFormField(
       onTap: widget.$on.click,
-      onChanged: (e) {
+      onChanged: (v) {
+        widget.$on.change?.call(v);
         setState(() {});
       },
       textInputAction: widget.$props.isTextarea
@@ -152,7 +153,8 @@ class WInputState extends State<WInput> {
       constraints: widget.$props.isTextarea
           ? null
           : BoxConstraints(
-              maxWidth: 200,
+              minWidth: maxWidth,
+              maxWidth: maxWidth,
               minHeight: minHeight,
               maxHeight: widget.$strictOneRow ? minHeight : double.infinity,
             ),
@@ -290,6 +292,10 @@ class WInputState extends State<WInput> {
     return widget.$props.clearable &&
         widget.$props._value.text.isNotEmpty &&
         (isHover || isFocus);
+  }
+
+  double get maxWidth {
+    return widget.$style.width ?? cfgGlobal.input.width ?? 200;
   }
 
   double get minHeight {

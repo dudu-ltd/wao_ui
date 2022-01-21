@@ -16,7 +16,6 @@ import 'package:wao_ui/src/data/w_tag.dart';
 import 'package:wao_ui/src/form/w_input.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
-// TODO FIXME 修复值清空与实际展示值不一致的问题
 class WSelect extends StatefulWidget
     implements BaseWidget<WSelectOn, WSelectProp, WSelectSlot, WSelectStyle> {
   @override
@@ -76,7 +75,7 @@ class _WSelectState extends State<WSelect>
 
     spin = Tween(begin: 0.0, end: -pi).animate(iconSpinController);
 
-    panelOpacity = Tween(begin: 255.0, end: 255.0).animate(iconSpinController);
+    panelOpacity = Tween(begin: 0.0, end: 255.0).animate(iconSpinController);
 
     panelHeightAnimation =
         Tween(begin: 0.0, end: panelHeight).animate(iconSpinController)
@@ -133,6 +132,16 @@ class _WSelectState extends State<WSelect>
     panelOverlay.remove();
   }
 
+  clearValue() {
+    if (widget.$props.multiple) {
+      widget.$props._valueListener.value.clear();
+    } else {
+      widget.$props._valueListener.value = null;
+    }
+    widget.$props._valueListener.notifyListeners();
+    setState(() {});
+  }
+
   set isExpand(expand) {
     _isExpand.value = expand;
   }
@@ -161,7 +170,8 @@ class _WSelectState extends State<WSelect>
     //     .removeHighlightModeListener(_handleFocusHighlightModeChange);
     // focusNode!.removeListener(_handleFocusChanged);
     // _internalNode?.dispose();
-    hidePanel();
+    // WidgetsBinding.instance?.handleDrawFrame();
+    hidePanelAction();
     super.dispose();
   }
 
@@ -213,6 +223,7 @@ class _WSelectState extends State<WSelect>
               click: changePanel,
               focus: showPanel,
               blur: hidePanel,
+              clear: clearValue,
             ),
       slots: WInputSlot(
         null,
@@ -222,6 +233,7 @@ class _WSelectState extends State<WSelect>
           child: const Icon(Icons.expand_more),
         ),
       ),
+      style: WInputStyle(width: _width),
       $prefixSize: MainAxisSize.max,
       $prefixAlignment: MainAxisAlignment.start,
       $strictOneRow: false,
@@ -412,13 +424,9 @@ class _WSelectState extends State<WSelect>
 
   Widget get panelOutside {
     return shadowWrapper(borderWrapper(
-      colorWrapper(
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
-          child: panelInside,
-        ),
-        Colors.white,
-        true,
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
+        child: panelInside,
       ),
       Border.all(color: Colors.grey.shade300, width: panelBorder),
       true,
@@ -661,9 +669,7 @@ class WOption extends StatelessWidget
           child: Container(
             alignment: Alignment.centerLeft,
             height: 34,
-            color: state.isMouseOver
-                ? ColorUtil.hexToColor('#f5f7fa')
-                : Colors.white,
+            color: state.isMouseOver ? ColorUtil.hexToColor('#f5f7fa') : null,
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Text(
               $props.label,
@@ -704,15 +710,15 @@ class WOptionProp extends BaseProp {
   }
 
   bool get isSelected {
-    if (kDebugMode) {
-      if (_multiple) {
-        print(
-            '${_valueListener.value} contains $value is ${_valueListener.value.contains(value)}');
-      } else {
-        print(
-            '${_valueListener.value} equals $value = ${_valueListener.value == value}');
-      }
-    }
+    // if (kDebugMode) {
+    //   if (_multiple) {
+    //     print(
+    //         '${_valueListener.value} contains $value is ${_valueListener.value.contains(value)}');
+    //   } else {
+    //     print(
+    //         '${_valueListener.value} equals $value = ${_valueListener.value == value}');
+    //   }
+    // }
     return _multiple
         ? _valueListener.value.contains(value)
         : _valueListener.value == value;
