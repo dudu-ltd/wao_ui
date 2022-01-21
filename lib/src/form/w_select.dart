@@ -250,6 +250,7 @@ class _WSelectState extends State<WSelect>
     var labels = valueLabels;
     if (labels.isEmpty) return null;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -292,8 +293,10 @@ class _WSelectState extends State<WSelect>
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
-        width: 170,
+        width: 140,
         child: Wrap(
+          runAlignment: WrapAlignment.center,
+          alignment: WrapAlignment.start,
           direction: Axis.horizontal,
           spacing: 4,
           runSpacing: 4,
