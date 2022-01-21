@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
@@ -15,6 +16,7 @@ import 'package:wao_ui/src/data/w_tag.dart';
 import 'package:wao_ui/src/form/w_input.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
+// TODO option disable 状态下，如果当前值刚好是禁用项，需要清掉
 class WSelect extends StatefulWidget
     implements BaseWidget<WSelectOn, WSelectProp, WSelectSlot, WSelectStyle> {
   @override
@@ -26,12 +28,15 @@ class WSelect extends StatefulWidget
   @override
   late final WSelectStyle $style;
 
+  late Widget Function(WSelect, _WSelectState)? panelInsideBuilder;
+
   WSelect({
     Key? key,
     WSelectOn? on,
     WSelectProp? props,
     WSelectSlot? slots,
     WSelectStyle? style,
+    this.panelInsideBuilder,
   }) : super(key: key) {
     $on = on ?? WSelectOn();
     $props = props ?? WSelectProp();
@@ -96,10 +101,10 @@ class _WSelectState extends State<WSelect>
     slots?.forEach(
       (slot) {
         if (slot is WOption) {
-          slot.$props._multiple = widget.$props.multiple;
+          slot.$props.$multiple = widget.$props.multiple;
           options.add(slot);
           var fn = slot.$on.click ?? (e) {};
-          slot.$props._valueListener = widget.$props._valueListener;
+          slot.$props.$valueListener = widget.$props._valueListener;
           slot.$on.click = (e) {
             onSelect(e);
             fn(e);
@@ -233,7 +238,7 @@ class _WSelectState extends State<WSelect>
           child: const Icon(Icons.expand_more),
         ),
       ),
-      style: WInputStyle(width: _width),
+      style: WInputStyle(width: panelWidth),
       $prefixSize: MainAxisSize.max,
       $prefixAlignment: MainAxisAlignment.start,
       $strictOneRow: false,
@@ -363,8 +368,8 @@ class _WSelectState extends State<WSelect>
         child: Container(
           constraints: BoxConstraints(
             maxHeight: panelHeightAnimation.value,
+            minWidth: panelMinWidth,
           ),
-          width: _width,
           decoration: BoxDecoration(
             color: Color.fromARGB(panelOpacity.value ~/ 1, 255, 255, 255),
           ),
@@ -375,8 +380,12 @@ class _WSelectState extends State<WSelect>
     });
   }
 
-  double get _width {
-    return widget.$style.width ?? cfgGlobal.select.width ?? 240;
+  double get panelWidth {
+    return widget.$style.panelMaxWidth ?? cfgGlobal.select.panelMaxWidth ?? 240;
+  }
+
+  double get panelMinWidth {
+    return widget.$style.panelMinWidth ?? cfgGlobal.select.panelMinWidth ?? 180;
   }
 
   // 为浮窗添加小箭头角标
@@ -446,19 +455,38 @@ class _WSelectState extends State<WSelect>
     return widget.$style.panelHeight ?? cfgGlobal.select.panelHeight ?? 274.0;
   }
 
+  Color get noDataTextColor {
+    return widget.$style.noDataTextColor ??
+        cfgGlobal.select.noDataTextColor ??
+        Colors.grey.shade600;
+  }
+
   Widget get panelInside {
-    return widget.$slots.defalutEmpty
-        ? Text(widget.$props.noDataText)
+    if (widget.panelInsideBuilder != null) {
+      return widget.panelInsideBuilder!.call(widget, this);
+    }
+    var defaultPanelInside = widget.$slots.defalutEmpty
+        ? Align(
+            child: Text(
+              widget.$props.noDataText,
+              style: TextStyle(color: noDataTextColor),
+            ),
+            alignment: Alignment.topCenter,
+          )
         : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: widget.$slots.defaultSlot ?? [],
             ),
           );
+    return SizedBox(
+      width: panelMinWidth,
+      child: defaultPanelInside,
+    );
   }
 }
 
-class WSelectOn extends BaseOn {
+class WSelectOn extends WInputOn {
   /**
       change	选中值发生变化时触发	目前的选中值
       visible-change	下拉框出现/隐藏时触发	出现则为 true，隐藏则为 false
@@ -467,6 +495,21 @@ class WSelectOn extends BaseOn {
       blur	当 input 失去焦点时触发	(event: Event)
       focus	当 input 获得焦点时触发	(event: Event)
    */
+  WSelectOn({
+    click,
+    blur,
+    focus,
+    change,
+    input,
+    clear,
+  }) : super(
+          click: click,
+          blur: blur,
+          focus: focus,
+          change: change,
+          input: input,
+          clear: clear,
+        );
 }
 
 class WSelectProp extends WInputProp {
@@ -667,28 +710,62 @@ class WOption extends StatelessWidget
     return MouseStateBuilder(
       builder: (context, state) {
         return InkWell(
-          onTap: () {
-            $on.click?.call($props);
-            if ($props._multiple) $props._valueListener.notifyListeners();
-          },
-          child: Container(
+          hoverColor: !$props.disabled
+              ? ColorUtil.hexToColor('#f5f7fa')
+              : const Color.fromARGB(0, 255, 255, 255),
+          onTap: itemClick,
+          child: Align(
             alignment: Alignment.centerLeft,
-            height: 34,
-            color: state.isMouseOver ? ColorUtil.hexToColor('#f5f7fa') : null,
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: Text(
-              $props.label,
-              style: TextStyle(
-                fontSize: 14,
-                color: $props.isSelected
-                    ? CfgGlobal.primaryColor
-                    : ColorUtil.hexToColor('#606266'),
+            child: ColoredBox(
+              color: state.isMouseOver && !$props.disabled
+                  ? ColorUtil.hexToColor('#f5f7fa')
+                  : const Color.fromARGB(0, 255, 255, 255),
+              child: FractionallySizedBox(
+                widthFactor: 1,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
+                  child: itemText,
+                ),
               ),
             ),
           ),
         );
       },
     );
+  }
+
+  get itemClick {
+    return !$props.disabled
+        ? () {
+            $on.click?.call($props);
+            if ($props.$multiple) $props.$valueListener.notifyListeners();
+          }
+        : null;
+  }
+
+  Widget get itemText {
+    return Tooltip(
+      waitDuration: Duration(seconds: 1),
+      message: $props.label ?? '',
+      child: Text(
+        $props.label ?? '',
+        style: TextStyle(
+          overflow: TextOverflow.ellipsis,
+          fontSize: 14,
+          color: $props.disabled
+              ? disableColor
+              : $props.isSelected
+                  ? CfgGlobal.primaryColor
+                  : ColorUtil.hexToColor('#606266'),
+        ),
+      ),
+    );
+  }
+
+  Color get disableColor {
+    return $style.disabledColor ??
+        cfgGlobal.option.disabledColor ??
+        Colors.grey.shade400;
   }
 }
 
@@ -698,8 +775,8 @@ class WOptionOn extends BaseOn {
 }
 
 class WOptionProp extends BaseProp {
-  late ValueNotifier _valueListener;
-  late bool _multiple;
+  late ValueNotifier $valueListener;
+  late bool $multiple;
   late dynamic value;
   late dynamic label;
   late bool disabled;
@@ -707,11 +784,12 @@ class WOptionProp extends BaseProp {
     this.value,
     this.label,
     this.disabled = false,
+    ValueNotifier? $valueListener,
     bool? multiple,
     dynamic selectValue,
   }) {
-    _multiple = multiple ?? false;
-    _valueListener = ValueNotifier(selectValue);
+    $multiple = multiple ?? false;
+    this.$valueListener = $valueListener ?? ValueNotifier(selectValue);
   }
 
   bool get isSelected {
@@ -724,9 +802,9 @@ class WOptionProp extends BaseProp {
     //         '${_valueListener.value} equals $value = ${_valueListener.value == value}');
     //   }
     // }
-    return _multiple
-        ? _valueListener.value.contains(value)
-        : _valueListener.value == value;
+    return $multiple
+        ? $valueListener.value.contains(value)
+        : $valueListener.value == value;
   }
 }
 

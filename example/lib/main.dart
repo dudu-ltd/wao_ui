@@ -3,7 +3,7 @@ import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/views/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:wao_ui/wao_ui.dart';
+import 'package:wao_ui/wao_ui_origin.dart';
 
 void main() {
   runApp(const Api());
