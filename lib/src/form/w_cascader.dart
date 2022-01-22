@@ -5,6 +5,7 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/extension/map_extension.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
@@ -259,6 +260,7 @@ class WCascaderPanelProp extends WCascaderProp {
           props: props,
           value: value,
         ) {
+    this.props.merge(cascaderDefaultProp);
     $valueListener = valueListener ?? ValueNotifier(null);
   }
 }
@@ -414,34 +416,42 @@ class WCascaderNode extends StatelessWidget
   Widget build(BuildContext context) {
     return MouseStateBuilder(
       builder: (context, state) {
-        return Listener(
-          onPointerUp: (e) {
-            isExpandTriggerHover($props.props) ? null : $on.expand?.call(this);
-            $on.click?.call(this);
-          },
-          onPointerHover: isExpandTriggerHover($props.props)
-              ? (e) {
-                  $on.expand?.call(this);
-                }
-              : null,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: ColoredBox(
-              color: state.isMouseOver && !isDisabled($props.props)
-                  ? ColorUtil.hexToColor('#f5f7fa')
-                  : const Color.fromARGB(0, 255, 255, 255),
-              child: FractionallySizedBox(
-                widthFactor: 1,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
-                  child: itemText,
-                ),
+        var disabled = isDisabled($props.props, $props.option);
+        var item = Align(
+          alignment: Alignment.centerLeft,
+          child: ColoredBox(
+            color: state.isMouseOver && !isDisabled($props.props, $props.option)
+                ? ColorUtil.hexToColor('#f5f7fa')
+                : const Color.fromARGB(0, 255, 255, 255),
+            child: FractionallySizedBox(
+              widthFactor: 1,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
+                child: itemText,
               ),
             ),
           ),
         );
+        if (disabled) {
+          return item;
+        } else {
+          return Listener(
+            onPointerUp: clickCbk,
+            onPointerHover: hoverCbk,
+            child: item,
+          );
+        }
       },
     );
+  }
+
+  clickCbk(e) {
+    isExpandTriggerHover($props.props) ? null : $on.expand?.call(this);
+    $on.click?.call(this);
+  }
+
+  hoverCbk(e) {
+    if (isExpandTriggerHover($props.props)) $on.expand?.call(this);
   }
 
   Widget get itemText {
@@ -453,7 +463,7 @@ class WCascaderNode extends StatelessWidget
         style: TextStyle(
           overflow: TextOverflow.ellipsis,
           fontSize: 14,
-          color: isDisabled($props.props)
+          color: isDisabled($props.props, $props.option)
               ? disableColor
               : _isSelected
                   ? CfgGlobal.primaryColor
@@ -474,8 +484,9 @@ bool isExpandTriggerHover(Map<String, dynamic> props) {
   return props['expandTrigger'] == 'hover';
 }
 
-bool isDisabled(Map<String, dynamic> props) {
-  return props['disabled'] ?? false;
+bool isDisabled(Map<String, dynamic> props, Map<String, dynamic> option) {
+  var disabledField = props['disabled'];
+  return option[disabledField] ?? false;
 }
 
 class WCascaderNodeOn extends BaseOn {
@@ -504,3 +515,19 @@ class WCascaderNodeProp extends BaseProp {
 class WCascaderNodeSlot extends BaseSlot {
   WCascaderNodeSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
+
+var cascaderDefaultProp = {
+  'expandTrigger': 'click', // or hover
+  'multiple': false,
+  'checkStrictly': false, // whether all nodes can be selected
+  'emitPath':
+      true, // wether to emit an array of all levels value in which node is located
+  'lazy': false,
+  'lazyLoad': () {},
+  'value': 'value',
+  'label': 'label',
+  'children': 'children',
+  'leaf': 'leaf',
+  'disabled': 'disabled',
+  'hoverThreshold': 500
+};
