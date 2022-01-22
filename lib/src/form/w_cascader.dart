@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
+
+import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
+import '../../core/utils/color_util.dart';
 
 class WCascader extends StatefulWidget
     implements
@@ -43,13 +45,15 @@ class _WCascaderState extends State<WCascader> {
       panelInsideBuilder: (parent, state) {
         return WCascaderPanel(
           props: WCascaderPanelProp(
-            value: widget.$props._valueListener,
+            value: widget.$props.value,
+            valueNotifier: widget.$props._valueListener,
             options: widget.$props.options,
+            props: widget.$props.props,
           ),
         );
       },
       props: widget.$props,
-      style: WSelectStyle(panelMaxWidth: 600),
+      style: WSelectStyle(panelMaxWidth: 300),
     );
   }
 }
@@ -119,6 +123,7 @@ class WCascaderProp extends WSelectProp {
           popperClass: popperClass,
           multiple: props?['multiple'],
         ) {
+    print(super.multiple);
     _valueListener = ValueNotifier(null);
     this.value = value;
     this.props = props ?? {};
@@ -127,6 +132,9 @@ class WCascaderProp extends WSelectProp {
     this.filterMethod = filterMethod;
     this.debounce = debounce ?? 300;
     this.beforeFilter = beforeFilter;
+  }
+  bool get expandTriggerHover {
+    return props['expandTrigger'] == 'hover';
   }
 }
 
@@ -173,6 +181,7 @@ class WCascaderPanel extends StatefulWidget
 
 class _WCascaderPanelState extends State<WCascaderPanel> {
   List panelData = [];
+  List panelPicked = [];
 
   @override
   void initState() {
@@ -181,88 +190,263 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
 
   @override
   Widget build(BuildContext context) {
+    trigger(node) {
+      var nextLevel = node.$props.option['children'];
+      print(nextLevel);
+      if (nextLevel != null) {
+        // 数据原始形态 [ 一级menu , [...动态添加二级、三级...] ]
+        panelData = panelData.sublist(0, node.$props.level + 1);
+        panelData.add(node.$props.option['children']);
+        // 选中值的原始形态 []
+        panelPicked = panelPicked.sublist(0, node.$props.level);
+        panelPicked.add(node.$props.option['value']);
+        setState(() {});
+      }
+    }
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(panelData.length, (index) {
         var levelPanel = panelData[index];
-        return borderWrapper(
-          levelPanelBuild(levelPanel, index),
-          Border(right: BorderSide(color: levelBorderColor)),
-          index < panelData.length,
+        return WCascaderMenu(
+          props: WCascaderMenuProp(
+            picked: panelData,
+            options: levelPanel,
+            level: index,
+            props: widget.$props.props,
+          ),
+          style: widget.$style.cascaderMenu,
+          on: WCascaderMenuOn(expand: trigger),
         );
       }),
     );
-  }
-
-  Widget levelPanelBuild(List<Map<String, dynamic>> levelPanelData, int level) {
-    return Container(
-      constraints: BoxConstraints(
-        maxWidth: levelPanelMaxWidth,
-        // minWidth: levelPanelMinWidth,
-        maxHeight: 274,
-      ),
-      width: levelPanelMinWidth,
-      child: ListView(
-        children: List.generate(
-          levelPanelData.length,
-          (index) => panelNodeBuild(levelPanelData[index], level),
-        ),
-      ),
-    );
-  }
-
-  Widget panelNodeBuild(Map<String, dynamic> option, int level) {
-    return WOption(
-      props: WOptionProp(
-        $valueListener: widget.$props.value,
-        label: option['label'],
-        value: option['value'],
-      ),
-      on: WOptionOn(
-        click: (e) {
-          var nextLevel = option['children'];
-          if (nextLevel != null) {
-            panelData = panelData.sublist(0, level + 1);
-            panelData.add(option['children']);
-            setState(() {});
-          }
-        },
-      ),
-    );
-  }
-
-  Color get levelBorderColor {
-    return widget.$style.levelBorderColor ??
-        cfgGlobal.cascaderPanel.levelBorderColor ??
-        Colors.grey.shade200;
-  }
-
-  double get levelPanelMaxWidth {
-    return widget.$style.maxWidth ?? cfgGlobal.cascaderPanel.maxWidth ?? 275.0;
-  }
-
-  double get levelPanelMinWidth {
-    return widget.$style.minWidth ?? cfgGlobal.cascaderPanel.minWidth ?? 180.0;
   }
 }
 
 class WCascaderPanelOn extends BaseOn {}
 
-class WCascaderPanelProp extends BaseProp {
-  late ValueNotifier<dynamic> value;
-  late List<dynamic> options;
-  late Map<String, dynamic> props;
+class WCascaderPanelProp extends WCascaderProp {
   WCascaderPanelProp({
-    ValueNotifier<dynamic>? value,
-    required this.options,
+    dynamic value,
+    required List<dynamic> options,
     Map<String, dynamic>? props,
-  }) {
-    this.value = value ?? ValueNotifier('');
-    this.props = props ?? {};
+    ValueNotifier<dynamic>? valueNotifier,
+  }) : super(
+          options: options,
+          props: props,
+          value: value,
+        ) {
+    _valueListener = valueNotifier ?? ValueNotifier(null);
   }
 }
 
 class WCascaderPanelSlot extends BaseSlot {
   WCascaderPanelSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+class WCascaderMenu extends StatelessWidget
+    implements
+        BaseWidget<WCascaderMenuOn, WCascaderMenuProp, WCascaderMenuSlot,
+            WCascaderMenuStyle> {
+  @override
+  late final WCascaderMenuOn $on;
+
+  @override
+  late final WCascaderMenuProp $props;
+
+  @override
+  late final WCascaderMenuSlot $slots;
+
+  @override
+  late final WCascaderMenuStyle $style;
+
+  WCascaderMenu({
+    Key? key,
+    WCascaderMenuOn? on,
+    WCascaderMenuProp? props,
+    WCascaderMenuSlot? slots,
+    WCascaderMenuStyle? style,
+  }) : super(key: key) {
+    $on = on ?? WCascaderMenuOn();
+    $props = props ?? WCascaderMenuProp(options: []);
+    $slots = slots ?? WCascaderMenuSlot(null);
+    $style = style ?? WCascaderMenuStyle();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return borderWrapper(
+      Container(
+        constraints: BoxConstraints(
+          maxWidth: menuMaxWidth,
+          // minWidth: menuMinWidth,
+          maxHeight: menuMaxHeight,
+        ),
+        width: menuMinWidth,
+        child: ListView(
+          children: List.generate(
+            $props.options.length,
+            (index) => WCascaderNode(
+              props: WCascaderNodeProp(
+                picked: $props.picked,
+                pickedValue: $props.pickedValue,
+                option: $props.options[index],
+                level: $props.level,
+                props: $props.props,
+              ),
+              on: WCascaderNodeOn(expand: $on.expand),
+            ),
+          ),
+        ),
+      ),
+      Border(right: BorderSide(color: menuBorderColor)),
+      $props.level < $props.options.length,
+    );
+  }
+
+  double get menuMaxWidth {
+    return $style.maxWidth ?? cfgGlobal.cascaderMenu.maxWidth ?? 275.0;
+  }
+
+  double get menuMaxHeight {
+    return $style.maxHeight ?? cfgGlobal.cascaderMenu.maxHeight ?? 275.0;
+  }
+
+  Color get menuBorderColor {
+    return $style.borderColor ??
+        cfgGlobal.cascaderMenu.borderColor ??
+        Colors.grey.shade200;
+  }
+
+  double get menuMinWidth {
+    return $style.minWidth ?? cfgGlobal.cascaderMenu.minWidth ?? 180.0;
+  }
+}
+
+class WCascaderMenuOn extends BaseOn {
+  Function(WCascaderNode)? expand;
+  WCascaderMenuOn({this.expand});
+}
+
+class WCascaderMenuProp extends BaseProp {
+  late List<Map<String, dynamic>> options;
+  late List picked;
+  late List pickedValue;
+  late int level;
+  late Map<String, dynamic> props;
+  WCascaderMenuProp({
+    required this.options,
+    this.level = 0,
+    this.picked = const [],
+    this.pickedValue = const [],
+    this.props = const {},
+  });
+}
+
+class WCascaderMenuSlot extends BaseSlot {
+  WCascaderMenuSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+class WCascaderNode extends StatelessWidget
+    implements
+        BaseWidget<WCascaderNodeOn, WCascaderNodeProp, WCascaderNodeSlot,
+            WCascaderNodeStyle> {
+  @override
+  late final WCascaderNodeOn $on;
+
+  @override
+  late final WCascaderNodeProp $props;
+
+  @override
+  late final WCascaderNodeSlot $slots;
+
+  @override
+  late final WCascaderNodeStyle $style;
+
+  bool _isSelected = false;
+  bool _isActive = false;
+
+  WCascaderNode({
+    Key? key,
+    WCascaderNodeOn? on,
+    WCascaderNodeProp? props,
+    WCascaderNodeSlot? slots,
+    WCascaderNodeStyle? style,
+  }) : super(key: key) {
+    $on = on ?? WCascaderNodeOn();
+    $props = props ?? WCascaderNodeProp(option: {});
+    $slots = slots ?? WCascaderNodeSlot(null);
+    $style = style ?? WCascaderNodeStyle();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseStateBuilder(
+      builder: (context, state) {
+        return Listener(
+          onPointerUp: isExpandTriggerHover($props.props)
+              ? null
+              : (e) => $on.expand?.call(this),
+          onPointerHover: isExpandTriggerHover($props.props)
+              ? (e) {
+                  print('hover==========');
+                  $on.expand?.call(this);
+                }
+              : (e) {
+                  print('hover false');
+                },
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: ColoredBox(
+              color: state.isMouseOver && !isDisabled($props.props)
+                  ? ColorUtil.hexToColor('#f5f7fa')
+                  : const Color.fromARGB(0, 255, 255, 255),
+              child: FractionallySizedBox(
+                widthFactor: 1,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
+                  child: Text($props.option['label'] ?? ''),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+bool isExpandTriggerHover(Map<String, dynamic> props) {
+  return props['expandTrigger'] == 'hover';
+}
+
+bool isDisabled(Map<String, dynamic> props) {
+  return props['disabled'] ?? false;
+}
+
+class WCascaderNodeOn extends BaseOn {
+  Function(WCascaderNode)? expand;
+  WCascaderNodeOn({this.expand});
+}
+
+class WCascaderNodeProp extends BaseProp {
+  late Map<String, dynamic> option;
+  late List picked;
+  late List pickedValue;
+  late int level;
+  late Map<String, dynamic> props;
+  WCascaderNodeProp({
+    required this.option,
+    this.level = 0,
+    this.picked = const [],
+    this.pickedValue = const [],
+    this.props = const {},
+  }) {
+    print(props);
+  }
+}
+
+class WCascaderNodeSlot extends BaseSlot {
+  WCascaderNodeSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

@@ -2,8 +2,8 @@
 
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
@@ -628,6 +628,7 @@ class WOptionGroup extends StatelessWidget
 
   @override
   late final WOptionGroupSlot $slots;
+
   @override
   late final WOptionGroupStyle $style;
 
@@ -714,6 +715,7 @@ class WOption extends StatelessWidget
               ? ColorUtil.hexToColor('#f5f7fa')
               : const Color.fromARGB(0, 255, 255, 255),
           onTap: itemClick,
+          onHover: itemHover,
           child: Align(
             alignment: Alignment.centerLeft,
             child: ColoredBox(
@@ -743,9 +745,18 @@ class WOption extends StatelessWidget
         : null;
   }
 
+  get itemHover {
+    return !$props.disabled
+        ? (b) {
+            $on.hover?.call($props);
+            if ($props.$multiple) $props.$valueListener.notifyListeners();
+          }
+        : null;
+  }
+
   Widget get itemText {
     return Tooltip(
-      waitDuration: Duration(seconds: 1),
+      waitDuration: const Duration(milliseconds: 1000),
       message: $props.label ?? '',
       child: Text(
         $props.label ?? '',
@@ -771,7 +782,8 @@ class WOption extends StatelessWidget
 
 class WOptionOn extends BaseOn {
   Function(WOptionProp)? click;
-  WOptionOn({this.click});
+  Function(WOptionProp)? hover;
+  WOptionOn({this.click, this.hover});
 }
 
 class WOptionProp extends BaseProp {
@@ -793,15 +805,15 @@ class WOptionProp extends BaseProp {
   }
 
   bool get isSelected {
-    // if (kDebugMode) {
-    //   if (_multiple) {
-    //     print(
-    //         '${_valueListener.value} contains $value is ${_valueListener.value.contains(value)}');
-    //   } else {
-    //     print(
-    //         '${_valueListener.value} equals $value = ${_valueListener.value == value}');
-    //   }
-    // }
+    if (kDebugMode) {
+      if ($multiple) {
+        print(
+            '${$valueListener.value} contains $value is ${$valueListener.value.contains(value)}');
+      } else {
+        print(
+            '${$valueListener.value} equals $value = ${$valueListener.value == value}');
+      }
+    }
     return $multiple
         ? $valueListener.value.contains(value)
         : $valueListener.value == value;
