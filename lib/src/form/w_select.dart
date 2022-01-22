@@ -92,6 +92,10 @@ class _WSelectState extends State<WSelect>
   }
 
   setEvent() {
+    widget.$props.$valueListener.addListener(() {
+      print('value change');
+      if (!widget.$props.multiple) hidePanel();
+    });
     if (!widget.$slots.defalutEmpty) {
       _setEvent(widget.$slots.defaultSlot);
     }
@@ -104,11 +108,10 @@ class _WSelectState extends State<WSelect>
           slot.$props.$multiple = widget.$props.multiple;
           options.add(slot);
           var fn = slot.$on.click ?? (e) {};
-          slot.$props.$valueListener = widget.$props._valueListener;
+          slot.$props.$valueListener = widget.$props.$valueListener;
           slot.$on.click = (e) {
             onSelect(e);
             fn(e);
-            if (!widget.$props.multiple) hidePanel();
           };
         } else if (slot is WOptionGroup) {
           _setEvent(slot.$slots.defaultSlot);
@@ -139,11 +142,11 @@ class _WSelectState extends State<WSelect>
 
   clearValue() {
     if (widget.$props.multiple) {
-      widget.$props._valueListener.value.clear();
+      widget.$props.$valueListener.value.clear();
     } else {
-      widget.$props._valueListener.value = null;
+      widget.$props.$valueListener.value = null;
     }
-    widget.$props._valueListener.notifyListeners();
+    widget.$props.$valueListener.notifyListeners();
     setState(() {});
   }
 
@@ -185,14 +188,14 @@ class _WSelectState extends State<WSelect>
       var v = widget.$props.value as List;
       var contains = v.contains(option.value);
       contains ? v.remove(option.value) : v.add(option.value);
-      widget.$props.value = widget.$props._valueListener.value;
+      widget.$props.value = widget.$props.$valueListener.value;
     } else {
       widget.$props.value = option.value;
     }
     setState(() {});
   }
 
-  _updatePanel(panelContext, panelSetState) {
+  _updatePanel(BuildContext panelContext, panelSetState) {
     var itemRect = getPosition(context);
     var selectRect = getPosition(selectKey.currentContext!);
     var panelRect = getPosition(panelContext);
@@ -321,9 +324,9 @@ class _WSelectState extends State<WSelect>
       on: closable
           ? WTagOn(
               close: () {
-                widget.$props._valueListener.value.remove(m['k']);
+                widget.$props.$valueListener.value.remove(m['k']);
                 widget.$props.value =
-                    widget.$props._valueListener.value.sublist(0);
+                    widget.$props.$valueListener.value.sublist(0);
                 setState(() {});
               },
             )
@@ -531,7 +534,7 @@ class WSelectProp extends WInputProp {
   late bool defaultFirstOption;
   late bool popperAppendToBody;
   late bool automaticDropdown;
-  late ValueNotifier<dynamic> _valueListener;
+  late ValueNotifier<dynamic> $valueListener;
 
   WSelectProp({
     dynamic value,
@@ -569,7 +572,7 @@ class WSelectProp extends WInputProp {
           autoComplete: autoComplete,
           placeholder: placeholder,
         ) {
-    _valueListener = ValueNotifier(null);
+    $valueListener = ValueNotifier(null);
     this.multiple = multiple ?? false;
     this.value = value;
     this.disabled = disabled ?? false;
@@ -597,13 +600,13 @@ class WSelectProp extends WInputProp {
 
   @override
   set value(value) {
-    _valueListener.value = value;
+    $valueListener.value = value;
     super.value = multiple ? value.join(',') : value;
   }
 
   @override
   dynamic get value {
-    return _valueListener.value;
+    return $valueListener.value;
   }
 }
 
