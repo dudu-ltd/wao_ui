@@ -52,9 +52,14 @@ class CfgGlobal {
   WCascaderStyle cascader = WCascaderStyle();
 
   WCascaderPanelStyle cascaderPanel = WCascaderPanelStyle(
-    levelBorderColor: Colors.grey.shade200,
-    levelPanelMinWidth: 180,
+    cascaderMenu: WCascaderMenuStyle(
+      minWidth: 180,
+      maxWidth: 275,
+      borderColor: Colors.grey.shade200,
+    ),
   );
+
+  WCascaderMenuStyle cascaderMenu = WCascaderMenuStyle();
 
   WOptionStyle option = WOptionStyle(
     disabledColor: Colors.grey.shade400,
@@ -565,12 +570,36 @@ class WCascaderPanelStyle extends BaseStyle {
   double? levelPanelMinWidth;
   double? levelPanelMaxWidth;
 
+  WCascaderMenuStyle? cascaderMenu;
+
   WCascaderPanelStyle({
     double? width,
     double? height,
-    this.levelBorderColor,
-    this.levelPanelMinWidth,
-    this.levelPanelMaxWidth,
+    this.cascaderMenu,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCascaderMenuStyle extends BaseStyle {
+  WCascaderNodeStyle? cascaderNode;
+  Color? borderColor;
+  WCascaderMenuStyle({
+    this.cascaderNode,
+    this.borderColor,
+    double? minWidth,
+    double? maxWidth,
+  }) : super(
+          minWidth: minWidth,
+          maxWidth: maxWidth,
+        );
+}
+
+class WCascaderNodeStyle extends BaseStyle {
+  WCascaderNodeStyle({
+    double? width,
+    double? height,
   }) : super(
           height: height,
           width: width,
