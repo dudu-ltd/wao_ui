@@ -8,6 +8,7 @@ CfgGlobal cfgGlobal = CfgGlobal();
 class CfgGlobal {
   // static MaterialColor primaryColor = Colors.deepPurple;
   static MaterialColor primaryColor = Colors.blue;
+  static MaterialColor disabledColor = Colors.grey;
   WFont font = WFont();
   WBorderRadius borderRadius = WBorderRadius();
   WBorderStyle borderStyle = WBorderStyle();
@@ -597,13 +598,17 @@ class WCascaderMenuStyle extends BaseStyle {
 }
 
 class WCascaderNodeStyle extends BaseStyle {
+  Color? disabledColor;
   WCascaderNodeStyle({
     double? width,
     double? height,
+    Color? disabledColor,
   }) : super(
           height: height,
           width: width,
-        );
+        ) {
+    this.disabledColor = disabledColor ?? CfgGlobal.disabledColor.shade300;
+  }
 }
 
 class WCheckboxGroupStyle extends BaseStyle {
