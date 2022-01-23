@@ -82,14 +82,20 @@ class WTag extends StatelessWidget
       return $slots.defaultSlot!;
     } else {
       if ($slots.defaultSlotBefore is String) {
+        var text = $slots.defaultSlotBefore as String;
         return [
-          Text(
-            $slots.defaultSlotBefore as String,
-            style: TextStyle(
-              color: fontColor,
-              fontSize: fontSize,
+          Tooltip(
+            message: text,
+            showDuration: const Duration(seconds: 1),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: fontColor,
+                fontSize: fontSize,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          )
+          ),
         ];
       }
     }

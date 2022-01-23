@@ -153,7 +153,7 @@ class WInputState extends State<WInput> {
       constraints: widget.$props.isTextarea
           ? null
           : BoxConstraints(
-              minWidth: maxWidth,
+              minWidth: minWidth,
               maxWidth: maxWidth,
               minHeight: minHeight,
               maxHeight: widget.$strictOneRow ? minHeight : double.infinity,
@@ -295,7 +295,11 @@ class WInputState extends State<WInput> {
   }
 
   double get maxWidth {
-    return widget.$style.width ?? cfgGlobal.input.width ?? 200;
+    return widget.$style.maxWidth ?? cfgGlobal.input.maxWidth ?? 500;
+  }
+
+  double get minWidth {
+    return widget.$style.minWidth ?? cfgGlobal.input.minWidth ?? 300;
   }
 
   double get minHeight {
