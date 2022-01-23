@@ -150,7 +150,7 @@ class ApiCascader extends StatelessWidget {
             WCascader(
               props: WCascaderProp(
                 options: options,
-                props: {'expandTrigger': 'hover'},
+                props: PanelPropDetail(expandTrigger: 'hover'),
               ),
               on: WCascaderOn(change: handleChange),
             ),
@@ -188,7 +188,7 @@ class ApiCascader extends StatelessWidget {
     );
   }
 
-  var multiProps = {'multiple': true};
+  var multiProps = PanelPropDetail(multiple: true);
 
   Widget get multiSelect {
     return Row(
@@ -232,7 +232,7 @@ class ApiCascader extends StatelessWidget {
             const Text('单选选择任意一级选项'),
             WCascader(
               props: WCascaderProp(
-                props: {'checkStrictly': true},
+                props: PanelPropDetail(checkStrictly: true),
                 options: options,
               ),
               on: WCascaderOn(change: handleChange),
@@ -246,7 +246,7 @@ class ApiCascader extends StatelessWidget {
               props: WCascaderProp(
                 value: value,
                 options: options,
-                props: {'multiple': true, 'checkStrictly': true},
+                props: PanelPropDetail(multiple: true, checkStrictly: true),
                 collapseTags: true,
               ),
               on: WCascaderOn(change: handleChange),
@@ -261,24 +261,23 @@ class ApiCascader extends StatelessWidget {
     return WCascader(
       props: WCascaderProp(
         options: options,
-        props: {
-          'lazy': true,
-          'lazyLoad': (node, resolve) {
-            var level = node.level;
-            print(level);
-            Timer(const Duration(seconds: 1), () {
-              // nodes = Array.from({ length: level + 1 })
-              //   .map(item => ({
-              //     value: ++id,
-              //     label: `选项${id}`,
-              //     leaf: level >= 2
-              //   }));
-              var nodes = [];
-              // 通过调用resolve将子节点数据返回，通知组件数据加载完成
-              resolve(nodes);
-            });
-          }
-        },
+        props: PanelPropDetail(
+            lazy: true,
+            lazyLoad: (node, resolve) {
+              var level = node.level;
+              print(level);
+              Timer(const Duration(seconds: 1), () {
+                // nodes = Array.from({ length: level + 1 })
+                //   .map(item => ({
+                //     value: ++id,
+                //     label: `选项${id}`,
+                //     leaf: level >= 2
+                //   }));
+                var nodes = [];
+                // 通过调用resolve将子节点数据返回，通知组件数据加载完成
+                resolve(nodes);
+              });
+            }),
         collapseTags: true,
       ),
     );
@@ -309,7 +308,7 @@ class ApiCascader extends StatelessWidget {
                 placeholder: '试试搜索：指南',
                 options: options,
                 filterable: true,
-                props: {'multiple': true},
+                props: PanelPropDetail(multiple: true),
               ),
               on: WCascaderOn(change: handleChange),
             ),
