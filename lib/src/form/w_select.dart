@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, implementation_imports
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -93,7 +94,6 @@ class _WSelectState extends State<WSelect>
 
   setEvent() {
     widget.$props.$valueListener.addListener(() {
-      print('value change');
       if (!widget.$props.multiple) hidePanel();
     });
     if (!widget.$slots.defalutEmpty) {
@@ -601,7 +601,7 @@ class WSelectProp extends WInputProp {
   @override
   set value(value) {
     $valueListener.value = value;
-    super.value = multiple ? value.join(',') : value;
+    super.value = value is String ? value : jsonEncode(value);
   }
 
   @override

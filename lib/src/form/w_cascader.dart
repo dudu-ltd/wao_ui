@@ -1,16 +1,31 @@
-import 'dart:async';
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
-import 'package:wao_ui/core/extension/map_extension.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 import '../../core/utils/color_util.dart';
+
+var cascaderDefaultProp = {
+  'expandTrigger': 'click', // or hover
+  'multiple': false,
+  'checkStrictly': false, // whether all nodes can be selected
+  'emitPath':
+      true, // wether to emit an array of all levels value in which node is located
+  'lazy': false,
+  'lazyLoad': () {},
+  'value': 'value',
+  'label': 'label',
+  'children': 'children',
+  'leaf': 'leaf',
+  'disabled': 'disabled',
+  'hoverThreshold': 500
+};
 
 class WCascader extends StatefulWidget
     implements
@@ -89,7 +104,7 @@ class WCascaderOn extends WSelectOn {
 
 class WCascaderProp extends WSelectProp {
   late List<dynamic> options;
-  late Map<String, dynamic> props;
+  late PanelPropDetail props;
   late bool showAllLevels;
   late String separator;
   late num debounce;
@@ -98,7 +113,7 @@ class WCascaderProp extends WSelectProp {
   WCascaderProp({
     dynamic value,
     required this.options,
-    Map<String, dynamic>? props,
+    PanelPropDetail? props,
     String? size,
     String? placeholder,
     bool? disabled,
@@ -123,19 +138,16 @@ class WCascaderProp extends WSelectProp {
           collapseTags: collapseTags,
           filterable: filterable,
           popperClass: popperClass,
-          multiple: props?['multiple'],
         ) {
     $valueListener = ValueNotifier(null);
+    this.props = props ?? PanelPropDetail();
+    multiple = this.props.multiple;
     this.value = value;
-    this.props = props ?? {};
     this.showAllLevels = showAllLevels ?? true;
     this.separator = separator ?? '/';
     this.filterMethod = filterMethod;
     this.debounce = debounce ?? 300;
     this.beforeFilter = beforeFilter;
-  }
-  bool get expandTriggerHover {
-    return props['expandTrigger'] == 'hover';
   }
 }
 
@@ -181,44 +193,46 @@ class WCascaderPanel extends StatefulWidget
 }
 
 class _WCascaderPanelState extends State<WCascaderPanel> {
-  List panelData = [];
+  List menus = [];
   List panelPicked = [];
 
   @override
   void initState() {
-    panelData.add(widget.$props.options);
+    super.initState();
+    menus.add(widget.$props.options);
   }
 
-  trigger(node) {
-    var nextLevel = node.$props.option['children'];
+  trigger(WCascaderNode node) {
+    var nextLevel = node.$props.props.getChildren(node.$props.option);
     if (nextLevel != null) {
       // 数据原始形态 [ 一级menu , [...动态添加二级、三级...] ]
-      panelData = panelData.sublist(0, node.$props.level + 1);
-      panelData.add(node.$props.option['children']);
+      menus = menus.sublist(0, node.$props.level + 1);
+      menus.add(nextLevel);
       // 选中值的原始形态 []
-
       panelPicked = panelPicked.sublist(0, node.$props.level);
       panelPicked.add(node.$props.option);
       setState(() {});
     }
   }
 
-  click(node) {
-    var nextLevel = node.$props.option['children'];
+  click(WCascaderNode node) {
+    var nextLevel = node.$props.props.getChildren(node.$props.option);
+    // print(nextLevel);
     if (nextLevel == null) {
       panelPicked = panelPicked.sublist(0, node.$props.level);
       panelPicked.add(node.$props.option);
       setState(() {});
-
-      widget.$props.$valueListener.notifyListeners();
+      widget.$props.value = selected();
+      // widget.$props.$valueListener.notifyListeners();
     }
   }
 
   selected() {
     var result = [];
-    panelPicked.forEach((element) {
-      result.add(element);
-    });
+    for (var option in panelPicked) {
+      result.add(widget.$props.props.getValue(option));
+    }
+    return result;
   }
 
   @override
@@ -226,11 +240,11 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: List.generate(panelData.length, (index) {
-        var levelPanel = panelData[index];
+      children: List.generate(menus.length, (index) {
+        var levelPanel = menus[index];
         return WCascaderMenu(
           props: WCascaderMenuProp(
-            picked: panelData,
+            picked: menus,
             pickedValue: panelPicked,
             options: levelPanel,
             level: index,
@@ -253,15 +267,63 @@ class WCascaderPanelProp extends WCascaderProp {
   WCascaderPanelProp({
     dynamic value,
     required List<dynamic> options,
-    Map<String, dynamic>? props,
+    PanelPropDetail? props,
     ValueNotifier<dynamic>? valueListener,
   }) : super(
           options: options,
           props: props,
           value: value,
         ) {
-    this.props.merge(cascaderDefaultProp);
     $valueListener = valueListener ?? ValueNotifier(null);
+  }
+}
+
+class PanelPropDetail {
+  late String expandTrigger;
+  late bool multiple;
+  late bool checkStrictly;
+  late bool emitPath;
+  late bool lazy;
+  late Function(dynamic, dynamic) lazyLoad;
+  late String value;
+  late String label;
+  late String children;
+  late String leaf;
+  late String disabled;
+  late int hoverThreshold;
+
+  PanelPropDetail({
+    this.expandTrigger = 'click',
+    this.multiple = false,
+    this.checkStrictly = false,
+    this.emitPath = true,
+    this.lazy = false,
+    void Function(dynamic, dynamic)? lazyLoad,
+    this.value = 'value',
+    this.label = 'label',
+    this.children = 'children',
+    this.leaf = 'leaf',
+    this.disabled = 'disabled',
+    this.hoverThreshold = 500,
+  }) {
+    this.lazyLoad = lazyLoad ?? (node, resolve) {};
+  }
+
+  bool get isExpandTriggerHover {
+    return expandTrigger == 'hover';
+  }
+
+  bool isDisabled(Map<String, dynamic> option, {defaultValue = false}) {
+    var disabledField = disabled;
+    return option[disabledField] ?? defaultValue;
+  }
+
+  List? getChildren(Map<String, dynamic> option) {
+    return option[children];
+  }
+
+  dynamic getValue(Map<String, dynamic> option) {
+    return option[value];
   }
 }
 
@@ -362,14 +424,16 @@ class WCascaderMenuProp extends BaseProp {
   late List picked;
   late List pickedValue;
   late int level;
-  late Map<String, dynamic> props;
+  late PanelPropDetail props;
   WCascaderMenuProp({
     required this.options,
     this.level = 0,
     this.picked = const [],
     this.pickedValue = const [],
-    this.props = const {},
-  });
+    PanelPropDetail? props,
+  }) {
+    this.props = props ?? PanelPropDetail();
+  }
 }
 
 class WCascaderMenuSlot extends BaseSlot {
@@ -416,11 +480,11 @@ class WCascaderNode extends StatelessWidget
   Widget build(BuildContext context) {
     return MouseStateBuilder(
       builder: (context, state) {
-        var disabled = isDisabled($props.props, $props.option);
+        var disabled = $props.props.isDisabled($props.option);
         var item = Align(
           alignment: Alignment.centerLeft,
           child: ColoredBox(
-            color: state.isMouseOver && !isDisabled($props.props, $props.option)
+            color: state.isMouseOver && !$props.props.isDisabled($props.option)
                 ? ColorUtil.hexToColor('#f5f7fa')
                 : const Color.fromARGB(0, 255, 255, 255),
             child: FractionallySizedBox(
@@ -446,12 +510,12 @@ class WCascaderNode extends StatelessWidget
   }
 
   clickCbk(e) {
-    isExpandTriggerHover($props.props) ? null : $on.expand?.call(this);
+    if (!$props.props.isExpandTriggerHover) $on.expand?.call(this);
     $on.click?.call(this);
   }
 
   hoverCbk(e) {
-    if (isExpandTriggerHover($props.props)) $on.expand?.call(this);
+    if ($props.props.isExpandTriggerHover) $on.expand?.call(this);
   }
 
   Widget get itemText {
@@ -463,7 +527,7 @@ class WCascaderNode extends StatelessWidget
         style: TextStyle(
           overflow: TextOverflow.ellipsis,
           fontSize: 14,
-          color: isDisabled($props.props, $props.option)
+          color: $props.props.isDisabled($props.option)
               ? disableColor
               : _isSelected
                   ? CfgGlobal.primaryColor
@@ -480,15 +544,6 @@ class WCascaderNode extends StatelessWidget
   }
 }
 
-bool isExpandTriggerHover(Map<String, dynamic> props) {
-  return props['expandTrigger'] == 'hover';
-}
-
-bool isDisabled(Map<String, dynamic> props, Map<String, dynamic> option) {
-  var disabledField = props['disabled'];
-  return option[disabledField] ?? false;
-}
-
 class WCascaderNodeOn extends BaseOn {
   Function(WCascaderNode)? expand;
   Function(WCascaderNode)? click;
@@ -500,34 +555,19 @@ class WCascaderNodeProp extends BaseProp {
   late List picked;
   late List pickedValue;
   late int level;
-  late Map<String, dynamic> props;
+  late PanelPropDetail props;
   WCascaderNodeProp({
     required this.option,
     this.level = 0,
     this.picked = const [],
     this.pickedValue = const [],
-    this.props = const {},
+    PanelPropDetail? props,
   }) {
     // print(props);
+    this.props = props ?? PanelPropDetail();
   }
 }
 
 class WCascaderNodeSlot extends BaseSlot {
   WCascaderNodeSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
-
-var cascaderDefaultProp = {
-  'expandTrigger': 'click', // or hover
-  'multiple': false,
-  'checkStrictly': false, // whether all nodes can be selected
-  'emitPath':
-      true, // wether to emit an array of all levels value in which node is located
-  'lazy': false,
-  'lazyLoad': () {},
-  'value': 'value',
-  'label': 'label',
-  'children': 'children',
-  'leaf': 'leaf',
-  'disabled': 'disabled',
-  'hoverThreshold': 500
-};
