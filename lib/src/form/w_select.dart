@@ -589,7 +589,7 @@ class WSelectProp extends WInputProp {
           autoComplete: autoComplete,
           placeholder: placeholder,
         ) {
-    $valueListener = ValueNotifier([]);
+    $valueListener = ValueNotifier(null);
     this.multiple = multiple ?? false;
     this.value = value;
     this.disabled = disabled ?? false;
@@ -613,6 +613,7 @@ class WSelectProp extends WInputProp {
     this.automaticDropdown = automaticDropdown ?? false;
 
     readonly = !this.allowCreate && !this.remote;
+    this.$textAlign = TextAlign.center;
   }
 
   @override

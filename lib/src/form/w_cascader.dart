@@ -64,62 +64,63 @@ class _WCascaderState extends State<WCascader> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey panelKey = GlobalKey();
     return WSelect(
-        panelInsideBuilder: (parent, state) {
-          return WCascaderPanel(
-            key: panelKey,
-            props: WCascaderPanelProp(
-              value: widget.$props.value,
-              valueListener: widget.$props.$valueListener,
-              options: widget.$props.options,
-              props: widget.$props.props,
-            ),
+      panelInsideBuilder: (parent, state) {
+        return WCascaderPanel(
+          props: WCascaderPanelProp(
+            value: widget.$props.value,
+            valueListener: widget.$props.$valueListener,
+            options: widget.$props.options,
+            props: widget.$props.props,
+          ),
+        );
+      },
+      valueLabelsGetter: () {
+        if (widget.$props.$valueListener.value == null ||
+            widget.$props.$valueListener.value.isEmpty) {
+          return [];
+        }
+        var result = [];
+        var isMultiple = widget.$props.props.multiple;
+        var pickedOptions = [];
+        var pickedLabels = [];
+        var menus = [];
+        widget.$props.props.getSelected(
+          widget.$props.$valueListener.value ?? [],
+          widget.$props.options,
+          pickedOptions,
+          pickedLabels,
+          menus,
+        );
+        if (!isMultiple) {
+          result.add(
+            {
+              'k': widget.$props.$valueListener.value,
+              'v': widget.$props.showAllLevels
+                  ? pickedLabels.join(widget.$props.separator)
+                  : pickedLabels.last
+            },
           );
-        },
-        valueLabelsGetter: () {
-          var result = [];
-          if (panelKey.currentState != null) {
-            _WCascaderPanelState panelState =
-                (panelKey.currentState as _WCascaderPanelState);
-            var isMultiple = widget.$props.props.multiple;
-            var pickedOptions = [];
-            var pickedLabels = [];
-            var menus = [];
-            widget.$props.props.getSelected(
-              widget.$props.$valueListener.value ?? [],
-              widget.$props.options,
-              pickedOptions,
-              pickedLabels,
-              menus,
-            );
-            print('result pickedLabels = $pickedLabels');
-            if (!isMultiple) {
-              result.add(
-                {
-                  'k': widget.$props.$valueListener.value,
-                  'v': pickedLabels.join(widget.$props.separator)
-                },
-              );
-            } else {
-              widget.$props.$valueListener.value;
-              var index = 0;
-              for (var valueArr in widget.$props.$valueListener.value) {
-                print('valueArr = $valueArr');
-                var labels = pickedLabels[index];
-                result.add({
-                  'k': valueArr,
-                  'v': labels.join(widget.$props.separator),
-                });
-                index++;
-              }
-            }
+        } else {
+          widget.$props.$valueListener.value;
+          var index = 0;
+          for (var valueArr in widget.$props.$valueListener.value) {
+            var labels = pickedLabels[index];
+            result.add({
+              'k': valueArr,
+              'v': widget.$props.showAllLevels
+                  ? labels.join(widget.$props.separator)
+                  : labels.last,
+            });
+            index++;
           }
-          return result;
-        },
-        props: widget.$props,
-        style: WSelectStyle(panelMaxWidth: 300),
-        on: WSelectOn(change: widget.$on.change));
+        }
+        return result;
+      },
+      props: widget.$props,
+      style: WSelectStyle(panelMaxWidth: 300),
+      on: WSelectOn(change: widget.$on.change),
+    );
   }
 }
 
@@ -299,13 +300,9 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
 
   trigger(WCascaderNode node) {
     addMenu(node);
-    if (widget.$props.props.multiple) {
-      panelPicked.add(node.$props.option);
-    } else {
-      // 选中值的原始形态 []
-      panelPicked = panelPicked.sublist(0, node.$props.level);
-      panelPicked.add(node.$props.option);
-    }
+    // 选中值的原始形态 []
+    panelPicked = panelPicked.sublist(0, node.$props.level);
+    panelPicked.add(node.$props.option);
     setState(() {});
   }
 
@@ -319,17 +316,11 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
 
   click(WCascaderNode node) {
     var nextLevel = node.$props.props.getChildren(node.$props.option);
-    // print(nextLevel);
     if (nextLevel == null) {
       panelPicked = panelPicked.sublist(0, node.$props.level);
       panelPicked.add(node.$props.option);
       if (widget.$props.props.multiple) {
         var select = selected();
-        // var find = widget.$props.value.firstWhere(
-        //   (element) => element == select,
-        // );
-        print(
-            '${jsonEncode(widget.$props.value)} contains ${jsonEncode(select)} is ${contains(widget.$props.value, select)}');
         if (contains(widget.$props.value, select)) {
           widget.$props.value.removeWhere(
               (element) => element.toString() == select.toString());
@@ -338,7 +329,6 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
           widget.$props.value.add(select);
           panelPicked.add(node.$props.option);
         }
-        print(widget.$props.value.length);
       } else {
         widget.$props.value = selected();
       }
@@ -462,7 +452,6 @@ class PanelPropDetail {
           [],
         );
       }
-      print('after pickedLabels = $pickedLabels');
     } else {
       getSelectedOneValue(
         picked,
@@ -487,7 +476,6 @@ class PanelPropDetail {
       if (p == getValue(option)) {
         pickedOptions.add(option);
         pickedLabels.add(getLabel(option));
-        print('pickedLabel = ${jsonEncode(pickedLabels)}');
         var children = getChildren(option);
         if (children != null) {
           menus.add(children);
