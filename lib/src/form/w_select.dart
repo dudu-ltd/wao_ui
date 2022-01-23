@@ -31,6 +31,8 @@ class WSelect extends StatefulWidget
 
   late Widget Function(WSelect, _WSelectState)? panelInsideBuilder;
 
+  late List<dynamic> Function()? valueLabelsGetter;
+
   WSelect({
     Key? key,
     WSelectOn? on,
@@ -38,11 +40,17 @@ class WSelect extends StatefulWidget
     WSelectSlot? slots,
     WSelectStyle? style,
     this.panelInsideBuilder,
+    this.valueLabelsGetter,
   }) : super(key: key) {
     $on = on ?? WSelectOn();
     $props = props ?? WSelectProp();
     $slots = slots ?? WSelectSlot(null);
     $style = style ?? WSelectStyle();
+
+    if (panelInsideBuilder != null) {
+      assert(valueLabelsGetter != null,
+          '当面板内部内容(panelInsideBuilder)是由自己定义的，那么需要设置取值函数(valueLabelsGetter)');
+    }
   }
 
   @override
@@ -68,7 +76,7 @@ class _WSelectState extends State<WSelect>
 
   late OverlayEntry panelOverlay;
 
-  List options = [];
+  List selectedArr = [];
 
   @override
   void initState() {
@@ -106,7 +114,7 @@ class _WSelectState extends State<WSelect>
       (slot) {
         if (slot is WOption) {
           slot.$props.$multiple = widget.$props.multiple;
-          options.add(slot);
+          selectedArr.add(slot);
           var fn = slot.$on.click ?? (e) {};
           slot.$props.$valueListener = widget.$props.$valueListener;
           slot.$on.click = (e) {
@@ -146,7 +154,7 @@ class _WSelectState extends State<WSelect>
     } else {
       widget.$props.$valueListener.value = null;
     }
-    widget.$props.$valueListener.notifyListeners();
+    // widget.$props.$valueListener.notifyListeners();
     setState(() {});
   }
 
@@ -255,16 +263,21 @@ class _WSelectState extends State<WSelect>
   }
 
   Widget? get singleLabel {
-    var labels = valueLabels;
+    var labels = [...valueLabels];
     if (labels.isEmpty) return null;
+    var label = labels.first['v'];
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(
-            labels.first['v'],
-            style: TextStyle(fontSize: singleLabelFontSize),
+          child: Tooltip(
+            message: label,
+            child: Text(
+              label,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: singleLabelFontSize),
+            ),
           ),
         ),
         editInput,
@@ -283,7 +296,7 @@ class _WSelectState extends State<WSelect>
   }
 
   Widget? get multiLabel {
-    var labels = valueLabels;
+    var labels = [...valueLabels];
     if (labels.isEmpty) return null;
     var children = <Widget>[];
     if (!widget.$props.collapseTags) {
@@ -345,10 +358,14 @@ class _WSelectState extends State<WSelect>
   }
 
   List<dynamic> get valueLabels {
+    if (widget.valueLabelsGetter != null) {
+      return widget.valueLabelsGetter!.call();
+    }
+
     var result = [];
-    for (var element in options) {
-      if (element is WOption && element.$props.isSelected) {
-        result.add({'k': element.$props.value, 'v': element.$props.label});
+    for (var selected in selectedArr) {
+      if (selected is WOption && selected.$props.isSelected) {
+        result.add({'k': selected.$props.value, 'v': selected.$props.label});
       }
     }
     return result;
