@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -10,22 +12,6 @@ import 'package:wao_ui/wao_ui.dart';
 
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 import '../../core/utils/color_util.dart';
-
-var cascaderDefaultProp = {
-  'expandTrigger': 'click', // or hover
-  'multiple': false,
-  'checkStrictly': false, // whether all nodes can be selected
-  'emitPath':
-      true, // wether to emit an array of all levels value in which node is located
-  'lazy': false,
-  'lazyLoad': () {},
-  'value': 'value',
-  'label': 'label',
-  'children': 'children',
-  'leaf': 'leaf',
-  'disabled': 'disabled',
-  'hoverThreshold': 500
-};
 
 class WCascader extends StatefulWidget
     implements
@@ -59,9 +45,11 @@ class WCascader extends StatefulWidget
 class _WCascaderState extends State<WCascader> {
   @override
   Widget build(BuildContext context) {
+    GlobalKey panelKey = GlobalKey();
     return WSelect(
       panelInsideBuilder: (parent, state) {
         return WCascaderPanel(
+          key: panelKey,
           props: WCascaderPanelProp(
             value: widget.$props.value,
             valueListener: parent.$props.$valueListener,
@@ -69,6 +57,30 @@ class _WCascaderState extends State<WCascader> {
             props: widget.$props.props,
           ),
         );
+      },
+      valueLabelsGetter: () {
+        var result = [];
+        print(widget.$props.$valueListener.value);
+        if (panelKey.currentState != null) {
+          _WCascaderPanelState panelState =
+              (panelKey.currentState as _WCascaderPanelState);
+          var isMultiple = widget.$props.props.multiple;
+          if (!isMultiple) {
+            var labelArr = [];
+            var valueArr = [];
+
+            for (var selected in panelState.panelPicked) {
+              var label = widget.$props.props.getLabel(selected);
+              var value = widget.$props.props.getValue(selected);
+              labelArr.add(label);
+              valueArr.add(value);
+            }
+            result.add(
+              {'k': valueArr, 'v': labelArr.join(widget.$props.separator)},
+            );
+          }
+        }
+        return result;
       },
       props: widget.$props,
       style: WSelectStyle(panelMaxWidth: 300),
@@ -199,7 +211,15 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
   @override
   void initState() {
     super.initState();
+    List panelValuePicked = widget.$props.$valueListener.value ?? [];
     menus.add(widget.$props.options);
+    widget.$props.props.getSelected(
+      panelValuePicked,
+      widget.$props.options,
+      panelPicked,
+      [],
+      menus,
+    );
   }
 
   trigger(WCascaderNode node) {
@@ -223,7 +243,6 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
       panelPicked.add(node.$props.option);
       setState(() {});
       widget.$props.value = selected();
-      // widget.$props.$valueListener.notifyListeners();
     }
   }
 
@@ -324,6 +343,37 @@ class PanelPropDetail {
 
   dynamic getValue(Map<String, dynamic> option) {
     return option[value];
+  }
+
+  dynamic getLabel(Map<String, dynamic> option) {
+    return option[label];
+  }
+
+  getSelected(List picked, List<dynamic> options, List pickedOptions,
+      List pickedLabels, List menus) {
+    if (picked.isNotEmpty) {
+      var p = picked[0];
+      if (p is List) {
+        var po = [];
+        var pl = [];
+        getSelected(p, options, po, pl, []);
+        pickedOptions.add(po);
+        pickedLabels.add(pl);
+      } else {
+        for (var option in options) {
+          if (p == getValue(option)) {
+            pickedOptions.add(option);
+            pickedLabels.add(getLabel(option));
+            var children = getChildren(option);
+            if (children != null) {
+              menus.add(children);
+              getSelected(picked.sublist(1), children, pickedOptions,
+                  pickedLabels, menus);
+            }
+          }
+        }
+      }
+    }
   }
 }
 

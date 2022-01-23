@@ -336,11 +336,12 @@ class ApiCascader extends StatelessWidget {
     );
   }
 
+  GlobalKey panelKey = GlobalKey();
   Widget get panel {
     return WCascaderPanel(
+      // key: panelKey,
       props: WCascaderPanelProp(
-        options: options,
-      ),
+          options: options, props: PanelPropDetail(expandTrigger: 'hover')),
     );
   }
 
@@ -354,6 +355,10 @@ class ApiCascader extends StatelessWidget {
     return ListView(
       children: [
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Text('级联面板'),
+          ____________________________________,
+          panel,
+          ____________________________________,
           const Text('WCascader'),
           ____________________________________,
           const Text('基础用法'),
