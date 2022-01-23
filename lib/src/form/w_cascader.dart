@@ -11,8 +11,22 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
+import '../../core/utils/collect_util.dart';
 import '../../core/utils/color_util.dart';
 
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
 class WCascader extends StatefulWidget
     implements
         BaseWidget<WCascaderOn, WCascaderProp, WCascaderSlot, WCascaderStyle> {
@@ -44,47 +58,68 @@ class WCascader extends StatefulWidget
 
 class _WCascaderState extends State<WCascader> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     GlobalKey panelKey = GlobalKey();
     return WSelect(
-      panelInsideBuilder: (parent, state) {
-        return WCascaderPanel(
-          key: panelKey,
-          props: WCascaderPanelProp(
-            value: widget.$props.value,
-            valueListener: parent.$props.$valueListener,
-            options: widget.$props.options,
-            props: widget.$props.props,
-          ),
-        );
-      },
-      valueLabelsGetter: () {
-        var result = [];
-        print(widget.$props.$valueListener.value);
-        if (panelKey.currentState != null) {
-          _WCascaderPanelState panelState =
-              (panelKey.currentState as _WCascaderPanelState);
-          var isMultiple = widget.$props.props.multiple;
-          if (!isMultiple) {
-            var labelArr = [];
-            var valueArr = [];
-
-            for (var selected in panelState.panelPicked) {
-              var label = widget.$props.props.getLabel(selected);
-              var value = widget.$props.props.getValue(selected);
-              labelArr.add(label);
-              valueArr.add(value);
-            }
-            result.add(
-              {'k': valueArr, 'v': labelArr.join(widget.$props.separator)},
+        panelInsideBuilder: (parent, state) {
+          return WCascaderPanel(
+            key: panelKey,
+            props: WCascaderPanelProp(
+              value: widget.$props.value,
+              valueListener: widget.$props.$valueListener,
+              options: widget.$props.options,
+              props: widget.$props.props,
+            ),
+          );
+        },
+        valueLabelsGetter: () {
+          var result = [];
+          if (panelKey.currentState != null) {
+            _WCascaderPanelState panelState =
+                (panelKey.currentState as _WCascaderPanelState);
+            var isMultiple = widget.$props.props.multiple;
+            var pickedOptions = [];
+            var pickedLabels = [];
+            var menus = [];
+            widget.$props.props.getSelected(
+              widget.$props.$valueListener.value ?? [],
+              widget.$props.options,
+              pickedOptions,
+              pickedLabels,
+              menus,
             );
+            print('result pickedLabels = $pickedLabels');
+            if (!isMultiple) {
+              result.add(
+                {
+                  'k': widget.$props.$valueListener.value,
+                  'v': pickedLabels.join(widget.$props.separator)
+                },
+              );
+            } else {
+              widget.$props.$valueListener.value;
+              var index = 0;
+              for (var valueArr in widget.$props.$valueListener.value) {
+                print('valueArr = $valueArr');
+                var labels = pickedLabels[index];
+                result.add({
+                  'k': valueArr,
+                  'v': labels.join(widget.$props.separator),
+                });
+                index++;
+              }
+            }
           }
-        }
-        return result;
-      },
-      props: widget.$props,
-      style: WSelectStyle(panelMaxWidth: 300),
-    );
+          return result;
+        },
+        props: widget.$props,
+        style: WSelectStyle(panelMaxWidth: 300),
+        on: WSelectOn(change: widget.$on.change));
   }
 }
 
@@ -156,7 +191,7 @@ class WCascaderProp extends WSelectProp {
     multiple = this.props.multiple;
     this.value = value;
     this.showAllLevels = showAllLevels ?? true;
-    this.separator = separator ?? '/';
+    this.separator = separator ?? ' / ';
     this.filterMethod = filterMethod;
     this.debounce = debounce ?? 300;
     this.beforeFilter = beforeFilter;
@@ -171,6 +206,19 @@ class WCascaderSlot extends BaseSlot {
   WCascaderSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
 class WCascaderPanel extends StatefulWidget
     implements
         BaseWidget<WCascaderPanelOn, WCascaderPanelProp, WCascaderPanelSlot,
@@ -211,7 +259,9 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
   @override
   void initState() {
     super.initState();
-    List panelValuePicked = widget.$props.$valueListener.value ?? [];
+    List panelValuePicked = widget.$props.$valueListener.value == null
+        ? []
+        : [...widget.$props.$valueListener.value];
     menus.add(widget.$props.options);
     widget.$props.props.getSelected(
       panelValuePicked,
@@ -220,38 +270,6 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
       [],
       menus,
     );
-  }
-
-  trigger(WCascaderNode node) {
-    var nextLevel = node.$props.props.getChildren(node.$props.option);
-    if (nextLevel != null) {
-      // 数据原始形态 [ 一级menu , [...动态添加二级、三级...] ]
-      menus = menus.sublist(0, node.$props.level + 1);
-      menus.add(nextLevel);
-      // 选中值的原始形态 []
-      panelPicked = panelPicked.sublist(0, node.$props.level);
-      panelPicked.add(node.$props.option);
-      setState(() {});
-    }
-  }
-
-  click(WCascaderNode node) {
-    var nextLevel = node.$props.props.getChildren(node.$props.option);
-    // print(nextLevel);
-    if (nextLevel == null) {
-      panelPicked = panelPicked.sublist(0, node.$props.level);
-      panelPicked.add(node.$props.option);
-      setState(() {});
-      widget.$props.value = selected();
-    }
-  }
-
-  selected() {
-    var result = [];
-    for (var option in panelPicked) {
-      result.add(widget.$props.props.getValue(option));
-    }
-    return result;
   }
 
   @override
@@ -278,6 +296,63 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
       }),
     );
   }
+
+  trigger(WCascaderNode node) {
+    addMenu(node);
+    if (widget.$props.props.multiple) {
+      panelPicked.add(node.$props.option);
+    } else {
+      // 选中值的原始形态 []
+      panelPicked = panelPicked.sublist(0, node.$props.level);
+      panelPicked.add(node.$props.option);
+    }
+    setState(() {});
+  }
+
+  addMenu(WCascaderNode node) {
+    var nextLevel = node.$props.props.getChildren(node.$props.option);
+    if (nextLevel != null) {
+      menus = menus.sublist(0, node.$props.level + 1);
+      menus.add(nextLevel);
+    }
+  }
+
+  click(WCascaderNode node) {
+    var nextLevel = node.$props.props.getChildren(node.$props.option);
+    // print(nextLevel);
+    if (nextLevel == null) {
+      panelPicked = panelPicked.sublist(0, node.$props.level);
+      panelPicked.add(node.$props.option);
+      if (widget.$props.props.multiple) {
+        var select = selected();
+        // var find = widget.$props.value.firstWhere(
+        //   (element) => element == select,
+        // );
+        print(
+            '${jsonEncode(widget.$props.value)} contains ${jsonEncode(select)} is ${contains(widget.$props.value, select)}');
+        if (contains(widget.$props.value, select)) {
+          widget.$props.value.removeWhere(
+              (element) => element.toString() == select.toString());
+          panelPicked.remove(node.$props.option);
+        } else {
+          widget.$props.value.add(select);
+          panelPicked.add(node.$props.option);
+        }
+        print(widget.$props.value.length);
+      } else {
+        widget.$props.value = selected();
+      }
+      setState(() {});
+    }
+  }
+
+  selected() {
+    var result = [];
+    for (var option in panelPicked) {
+      result.add(widget.$props.props.getValue(option));
+    }
+    return result;
+  }
 }
 
 class WCascaderPanelOn extends BaseOn {}
@@ -297,6 +372,23 @@ class WCascaderPanelProp extends WCascaderProp {
   }
 }
 
+class WCascaderPanelSlot extends BaseSlot {
+  WCascaderPanelSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
 class PanelPropDetail {
   late String expandTrigger;
   late bool multiple;
@@ -349,38 +441,77 @@ class PanelPropDetail {
     return option[label];
   }
 
-  getSelected(List picked, List<dynamic> options, List pickedOptions,
-      List pickedLabels, List menus) {
-    if (picked.isNotEmpty) {
-      var p = picked[0];
-      if (p is List) {
-        var po = [];
+  getSelected(
+    List picked,
+    List<dynamic> options,
+    List pickedOptions,
+    List pickedLabels,
+    List menus,
+  ) {
+    if (picked.isEmpty) return;
+    if (multiple) {
+      var valuesLen = picked.length;
+      for (var i = 0; i < valuesLen; i++) {
         var pl = [];
-        getSelected(p, options, po, pl, []);
-        pickedOptions.add(po);
         pickedLabels.add(pl);
-      } else {
-        for (var option in options) {
-          if (p == getValue(option)) {
-            pickedOptions.add(option);
-            pickedLabels.add(getLabel(option));
-            var children = getChildren(option);
-            if (children != null) {
-              menus.add(children);
-              getSelected(picked.sublist(1), children, pickedOptions,
-                  pickedLabels, menus);
-            }
-          }
+        getSelectedOneValue(
+          picked[i],
+          options,
+          pickedOptions,
+          pl,
+          [],
+        );
+      }
+      print('after pickedLabels = $pickedLabels');
+    } else {
+      getSelectedOneValue(
+        picked,
+        options,
+        pickedOptions,
+        pickedLabels,
+        menus,
+      );
+    }
+  }
+
+  getSelectedOneValue(
+    List picked,
+    List<dynamic> options,
+    List pickedOptions,
+    List pickedLabels,
+    List menus,
+  ) {
+    if (picked.isEmpty) return;
+    var p = picked[0];
+    for (var option in options) {
+      if (p == getValue(option)) {
+        pickedOptions.add(option);
+        pickedLabels.add(getLabel(option));
+        print('pickedLabel = ${jsonEncode(pickedLabels)}');
+        var children = getChildren(option);
+        if (children != null) {
+          menus.add(children);
+          getSelectedOneValue(
+            picked.sublist(1),
+            children,
+            pickedOptions,
+            pickedLabels,
+            menus,
+          );
         }
       }
     }
   }
 }
 
-class WCascaderPanelSlot extends BaseSlot {
-  WCascaderPanelSlot(defaultSlotBefore) : super(defaultSlotBefore);
-}
-
+///
+///
+///
+///
+///
+///
+///
+///
 class WCascaderMenu extends StatelessWidget
     implements
         BaseWidget<WCascaderMenuOn, WCascaderMenuProp, WCascaderMenuSlot,
@@ -478,10 +609,12 @@ class WCascaderMenuProp extends BaseProp {
   WCascaderMenuProp({
     required this.options,
     this.level = 0,
-    this.picked = const [],
-    this.pickedValue = const [],
+    List? picked,
+    List? pickedValue,
     PanelPropDetail? props,
   }) {
+    this.picked = picked ?? [];
+    this.pickedValue = pickedValue ?? [];
     this.props = props ?? PanelPropDetail();
   }
 }
@@ -490,6 +623,19 @@ class WCascaderMenuSlot extends BaseSlot {
   WCascaderMenuSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
 class WCascaderNode extends StatelessWidget
     implements
         BaseWidget<WCascaderNodeOn, WCascaderNodeProp, WCascaderNodeSlot,
@@ -571,7 +717,7 @@ class WCascaderNode extends StatelessWidget
   Widget get itemText {
     return Tooltip(
       waitDuration: const Duration(milliseconds: 1000),
-      message: $props.option['label'] ?? '',
+      message: $props.props.getLabel($props.option) ?? '',
       child: Text(
         $props.option['label'] ?? '',
         style: TextStyle(
@@ -609,11 +755,12 @@ class WCascaderNodeProp extends BaseProp {
   WCascaderNodeProp({
     required this.option,
     this.level = 0,
-    this.picked = const [],
-    this.pickedValue = const [],
+    List? picked,
+    List? pickedValue,
     PanelPropDetail? props,
   }) {
-    // print(props);
+    this.picked = picked ?? [];
+    this.pickedValue = pickedValue ?? [];
     this.props = props ?? PanelPropDetail();
   }
 }

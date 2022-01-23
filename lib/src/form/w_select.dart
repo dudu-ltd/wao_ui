@@ -314,7 +314,7 @@ class _WSelectState extends State<WSelect>
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
-        width: 140,
+        width: 400,
         child: Wrap(
           runAlignment: WrapAlignment.center,
           alignment: WrapAlignment.start,
@@ -589,7 +589,7 @@ class WSelectProp extends WInputProp {
           autoComplete: autoComplete,
           placeholder: placeholder,
         ) {
-    $valueListener = ValueNotifier(null);
+    $valueListener = ValueNotifier([]);
     this.multiple = multiple ?? false;
     this.value = value;
     this.disabled = disabled ?? false;

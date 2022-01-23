@@ -14,3 +14,10 @@ void addSlot(dynamic slot, List<Widget> list) {
     throw Exception('除了 Widget、List<Widget>、IconData、String 以外的类型不支持!');
   }
 }
+
+bool contains(List<dynamic> list, dynamic item) {
+  for (var element in list) {
+    if (item.toString() == element.toString()) return true;
+  }
+  return false;
+}
