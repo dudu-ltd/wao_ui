@@ -25,7 +25,7 @@ class ApiSwitch extends StatelessWidget {
       spacing: 10,
       children: [
         WSwitch(
-          flutterStyle: true,
+          // flutterStyle: true,
           props: WSwitchProp(
             value: true,
             activeText: '按月付费',
@@ -40,7 +40,8 @@ class ApiSwitch extends StatelessWidget {
             activeText: '按月付费',
             inactiveText: '按年付费',
           ),
-        )
+          on: WSwitchOn(change: (v) => print(v)),
+        ),
       ],
     );
   }
@@ -54,6 +55,7 @@ class ApiSwitch extends StatelessWidget {
         activeValue: 100,
         inactiveValue: 0,
       ),
+      on: WSwitchOn(change: (v) => print(v)),
     );
   }
 
