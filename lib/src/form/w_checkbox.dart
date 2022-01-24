@@ -62,6 +62,8 @@ class _WCheckboxState extends State<WCheckbox> {
           onTap: widget.$props.disabled
               ? null
               : (() {
+                  print('change checkbox');
+                  print(widget.$props.value.value);
                   if (widget.$props.value.value is bool) {
                     widget.$props.value.value = !widget.$props.value.value;
                   } else {
@@ -77,7 +79,7 @@ class _WCheckboxState extends State<WCheckbox> {
                 }),
           child: borderWrapper(
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: padding,
               child: Row(children: [
                 Padding(
                     padding: const EdgeInsets.only(right: 8),
@@ -96,13 +98,17 @@ class _WCheckboxState extends State<WCheckbox> {
                         size: height - 2,
                       ),
                     )),
-                Text(
-                  widget.$slots.defaultSlotBefore ?? widget.$props.label ?? '',
-                  style: TextStyle(
-                    color: labelColor,
-                    fontSize: height + 1,
-                  ),
-                )
+                widget.$slots.defaultSlotBefore is Widget
+                    ? widget.$slots.defaultSlotBefore
+                    : Text(
+                        widget.$slots.defaultSlotBefore ??
+                            widget.$props.label ??
+                            'null',
+                        style: TextStyle(
+                          color: labelColor,
+                          fontSize: height + 1,
+                        ),
+                      )
               ]),
             ),
             Border.fromBorderSide(
@@ -170,6 +176,12 @@ class _WCheckboxState extends State<WCheckbox> {
         : widget.$props.isSelected || widget.$props.indeterminate
             ? CfgGlobal.primaryColor
             : Colors.white;
+  }
+
+  EdgeInsets get padding {
+    return widget.$style.padding ??
+        cfgGlobal.checkbox.padding ??
+        const EdgeInsets.all(8.0);
   }
 }
 
@@ -485,17 +497,19 @@ class _WCheckboxButtonState extends State<WCheckboxButton> {
               borderRadius: borderRadius,
               border: border,
             ),
-            child: Text(
-              widget.$slots.defaultSlotBefore,
-              style: TextStyle(
-                color: state.isMouseOver &&
-                        !widget.$props.isSelected &&
-                        !widget.$props.disabled
-                    ? CfgGlobal.primaryColor
-                    : labelColor,
-                fontSize: height + 1,
-              ),
-            ),
+            child: widget.$slots.defaultSlotBefore is Widget
+                ? widget.$slots.defaultSlotBefore
+                : Text(
+                    widget.$slots.defaultSlotBefore ?? 'null',
+                    style: TextStyle(
+                      color: state.isMouseOver &&
+                              !widget.$props.isSelected &&
+                              !widget.$props.disabled
+                          ? CfgGlobal.primaryColor
+                          : labelColor,
+                      fontSize: height + 1,
+                    ),
+                  ),
           );
         },
       ),

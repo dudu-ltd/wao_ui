@@ -193,7 +193,7 @@ class WBreadcrumbItem extends StatelessWidget
   Widget build(BuildContext context) {
     return InkWell(
       child: Padding(
-        padding: cfgGlobal.breadcrumb.padding,
+        padding: padding,
         child: Row(
           children: [
             if ($props.data.icon != null) Icon($props.data.icon),
@@ -205,6 +205,10 @@ class WBreadcrumbItem extends StatelessWidget
         $on.click($props.data);
       },
     );
+  }
+
+  EdgeInsets get padding {
+    return $style.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
   }
 }
 

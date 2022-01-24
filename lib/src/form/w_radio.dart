@@ -76,13 +76,15 @@ class _WRadioState extends State<WRadio> {
                 ),
               ),
             ),
-            Text(
-              widget.$slots.defaultSlotBefore,
-              style: TextStyle(
-                color: labelColor,
-                fontSize: height + 1,
-              ),
-            )
+            widget.$slots.defaultSlotBefore is Widget
+                ? widget.$slots.defaultSlotBefore
+                : Text(
+                    widget.$slots.defaultSlotBefore ?? 'null',
+                    style: TextStyle(
+                      color: labelColor,
+                      fontSize: height + 1,
+                    ),
+                  )
           ]),
         ),
         Border.fromBorderSide(BorderSide(width: 1, color: borderColor)),
@@ -342,17 +344,19 @@ class _WRadioButtonState extends State<WRadioButton> {
               borderRadius: borderRadius,
               border: border,
             ),
-            child: Text(
-              widget.$slots.defaultSlotBefore,
-              style: TextStyle(
-                color: state.isMouseOver &&
-                        !widget.$props.isSelected &&
-                        !widget.$props.disabled
-                    ? CfgGlobal.primaryColor
-                    : labelColor,
-                fontSize: height + 1,
-              ),
-            ),
+            child: widget.$slots.defaultSlotBefore is Widget
+                ? widget.$slots.defaultSlotBefore
+                : Text(
+                    widget.$slots.defaultSlotBefore ?? 'null',
+                    style: TextStyle(
+                      color: state.isMouseOver &&
+                              !widget.$props.isSelected &&
+                              !widget.$props.disabled
+                          ? CfgGlobal.primaryColor
+                          : labelColor,
+                      fontSize: height + 1,
+                    ),
+                  ),
           );
         },
       ),

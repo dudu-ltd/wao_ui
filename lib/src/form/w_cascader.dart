@@ -1,7 +1,5 @@
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -14,6 +12,7 @@ import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 import '../../core/utils/collect_util.dart';
 import '../../core/utils/color_util.dart';
 
+// TODO 使用 WCheckboxGroup 与 WRadioGroup 重写赋值逻辑
 ///
 ///
 ///
@@ -199,6 +198,7 @@ class WCascaderProp extends WSelectProp {
     this.filterMethod = filterMethod;
     this.debounce = debounce ?? 300;
     this.beforeFilter = beforeFilter;
+    super.automaticDropup = !this.props.checkStrictly;
   }
 }
 
@@ -319,24 +319,30 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
 
   click(WCascaderNode node) {
     var nextLevel = node.$props.props.getChildren(node.$props.option);
-    if (nextLevel == null) {
-      panelPicked = panelPicked.sublist(0, node.$props.level);
-      panelPicked.add(node.$props.option);
-      if (widget.$props.props.multiple) {
-        var select = selected();
-        if (contains(widget.$props.value, select)) {
-          widget.$props.value.removeWhere(
-              (element) => element.toString() == select.toString());
-          panelPicked.remove(node.$props.option);
-        } else {
-          widget.$props.value.add(select);
-          panelPicked.add(node.$props.option);
-        }
-      } else {
-        widget.$props.value = selected();
-      }
-      setState(() {});
+    if (nextLevel == null || node.$props.props.checkStrictly) {
+      pickValue(node);
     }
+  }
+
+  pickValue(WCascaderNode node) {
+    // 最末端选项被选中
+    panelPicked = panelPicked.sublist(0, node.$props.level);
+    panelPicked.add(node.$props.option);
+    if (widget.$props.props.multiple) {
+      // 当前为多选模式
+      var select = selected();
+      if (contains(widget.$props.value, select)) {
+        widget.$props.value
+            .removeWhere((element) => element.toString() == select.toString());
+        panelPicked.remove(node.$props.option);
+      } else {
+        widget.$props.value.add(select);
+        panelPicked.add(node.$props.option);
+      }
+    } else {
+      widget.$props.value = selected();
+    }
+    setState(() {});
   }
 
   selected() {
@@ -677,7 +683,7 @@ class WCascaderNode extends StatelessWidget
               widthFactor: 1,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
-                child: itemText,
+                child: optionWithTip,
               ),
             ),
           ),
@@ -686,6 +692,7 @@ class WCascaderNode extends StatelessWidget
           return item;
         } else {
           return Listener(
+            behavior: HitTestBehavior.deferToChild,
             onPointerUp: clickCbk,
             onPointerHover: hoverCbk,
             child: item,
@@ -695,30 +702,47 @@ class WCascaderNode extends StatelessWidget
     );
   }
 
-  clickCbk(e) {
-    if (!$props.props.isExpandTriggerHover) $on.expand?.call(this);
-    $on.click?.call(this);
-  }
-
-  hoverCbk(e) {
-    if ($props.props.isExpandTriggerHover) $on.expand?.call(this);
-  }
-
-  Widget get itemText {
+  Widget get optionWithTip {
     return Tooltip(
       waitDuration: const Duration(milliseconds: 1000),
       message: $props.props.getLabel($props.option) ?? '',
-      child: Text(
-        $props.option['label'] ?? '',
-        style: TextStyle(
-          overflow: TextOverflow.ellipsis,
-          fontSize: 14,
-          color: $props.props.isDisabled($props.option)
-              ? disableColor
-              : _isSelected
-                  ? CfgGlobal.primaryColor
-                  : ColorUtil.hexToColor('#606266'),
+      child: complexOption,
+    );
+  }
+
+  Widget get complexOption {
+    if ($props.props.multiple) {
+      return WCheckbox(
+        props: WCheckboxProp(value: ValueNotifier([_isSelected]), label: true),
+        slots: WCheckboxSlot(
+          $props.props.getLabel($props.option),
         ),
+        style: WCheckboxStyle(padding: EdgeInsets.zero),
+      );
+    }
+    if ($props.props.checkStrictly) {
+      return WRadio(
+        props: WRadioProp(value: ValueNotifier(_isSelected), label: true),
+        slots: WRadioSlot(
+          $props.props.getLabel($props.option),
+        ),
+        style: WRadioStyle(padding: EdgeInsets.zero),
+      );
+    }
+    return itemText;
+  }
+
+  Widget get itemText {
+    return Text(
+      $props.props.getLabel($props.option),
+      style: TextStyle(
+        overflow: TextOverflow.ellipsis,
+        fontSize: 14,
+        color: $props.props.isDisabled($props.option)
+            ? disableColor
+            : _isSelected
+                ? CfgGlobal.primaryColor
+                : ColorUtil.hexToColor('#606266'),
       ),
     );
   }
@@ -727,6 +751,15 @@ class WCascaderNode extends StatelessWidget
     return $style.disabledColor ??
         cfgGlobal.option.disabledColor ??
         Colors.grey.shade400;
+  }
+
+  clickCbk(e) {
+    if (!$props.props.isExpandTriggerHover) $on.expand?.call(this);
+    $on.click?.call(this);
+  }
+
+  hoverCbk(e) {
+    if ($props.props.isExpandTriggerHover) $on.expand?.call(this);
   }
 }
 
