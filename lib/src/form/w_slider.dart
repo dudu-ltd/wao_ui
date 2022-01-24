@@ -31,7 +31,16 @@ class WSlider extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Slider(
+      value: 3,
+      min: 0,
+      max: 100,
+      label: 'test',
+      divisions: 4,
+      onChanged: (v) {
+        print(v);
+      },
+    );
   }
 }
 

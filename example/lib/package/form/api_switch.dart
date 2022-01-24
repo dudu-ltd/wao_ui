@@ -25,6 +25,7 @@ class ApiSwitch extends StatelessWidget {
       spacing: 10,
       children: [
         WSwitch(
+          flutterStyle: true,
           props: WSwitchProp(
             value: true,
             activeText: '按月付费',
