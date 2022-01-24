@@ -43,12 +43,8 @@ class _WCheckboxState extends State<WCheckbox> {
   @override
   void initState() {
     super.initState();
-    widget.$props._indeterminate.addListener(() {
-      setState(() {});
-    });
-    widget.$props.value.addListener(() {
-      setState(() {});
-    });
+    widget.$props._indeterminate.addListener(valueChange);
+    widget.$props.value.addListener(valueChange);
   }
 
   @override
@@ -123,6 +119,23 @@ class _WCheckboxState extends State<WCheckbox> {
     );
   }
 
+  @override
+  void dispose() {
+    widget.$props._indeterminate.removeListener(valueChange);
+    widget.$props.value.removeListener(valueChange);
+    super.dispose();
+  }
+
+  void valueChange() => setState;
+
+  Color borderColor(bool highlight) {
+    return widget.$props.disabled
+        ? Colors.grey.shade400
+        : (widget.$props.isSelected || widget.$props.indeterminate || highlight)
+            ? CfgGlobal.primaryColor
+            : Colors.grey.shade300;
+  }
+
   IconData? get statusIcon {
     return widget.$props.indeterminate
         ? Icons.horizontal_rule_rounded
@@ -157,14 +170,6 @@ class _WCheckboxState extends State<WCheckbox> {
         : widget.$props.isSelected || widget.$props.indeterminate
             ? CfgGlobal.primaryColor
             : Colors.white;
-  }
-
-  Color borderColor(bool highlight) {
-    return widget.$props.disabled
-        ? Colors.grey.shade400
-        : (widget.$props.isSelected || widget.$props.indeterminate || highlight)
-            ? CfgGlobal.primaryColor
-            : Colors.grey.shade300;
   }
 }
 

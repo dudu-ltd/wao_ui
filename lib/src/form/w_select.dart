@@ -1,6 +1,5 @@
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, implementation_imports
 
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -90,14 +89,224 @@ class _WSelectState extends State<WSelect>
 
     panelOpacity = Tween(begin: 0.0, end: 255.0).animate(iconSpinController);
 
-    panelHeightAnimation =
-        Tween(begin: 0.0, end: panelHeight).animate(iconSpinController)
-          ..addListener(() {
-            setState(() {});
-            panelSetState?.call(() {});
-          });
+    panelHeightAnimation = Tween(begin: 0.0, end: panelHeight)
+        .animate(iconSpinController)
+      ..addListener(updatePanel);
 
     setEvent();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var select = WInput(
+      key: selectKey,
+      props: widget.$props,
+      on: widget.$props.disabled
+          ? null
+          : WInputOn(
+              click: changePanel,
+              focus: showPanel,
+              blur: hidePanel,
+              clear: clearValue,
+            ),
+      slots: WInputSlot(
+        null,
+        prefix: multipleValues,
+        suffix: Transform.rotate(
+          angle: spin.value,
+          child: const Icon(Icons.expand_more),
+        ),
+      ),
+      style: WInputStyle(width: panelWidth),
+      $prefixSize: MainAxisSize.max,
+      $prefixAlignment: MainAxisAlignment.start,
+      $strictOneRow: false,
+    );
+
+    return select;
+  }
+
+  Widget? get multipleValues {
+    return needMultiLabel ? multiLabel : singleLabel;
+  }
+
+  Widget? get singleLabel {
+    var labels = [...valueLabels];
+    if (labels.isEmpty) return null;
+    var label = labels.first['v'];
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Tooltip(
+            message: label,
+            child: Text(
+              label,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: singleLabelFontSize),
+            ),
+          ),
+        ),
+        editInput,
+      ],
+    );
+  }
+
+  Widget? get multiLabel {
+    var labels = [...valueLabels];
+    if (labels.isEmpty) return null;
+    var children = <Widget>[];
+    if (!widget.$props.collapseTags) {
+      children = List.generate(labels.length, (i) {
+        var m = labels[i];
+        return toTag(m);
+      });
+    } else {
+      var c = '+${labels.length - 1}';
+      children = [
+        toTag(labels[0]),
+        if (labels.length > 1) toTag({'k': c, 'v': c}, closable: false),
+      ];
+    }
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: SizedBox(
+        width: 100,
+        child: Wrap(
+          runAlignment: WrapAlignment.center,
+          alignment: WrapAlignment.start,
+          direction: Axis.horizontal,
+          spacing: 4,
+          runSpacing: 4,
+          // mainAxisSize: MainAxisSize.min,
+          // mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ...children,
+            editInput,
+          ],
+        ),
+      ),
+    );
+  }
+
+  // TODO 兼容可编辑的属性
+  Widget get editInput {
+    return Container();
+    // return Expanded(child: TextFormField());
+  }
+
+  Widget toTag(m, {closable = true}) {
+    return WTag(
+      on: closable
+          ? WTagOn(
+              close: () {
+                widget.$props.$valueListener.value.remove(m['k']);
+                widget.$props.value =
+                    widget.$props.$valueListener.value.sublist(0);
+                setState(() {});
+              },
+            )
+          : null,
+      props: WTagProp(
+        closable: closable,
+        size: 'mini',
+        type: 'info',
+      ),
+      slots: WTagSlot(m['v']),
+    );
+  }
+
+  List<dynamic> get valueLabels {
+    if (widget.valueLabelsGetter != null) {
+      return widget.valueLabelsGetter!.call();
+    }
+
+    var result = [];
+    for (var selected in selectedArr) {
+      if (selected is WOption && selected.$props.isSelected) {
+        result.add({'k': selected.$props.value, 'v': selected.$props.label});
+      }
+    }
+    return result;
+  }
+
+  Widget get panel {
+    return StatefulBuilder(builder: (context, setState) {
+      panelSetState = setState;
+      panelContext = context;
+
+      /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
+      // 在控件渲染完成后执行的回调
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _updatePanel(context, setState);
+      });
+      // var offset = panelOffset;
+      return Positioned(
+        top: panelOffset.dy,
+        left: panelOffset.dx,
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: panelHeightAnimation.value,
+            minWidth: panelMinWidth,
+          ),
+          decoration: BoxDecoration(
+            color: Color.fromARGB(panelOpacity.value ~/ 1, 255, 255, 255),
+          ),
+          //  TODO 为下拉框添加角标，child: angleWrapper(panelOutside),
+          child: panelOutside,
+        ),
+      );
+    });
+  }
+
+  Widget get panelOutside {
+    return shadowWrapper(borderWrapper(
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
+        child: panelInside,
+      ),
+      Border.all(color: Colors.grey.shade300, width: panelBorder),
+      true,
+    ));
+  }
+
+  Widget get panelInside {
+    if (widget.panelInsideBuilder != null) {
+      return widget.panelInsideBuilder!.call(widget, this);
+    }
+    var defaultPanelInside = widget.$slots.defalutEmpty
+        ? Align(
+            child: Text(
+              widget.$props.noDataText,
+              style: TextStyle(color: noDataTextColor),
+            ),
+            alignment: Alignment.topCenter,
+          )
+        : SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: widget.$slots.defaultSlot ?? [],
+            ),
+          );
+    return SizedBox(
+      width: panelMinWidth,
+      child: defaultPanelInside,
+    );
+  }
+
+  @override
+  void dispose() {
+    iconSpinController.removeListener(updatePanel);
+    panelHeightAnimation.removeListener(updatePanel);
+    WidgetsBinding.instance!.removeObserver(this);
+    hidePanelAction();
+    super.dispose();
+  }
+
+  updatePanel() {
+    setState(() {});
+    panelSetState?.call(() {});
   }
 
   setEvent() {
@@ -179,18 +388,6 @@ class _WSelectState extends State<WSelect>
     }
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
-    // WidgetsBinding.instance!.focusManager
-    //     .removeHighlightModeListener(_handleFocusHighlightModeChange);
-    // focusNode!.removeListener(_handleFocusChanged);
-    // _internalNode?.dispose();
-    // WidgetsBinding.instance?.handleDrawFrame();
-    hidePanelAction();
-    super.dispose();
-  }
-
   onSelect(option) {
     if (widget.$props.multiple) {
       var v = widget.$props.value as List;
@@ -228,176 +425,12 @@ class _WSelectState extends State<WSelect>
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var select = WInput(
-      key: selectKey,
-      props: widget.$props,
-      on: widget.$props.disabled
-          ? null
-          : WInputOn(
-              click: changePanel,
-              focus: showPanel,
-              blur: hidePanel,
-              clear: clearValue,
-            ),
-      slots: WInputSlot(
-        null,
-        prefix: multipleValues,
-        suffix: Transform.rotate(
-          angle: spin.value,
-          child: const Icon(Icons.expand_more),
-        ),
-      ),
-      style: WInputStyle(width: panelWidth),
-      $prefixSize: MainAxisSize.max,
-      $prefixAlignment: MainAxisAlignment.start,
-      $strictOneRow: false,
-    );
-
-    return select;
-  }
-
-  Widget? get multipleValues {
-    return needMultiLabel ? multiLabel : singleLabel;
-  }
-
-  Widget? get singleLabel {
-    var labels = [...valueLabels];
-    if (labels.isEmpty) return null;
-    var label = labels.first['v'];
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Tooltip(
-            message: label,
-            child: Text(
-              label,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: singleLabelFontSize),
-            ),
-          ),
-        ),
-        editInput,
-      ],
-    );
-  }
-
-  // TODO 兼容可编辑的属性
-  Widget get editInput {
-    return Container();
-    // return Expanded(child: TextFormField());
-  }
-
   double get singleLabelFontSize {
     return cfgGlobal.font.val(widget.$props.size);
   }
 
-  Widget? get multiLabel {
-    var labels = [...valueLabels];
-    if (labels.isEmpty) return null;
-    var children = <Widget>[];
-    if (!widget.$props.collapseTags) {
-      children = List.generate(labels.length, (i) {
-        var m = labels[i];
-        return toTag(m);
-      });
-    } else {
-      var c = '+${labels.length - 1}';
-      children = [
-        toTag(labels[0]),
-        if (labels.length > 1) toTag({'k': c, 'v': c}, closable: false),
-      ];
-    }
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: SizedBox(
-        width: 400,
-        child: Wrap(
-          runAlignment: WrapAlignment.center,
-          alignment: WrapAlignment.start,
-          direction: Axis.horizontal,
-          spacing: 4,
-          runSpacing: 4,
-          // mainAxisSize: MainAxisSize.min,
-          // mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            ...children,
-            editInput,
-          ],
-        ),
-      ),
-    );
-  }
-
-  toTag(m, {closable = true}) {
-    return WTag(
-      on: closable
-          ? WTagOn(
-              close: () {
-                widget.$props.$valueListener.value.remove(m['k']);
-                widget.$props.value =
-                    widget.$props.$valueListener.value.sublist(0);
-                setState(() {});
-              },
-            )
-          : null,
-      props: WTagProp(
-        closable: closable,
-        size: 'mini',
-        type: 'info',
-      ),
-      slots: WTagSlot(m['v']),
-    );
-  }
-
   bool get needMultiLabel {
     return widget.$props.multiple;
-  }
-
-  List<dynamic> get valueLabels {
-    if (widget.valueLabelsGetter != null) {
-      return widget.valueLabelsGetter!.call();
-    }
-
-    var result = [];
-    for (var selected in selectedArr) {
-      if (selected is WOption && selected.$props.isSelected) {
-        result.add({'k': selected.$props.value, 'v': selected.$props.label});
-      }
-    }
-    return result;
-  }
-
-  Widget get panel {
-    return StatefulBuilder(builder: (context, setState) {
-      panelSetState = setState;
-      panelContext = context;
-
-      /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
-      // 在控件渲染完成后执行的回调
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
-        _updatePanel(context, setState);
-      });
-      // var offset = panelOffset;
-      return Positioned(
-        top: panelOffset.dy,
-        left: panelOffset.dx,
-        child: Container(
-          constraints: BoxConstraints(
-            maxHeight: panelHeightAnimation.value,
-            minWidth: panelMinWidth,
-          ),
-          decoration: BoxDecoration(
-            color: Color.fromARGB(panelOpacity.value ~/ 1, 255, 255, 255),
-          ),
-          //  TODO 为下拉框添加角标，child: angleWrapper(panelOutside),
-          child: panelOutside,
-        ),
-      );
-    });
   }
 
   double get panelWidth {
@@ -409,63 +442,52 @@ class _WSelectState extends State<WSelect>
   }
 
   // 为浮窗添加小箭头角标
-  Widget angleWrapper(child) {
-    var yOffset = (sqrt(12 * 12 * 2) / 2 - 2);
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        child,
-        Positioned(
-          left: 35,
-          top: -yOffset,
-          child: Transform.rotate(
-            angle: pi / 4,
-            child: shadowWrapper(
-              borderWrapper(
-                const ColoredBox(
-                  color: Color.fromARGB(0, 255, 255, 255),
-                  child: SizedBox(
-                    height: 12,
-                    width: 12,
-                    child: Text(''),
-                  ),
-                ),
-                Border(
-                  top: BorderSide(
-                    color: Colors.grey.shade300,
-                  ),
-                  left: BorderSide(
-                    color: Colors.grey.shade300,
-                  ),
-                ),
-                true,
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              shadow: [
-                const BoxShadow(
-                  color: Color.fromARGB(25, 0, 0, 0),
-                  offset: Offset(-3.0, -3.0),
-                  blurRadius: 6.0,
-                  spreadRadius: 0.0,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget get panelOutside {
-    return shadowWrapper(borderWrapper(
-      Padding(
-        padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
-        child: panelInside,
-      ),
-      Border.all(color: Colors.grey.shade300, width: panelBorder),
-      true,
-    ));
-  }
+  // Widget angleWrapper(child) {
+  //   var yOffset = (sqrt(12 * 12 * 2) / 2 - 2);
+  //   return Stack(
+  //     clipBehavior: Clip.none,
+  //     children: [
+  //       child,
+  //       Positioned(
+  //         left: 35,
+  //         top: -yOffset,
+  //         child: Transform.rotate(
+  //           angle: pi / 4,
+  //           child: shadowWrapper(
+  //             borderWrapper(
+  //               const ColoredBox(
+  //                 color: Color.fromARGB(0, 255, 255, 255),
+  //                 child: SizedBox(
+  //                   height: 12,
+  //                   width: 12,
+  //                   child: Text(''),
+  //                 ),
+  //               ),
+  //               Border(
+  //                 top: BorderSide(
+  //                   color: Colors.grey.shade300,
+  //                 ),
+  //                 left: BorderSide(
+  //                   color: Colors.grey.shade300,
+  //                 ),
+  //               ),
+  //               true,
+  //               borderRadius: BorderRadius.circular(8.0),
+  //             ),
+  //             shadow: [
+  //               const BoxShadow(
+  //                 color: Color.fromARGB(25, 0, 0, 0),
+  //                 offset: Offset(-3.0, -3.0),
+  //                 blurRadius: 6.0,
+  //                 spreadRadius: 0.0,
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   double get panelBorder {
     return widget.$style.panelBorder ?? cfgGlobal.select.panelBorder ?? 1;
@@ -479,30 +501,6 @@ class _WSelectState extends State<WSelect>
     return widget.$style.noDataTextColor ??
         cfgGlobal.select.noDataTextColor ??
         Colors.grey.shade600;
-  }
-
-  Widget get panelInside {
-    if (widget.panelInsideBuilder != null) {
-      return widget.panelInsideBuilder!.call(widget, this);
-    }
-    var defaultPanelInside = widget.$slots.defalutEmpty
-        ? Align(
-            child: Text(
-              widget.$props.noDataText,
-              style: TextStyle(color: noDataTextColor),
-            ),
-            alignment: Alignment.topCenter,
-          )
-        : SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: widget.$slots.defaultSlot ?? [],
-            ),
-          );
-    return SizedBox(
-      width: panelMinWidth,
-      child: defaultPanelInside,
-    );
   }
 }
 
@@ -580,6 +578,7 @@ class WSelectProp extends WInputProp {
     bool? defaultFirstOption,
     bool? popperAppendToBody,
     bool? automaticDropdown,
+    ValueNotifier<dynamic>? $valueListener,
   }) : super(
           disabled: disabled,
           size: size,
@@ -588,9 +587,11 @@ class WSelectProp extends WInputProp {
           autocomplete: autocomplete,
           autoComplete: autoComplete,
           placeholder: placeholder,
+          $valueNotifier: $valueListener,
         ) {
-    $valueListener = ValueNotifier(null);
     this.multiple = multiple ?? false;
+    this.$valueListener =
+        super.$valueNotifier = $valueListener ?? ValueNotifier(value);
     this.value = value;
     this.disabled = disabled ?? false;
     this.valueKey = valueKey ?? 'value';
@@ -619,7 +620,6 @@ class WSelectProp extends WInputProp {
   @override
   set value(value) {
     $valueListener.value = value;
-    super.value = value is String ? value : jsonEncode(value);
   }
 
   @override

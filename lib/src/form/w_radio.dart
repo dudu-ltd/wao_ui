@@ -40,9 +40,7 @@ class _WRadioState extends State<WRadio> {
   @override
   void initState() {
     super.initState();
-    widget.$props.value.addListener(() {
-      setState(() {});
-    });
+    widget.$props.value.addListener(valueChange);
   }
 
   @override
@@ -97,6 +95,14 @@ class _WRadioState extends State<WRadio> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    widget.$props.value.removeListener(valueChange);
+    super.dispose();
+  }
+
+  void valueChange() => setState;
 
   Color get borderColor {
     return widget.$props.disabled && widget.$props.isSelected

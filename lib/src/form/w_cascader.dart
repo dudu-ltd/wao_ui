@@ -69,7 +69,7 @@ class _WCascaderState extends State<WCascader> {
         return WCascaderPanel(
           props: WCascaderPanelProp(
             value: widget.$props.value,
-            valueListener: widget.$props.$valueListener,
+            $valueListener: widget.$props.$valueListener,
             options: widget.$props.options,
             props: widget.$props.props,
           ),
@@ -119,7 +119,9 @@ class _WCascaderState extends State<WCascader> {
       },
       props: widget.$props,
       style: WSelectStyle(panelMaxWidth: 300),
-      on: WSelectOn(change: widget.$on.change),
+      on: WSelectOn(change: (v) {
+        widget.$on.change?.call(v);
+      }),
     );
   }
 }
@@ -174,6 +176,7 @@ class WCascaderProp extends WSelectProp {
     num? debounce,
     List<dynamic> Function(dynamic)? beforeFilter,
     String? popperClass,
+    ValueNotifier? $valueListener,
     /**
      * 
      */
@@ -186,10 +189,10 @@ class WCascaderProp extends WSelectProp {
           collapseTags: collapseTags,
           filterable: filterable,
           popperClass: popperClass,
+          $valueListener: $valueListener,
         ) {
-    $valueListener = ValueNotifier(null);
     this.props = props ?? PanelPropDetail();
-    multiple = this.props.multiple;
+    super.multiple = this.props.multiple;
     this.value = value;
     this.showAllLevels = showAllLevels ?? true;
     this.separator = separator ?? ' / ';
@@ -352,14 +355,13 @@ class WCascaderPanelProp extends WCascaderProp {
     dynamic value,
     required List<dynamic> options,
     PanelPropDetail? props,
-    ValueNotifier<dynamic>? valueListener,
+    ValueNotifier<dynamic>? $valueListener,
   }) : super(
           options: options,
           props: props,
           value: value,
-        ) {
-    $valueListener = valueListener ?? ValueNotifier(null);
-  }
+          $valueListener: $valueListener,
+        );
 }
 
 class WCascaderPanelSlot extends BaseSlot {
