@@ -32,7 +32,45 @@ class WSwitch extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return StatefulBuilder(builder: (context, setState) {
+      return Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        direction: Axis.horizontal,
+        children: [
+          if ($props.inactiveText != null)
+            Text(
+              $props.inactiveText!,
+              style: TextStyle(
+                color: !isActive ? CfgGlobal.primaryColor : null,
+              ),
+            ),
+          Switch(
+            value: $props.valueNotifier.value == $props.valueArr[1],
+            activeColor: $props.activeColor,
+            inactiveTrackColor: $props.inactiveColor,
+            inactiveThumbColor: Colors.white,
+            onChanged: (e) {
+              if ($props.disabled) return;
+              var index = $props.valueArr.indexOf($props.valueNotifier.value);
+              $props.value = $props.valueArr[index == 0 ? 1 : 0];
+              setState((() => {}));
+            },
+          ),
+          if ($props.activeText != null)
+            Text(
+              $props.activeText!,
+              style: TextStyle(
+                color: isActive ? CfgGlobal.primaryColor : null,
+              ),
+            ),
+        ],
+      );
+    });
+  }
+
+  get isActive {
+    return ($props.valueNotifier.value is bool && $props.valueNotifier.value) ||
+        $props.valueNotifier.value == $props.activeValue;
   }
 
   /**
@@ -47,7 +85,7 @@ class WSwitchOn extends BaseOn {
 }
 
 class WSwitchProp extends BaseProp {
-  late ValueNotifier<dynamic> value;
+  late ValueNotifier<dynamic> valueNotifier;
   late bool disabled;
   late num width;
   String? activeIconClass;
@@ -62,7 +100,7 @@ class WSwitchProp extends BaseProp {
   late bool validateEvent;
 
   WSwitchProp({
-    ValueNotifier<dynamic>? value,
+    dynamic value,
     bool? disabled,
     num? width,
     String? activeIconClass,
@@ -75,8 +113,10 @@ class WSwitchProp extends BaseProp {
     String? inactiveColor,
     String? name,
     bool? validateEvent,
+    ValueNotifier? valueNotifier,
   }) {
-    this.value = value ?? ValueNotifier<dynamic>('');
+    this.valueNotifier = valueNotifier ?? ValueNotifier(value ?? false);
+    this.value = value;
     this.disabled = disabled ?? false;
     this.width = width ?? 40;
     this.activeIconClass = activeIconClass;
@@ -91,9 +131,20 @@ class WSwitchProp extends BaseProp {
     this.inactiveColor = inactiveColor != null
         ? ColorUtil.hexToColor(inactiveColor)
         : ColorUtil.hexToColor('#C0CCDA');
-    ;
     this.name = name;
     this.validateEvent = validateEvent ?? true;
+  }
+
+  set value(v) {
+    valueNotifier.value = v;
+  }
+
+  get value {
+    return valueNotifier.value;
+  }
+
+  List get valueArr {
+    return [inactiveValue ?? false, activeValue ?? true];
   }
 }
 
