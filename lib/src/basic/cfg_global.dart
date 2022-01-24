@@ -70,6 +70,8 @@ class CfgGlobal {
     disabledColor: Colors.grey.shade400,
   );
 
+  WSwitchStyle wSwitch = WSwitchStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -734,9 +736,15 @@ class WSliderStyle extends BaseStyle {
 }
 
 class WSwitchStyle extends BaseStyle {
+  double? btnHeight;
+  double? btnInnerBorder;
+  int? switchTime;
   WSwitchStyle({
     double? width,
     double? height,
+    this.btnHeight,
+    this.btnInnerBorder,
+    this.switchTime,
   }) : super(
           height: height,
           width: width,
