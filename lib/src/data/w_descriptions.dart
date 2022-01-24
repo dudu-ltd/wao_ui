@@ -307,7 +307,7 @@ class WDescriptionsItem extends StatelessWidget
   Widget _paddingWrapper(Widget widget) {
     return paddingWrapper(
       widget,
-      cfgGlobal.descriptions.padding,
+      padding,
       true,
     );
   }
@@ -340,6 +340,10 @@ class WDescriptionsItem extends StatelessWidget
 
   Widget get label {
     return $slots.label ?? Text($props.label);
+  }
+
+  EdgeInsets get padding {
+    return $style.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
   }
 }
 

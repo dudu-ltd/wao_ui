@@ -18,9 +18,13 @@ class CfgGlobal {
 
   WBadgeFont badgeFont = WBadgeFont();
 
-  WBreadcrumbStyle breadcrumb = WBreadcrumbStyle();
+  WBreadcrumbStyle breadcrumb = WBreadcrumbStyle(
+    padding: const EdgeInsets.fromLTRB(8, 2, 8, 2),
+  );
 
-  WDescriptionsStyle descriptions = WDescriptionsStyle();
+  WDescriptionsStyle descriptions = WDescriptionsStyle(
+    padding: const EdgeInsets.fromLTRB(3, 2, 3, 2),
+  );
 
   WEmptyStyle empty = WEmptyStyle();
 
@@ -235,14 +239,7 @@ class WColor {
 }
 
 class WBreadcrumbStyle extends BaseStyle {
-  late EdgeInsets padding = const EdgeInsets.fromLTRB(8, 2, 8, 2);
-
-  WBreadcrumbStyle._privateConstrucor();
-  static final WBreadcrumbStyle _instance =
-      WBreadcrumbStyle._privateConstrucor();
-  factory WBreadcrumbStyle() {
-    return _instance;
-  }
+  WBreadcrumbStyle({EdgeInsets? padding}) : super(padding: padding);
 }
 
 class WDescriptionsStyle extends BaseStyle {
@@ -252,14 +249,9 @@ class WDescriptionsStyle extends BaseStyle {
   double borderWidth = 1.0;
   Color borderColor = Colors.grey.shade300;
 
-  late EdgeInsets padding = const EdgeInsets.fromLTRB(3, 2, 3, 2);
-
-  WDescriptionsStyle._privateConstrucor();
-  static final WDescriptionsStyle _instance =
-      WDescriptionsStyle._privateConstrucor();
-  factory WDescriptionsStyle() {
-    return _instance;
-  }
+  WDescriptionsStyle({
+    EdgeInsets? padding,
+  }) : super(padding: padding);
 }
 
 class WEmptyStyle extends BaseStyle {
@@ -389,6 +381,10 @@ class WRadioStyle extends BaseStyle {
                     ? iconRadioMini
                     : iconRadioLarge;
   }
+
+  WRadioStyle({
+    EdgeInsets? padding,
+  }) : super(padding: padding);
 }
 
 class WCheckboxStyle extends BaseStyle {
@@ -411,6 +407,10 @@ class WCheckboxStyle extends BaseStyle {
   double borderRadius(String size) {
     return val(size) * .2;
   }
+
+  WCheckboxStyle({
+    EdgeInsets? padding,
+  }) : super(padding: padding);
 }
 
 class WInputStyle extends BaseStyle {

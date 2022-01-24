@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class BaseStyle {
   double? width;
   double? height;
@@ -5,6 +7,8 @@ class BaseStyle {
   double? minHeight;
   double? maxWidth;
   double? maxHeight;
+  EdgeInsets? padding;
+  EdgeInsets? margin;
   BaseStyle({
     this.width,
     this.height,
@@ -12,5 +16,7 @@ class BaseStyle {
     this.minHeight,
     this.maxWidth,
     this.maxHeight,
+    this.padding,
+    this.margin,
   });
 }

@@ -172,7 +172,7 @@ class _WSelectState extends State<WSelect>
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
-        width: 100,
+        width: 400,
         child: Wrap(
           runAlignment: WrapAlignment.center,
           alignment: WrapAlignment.start,
@@ -311,7 +311,7 @@ class _WSelectState extends State<WSelect>
 
   setEvent() {
     widget.$props.$valueListener.addListener(() {
-      if (!widget.$props.multiple) hidePanel();
+      if (widget.$props.automaticDropup && !widget.$props.multiple) hidePanel();
     });
     if (!widget.$slots.defalutEmpty) {
       _setEvent(widget.$slots.defaultSlot);
@@ -549,6 +549,7 @@ class WSelectProp extends WInputProp {
   late bool defaultFirstOption;
   late bool popperAppendToBody;
   late bool automaticDropdown;
+  late bool automaticDropup;
   late ValueNotifier<dynamic> $valueListener;
 
   WSelectProp({
@@ -578,6 +579,7 @@ class WSelectProp extends WInputProp {
     bool? defaultFirstOption,
     bool? popperAppendToBody,
     bool? automaticDropdown,
+    bool? automaticDropup,
     ValueNotifier<dynamic>? $valueListener,
   }) : super(
           disabled: disabled,
@@ -612,6 +614,7 @@ class WSelectProp extends WInputProp {
     this.defaultFirstOption = defaultFirstOption ?? false;
     this.popperAppendToBody = popperAppendToBody ?? true;
     this.automaticDropdown = automaticDropdown ?? false;
+    this.automaticDropup = automaticDropup ?? true;
 
     readonly = !this.allowCreate && !this.remote;
     this.$textAlign = TextAlign.center;

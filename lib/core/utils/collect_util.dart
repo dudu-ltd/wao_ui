@@ -15,6 +15,7 @@ void addSlot(dynamic slot, List<Widget> list) {
   }
 }
 
+// TODO 完善深度比较方法
 bool contains(List<dynamic> list, dynamic item) {
   for (var element in list) {
     if (item.toString() == element.toString()) return true;
