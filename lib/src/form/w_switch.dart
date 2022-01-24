@@ -9,6 +9,7 @@ import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
+// TODO 补充组件焦点切换事件的调用
 class WSwitch extends StatefulWidget
     implements BaseWidget<WSwitchOn, WSwitchProp, WSwitchSlot, WSwitchStyle> {
   @override
@@ -56,6 +57,7 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
           ? switchAnimation.forward()
           : switchAnimation.reverse();
       if (widget.flutterStyle) setState(() {});
+      widget.$on.change?.call(widget.$props.value);
     });
 
     switchAnimation = AnimationController(
@@ -92,13 +94,18 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
   }
 
   Widget get waoSwitch {
-    return InkWell(
-      onTap: () => changeAction(null),
-      child: Stack(
-        children: [
-          background,
-          circle,
-        ],
+    return MouseRegion(
+      cursor: widget.$props.disabled
+          ? SystemMouseCursors.forbidden
+          : SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => changeAction(null),
+        child: Stack(
+          children: [
+            background,
+            circle,
+          ],
+        ),
       ),
     );
   }
@@ -195,25 +202,42 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
     return widget.$props.inactiveColor;
   }
 
-  List<Widget> iconOrText(icon, text, useActive) {
+  List<Widget> iconOrText(icon, text, useActive, valueForSet) {
     var color = useActive ? CfgGlobal.primaryColor : null;
     if (icon != null) {
-      return [Icon(icon, color: color)];
+      return [select(Icon(icon, color: color), valueForSet)];
     }
     if (text != null) {
-      return [Text(text, style: TextStyle(color: color))];
+      return [select(Text(text, style: TextStyle(color: color)), valueForSet)];
     }
     return [];
   }
 
+  Widget select(Widget child, dynamic value) {
+    return InkWell(
+      child: child,
+      onTap: () {
+        widget.$props.value = value;
+      },
+    );
+  }
+
   List<Widget> get activeContent {
     return iconOrText(
-        widget.$props.activeIconClass, widget.$props.activeText, isActive);
+      widget.$props.activeIconClass,
+      widget.$props.activeText,
+      isActive,
+      widget.$props.valueArr[1],
+    );
   }
 
   List<Widget> get inactiveContent {
     return iconOrText(
-        widget.$props.inactiveIconClass, widget.$props.inactiveText, !isActive);
+      widget.$props.inactiveIconClass,
+      widget.$props.inactiveText,
+      !isActive,
+      widget.$props.valueArr[0],
+    );
   }
 
   get isActive {
@@ -227,7 +251,7 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
   }
 
   double get btnHeight {
-    return widget.$style.btnHeight ?? cfgGlobal.wSwitch.btnHeight ?? 18.0;
+    return widget.$style.btnHeight ?? cfgGlobal.wSwitch.btnHeight ?? 20.0;
   }
 
   double get btnInnerBorder {
@@ -250,9 +274,11 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
 }
 
 class WSwitchOn extends BaseOn {
-  /**
-      change	switch 状态发生变化时的回调函数	新状态的值
-   */
+  /// change switch 状态发生变化时的回调函数
+  ///
+  /// params 新状态的值
+  Function(dynamic)? change;
+  WSwitchOn({this.change});
 }
 
 class WSwitchProp extends BaseProp {
@@ -274,15 +300,15 @@ class WSwitchProp extends BaseProp {
     dynamic value,
     bool? disabled,
     num? width,
-    IconData? activeIconClass,
-    IconData? inactiveIconClass,
-    String? activeText,
-    String? inactiveText,
+    this.activeIconClass,
+    this.inactiveIconClass,
+    this.activeText,
+    this.inactiveText,
     dynamic activeValue,
     dynamic inactiveValue,
     String? activeColor,
     String? inactiveColor,
-    String? name,
+    this.name,
     bool? validateEvent,
     ValueNotifier? valueNotifier,
   }) {
@@ -290,10 +316,6 @@ class WSwitchProp extends BaseProp {
     this.value = value;
     this.disabled = disabled ?? false;
     this.width = width ?? 40;
-    this.activeIconClass = activeIconClass;
-    this.inactiveIconClass = inactiveIconClass;
-    this.activeText = activeText;
-    this.inactiveText = inactiveText;
     this.activeValue = activeValue ?? true;
     this.inactiveValue = inactiveValue ?? false;
     this.activeColor = activeColor != null
@@ -302,7 +324,6 @@ class WSwitchProp extends BaseProp {
     this.inactiveColor = inactiveColor != null
         ? ColorUtil.hexToColor(inactiveColor)
         : CfgGlobal.disabledColor.shade300;
-    this.name = name;
     this.validateEvent = validateEvent ?? true;
   }
 
