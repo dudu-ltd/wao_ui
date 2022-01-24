@@ -54,20 +54,11 @@ class WInputState extends State<WInput> {
   bool isFocus = false;
 
   @override
-  void dispose() {
-    widget.$props._value.removeListener(valueChange);
-    widget.$props._value.dispose();
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
 
     widget.$props._value.addListener(valueChange);
   }
-
-  void valueChange() => setState;
 
   @override
   Widget build(BuildContext context) {
@@ -122,60 +113,6 @@ class WInputState extends State<WInput> {
     );
   }
 
-  InputDecoration get decoration {
-    var baseBorder = OutlineInputBorder(
-      borderSide: BorderSide(color: CfgGlobal.primaryColor, width: 1),
-    );
-
-    var inputDecoration = InputDecoration(
-      counter: widget.$props.maxlength != null
-          ? const Offstage(
-              offstage: true,
-            )
-          : null,
-      //
-      enabled: !widget.$props.disabled,
-      filled: widget.$props.disabled,
-      //
-      isDense: true,
-      prefixIcon: prefixIcon,
-      suffixIcon: suffixIcon,
-      prefixIconColor: placeholderColor,
-      suffixIconColor: placeholderColor,
-      contentPadding: hasSlot
-          ? const EdgeInsets.fromLTRB(0, 0, 0, 0)
-          : EdgeInsets.fromLTRB(fontSize, padding, fontSize, padding),
-      hintStyle: TextStyle(color: placeholderColor, fontSize: fontSize),
-      hintText: widget.$props.placeholder,
-      label: label,
-      alignLabelWithHint: false,
-      floatingLabelAlignment: FloatingLabelAlignment.start,
-      constraints: widget.$props.isTextarea
-          ? null
-          : BoxConstraints(
-              minWidth: minWidth,
-              maxWidth: maxWidth,
-              minHeight: minHeight,
-              maxHeight: widget.$strictOneRow ? minHeight : double.infinity,
-            ),
-      focusedBorder: baseBorder,
-      focusedErrorBorder: baseBorder.copyWith(
-        borderSide: BorderSide(color: cfgGlobal.color.danger),
-      ),
-      hoverColor: Colors.red,
-      border: baseBorder.copyWith(
-        borderSide: BorderSide(color: Colors.grey.shade300),
-      ),
-      enabledBorder: baseBorder.copyWith(
-        borderSide: BorderSide(color: Colors.grey.shade300),
-      ),
-      disabledBorder: baseBorder.copyWith(
-        borderSide: BorderSide(color: Colors.grey.shade300),
-      ),
-    );
-    return inputDecoration;
-  }
-
   Widget? get label {
     var lab = widget.$props.label;
     return lab is String
@@ -201,14 +138,6 @@ class WInputState extends State<WInput> {
             ),
           )
         : null;
-  }
-
-  bool get showCursor {
-    return !widget.$props.disabled && !widget.$props.readonly;
-  }
-
-  bool get hasSlot {
-    return prefixIcon != null && suffixIcon != null;
   }
 
   Widget? get prefixIcon {
@@ -288,9 +217,84 @@ class WInputState extends State<WInput> {
         : null;
   }
 
+  @override
+  void dispose() {
+    widget.$props._value.removeListener(valueChange);
+    widget.$props._value.dispose();
+    super.dispose();
+  }
+
+  void valueChange() => setState;
+
+  InputDecoration get decoration {
+    var baseBorder = OutlineInputBorder(
+      borderSide: BorderSide(color: CfgGlobal.primaryColor, width: 1),
+    );
+
+    var inputDecoration = InputDecoration(
+      counter: widget.$props.maxlength != null
+          ? const Offstage(
+              offstage: true,
+            )
+          : null,
+      //
+      enabled: !widget.$props.disabled,
+      filled: widget.$props.disabled,
+      //
+      isDense: true,
+      prefixIcon: prefixIcon,
+      suffixIcon: suffixIcon,
+      prefixIconColor: placeholderColor,
+      suffixIconColor: placeholderColor,
+      contentPadding: hasSlot
+          ? const EdgeInsets.fromLTRB(0, 0, 0, 0)
+          : EdgeInsets.fromLTRB(fontSize, padding, fontSize, padding),
+      hintStyle: TextStyle(color: placeholderColor, fontSize: fontSize),
+      hintText: widget.$props.placeholder,
+      label: label,
+      alignLabelWithHint: false,
+      floatingLabelAlignment: FloatingLabelAlignment.start,
+      constraints: widget.$props.isTextarea
+          ? null
+          : BoxConstraints(
+              minWidth: minWidth,
+              maxWidth: maxWidth,
+              minHeight: minHeight,
+              maxHeight: widget.$strictOneRow ? minHeight : double.infinity,
+            ),
+      focusedBorder: baseBorder,
+      focusedErrorBorder: baseBorder.copyWith(
+        borderSide: BorderSide(color: cfgGlobal.color.danger),
+      ),
+      hoverColor: Colors.red,
+      border: baseBorder.copyWith(
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      enabledBorder: baseBorder.copyWith(
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      disabledBorder: baseBorder.copyWith(
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+    );
+    return inputDecoration;
+  }
+
+  bool get showCursor {
+    return !widget.$props.disabled && !widget.$props.readonly;
+  }
+
+  bool get hasSlot {
+    return prefixIcon != null && suffixIcon != null;
+  }
+
   bool get showClearIcon {
+    var valueIsNotEmpty = widget.$props._value.text.isNotEmpty ||
+        (widget.$props.$valueNotifier != null &&
+            widget.$props.$valueNotifier!.value != null &&
+            widget.$props.$valueNotifier!.value.isNotEmpty);
     return widget.$props.clearable &&
-        widget.$props._value.text.isNotEmpty &&
+        valueIsNotEmpty &&
         isHover; //  || isFocus 聚焦时将不再响应清空按钮
   }
 
@@ -376,6 +380,7 @@ class WInputOn extends BaseOn {
 
 class WInputProp extends BaseProp {
   late String type;
+  late ValueNotifier? $valueNotifier;
   late TextEditingController _value;
   int? maxlength;
   int? minlength;
@@ -409,7 +414,11 @@ class WInputProp extends BaseProp {
   TextAlign $textAlign;
 
   set value(value) {
-    _value.text = value ?? '';
+    _value.text = value != null
+        ? value is String
+            ? value
+            : value.toString()
+        : '';
   }
 
   dynamic get value {
@@ -447,9 +456,12 @@ class WInputProp extends BaseProp {
     // ElementUI 中没有的属性，加了前缀 $ 以区分
     TextInputType? $keyboardType,
     this.$textAlign = TextAlign.left,
+    ValueNotifier? $valueNotifier,
   }) {
     this.type = type ?? 'text';
     _value = TextEditingController(text: value != null ? value.toString() : '');
+
+    this.$valueNotifier = $valueNotifier;
     this.showWordLimit = showWordLimit ?? false;
     this.placeholder = placeholder ?? '';
     this.clearable = clearable ?? false;

@@ -200,6 +200,7 @@ class ApiCascader extends StatelessWidget {
               props: WCascaderProp(
                 value: value,
                 props: multiProps,
+                clearable: true,
                 options: options,
               ),
               on: WCascaderOn(change: handleChange),
@@ -213,6 +214,7 @@ class ApiCascader extends StatelessWidget {
               props: WCascaderProp(
                 value: value,
                 options: options,
+                clearable: true,
                 props: multiProps,
                 collapseTags: true,
               ),
