@@ -118,7 +118,7 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
           width: btnInnerBorder,
         ),
         borderRadius: BorderRadius.all(
-          Radius.circular(cfgGlobal.borderRadius.circle),
+          Radius.circular(cfgGlobal.borderRadius.round),
         ),
         color: color,
       ),

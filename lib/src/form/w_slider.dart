@@ -1,11 +1,20 @@
+import 'dart:async';
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WSlider extends StatelessWidget
+import '../../core/base_form_prop.dart';
+import '../../core/utils/layout_util.dart';
+
+class WSlider extends StatefulWidget
     implements BaseWidget<WSliderOn, WSliderProp, WSliderSlot, WSliderStyle> {
   @override
   late final WSliderOn $on;
@@ -30,17 +39,277 @@ class WSlider extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Slider(
-      value: 3,
-      min: 0,
-      max: 100,
-      label: 'test',
-      divisions: 4,
-      onChanged: (v) {
-        print(v);
+  State<WSlider> createState() => _WSliderState();
+}
+
+class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
+  late AnimationController minController;
+  late AnimationController maxController;
+  late Animation<double>? minValueRadius = null;
+  late Animation<double>? maxValueRadius = null;
+  double contentWidth = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    minController = AnimationController(
+        duration: const Duration(milliseconds: 200), vsync: this);
+    maxController = AnimationController(
+        duration: const Duration(milliseconds: 200), vsync: this);
+    var timer = Timer(
+      const Duration(microseconds: 1),
+      () {
+        var rect = getPosition(context);
+        contentWidth = rect.width - 2 * valueRadiusOuter;
+        minValueRadius = Tween(begin: 1.0, end: 1.2).animate(minController)
+          ..addListener(() {
+            setState(() {});
+          });
+
+        maxValueRadius = Tween(begin: 1.0, end: 1.2).animate(maxController)
+          ..addListener(() {
+            setState(() {});
+          });
+
+        setState(() {});
       },
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(valueRadiusOuter, 0, valueRadiusOuter,
+          widget.$props.marks.isNotEmpty ? valueRadiusOuter : 0),
+      child: SizedBox(
+        height: valueRadiusOuter * 2 * 1.2,
+        child: waoSlider,
+      ),
+    );
+  }
+
+  Widget get waoSlider {
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: AlignmentDirectional.centerStart,
+      children: [
+        ruler,
+        ...stepCircles,
+        valueRange,
+        ...marks,
+        ...marksText,
+        ...handlers,
+      ],
+    );
+  }
+
+  Widget get ruler {
+    return Container(
+      height: height,
+      decoration: BoxDecoration(
+        color: inactiveColor,
+        borderRadius: BorderRadius.all(
+          Radius.circular(height),
+        ),
+      ),
+    );
+  }
+
+  Widget get valueRange {
+    return Positioned(
+      left: axis(minVal),
+      child: Container(
+        height: height,
+        width: axis(maxVal - minVal),
+        decoration: BoxDecoration(
+          color: activeColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(height),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> get marks {
+    var result = <Widget>[];
+    widget.$props.marks.forEach((key, value) {
+      var circle = Positioned(
+        left: (key - widget.$props.min) /
+                (widget.$props.max - widget.$props.min) *
+                contentWidth -
+            height / 2,
+        child: Container(
+          height: height,
+          width: height,
+          child: const ClipOval(
+            child: ColoredBox(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+
+      result.add(circle);
+    });
+    return result;
+  }
+
+  List<Widget> get marksText {
+    List<Widget> result = [];
+    widget.$props.marks.forEach((key, value) {
+      var txt =
+          value is String ? value : (value as SliderMark).markFormat!.call(key);
+      var p = Positioned(
+        left: (key - widget.$props.min) /
+                (widget.$props.max - widget.$props.min) *
+                contentWidth -
+            (txt.length / 2) * .58 * 14,
+        top: valueRadiusOuter * 2 * 1.2,
+        child: Text(txt, style: value is SliderMark ? value.textStyle : null),
+      );
+      result.add(p);
+    });
+    return result;
+  }
+
+  List<Widget> get handlers {
+    return [
+      GestureDetector(
+        onHorizontalDragUpdate: (e) {
+          print(e);
+        },
+        child: Container(
+          height: height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(height),
+            ),
+          ),
+        ),
+      ),
+      if (widget.$props.range)
+        valueHander(minVal, minValueRadius, minController),
+      valueHander(maxVal, maxValueRadius, maxController),
+    ];
+  }
+
+  Widget valueHander(
+    double val,
+    Animation? valueRadius,
+    AnimationController controller,
+  ) {
+    return Positioned(
+      left: (val - widget.$props.min) /
+              (widget.$props.max - widget.$props.min) *
+              contentWidth -
+          valueRadiusOuter * (valueRadius == null ? 0 : valueRadius.value),
+      child: MouseRegion(
+        onEnter: (e) {
+          controller.forward();
+        },
+        onExit: (e) => controller.reverse(),
+        child: Container(
+          width: valueRadiusOuter *
+              2 *
+              (valueRadius != null ? valueRadius.value : 0),
+          height: valueRadiusOuter *
+              2 *
+              (valueRadius != null ? valueRadius.value : 0),
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: activeColor, width: valueRadiusOuter - valueRadiusInner),
+            borderRadius: BorderRadius.circular(valueRadiusOuter *
+                (valueRadius != null ? valueRadius.value : 0)),
+          ),
+          child: ClipOval(
+            child: ColoredBox(color: thumbColor),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> get stepCircles {
+    List<Widget> circles = [];
+    for (var cursor in widget.$props._stops) {
+      var circle = Positioned(
+        left: (cursor - widget.$props.min) /
+                (widget.$props.max - widget.$props.min) *
+                contentWidth -
+            height / 2,
+        child: SizedBox(
+          height: height,
+          width: height,
+          child: const ClipOval(
+            child: ColoredBox(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+
+      circles.add(circle);
+    }
+    return circles;
+  }
+
+  double axis(num d) {
+    return (d - widget.$props.min) /
+        (widget.$props.max - widget.$props.min) *
+        contentWidth;
+  }
+
+  double get minVal {
+    if (widget.$props.range) {
+      return widget.$props.value[0].toDouble();
+    }
+    return 0.0;
+  }
+
+  double get maxVal {
+    if (widget.$props.range) {
+      return widget.$props.value[1].toDouble();
+    }
+    return widget.$props.valueNotifier.value.toDouble();
+  }
+
+  Color get inactiveColor {
+    return widget.$style.inactiveColor ??
+        cfgGlobal.slider.inactiveColor ??
+        CfgGlobal.disabledColor.shade300;
+  }
+
+  Color get activeColor {
+    return widget.$style.activeColor ??
+        cfgGlobal.slider.activeColor ??
+        CfgGlobal.primaryColor;
+  }
+
+  Color get thumbColor {
+    return widget.$style.thumbColor ??
+        cfgGlobal.slider.thumbColor ??
+        Colors.white;
+  }
+
+  double get height {
+    return widget.$style.height ?? cfgGlobal.slider.height ?? 6.0;
+  }
+
+  double get valueRadiusOuter {
+    return widget.$style.valueRadiusOuter ??
+        cfgGlobal.slider.valueRadiusOuter ??
+        10.0;
+  }
+
+  double get valueRadiusInner {
+    return widget.$style.valueRadiusInner ??
+        cfgGlobal.slider.valueRadiusInner ??
+        8.0;
+  }
+
+  double get width {
+    return widget.$style.width ?? cfgGlobal.slider.width ?? 800;
   }
 }
 
@@ -51,8 +320,7 @@ class WSliderOn extends BaseOn {
    */
 }
 
-class WSliderProp extends BaseProp {
-  late ValueNotifier<num> value;
+class WSliderProp extends FormFieldProp {
   late num min;
   late num max;
   late bool disabled;
@@ -65,14 +333,16 @@ class WSliderProp extends BaseProp {
   String Function(num)? formatTooltip;
   late bool range;
   late bool vertical;
-  String? height;
+  double? height;
   String? label;
   late num debounce;
   String? tooltipClass;
-  late dynamic marks;
+  late Map<num, dynamic> marks;
+
+  final List<num> _stops = [];
 
   WSliderProp({
-    ValueNotifier<num>? value,
+    dynamic value,
     num? min,
     num? max,
     bool? disabled,
@@ -85,13 +355,13 @@ class WSliderProp extends BaseProp {
     String Function(num)? formatTooltip,
     bool? range,
     bool? vertical,
-    String? height,
+    double? height,
     String? label,
     num? debounce,
     String? tooltipClass,
-    dynamic marks,
-  }) {
-    this.value = value ?? ValueNotifier<num>(0);
+    Map<num, dynamic>? marks,
+    ValueNotifier? valueNotifier,
+  }) : super(valueNotifier: valueNotifier) {
     this.min = min ?? 0;
     this.max = max ?? 100;
     this.disabled = disabled ?? false;
@@ -108,8 +378,30 @@ class WSliderProp extends BaseProp {
     this.label = label;
     this.debounce = debounce ?? 300;
     this.tooltipClass = tooltipClass;
-    this.marks = marks;
+    this.marks = marks ?? {};
+
+    super.value = value ?? (this.range ? [0.0, 0.0] : 0.0);
+
+    assert(
+        (this.range && value is List) || (!this.range && super.value is! List),
+        '属性类型不正确，value: ${super.value}，range: ${this.range}');
+
+    assert(this.min <= this.max, '最大最小值异常: [ ${this.min}, ${this.max} ]');
+
+    if (this.showStops) {
+      var start = this.min + this.step;
+      while (start < this.max && start >= this.min) {
+        _stops.add(start);
+        start += this.step;
+      }
+    }
   }
+}
+
+class SliderMark {
+  late TextStyle textStyle;
+  late String Function(dynamic)? markFormat;
+  SliderMark(this.textStyle, this.markFormat);
 }
 
 class WSliderSlot extends BaseSlot {

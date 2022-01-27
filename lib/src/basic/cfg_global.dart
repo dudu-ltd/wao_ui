@@ -70,6 +70,13 @@ class CfgGlobal {
     disabledColor: Colors.grey.shade400,
   );
 
+  WSliderStyle slider = WSliderStyle(
+      // thumbColor: Color.fromARGB(100, 37, 211, 98),
+      // height: 30,
+      // valueRadiusOuter: 40,
+      // valueRadiusInner: 32,
+      );
+
   WSwitchStyle wSwitch = WSwitchStyle();
 
   CfgGlobal._privateConstrucor();
@@ -726,9 +733,19 @@ class WOptionStyle extends BaseStyle {
 }
 
 class WSliderStyle extends BaseStyle {
+  Color? inactiveColor;
+  Color? activeColor;
+  Color? thumbColor;
+  double? valueRadiusOuter;
+  double? valueRadiusInner;
   WSliderStyle({
     double? width,
     double? height,
+    this.inactiveColor,
+    this.activeColor,
+    this.thumbColor,
+    this.valueRadiusOuter,
+    this.valueRadiusInner,
   }) : super(
           height: height,
           width: width,
