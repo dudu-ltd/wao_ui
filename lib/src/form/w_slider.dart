@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wao_ui/core/base_on.dart';
@@ -47,11 +44,14 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
   late AnimationController maxController;
   late Animation<double>? minValueRadius = null;
   late Animation<double>? maxValueRadius = null;
-  double contentWidth = 0;
+  double _contentWidth = 0;
+
+  late dynamic _tempValue;
 
   @override
   void initState() {
     super.initState();
+    setTempValue();
     minController = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
     maxController = AnimationController(
@@ -60,7 +60,7 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
       const Duration(microseconds: 1),
       () {
         var rect = getPosition(context);
-        contentWidth = rect.width - 2 * valueRadiusOuter;
+        _contentWidth = rect.width - 2 * valueRadiusOuter;
         minValueRadius = Tween(begin: 1.0, end: 1.2).animate(minController)
           ..addListener(() {
             setState(() {});
@@ -94,7 +94,7 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
       alignment: AlignmentDirectional.centerStart,
       children: [
         ruler,
-        ...stepCircles,
+        if (widget.$props.showStops) ...stepCircles,
         valueRange,
         ...marks,
         ...marksText,
@@ -135,10 +135,7 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
     var result = <Widget>[];
     widget.$props.marks.forEach((key, value) {
       var circle = Positioned(
-        left: (key - widget.$props.min) /
-                (widget.$props.max - widget.$props.min) *
-                contentWidth -
-            height / 2,
+        left: axis(key) - height / 2,
         child: Container(
           height: height,
           width: height,
@@ -161,10 +158,7 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
       var txt =
           value is String ? value : (value as SliderMark).markFormat!.call(key);
       var p = Positioned(
-        left: (key - widget.$props.min) /
-                (widget.$props.max - widget.$props.min) *
-                contentWidth -
-            (txt.length / 2) * .58 * 14,
+        left: axis(key) - (txt.length / 2) * .58 * 14,
         top: valueRadiusOuter * 2 * 1.2,
         child: Text(txt, style: value is SliderMark ? value.textStyle : null),
       );
@@ -177,7 +171,7 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
     return [
       GestureDetector(
         onHorizontalDragUpdate: (e) {
-          print(e);
+          print(axisValue(e.localPosition.dx));
         },
         child: Container(
           height: height,
@@ -189,41 +183,87 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
         ),
       ),
       if (widget.$props.range)
-        valueHander(minVal, minValueRadius, minController),
-      valueHander(maxVal, maxValueRadius, maxController),
+        valueHander(minVal, minValueRadius, minController, initValueIndex: 0),
+      valueHander(maxVal, maxValueRadius, maxController, initValueIndex: 1),
     ];
   }
+
+  late List<double> stableValues = [];
 
   Widget valueHander(
     double val,
     Animation? valueRadius,
-    AnimationController controller,
-  ) {
+    AnimationController controller, {
+    initValueIndex = 0,
+  }) {
     return Positioned(
-      left: (val - widget.$props.min) /
-              (widget.$props.max - widget.$props.min) *
-              contentWidth -
+      left: axis(val) -
           valueRadiusOuter * (valueRadius == null ? 0 : valueRadius.value),
-      child: MouseRegion(
-        onEnter: (e) {
-          controller.forward();
+      child: GestureDetector(
+        onHorizontalDragStart: (e) {
+          if (widget.$props.range) stableValues = [...widget.$props.value];
         },
-        onExit: (e) => controller.reverse(),
-        child: Container(
-          width: valueRadiusOuter *
-              2 *
-              (valueRadius != null ? valueRadius.value : 0),
-          height: valueRadiusOuter *
-              2 *
-              (valueRadius != null ? valueRadius.value : 0),
-          decoration: BoxDecoration(
-            border: Border.all(
-                color: activeColor, width: valueRadiusOuter - valueRadiusInner),
-            borderRadius: BorderRadius.circular(valueRadiusOuter *
-                (valueRadius != null ? valueRadius.value : 0)),
-          ),
-          child: ClipOval(
-            child: ColoredBox(color: thumbColor),
+        onHorizontalDragUpdate: (details) {
+          print(axisValue(details.delta.dx));
+          if (!widget.$props.range) {
+            _tempValue += axisValue(details.delta.dx);
+            if (_tempValue >= widget.$props.min &&
+                _tempValue <= widget.$props.max) {
+              widget.$props.value = stepNum(_tempValue, widget.$props.value);
+            }
+          } else {
+            var focusValue = _tempValue[initValueIndex];
+            focusValue += axisValue(details.delta.dx);
+            _tempValue[initValueIndex] = focusValue;
+
+            print('value = : ${widget.$props.value}');
+            if (focusValue >= widget.$props.min &&
+                focusValue <= widget.$props.max) {
+              print('focusValue: $focusValue');
+              if (_tempValue[0] > _tempValue[1]) {
+                widget.$props.value = [
+                  stepNum(_tempValue[1], widget.$props.value[0]),
+                  stepNum(_tempValue[0], widget.$props.value[1])
+                ];
+              } else {
+                widget.$props.value = [
+                  stepNum(_tempValue[0], widget.$props.value[0]),
+                  stepNum(_tempValue[1], widget.$props.value[1])
+                ];
+              }
+            }
+          }
+          setState(() {});
+        },
+        onHorizontalDragEnd: (e) {
+          setTempValue();
+        },
+        child: MouseRegion(
+          onEnter: (e) {
+            controller.forward();
+          },
+          onExit: (e) => controller.reverse(),
+          child: Container(
+            width: valueRadiusOuter *
+                2 *
+                (valueRadius != null ? valueRadius.value : 0),
+            height: valueRadiusOuter *
+                2 *
+                (valueRadius != null ? valueRadius.value : 0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: activeColor,
+                  width: valueRadiusOuter - valueRadiusInner),
+              borderRadius: BorderRadius.circular(valueRadiusOuter *
+                  (valueRadius != null ? valueRadius.value : 0)),
+            ),
+            child: Tooltip(
+              message: '$val',
+              verticalOffset: -valueRadiusOuter * 4,
+              child: ClipOval(
+                child: ColoredBox(color: thumbColor),
+              ),
+            ),
           ),
         ),
       ),
@@ -234,10 +274,7 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
     List<Widget> circles = [];
     for (var cursor in widget.$props._stops) {
       var circle = Positioned(
-        left: (cursor - widget.$props.min) /
-                (widget.$props.max - widget.$props.min) *
-                contentWidth -
-            height / 2,
+        left: axis(cursor) - height / 2,
         child: SizedBox(
           height: height,
           width: height,
@@ -254,10 +291,38 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
     return circles;
   }
 
+  setTempValue() {
+    _tempValue =
+        widget.$props.range ? [...widget.$props.value] : widget.$props.value;
+  }
+
+  double stepNum(num current, num _defalut) {
+    num result = _defalut;
+    var stops = [widget.$props.min, ...widget.$props._stops, widget.$props.max];
+    print(stops);
+    var stopLen = stops.length;
+    for (var i = 0; i < stopLen - 1; i++) {
+      var stopValue = stops[i];
+      var nextStopValue = stops[i + 1];
+      if (current > stopValue && current < nextStopValue) {
+        result = (current - stopValue).abs() > (nextStopValue - current).abs()
+            ? nextStopValue
+            : stopValue;
+        break;
+      }
+    }
+    return result.toDouble();
+  }
+
   double axis(num d) {
     return (d - widget.$props.min) /
         (widget.$props.max - widget.$props.min) *
-        contentWidth;
+        _contentWidth;
+  }
+
+  double axisValue(num offset) {
+    return offset / _contentWidth * (widget.$props.max - widget.$props.min) +
+        widget.$props.min;
   }
 
   double get minVal {
@@ -388,12 +453,10 @@ class WSliderProp extends FormFieldProp {
 
     assert(this.min <= this.max, '最大最小值异常: [ ${this.min}, ${this.max} ]');
 
-    if (this.showStops) {
-      var start = this.min + this.step;
-      while (start < this.max && start >= this.min) {
-        _stops.add(start);
-        start += this.step;
-      }
+    var start = this.min + this.step;
+    while (start < this.max && start > this.min) {
+      _stops.add(start);
+      start += this.step;
     }
   }
 }
