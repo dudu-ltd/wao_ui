@@ -174,8 +174,12 @@ class _IndexPageState extends State<IndexPage> {
                     "id": "basic",
                     "text": "basic",
                     "children": [
-                      {"id": "WButton", "text": "WButton"},
-                      {"id": "WContainerLayout", "text": "WContainerLayout"}
+                      {"id": "WButton", "text": "WButton", "finish": true},
+                      {
+                        "id": "WContainerLayout",
+                        "text": "WContainerLayout",
+                        "finish": true
+                      }
                     ]
                   },
                   {
