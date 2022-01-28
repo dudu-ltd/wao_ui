@@ -37,10 +37,20 @@ class WPageHeader extends StatelessWidget
   }
 }
 
-class WPageHeaderOn extends BaseOn {}
+class WPageHeaderOn extends BaseOn {
+  Function? back;
+  WPageHeaderOn({this.back});
+}
 
-class WPageHeaderProp extends BaseProp {}
+class WPageHeaderProp extends BaseProp {
+  late String title;
+  String? content;
+  WPageHeaderProp({this.title = '返回', this.content});
+}
 
 class WPageHeaderSlot extends BaseSlot {
-  WPageHeaderSlot(defaultSlotBefore) : super(defaultSlotBefore);
+  Widget? title;
+  Widget? content;
+  WPageHeaderSlot(defaultSlotBefore, {this.title, this.content})
+      : super(defaultSlotBefore);
 }

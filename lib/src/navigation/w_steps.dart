@@ -37,8 +37,95 @@ class WSteps extends StatelessWidget
 
 class WStepsOn extends BaseOn {}
 
-class WStepsProp extends BaseProp {}
+class WStepsProp extends BaseProp {
+  late dynamic space;
+  late String direction;
+  late int active;
+  late String processStatus;
+  late String finishStatus;
+  late bool alignCenter;
+  late bool simple;
+  WStepsProp({
+    this.space,
+    this.direction = 'horizontal',
+    this.active = 0,
+    this.processStatus = 'process',
+    this.finishStatus = 'finish',
+    this.alignCenter = false,
+    this.simple = false,
+  });
+}
 
 class WStepsSlot extends BaseSlot {
   WStepsSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+///
+///
+///
+///
+///
+///
+///
+///
+
+class WStep extends StatelessWidget
+    implements BaseWidget<WStepOn, WStepProp, WStepSlot, WStepStyle> {
+  @override
+  late final WStepOn $on;
+
+  @override
+  late final WStepProp $props;
+
+  @override
+  late final WStepSlot $slots;
+
+  @override
+  late final WStepStyle $style;
+
+  WStep({
+    Key? key,
+    WStepOn? on,
+    WStepProp? props,
+    WStepSlot? slots,
+    WStepStyle? style,
+  }) : super(key: key) {
+    $on = on ?? WStepOn();
+    $props = props ?? WStepProp();
+    $slots = slots ?? WStepSlot(null);
+    $style = style ?? WStepStyle();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class WStepOn extends BaseOn {}
+
+class WStepProp extends BaseProp {
+  String? title;
+  String? description;
+  IconData? icon;
+  String? status;
+  WStepProp({
+    this.title,
+    this.description,
+    this.icon,
+    this.status,
+  });
+}
+
+class WStepSlot extends BaseSlot {
+  Widget? icon;
+  Widget? title;
+  Widget? description;
+
+  WStepSlot(
+    defaultSlotBefore, {
+    this.icon,
+    this.title,
+    this.description,
+  }) : super(defaultSlotBefore);
 }

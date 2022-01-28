@@ -848,6 +848,36 @@ class WNavMenuStyle extends BaseStyle {
         );
 }
 
+class WSubMenuStyle extends BaseStyle {
+  WSubMenuStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WMenuItemStyle extends BaseStyle {
+  WMenuItemStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WMenuGroupStyle extends BaseStyle {
+  WMenuGroupStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
 class WPageHeaderStyle extends BaseStyle {
   WPageHeaderStyle({
     double? width,
@@ -860,6 +890,16 @@ class WPageHeaderStyle extends BaseStyle {
 
 class WStepsStyle extends BaseStyle {
   WStepsStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WStepStyle extends BaseStyle {
+  WStepStyle({
     double? width,
     double? height,
   }) : super(
@@ -970,6 +1010,16 @@ class WCarouselStyle extends BaseStyle {
 
 class WCollapseStyle extends BaseStyle {
   WCollapseStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCollapseItemStyle extends BaseStyle {
+  WCollapseItemStyle({
     double? width,
     double? height,
   }) : super(

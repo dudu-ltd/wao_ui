@@ -351,23 +351,26 @@ class ApiDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const Text('原生Dropdown'),
-      DropdownButton<String>(
-        onChanged: (e) {},
-        items: const [
-          DropdownMenuItem(
-            child: Text('测试'),
-          ),
-        ],
-      ),
-      const Text('WDropdown'),
-      basicGroup,
-      splitGroup,
-      triggerGroup,
-      disableGroup,
-      commandGroup,
-      sizeGroup,
-    ]);
+    return Wrap(
+      spacing: 10,
+      children: [
+        const Text('原生Dropdown'),
+        DropdownButton<String>(
+          onChanged: (e) {},
+          items: const [
+            DropdownMenuItem(
+              child: Text('测试'),
+            ),
+          ],
+        ),
+        const Text('WDropdown'),
+        basicGroup,
+        splitGroup,
+        triggerGroup,
+        disableGroup,
+        commandGroup,
+        sizeGroup,
+      ],
+    );
   }
 }
