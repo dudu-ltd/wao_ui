@@ -51,7 +51,7 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    setTempValue();
+    setTempValue(null);
     minController = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
     maxController = AnimationController(
@@ -169,10 +169,8 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
 
   List<Widget> get handlers {
     return [
-      GestureDetector(
-        onHorizontalDragUpdate: (e) {
-          print(axisValue(e.localPosition.dx));
-        },
+      Listener(
+        onPointerUp: rulerOnDrag,
         child: Container(
           height: height,
           decoration: BoxDecoration(
@@ -200,44 +198,9 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
       left: axis(val) -
           valueRadiusOuter * (valueRadius == null ? 0 : valueRadius.value),
       child: GestureDetector(
-        onHorizontalDragStart: (e) {
-          if (widget.$props.range) stableValues = [...widget.$props.value];
-        },
-        onHorizontalDragUpdate: (details) {
-          print(axisValue(details.delta.dx));
-          if (!widget.$props.range) {
-            _tempValue += axisValue(details.delta.dx);
-            if (_tempValue >= widget.$props.min &&
-                _tempValue <= widget.$props.max) {
-              widget.$props.value = stepNum(_tempValue, widget.$props.value);
-            }
-          } else {
-            var focusValue = _tempValue[initValueIndex];
-            focusValue += axisValue(details.delta.dx);
-            _tempValue[initValueIndex] = focusValue;
-
-            print('value = : ${widget.$props.value}');
-            if (focusValue >= widget.$props.min &&
-                focusValue <= widget.$props.max) {
-              print('focusValue: $focusValue');
-              if (_tempValue[0] > _tempValue[1]) {
-                widget.$props.value = [
-                  stepNum(_tempValue[1], widget.$props.value[0]),
-                  stepNum(_tempValue[0], widget.$props.value[1])
-                ];
-              } else {
-                widget.$props.value = [
-                  stepNum(_tempValue[0], widget.$props.value[0]),
-                  stepNum(_tempValue[1], widget.$props.value[1])
-                ];
-              }
-            }
-          }
-          setState(() {});
-        },
-        onHorizontalDragEnd: (e) {
-          setTempValue();
-        },
+        onHorizontalDragStart: setStableValue,
+        onHorizontalDragUpdate: (e) => onDrag(e, initValueIndex),
+        onHorizontalDragEnd: setTempValue,
         child: MouseRegion(
           onEnter: (e) {
             controller.forward();
@@ -259,6 +222,7 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
             ),
             child: Tooltip(
               message: '$val',
+              triggerMode: TooltipTriggerMode.longPress,
               verticalOffset: -valueRadiusOuter * 4,
               child: ClipOval(
                 child: ColoredBox(color: thumbColor),
@@ -291,7 +255,64 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
     return circles;
   }
 
-  setTempValue() {
+  rulerOnDrag(e) {
+    var hoverValue = axisValue(e.localPosition.dx);
+    if (!widget.$props.range) {
+      widget.$props.value = stepNum(hoverValue, widget.$props.value);
+    } else {
+      var closeToMin =
+          (hoverValue - minVal).abs() - (hoverValue - maxVal).abs() < 0;
+      if (closeToMin) {
+        widget.$props.value[0] = stepNum(hoverValue, minVal);
+      } else {
+        widget.$props.value[1] = stepNum(hoverValue, maxVal);
+      }
+    }
+    setState(() {});
+  }
+
+  setStableValue(e) {
+    if (widget.$props.range) stableValues = [...widget.$props.value];
+  }
+
+  onDrag(details, initValueIndex) {
+    if (!widget.$props.range) {
+      _tempValue += axisValue(details.delta.dx);
+      if (_tempValue >= widget.$props.min && _tempValue <= widget.$props.max) {
+        widget.$props.value = stepNum(_tempValue, widget.$props.value);
+      }
+    } else {
+      var focusValue = _tempValue[initValueIndex];
+      focusValue += axisValue(details.delta.dx);
+      _tempValue[initValueIndex] = focusValue;
+
+      if (focusValue >= widget.$props.min && focusValue <= widget.$props.max) {
+        if (_tempValue[0] > _tempValue[1]) {
+          widget.$props.value = initValueIndex == 0
+              ? [
+                  stableValues[1],
+                  stepNum(_tempValue[0], widget.$props.value[1])
+                ]
+              : [
+                  stepNum(_tempValue[1], widget.$props.value[0]),
+                  stableValues[0]
+                ];
+        } else {
+          widget.$props.value = [
+            initValueIndex == 0
+                ? stepNum(_tempValue[0], widget.$props.value[0])
+                : stableValues[0],
+            initValueIndex == 1
+                ? stepNum(_tempValue[1], widget.$props.value[1])
+                : stableValues[1],
+          ];
+        }
+      }
+    }
+    setState(() {});
+  }
+
+  setTempValue(e) {
     _tempValue =
         widget.$props.range ? [...widget.$props.value] : widget.$props.value;
   }
@@ -299,7 +320,6 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
   double stepNum(num current, num _defalut) {
     num result = _defalut;
     var stops = [widget.$props.min, ...widget.$props._stops, widget.$props.max];
-    print(stops);
     var stopLen = stops.length;
     for (var i = 0; i < stopLen - 1; i++) {
       var stopValue = stops[i];
