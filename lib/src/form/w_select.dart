@@ -238,7 +238,7 @@ class _WSelectState extends State<WSelect>
 
       /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
       // 在控件渲染完成后执行的回调
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _updatePanel(context, setState);
       });
       // var offset = panelOffset;
@@ -299,7 +299,7 @@ class _WSelectState extends State<WSelect>
   void dispose() {
     iconSpinController.removeListener(updatePanel);
     panelHeightAnimation.removeListener(updatePanel);
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     hidePanelAction();
     super.dispose();
   }

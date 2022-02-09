@@ -79,6 +79,8 @@ class CfgGlobal {
 
   WSwitchStyle wSwitch = WSwitchStyle();
 
+  WUploadStyle upload = WUploadStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -220,7 +222,7 @@ class WPadding {
 }
 
 class WColor {
-  MaterialColor primary = Colors.blue;
+  MaterialColor primary = CfgGlobal.primaryColor;
   MaterialColor success = Colors.green;
   MaterialColor waring = Colors.orange;
   MaterialColor danger = Colors.pink;
@@ -789,9 +791,11 @@ class WTransferStyle extends BaseStyle {
 }
 
 class WUploadStyle extends BaseStyle {
+  double? pictureSize;
   WUploadStyle({
     double? width,
     double? height,
+    this.pictureSize,
   }) : super(
           height: height,
           width: width,

@@ -9,6 +9,7 @@ class BaseStyle {
   double? maxHeight;
   EdgeInsets? padding;
   EdgeInsets? margin;
+  Border? border;
   BaseStyle({
     this.width,
     this.height,
@@ -18,5 +19,6 @@ class BaseStyle {
     this.maxHeight,
     this.padding,
     this.margin,
+    this.border,
   });
 }
