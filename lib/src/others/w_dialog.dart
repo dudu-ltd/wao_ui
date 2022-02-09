@@ -145,7 +145,7 @@ class WDialogProp extends BaseProp {
 
   set visible(visible) {
     _visibleListener ??= Observable<bool>(
-        initialValue: false, onChanged: _widget!.show!, checkEquality: true);
+        initialValue: false, onChanged: _widget?.show!, checkEquality: true);
     _visibleListener!.value = visible;
   }
 
@@ -170,6 +170,7 @@ class WDialogProp extends BaseProp {
   late bool destroyOnClose;
 
   WDialogProp({
+    visible,
     btn,
     title,
     width,
@@ -186,6 +187,7 @@ class WDialogProp extends BaseProp {
     center,
     destroyOnClose,
   }) {
+    this.visible = visible ?? false;
     this.btn = btn;
     this.title = title;
     this.width = width ?? '50%';

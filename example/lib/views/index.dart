@@ -1,7 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/package/Index.dart';
-import 'package:example/package/opengl/api_gl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/src/basic/w_container_layout.dart';
@@ -136,7 +135,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'WSlider',
+      initialRoute: 'WUpload',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(

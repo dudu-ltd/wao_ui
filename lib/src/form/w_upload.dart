@@ -9,8 +9,9 @@ import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
+import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
-class WUpload extends StatelessWidget
+class WUpload extends StatefulWidget
     implements BaseWidget<WUploadOn, WUploadProp, WUploadSlot, WUploadStyle> {
   @override
   late final WUploadOn $on;
@@ -34,42 +35,249 @@ class WUpload extends StatelessWidget
     $style = style ?? WUploadStyle();
   }
 
-  Map<String, WFilePicker> platformPicker = {
-    'web': WebFilePicker(),
-    'pc': PcFilePicker(),
-  };
+  @override
+  State<WUpload> createState() => _WUploadState();
 
+  clearFiles() {}
+  abort() {}
+  submit() {}
+}
+
+class _WUploadState extends State<WUpload> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: WButton(
-        on: WButtonOn(
-          click: () async {
-            String? outputFile = await FilePicker.platform.saveFile(
-              dialogTitle: 'Please select an output file:',
-              fileName: 'output-file.pdf',
-            );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        trigger,
+        if (widget.$props.showFileList) ...fileListWidget,
+      ],
+    );
+  }
 
-            print(outputFile);
-            if (outputFile == null) {
-              // User canceled the picker
-            }
-            platformPicker[platform]?.doPicker((result) {
-              print(result);
-            });
-          },
-        ),
+  Widget get trigger {
+    var _triggers = <Widget>[];
+    if (widget.$slots.trigger != null) {
+      _triggers.add(widget.$slots.trigger!);
+    }
+
+    if (widget.$slots.hasDefault) {
+      for (var child in widget.$slots.defaultSlot!) {
+        if (widget.$slots.trigger == null) {
+          if (child is WButton) {
+            _triggers.add(child);
+            child.$on.click = triggerAction;
+          } else {
+            _triggers.add(InkWell(
+              child: child,
+              onTap: () {
+                triggerAction.call();
+              },
+            ));
+          }
+        } else {
+          _triggers.addAll(widget.$slots.defaultSlot!);
+        }
+      }
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: _triggers,
+    );
+  }
+
+  List<Widget> get fileListWidget {
+    return List.generate(widget.$props.fileList.length, (index) {
+      var file = widget.$props.fileList[index];
+      var listType = widget.$props.listType;
+      return Padding(
+        padding:
+            EdgeInsets.only(top: widget.$props.listType == 'text' ? 5 : 10),
+        child: MouseStateBuilder(builder: (context, state) {
+          Color contentColor =
+              state.isMouseOver ? CfgGlobal.primaryColor : Colors.black;
+          var fileNameWidget = Expanded(
+            child: Text(
+              fileTranslate(file),
+              style: TextStyle(
+                color: contentColor,
+              ),
+            ),
+          );
+
+          var removeWidget = InkWell(
+            child: const Icon(
+              Icons.close,
+              size: 14,
+            ),
+            onTap: () {
+              widget.$props.fileList.remove(file);
+              setState(() {});
+            },
+          );
+
+          return builderByListType(listType).call(
+            state.isMouseOver,
+            fileNameWidget,
+            removeWidget,
+            contentColor,
+            file,
+          );
+        }),
+      );
+    });
+  }
+
+  Function builderByListType(listType) {
+    Map<String, Function> listTypeStrategy = {
+      'text': textListType,
+      'picture': pictureListType,
+      'picture-card': pictureCardListType,
+    };
+    return listTypeStrategy[listType] ?? textListType;
+  }
+
+  Widget pictureListType(
+    isHover,
+    fileNameWidget,
+    removeWidget,
+    contentColor,
+    file,
+  ) {
+    var row = Padding(
+      padding: EdgeInsets.all(4),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: pictureSize,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: imageTranslate(file),
+              ),
+            ),
+          ),
+          fileNameWidget,
+          if (isHover)
+            Align(
+              alignment: Alignment.topRight,
+              child: removeWidget,
+            ),
+          if (!isHover)
+            Icon(
+              Icons.check_circle_outline,
+              size: 14,
+              color: cfgGlobal.color.success,
+            )
+        ],
       ),
     );
+    return Container(
+      child: row,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(cfgGlobal.borderRadius.large),
+      ),
+    );
+  }
+
+  Widget pictureCardListType(
+    isHover,
+    fileNameWidget,
+    removeWidget,
+    contentColor,
+    file,
+  ) {
+    return Container();
+  }
+
+  Widget textListType(
+    isHover,
+    fileNameWidget,
+    removeWidget,
+    contentColor,
+    file,
+  ) {
+    var row = Padding(
+      padding: EdgeInsets.all(4),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.file_present,
+            size: 14,
+            color: contentColor,
+          ),
+          fileNameWidget,
+          if (isHover) removeWidget,
+          if (!isHover)
+            Icon(
+              Icons.check_circle_outline,
+              size: 14,
+              color: cfgGlobal.color.success,
+            )
+        ],
+      ),
+    );
+    if (isHover) {
+      return ColoredBox(
+        color: Theme.of(context).primaryColorLight.withAlpha(50),
+        child: row,
+      );
+    } else {
+      return row;
+    }
+  }
+
+  fileTranslate(file) {
+    if (file is Map) {
+      return file['name'];
+    } else if (file is FilePickerResult) {
+      return file.files.first.name;
+    }
+    return '';
+  }
+
+  imageTranslate(file) {
+    if (file is Map) {
+      return Image.network(file['url']);
+    } else if (file is FilePickerResult) {
+      return kIsWeb
+          ? Image.memory(file.files.first.bytes!)
+          : Image.file(File(file.files.first.path!));
+    }
+  }
+
+  Map<String, WFilePicker> get platformPicker {
+    var allowedExtensions = widget.$props.accept?.split(',');
+    if (allowedExtensions != null) {
+      for (var i = 0; i < allowedExtensions.length; i++) {
+        allowedExtensions[i] = allowedExtensions[i].trim();
+      }
+    }
+    return {
+      'web': WebFilePicker(allowedExtensions: allowedExtensions),
+      'pc': PcFilePicker(allowedExtensions: allowedExtensions),
+    };
+  }
+
+  triggerAction() async {
+    platformPicker[platform]?.doPicker((result) {
+      widget.$props.fileList.add(result);
+      setState(() {});
+    });
   }
 
   String get platform {
     return kIsWeb ? 'web' : 'pc';
   }
 
-  clearFiles() {}
-  abort() {}
-  submit() {}
+  double get pictureSize {
+    return widget.$style.pictureSize ?? cfgGlobal.upload.pictureSize ?? 60;
+  }
 }
 
 class WUploadOn extends BaseOn {}
@@ -156,23 +364,30 @@ class WUploadProp extends BaseProp {
 class WUploadSlot extends BaseSlot {
   Widget? trigger;
   Widget? tip;
-  WUploadSlot(defaultSlotBefore) : super(defaultSlotBefore);
+  Widget Function(dynamic)? file;
+  WUploadSlot(defaultSlotBefore, {this.tip, this.trigger, this.file})
+      : super(defaultSlotBefore);
 }
 
 abstract class WFilePicker {
+  List<String> allowedExtensions = [];
   doPicker(Function(FilePickerResult) callback);
 }
 
 class PcFilePicker extends WFilePicker {
+  PcFilePicker({List<String>? allowedExtensions}) {
+    super.allowedExtensions = allowedExtensions ?? [];
+  }
   doPicker(Function(FilePickerResult) callback) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: allowedExtensions.isEmpty ? FileType.any : FileType.custom,
+      lockParentWindow: true,
+      allowedExtensions: allowedExtensions,
+    );
 
     if (result != null) {
-      print(result.files.single.path!);
       File file = File(result.files.single.path!);
-      print(file);
       callback.call(result);
-      print('pc');
     } else {
       // User canceled the picker
     }
@@ -180,16 +395,21 @@ class PcFilePicker extends WFilePicker {
 }
 
 class WebFilePicker extends WFilePicker {
+  WebFilePicker({List<String>? allowedExtensions}) {
+    super.allowedExtensions = allowedExtensions ?? [];
+  }
   doPicker(Function(FilePickerResult) callback) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: allowedExtensions.isEmpty ? FileType.any : FileType.custom,
+      lockParentWindow: true,
+      allowedExtensions: allowedExtensions,
+    );
 
     if (result != null) {
       Uint8List fileBytes = result.files.first.bytes!;
       String fileName = result.files.first.name;
 
       callback.call(result);
-      print(fileName);
-      print('web');
     }
   }
 }
