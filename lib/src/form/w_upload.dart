@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,8 @@ class WUpload extends StatefulWidget
   late final WUploadSlot $slots;
   @override
   late WUploadStyle $style;
+
+  late _WUploadState state;
 
   WUpload({
     Key? key,
@@ -45,38 +49,54 @@ class WUpload extends StatefulWidget
 
 class _WUploadState extends State<WUpload> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.state = this;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         trigger,
+        if (widget.$slots.tip != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 7),
+            child: widget.$slots.tip!,
+          ),
         if (widget.$props.showFileList) ...fileListWidget,
       ],
     );
   }
 
+  bindPicker(Widget child, List<Widget> _triggers) {
+    if (child is WButton) {
+      _triggers.add(child);
+      child.$on.click = triggerAction;
+    } else {
+      _triggers.add(InkWell(
+        child: child,
+        onTap: () {
+          triggerAction.call();
+        },
+      ));
+    }
+  }
+
   Widget get trigger {
     var _triggers = <Widget>[];
     if (widget.$slots.trigger != null) {
-      _triggers.add(widget.$slots.trigger!);
+      bindPicker(widget.$slots.trigger!, _triggers);
     }
 
     if (widget.$slots.hasDefault) {
       for (var child in widget.$slots.defaultSlot!) {
         if (widget.$slots.trigger == null) {
-          if (child is WButton) {
-            _triggers.add(child);
-            child.$on.click = triggerAction;
-          } else {
-            _triggers.add(InkWell(
-              child: child,
-              onTap: () {
-                triggerAction.call();
-              },
-            ));
-          }
+          bindPicker(child, _triggers);
         } else {
-          _triggers.addAll(widget.$slots.defaultSlot!);
+          _triggers.add(child);
         }
       }
     }
@@ -109,6 +129,7 @@ class _WUploadState extends State<WUpload> {
           var removeWidget = InkWell(
             child: const Icon(
               Icons.close,
+              color: Colors.grey,
               size: 14,
             ),
             onTap: () {
@@ -145,35 +166,63 @@ class _WUploadState extends State<WUpload> {
     contentColor,
     file,
   ) {
-    var row = Padding(
-      padding: EdgeInsets.all(4),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: pictureSize,
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: imageTranslate(file),
+    var row = Stack(
+      clipBehavior: Clip.hardEdge,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: pictureSize,
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: imageTranslate(file),
+                ),
+              ),
+            ),
+            fileNameWidget,
+          ],
+        ),
+        if (isHover)
+          Positioned(
+            right: 0,
+            top: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: removeWidget,
+            ),
+          ),
+        if (!isHover) ...[
+          Positioned(
+            right: -17,
+            top: -7,
+            child: Transform.rotate(
+              angle: pi / 4,
+              child: SizedBox(
+                width: 46,
+                height: 26,
+                child: ColoredBox(
+                  color: cfgGlobal.color.success.withAlpha(255 ~/ 4 * 3),
+                ),
               ),
             ),
           ),
-          fileNameWidget,
-          if (isHover)
-            Align(
-              alignment: Alignment.topRight,
-              child: removeWidget,
+          Positioned(
+            right: 0,
+            top: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Icon(
+                Icons.check,
+                size: 12,
+                color: CfgGlobal.blankColor,
+              ),
             ),
-          if (!isHover)
-            Icon(
-              Icons.check_circle_outline,
-              size: 14,
-              color: cfgGlobal.color.success,
-            )
+          ),
         ],
-      ),
+      ],
     );
     return Container(
       child: row,
@@ -206,10 +255,13 @@ class _WUploadState extends State<WUpload> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.file_present,
-            size: 14,
-            color: contentColor,
+          Padding(
+            padding: const EdgeInsets.only(right: 7.0),
+            child: Icon(
+              Icons.file_present,
+              size: 14,
+              color: contentColor,
+            ),
           ),
           fileNameWidget,
           if (isHover) removeWidget,
@@ -267,8 +319,39 @@ class _WUploadState extends State<WUpload> {
   triggerAction() async {
     platformPicker[platform]?.doPicker((result) {
       widget.$props.fileList.add(result);
-      setState(() {});
+      var promise = doUpload(result);
+      if (promise != null) {
+        promise.then((v) {
+          setState(() {});
+        });
+      } else {
+        setState(() {});
+      }
     });
+  }
+
+  doUpload(FilePickerResult result) {
+    if (widget.$props.action != null && widget.$props.autoUpload) {
+      var dio = Dio();
+      var bytes = kIsWeb
+          ? result.files.first.bytes!
+          : File(result.files.first.path!).readAsBytesSync();
+      var form = FormData.fromMap({
+        widget.$props.name: MultipartFile.fromBytes(
+          bytes,
+          filename: result.files.first.name,
+        )
+      });
+      return dio
+          .post(
+        widget.$props.action!,
+        data: form,
+        options: Options(contentType: ContentType.binary.toString()),
+      )
+          .then((value) {
+        widget.$props.onSuccess?.call(value, bytes, widget.$props.fileList);
+      });
+    }
   }
 
   String get platform {
@@ -294,9 +377,9 @@ class WUploadProp extends BaseProp {
   String? accept;
   late Function(File)? onPreview;
   late Function(File, List<File>)? onRemove;
-  late Function(dynamic, File, List<File>)? onSuccess;
-  late Function(dynamic, File, List<File>)? onError;
-  late Function(dynamic, File, List<File>)? onProgress;
+  late Function(dynamic, Uint8List, List)? onSuccess;
+  late Function(dynamic, Uint8List, List)? onError;
+  late Function(dynamic, Uint8List, List)? onProgress;
   late Function(File, List<File>)? onChange;
   late Function(File, List<File>)? beforeUpload;
   late Function(File, List<File>)? beforeRemove;
@@ -316,13 +399,14 @@ class WUploadProp extends BaseProp {
     String? name,
     bool? withCredentials,
     bool? showFileList,
-    bool? drag,
+    @Deprecated("暂时不支持文件的拖拽上传。(File upload by drag is not support in current version.)")
+        bool? drag,
     String? accept,
     Function(File)? onPreview,
     Function(File, List<File>)? onRemove,
-    Function(dynamic, File, List<File>)? onSuccess,
-    Function(dynamic, File, List<File>)? onError,
-    Function(dynamic, File, List<File>)? onProgress,
+    Function(dynamic, Uint8List, List)? onSuccess,
+    Function(dynamic, Uint8List, List)? onError,
+    Function(dynamic, Uint8List, List)? onProgress,
     Function(File, List<File>)? onChange,
     Function(File, List<File>)? beforeUpload,
     Function(File, List<File>)? beforeRemove,
