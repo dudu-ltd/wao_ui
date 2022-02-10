@@ -9,6 +9,7 @@ class CfgGlobal {
   // static MaterialColor primaryColor = Colors.deepPurple;
   static MaterialColor primaryColor = Colors.blue;
   static MaterialColor disabledColor = Colors.grey;
+  static Color blankColor = Colors.white;
   WFont font = WFont();
   WBorderRadius borderRadius = WBorderRadius();
   WBorderStyle borderStyle = WBorderStyle();

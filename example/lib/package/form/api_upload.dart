@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/utils/layout_util.dart';
@@ -50,18 +51,18 @@ class ApiUpload extends StatelessWidget {
   Widget get addBtn {
     return Container(
       alignment: Alignment.center,
-      padding: const EdgeInsets.all(70),
+      padding: const EdgeInsets.all(75),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(6),
         border: Border.all(
           color: CfgGlobal.disabledColor,
-          style: BorderStyle.none,
+          style: BorderStyle.solid,
         ),
       ),
       child: const Icon(
         Icons.add,
         color: Colors.grey,
-        size: 40,
+        size: 28,
       ),
     );
   }
@@ -69,8 +70,8 @@ class ApiUpload extends StatelessWidget {
   Widget get clickUpload {
     return WUpload(
       props: WUploadProp(
-        action: 'https://jsonplaceholder.typicode.com/posts/',
-        accept: '  txt,  jpeg',
+        action: 'http://localhost:8080/upload/single',
+        accept: '  txt,  jpeg, jpg, png',
         onPreview: handlePreview,
         onRemove: handleRemove,
         beforeRemove: beforeRemove,
@@ -91,8 +92,15 @@ class ApiUpload extends StatelessWidget {
 
   String imageUrl = '';
 
-  handleAvatarSuccess(res, file, files) {
-    imageUrl = '';
+  late Uint8List bytes = Uint8List.fromList([]);
+
+  handleAvatarSuccess(setState) {
+    return (res, file, fileList) {
+      imageUrl =
+          'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100';
+      bytes = file;
+      setState(() {});
+    };
   }
 
   beforeAvatarUpload(file, files) {
@@ -109,23 +117,30 @@ class ApiUpload extends StatelessWidget {
   }
 
   Widget get img {
-    return Image.network(imageUrl);
+    if (imageUrl.isNotEmpty) {
+      return WAvatar(
+          props: WAvatarProp(shape: 'square', src: imageUrl, size: 'large'));
+    } else {
+      return Image.memory(bytes);
+    }
   }
 
   Widget get userAvatorUpload {
-    return WUpload(
-      props: WUploadProp(
-        action: 'https://jsonplaceholder.typicode.com/posts/',
-        showFileList: false,
-        onSuccess: handleAvatarSuccess,
-        beforeUpload: beforeAvatarUpload,
-      ),
-      slots: WUploadSlot(
-        StatefulBuilder(builder: (context, setState) {
-          return imageUrl.isNotEmpty ? img : addBtn;
-        }),
-      ),
-    );
+    return StatefulBuilder(builder: (context, setState) {
+      return WUpload(
+        props: WUploadProp(
+          action: 'http://localhost:8080/upload/single',
+          showFileList: false,
+          onSuccess: handleAvatarSuccess(setState),
+          beforeUpload: beforeAvatarUpload,
+        ),
+        slots: WUploadSlot(
+          StatefulBuilder(builder: (context, setState) {
+            return imageUrl.isNotEmpty || bytes.isNotEmpty ? img : addBtn;
+          }),
+        ),
+      );
+    });
   }
 
   String dialogImageUrl = '';
@@ -143,12 +158,12 @@ class ApiUpload extends StatelessWidget {
       children: [
         WUpload(
           props: WUploadProp(
-            action: 'https://jsonplaceholder.typicode.com/posts/',
+            action: 'http://localhost:8080/upload/single',
             listType: 'pictureCard',
             onPreview: handlePreview,
             onRemove: handleRemove,
           ),
-          slots: WUploadSlot(const Icon(Icons.add)),
+          slots: WUploadSlot(addBtn),
         ),
         WDialog(
           props: WDialogProp(
@@ -171,7 +186,7 @@ class ApiUpload extends StatelessWidget {
             listType: 'picture-card',
             autoUpload: false,
           ),
-          slots: WUploadSlot(const Icon(Icons.add), file: (file) {
+          slots: WUploadSlot(addBtn, file: (file) {
             return Stack(
               children: [
                 Image.network(file),
