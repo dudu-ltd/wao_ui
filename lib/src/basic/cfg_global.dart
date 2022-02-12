@@ -1063,6 +1063,16 @@ class WDrawerStyle extends BaseStyle {
         );
 }
 
+class WHoverHandleStyle extends BaseStyle {
+  WHoverHandleStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
 class WImageStyle extends BaseStyle {
   WImageStyle({
     double? width,

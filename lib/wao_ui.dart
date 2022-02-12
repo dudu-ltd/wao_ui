@@ -1,5 +1,6 @@
 library wao_ui;
 
+export 'core/byte_file.dart';
 export 'src/basic/cfg_global.dart';
 export 'src/basic/w_button.dart';
 export 'src/basic/w_container_layout.dart';
@@ -49,6 +50,7 @@ export 'src/others/w_collapse.dart';
 export 'src/others/w_dialog.dart';
 export 'src/others/w_divider.dart';
 export 'src/others/w_drawer.dart';
+export 'src/others/w_hover_handle.dart';
 export 'src/others/w_image.dart';
 export 'src/others/w_infinite_scroll.dart';
 export 'src/others/w_popconfirm.dart';
