@@ -50,6 +50,7 @@ class ApiUpload extends StatelessWidget {
 
   Widget get addBtn {
     return Container(
+      key: GlobalKey(),
       alignment: Alignment.center,
       padding: const EdgeInsets.all(75),
       decoration: BoxDecoration(
@@ -103,9 +104,9 @@ class ApiUpload extends StatelessWidget {
     };
   }
 
-  beforeAvatarUpload(file, files) {
-    var isJPG = file.type == 'image/jpeg';
-    var isLt2M = file.size / 1024 / 1024 < 2;
+  beforeAvatarUpload(ByteFile file, files) {
+    var isJPG = file.name.endsWith('jpg');
+    var isLt2M = file.bytes.length / 1024 / 1024 < 2;
 
     if (!isJPG) {
       print('上传头像图片只能是 JPG 格式!');
@@ -118,8 +119,43 @@ class ApiUpload extends StatelessWidget {
 
   Widget get img {
     if (imageUrl.isNotEmpty) {
-      return WAvatar(
-          props: WAvatarProp(shape: 'square', src: imageUrl, size: 'large'));
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: CfgGlobal.disabledColor,
+            style: BorderStyle.solid,
+          ),
+        ),
+        child: WHoverHandle(
+          props: WHoverHandleProp(handles: <IconAndEvent>[
+            IconAndEvent(
+              icon: Icon(Icons.zoom_in, color: Colors.white),
+              event: () {
+                print('zoom_in');
+              },
+            ),
+            IconAndEvent(
+              icon: Icon(Icons.download, color: Colors.white),
+              event: () {
+                print('download');
+              },
+            ),
+            IconAndEvent(
+              icon: Icon(Icons.delete_outline_outlined, color: Colors.white),
+              event: () {
+                print('add');
+              },
+            ),
+          ]),
+          slots: WHoverHandleSlot(
+            WAvatar(
+              key: GlobalKey(),
+              props: WAvatarProp(shape: 'square', src: imageUrl, size: '178'),
+            ),
+          ),
+        ),
+      );
     } else {
       return Image.memory(bytes);
     }
@@ -159,7 +195,7 @@ class ApiUpload extends StatelessWidget {
         WUpload(
           props: WUploadProp(
             action: 'http://localhost:8080/upload/single',
-            listType: 'pictureCard',
+            listType: 'picture-card',
             onPreview: handlePreview,
             onRemove: handleRemove,
           ),
@@ -257,7 +293,7 @@ class ApiUpload extends StatelessWidget {
       slots: WUploadSlot(
         Column(
           children: const [
-            Icon(Icons.drag_handle),
+            Icon(Icons.upload),
             Text('将文件拖到此处，或点击上传'),
           ],
         ),

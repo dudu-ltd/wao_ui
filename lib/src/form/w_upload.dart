@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -57,17 +58,33 @@ class _WUploadState extends State<WUpload> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        trigger,
-        if (widget.$slots.tip != null)
-          Padding(
+    var tip = widget.$slots.tip != null
+        ? Padding(
             padding: const EdgeInsets.only(top: 7),
             child: widget.$slots.tip!,
-          ),
-        if (widget.$props.showFileList) ...fileListWidget,
-      ],
+          )
+        : null;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: widget.$props.listTypePictureCard
+          ? [
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  if (widget.$props.showFileList && fileListWidget.isNotEmpty)
+                    ...fileListWidget,
+                  trigger,
+                ],
+              ),
+              if (tip != null) tip,
+            ]
+          : [
+              trigger,
+              if (tip != null) tip,
+              if (widget.$props.showFileList) ...fileListWidget,
+            ],
     );
   }
 
@@ -77,6 +94,7 @@ class _WUploadState extends State<WUpload> {
       child.$on.click = triggerAction;
     } else {
       _triggers.add(InkWell(
+        key: GlobalKey(),
         child: child,
         onTap: () {
           triggerAction.call();
@@ -102,6 +120,7 @@ class _WUploadState extends State<WUpload> {
     }
 
     return Row(
+      key: GlobalKey(),
       mainAxisSize: MainAxisSize.min,
       children: _triggers,
     );
@@ -112,40 +131,47 @@ class _WUploadState extends State<WUpload> {
       var file = widget.$props.fileList[index];
       var listType = widget.$props.listType;
       return Padding(
-        padding:
-            EdgeInsets.only(top: widget.$props.listType == 'text' ? 5 : 10),
-        child: MouseStateBuilder(builder: (context, state) {
-          Color contentColor =
-              state.isMouseOver ? CfgGlobal.primaryColor : Colors.black;
-          var fileNameWidget = Expanded(
-            child: Text(
-              fileTranslate(file),
-              style: TextStyle(
-                color: contentColor,
-              ),
-            ),
-          );
+        padding: EdgeInsets.only(top: fileListPaddingTop),
+        child: widget.$props.listTypePictureCard
+            ? builderByListType(listType).call(
+                null,
+                null,
+                null,
+                null,
+                file,
+              )
+            : MouseStateBuilder(builder: (context, state) {
+                Color contentColor =
+                    state.isMouseOver ? CfgGlobal.primaryColor : Colors.black;
+                var fileNameWidget = Expanded(
+                  child: Text(
+                    fileTranslate(file),
+                    style: TextStyle(
+                      color: contentColor,
+                    ),
+                  ),
+                );
 
-          var removeWidget = InkWell(
-            child: const Icon(
-              Icons.close,
-              color: Colors.grey,
-              size: 14,
-            ),
-            onTap: () {
-              widget.$props.fileList.remove(file);
-              setState(() {});
-            },
-          );
+                var removeWidget = InkWell(
+                  child: const Icon(
+                    Icons.close,
+                    color: Colors.grey,
+                    size: 14,
+                  ),
+                  onTap: () {
+                    widget.$props.fileList.remove(file);
+                    setState(() {});
+                  },
+                );
 
-          return builderByListType(listType).call(
-            state.isMouseOver,
-            fileNameWidget,
-            removeWidget,
-            contentColor,
-            file,
-          );
-        }),
+                return builderByListType(listType).call(
+                  state.isMouseOver,
+                  fileNameWidget,
+                  removeWidget,
+                  contentColor,
+                  file,
+                );
+              }),
       );
     });
   }
@@ -240,7 +266,38 @@ class _WUploadState extends State<WUpload> {
     contentColor,
     file,
   ) {
-    return Container();
+    return WHoverHandle(
+      props: WHoverHandleProp(handles: <IconAndEvent>[
+        IconAndEvent(
+          icon: Icon(Icons.zoom_in, color: Colors.white),
+          event: () {
+            print('zoom_in');
+          },
+        ),
+        IconAndEvent(
+          icon: Icon(Icons.download, color: Colors.white),
+          event: () {
+            print('download');
+          },
+        ),
+        IconAndEvent(
+          icon: Icon(Icons.delete_outline_outlined, color: Colors.white),
+          event: () {
+            print('add');
+          },
+        ),
+      ]),
+      slots: WHoverHandleSlot(
+        WAvatar(
+          key: GlobalKey(),
+          props: WAvatarProp(
+              shape: 'square',
+              src:
+                  'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+              size: triggerHeight.toString()),
+        ),
+      ),
+    );
   }
 
   Widget textListType(
@@ -330,18 +387,30 @@ class _WUploadState extends State<WUpload> {
     });
   }
 
+  doBeforeUpload(ByteFile file) {
+    if (widget.$props.beforeUpload != null) {
+      var valid =
+          widget.$props.beforeUpload?.call(file, widget.$props.fileList);
+      if (!valid) {
+        throw Exception(
+            '上传中止。("beforeUpload" made decision to cancel upload process.)');
+      }
+    }
+    return true;
+  }
+
   doUpload(FilePickerResult result) {
     if (widget.$props.action != null && widget.$props.autoUpload) {
       var dio = Dio();
       var bytes = kIsWeb
           ? result.files.first.bytes!
           : File(result.files.first.path!).readAsBytesSync();
-      var form = FormData.fromMap({
-        widget.$props.name: MultipartFile.fromBytes(
-          bytes,
-          filename: result.files.first.name,
-        )
-      });
+      var file = MultipartFile.fromBytes(
+        bytes,
+        filename: result.files.first.name,
+      );
+      doBeforeUpload(ByteFile(bytes: bytes, name: result.files.first.name));
+      var form = FormData.fromMap({widget.$props.name: file});
       return dio
           .post(
         widget.$props.action!,
@@ -360,6 +429,38 @@ class _WUploadState extends State<WUpload> {
 
   double get pictureSize {
     return widget.$style.pictureSize ?? cfgGlobal.upload.pictureSize ?? 60;
+  }
+
+  double get fileListPaddingTop {
+    return widget.$props.listTypeText
+        ? 5
+        : widget.$props.listTypePicture
+            ? 10
+            : 0;
+  }
+
+  double get triggerHeight {
+    var height = 0.0;
+    if (widget.$slots.trigger != null && widget.$slots.trigger!.key != null) {
+      height = ((widget.$slots.trigger!.key as GlobalKey)
+              .currentContext!
+              .findRenderObject() as RenderBox)
+          .size
+          .height;
+    }
+
+    for (var child in widget.$slots.defaultSlot!) {
+      if (child.key != null) {
+        var newHeight = ((child.key as GlobalKey)
+                .currentContext!
+                .findRenderObject() as RenderBox)
+            .size
+            .height;
+        if (newHeight > height) height = newHeight;
+      }
+    }
+    print('=====$height');
+    return height;
   }
 }
 
@@ -380,9 +481,9 @@ class WUploadProp extends BaseProp {
   late Function(dynamic, Uint8List, List)? onSuccess;
   late Function(dynamic, Uint8List, List)? onError;
   late Function(dynamic, Uint8List, List)? onProgress;
-  late Function(File, List<File>)? onChange;
-  late Function(File, List<File>)? beforeUpload;
-  late Function(File, List<File>)? beforeRemove;
+  late Function(ByteFile, List)? onChange;
+  late Function(ByteFile, List)? beforeUpload;
+  late Function(ByteFile, List)? beforeRemove;
   late String listType;
   late bool autoUpload;
   late List fileList;
@@ -407,9 +508,9 @@ class WUploadProp extends BaseProp {
     Function(dynamic, Uint8List, List)? onSuccess,
     Function(dynamic, Uint8List, List)? onError,
     Function(dynamic, Uint8List, List)? onProgress,
-    Function(File, List<File>)? onChange,
-    Function(File, List<File>)? beforeUpload,
-    Function(File, List<File>)? beforeRemove,
+    Function(ByteFile, List)? onChange,
+    Function(ByteFile, List)? beforeUpload,
+    Function(ByteFile, List)? beforeRemove,
     String? listType,
     bool? autoUpload,
     List? fileList,
@@ -442,6 +543,18 @@ class WUploadProp extends BaseProp {
     this.disabled = disabled ?? false;
     this.limit = limit;
     this.onExceed = onExceed;
+  }
+
+  bool get listTypePictureCard {
+    return listType == 'picture-card';
+  }
+
+  bool get listTypePicture {
+    return listType == 'picture';
+  }
+
+  bool get listTypeText {
+    return listType == 'text';
   }
 }
 
