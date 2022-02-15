@@ -72,6 +72,7 @@ class _WHoverHandleState extends State<WHoverHandle> {
   }
 
   Widget? get handlers {
+    if (widget.$slots.defaultSlotBefore == null) return null;
     assert(widget.$slots.first.key != null,
         'WHoverHandle 子组件必须有 key。(Key is neccessary in inner widget.)');
     GlobalKey key = widget.$slots.first.key! as GlobalKey;
