@@ -136,12 +136,6 @@ class ApiUpload extends StatelessWidget {
               },
             ),
             IconAndEvent(
-              icon: Icon(Icons.download, color: Colors.white),
-              event: () {
-                print('download');
-              },
-            ),
-            IconAndEvent(
               icon: Icon(Icons.delete_outline_outlined, color: Colors.white),
               event: () {
                 print('add');
@@ -149,9 +143,16 @@ class ApiUpload extends StatelessWidget {
             ),
           ]),
           slots: WHoverHandleSlot(
-            WAvatar(
+            ConstrainedBox(
               key: GlobalKey(),
-              props: WAvatarProp(shape: 'square', src: imageUrl, size: '178'),
+              constraints: BoxConstraints(maxHeight: 178),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Image.memory(
+                  bytes,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
         ),
@@ -161,13 +162,18 @@ class ApiUpload extends StatelessWidget {
     }
   }
 
+  late WUpload userAvator;
+
   Widget get userAvatorUpload {
     return StatefulBuilder(builder: (context, setState) {
-      return WUpload(
+      return userAvator = WUpload(
         props: WUploadProp(
-          action: 'http://localhost:8080/upload/single',
+          action: 'http://localhost:8080/upload/sin3gle',
           showFileList: false,
           onSuccess: handleAvatarSuccess(setState),
+          onError: (a, b, c) {
+            print(a);
+          },
           beforeUpload: beforeAvatarUpload,
         ),
         slots: WUploadSlot(
@@ -218,7 +224,7 @@ class ApiUpload extends StatelessWidget {
       children: [
         WUpload(
           props: WUploadProp(
-            action: '#',
+            action: 'http://localhost:8080/upload/single',
             listType: 'picture-card',
             autoUpload: false,
           ),
@@ -246,7 +252,7 @@ class ApiUpload extends StatelessWidget {
   Widget get picListPreview {
     return WUpload(
       props: WUploadProp(
-        action: '#',
+        action: 'http://localhost:8080/upload/single',
         onPreview: handlePreview,
         onRemove: handleRemove,
         fileList: fileList,
@@ -269,7 +275,7 @@ class ApiUpload extends StatelessWidget {
   Widget get fileListControl {
     return WUpload(
       props: WUploadProp(
-        action: '#',
+        action: 'http://localhost:8080/upload/single',
         onChange: handleChange,
         fileList: fileList,
       ),
@@ -286,7 +292,7 @@ class ApiUpload extends StatelessWidget {
   Widget get dragUpload {
     return WUpload(
       props: WUploadProp(
-        action: '#',
+        action: 'http://localhost:8080/upload/single',
         drag: true,
         multiple: true,
       ),

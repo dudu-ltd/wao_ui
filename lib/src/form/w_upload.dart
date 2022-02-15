@@ -11,6 +11,7 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
@@ -287,16 +288,7 @@ class _WUploadState extends State<WUpload> {
           },
         ),
       ]),
-      slots: WHoverHandleSlot(
-        WAvatar(
-          key: GlobalKey(),
-          props: WAvatarProp(
-              shape: 'square',
-              src:
-                  'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-              size: triggerHeight.toString()),
-        ),
-      ),
+      slots: WHoverHandleSlot(imageTranslate(file)),
     );
   }
 
@@ -351,13 +343,40 @@ class _WUploadState extends State<WUpload> {
   }
 
   imageTranslate(file) {
+    var image = null;
     if (file is Map) {
-      return Image.network(file['url']);
+      image = Image.network(file['url'], fit: pictureFit);
     } else if (file is FilePickerResult) {
-      return kIsWeb
-          ? Image.memory(file.files.first.bytes!)
-          : Image.file(File(file.files.first.path!));
+      image = kIsWeb
+          ? Image.memory(file.files.first.bytes!, fit: pictureFit)
+          : Image.file(File(file.files.first.path!), fit: pictureFit);
+    } else if (file is ByteFile) {
+      image = Image.memory(file.bytes, fit: pictureFit);
     }
+    return ConstrainedBox(
+      key: GlobalKey(),
+      constraints: BoxConstraints(maxHeight: triggerHeight),
+      child: AspectRatio(
+        aspectRatio: pictureAspectRatio,
+        child: borderWrapper(
+          image,
+          Border.all(
+            color: CfgGlobal.disabledColor,
+            style: BorderStyle.solid,
+          ),
+          true,
+          borderRadius: BorderRadius.circular(6),
+        ),
+      ),
+    );
+  }
+
+  double get pictureAspectRatio {
+    return 1;
+  }
+
+  BoxFit get pictureFit {
+    return BoxFit.cover;
   }
 
   Map<String, WFilePicker> get platformPicker {
@@ -419,6 +438,8 @@ class _WUploadState extends State<WUpload> {
       )
           .then((value) {
         widget.$props.onSuccess?.call(value, bytes, widget.$props.fileList);
+      }).onError((error, stackTrace) {
+        widget.$props.onError?.call(error, bytes, widget.$props.fileList);
       });
     }
   }
@@ -459,7 +480,6 @@ class _WUploadState extends State<WUpload> {
         if (newHeight > height) height = newHeight;
       }
     }
-    print('=====$height');
     return height;
   }
 }
