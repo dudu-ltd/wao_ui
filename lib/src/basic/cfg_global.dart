@@ -82,6 +82,10 @@ class CfgGlobal {
 
   WUploadStyle upload = WUploadStyle();
 
+  WCardStyle card = WCardStyle(
+    padding: const EdgeInsets.all(14),
+  );
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -259,11 +263,14 @@ class WDescriptionsStyle extends BaseStyle {
   Color labelColor = Colors.grey.shade100;
 
   double borderWidth = 1.0;
-  Color borderColor = Colors.grey.shade300;
 
   WDescriptionsStyle({
     EdgeInsets? padding,
-  }) : super(padding: padding);
+    Color? borderColor,
+  }) : super(
+          padding: padding,
+          borderColor: borderColor ?? Colors.grey.shade300,
+        );
 }
 
 class WEmptyStyle extends BaseStyle {
@@ -1004,12 +1011,20 @@ class WCalendarStyle extends BaseStyle {
 }
 
 class WCardStyle extends BaseStyle {
+  double? spacing;
   WCardStyle({
     double? width,
     double? height,
+    EdgeInsets? padding,
+    Color? backgroundColor,
+    Color? borderColor,
+    this.spacing,
   }) : super(
           height: height,
           width: width,
+          padding: padding,
+          backgroundColor: backgroundColor,
+          borderColor: borderColor,
         );
 }
 

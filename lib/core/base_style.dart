@@ -10,6 +10,8 @@ class BaseStyle {
   EdgeInsets? padding;
   EdgeInsets? margin;
   Border? border;
+  Color? backgroundColor;
+  Color? borderColor;
   BaseStyle({
     this.width,
     this.height,
@@ -20,5 +22,7 @@ class BaseStyle {
     this.padding,
     this.margin,
     this.border,
+    this.backgroundColor,
+    this.borderColor,
   });
 }
