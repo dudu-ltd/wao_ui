@@ -3,21 +3,23 @@ import 'package:flutter/material.dart';
 Widget borderWrapper(Widget child, Border? border, bool needBorder,
     {EdgeInsets? padding, EdgeInsets? margin, BorderRadius? borderRadius}) {
   if (needBorder) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         border: border,
       ),
-      padding: padding,
-      margin: margin,
-      child: child,
+      child: paddingWrapper(
+        marginWrapper(child, margin),
+        padding,
+        true,
+      ),
     );
   }
   return child;
 }
 
-Widget paddingWrapper(Widget child, EdgeInsets padding, needPadding) {
-  if (needPadding) {
+Widget paddingWrapper(Widget child, EdgeInsets? padding, needPadding) {
+  if (needPadding && padding != null) {
     return Padding(
       padding: padding,
       child: child,
@@ -26,11 +28,11 @@ Widget paddingWrapper(Widget child, EdgeInsets padding, needPadding) {
   return child;
 }
 
-Widget marginWrapper(Widget child, EdgeInsets margin, {needMargin = true}) {
-  if (needMargin) {
-    return Container(
+Widget marginWrapper(Widget child, EdgeInsets? margin, {needMargin = true}) {
+  if (needMargin && margin != null) {
+    return Padding(
       child: child,
-      margin: margin,
+      padding: margin,
     );
   }
   return child;
@@ -106,6 +108,7 @@ Widget fitWidthWrapper(Widget child, {aspectRatio = 1.0, need = true}) {
 
 Widget shadowWrapper(
   Widget child, {
+  color = const Color.fromARGB(25, 0, 0, 0),
   shadow = const [
     BoxShadow(
       color: Color.fromARGB(25, 0, 0, 0),
@@ -114,13 +117,18 @@ Widget shadowWrapper(
       spreadRadius: 0.0,
     ),
   ],
+  backgroundColor,
+  need = true,
 }) {
-  return Container(
-    child: child,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      // borderRadius: BorderRadius.circular(8.0),
-      boxShadow: shadow,
-    ),
-  );
+  if (need) {
+    return DecoratedBox(
+      child: child,
+      decoration: BoxDecoration(
+        color: backgroundColor ?? Colors.white,
+        // borderRadius: BorderRadius.circular(8.0),
+        boxShadow: shadow,
+      ),
+    );
+  }
+  return child;
 }

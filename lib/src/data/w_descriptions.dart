@@ -11,7 +11,7 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 
 var borderSide = BorderSide(
   width: cfgGlobal.descriptions.borderWidth,
-  color: cfgGlobal.descriptions.borderColor,
+  color: cfgGlobal.descriptions.borderColor!,
 );
 
 ///
@@ -136,7 +136,7 @@ class WDescriptions extends StatefulWidget
   /// 根据描述项的位次，及每行的列数，获取该元素所应该有的边距
   Border getBorder(i, len) {
     Border border = Border.fromBorderSide(
-      BorderSide(width: 0, color: cfgGlobal.descriptions.borderColor),
+      BorderSide(width: 0, color: cfgGlobal.descriptions.borderColor!),
     );
     // 头部上边距
     if (i < $props.column) {

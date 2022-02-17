@@ -5,24 +5,32 @@ class ApiCard extends StatelessWidget {
   const ApiCard({Key? key}) : super(key: key);
 
   Widget get basic {
-    return WCard(
-      slots: WCardSlot(
-        Column(
-          children: List.generate(
+    return SizedBox(
+      width: 400,
+      child: WCard(
+        slots: WCardSlot(
+          List.generate(
             4,
-            (index) => Text('列表内容$index'),
+            (index) => Text('列表内容${index + 1}'),
           ),
-        ),
-        header: Row(
-          children: [
-            const Expanded(
-              child: Text('卡片名称'),
-            ),
-            WButton(
-              props: WButtonProp(type: 'primary'),
-              slots: WButtonSlot('操作按钮'),
-            ),
-          ],
+          header: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Expanded(
+                child: Text(
+                  '卡片名称',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                ),
+              ),
+              WButton(
+                props: WButtonProp(type: 'text', size: 'mini'),
+                slots: WButtonSlot(Text(
+                  '操作按钮',
+                  style: TextStyle(color: CfgGlobal.primaryColor),
+                )),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -30,42 +38,59 @@ class ApiCard extends StatelessWidget {
 
   Widget get simple {
     return WCard(
-      slots: WCardSlot(
-        Column(
-          children: List.generate(
+        style: WCardStyle(width: 480),
+        slots: WCardSlot(
+          List.generate(
             4,
-            (index) => Text('列表内容$index'),
+            (index) => Text('列表内容${index + 1}'),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Widget get picture {
     return Wrap(
-      spacing: 8,
+      spacing: 20,
       children: List.generate(2, (index) {
         return WCard(
+          style: WCardStyle(
+            padding: EdgeInsets.zero,
+            spacing: 0,
+          ),
+          props: WCardProp(shadow: 'hover'),
           slots: WCardSlot([
             Image.network(
                 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'),
-            Container(
-              padding: EdgeInsets.all(14),
-              child: Column(
-                children: [
-                  Text('好吃的汉堡'),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(DateTime.now().toString()),
-                      ),
-                      WButton(
-                        props: WButtonProp(type: 'primary'),
-                        slots: WButtonSlot('操作按钮'),
-                      ),
-                    ],
-                  )
-                ],
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 235.5),
+              child: Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('好吃的汉堡'),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            DateTime.now().toString(),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        WButton(
+                          props: WButtonProp(type: 'text', size: 'mini'),
+                          on: WButtonOn(click: () {
+                            print('eeee');
+                          }),
+                          slots: WButtonSlot(Text(
+                            '操作按钮',
+                            style: TextStyle(color: CfgGlobal.primaryColor),
+                          )),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             )
           ]),
@@ -75,32 +100,68 @@ class ApiCard extends StatelessWidget {
   }
 
   Widget get shadow {
-    return Wrap(
-      spacing: 8,
+    return Row(
       children: [
-        WCard(
-            props: WCardProp(shadow: 'always'), slots: WCardSlot(Text('总是显示'))),
-        WCard(
-            props: WCardProp(shadow: 'hover'),
-            slots: WCardSlot(Text('鼠标悬浮时显示'))),
-        WCard(
-            props: WCardProp(shadow: 'never'), slots: WCardSlot(Text('从不显示'))),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: WCard(
+              props: WCardProp(shadow: 'always'),
+              slots: WCardSlot(Text('总是显示')),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: WCard(
+              props: WCardProp(shadow: 'hover'),
+              slots: WCardSlot(Text('鼠标悬浮时显示')),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: WCard(
+              props: WCardProp(shadow: 'never'),
+              slots: WCardSlot(Text('从不显示')),
+            ),
+          ),
+        ),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const Text('WCard'),
-      const Text('基本用法'),
-      basic,
-      const Text('简单卡片'),
-      simple,
-      const Text('带图片'),
-      picture,
-      const Text('卡片阴影'),
-      shadow,
-    ]);
+    return Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: ListView(clipBehavior: Clip.none, children: [
+        const Text('WCard'),
+        ____________________________________,
+        const Text('基本用法'),
+        ____________________________________,
+        basic,
+        ____________________________________,
+        const Text('简单卡片'),
+        ____________________________________,
+        simple,
+        ____________________________________,
+        const Text('带图片'),
+        ____________________________________,
+        picture,
+        ____________________________________,
+        const Text('卡片阴影'),
+        ____________________________________,
+        shadow,
+        ____________________________________,
+      ]),
+    );
   }
+
+  final Widget ____________________________________ = const SizedBox(
+    height: 10,
+    width: 1,
+  );
 }
