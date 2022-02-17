@@ -923,6 +923,16 @@ class WTabsStyle extends BaseStyle {
         );
 }
 
+class WTabPaneStyle extends BaseStyle {
+  WTabPaneStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
 class WAlertStyle extends BaseStyle {
   WAlertStyle({
     double? width,
@@ -1005,6 +1015,16 @@ class WCardStyle extends BaseStyle {
 
 class WCarouselStyle extends BaseStyle {
   WCarouselStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WCarouselItemStyle extends BaseStyle {
+  WCarouselItemStyle({
     double? width,
     double? height,
   }) : super(
@@ -1115,6 +1135,16 @@ class WPopoverStyle extends BaseStyle {
 
 class WTimelineStyle extends BaseStyle {
   WTimelineStyle({
+    double? width,
+    double? height,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTimelineItemStyle extends BaseStyle {
+  WTimelineItemStyle({
     double? width,
     double? height,
   }) : super(

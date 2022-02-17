@@ -11,4 +11,9 @@ class ApiInfiniteScroll extends StatelessWidget {
       WInfiniteScroll(),
     ]);
   }
+
+  final Widget ____________________________________ = const SizedBox(
+    height: 10,
+    width: 1,
+  );
 }

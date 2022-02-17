@@ -55,6 +55,7 @@ class _WRadioState extends State<WRadio> {
       onTap: widget.$props.disabled
           ? null
           : (() {
+              print(widget.$props.label);
               widget.$props.value.value = widget.$props.label;
             }),
       child: borderWrapper(
@@ -104,7 +105,9 @@ class _WRadioState extends State<WRadio> {
     super.dispose();
   }
 
-  void valueChange() => setState;
+  void valueChange() {
+    setState(() {});
+  }
 
   Color get borderColor {
     return widget.$props.disabled && widget.$props.isSelected

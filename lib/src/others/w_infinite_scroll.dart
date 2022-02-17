@@ -39,7 +39,18 @@ class WInfiniteScroll extends StatelessWidget
 
 class WInfiniteScrollOn extends BaseOn {}
 
-class WInfiniteScrollProp extends BaseProp {}
+class WInfiniteScrollProp extends BaseProp {
+  late bool infiniteScrollDisabled;
+  late double infiniteScrollDelay;
+  late double infiniteScrollDistance;
+  late bool infiniteScrollImmediate;
+  WInfiniteScrollProp({
+    this.infiniteScrollDisabled = false,
+    this.infiniteScrollDelay = 200,
+    this.infiniteScrollDistance = 0,
+    this.infiniteScrollImmediate = true,
+  });
+}
 
 class WInfiniteScrollSlot extends BaseSlot {
   WInfiniteScrollSlot(defaultSlotBefore) : super(defaultSlotBefore);

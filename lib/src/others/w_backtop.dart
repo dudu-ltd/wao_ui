@@ -36,9 +36,23 @@ class WBacktop extends StatelessWidget
   }
 }
 
-class WBacktopOn extends BaseOn {}
+class WBacktopOn extends BaseOn {
+  late Function()? click;
+  WBacktopOn({this.click});
+}
 
-class WBacktopProp extends BaseProp {}
+class WBacktopProp extends BaseProp {
+  late String? target;
+  late double visibilityHeight;
+  late double right;
+  late double bottom;
+  WBacktopProp({
+    this.target,
+    this.visibilityHeight = 200.0,
+    this.right = 40.0,
+    this.bottom = 40.0,
+  });
+}
 
 class WBacktopSlot extends BaseSlot {
   WBacktopSlot(defaultSlotBefore) : super(defaultSlotBefore);
