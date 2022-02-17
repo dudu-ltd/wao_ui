@@ -36,7 +36,10 @@ class WCollapse extends StatelessWidget
   }
 }
 
-class WCollapseOn extends BaseOn {}
+class WCollapseOn extends BaseOn {
+  Function(dynamic)? change;
+  WCollapseOn({this.change});
+}
 
 class WCollapseProp extends BaseProp {
   late dynamic value;
@@ -105,5 +108,6 @@ class WCollapseItemProp extends BaseProp {
 }
 
 class WCollapseItemSlot extends BaseSlot {
-  WCollapseItemSlot(defaultSlotBefore) : super(defaultSlotBefore);
+  Widget Function(dynamic)? title;
+  WCollapseItemSlot(defaultSlotBefore, {this.title}) : super(defaultSlotBefore);
 }

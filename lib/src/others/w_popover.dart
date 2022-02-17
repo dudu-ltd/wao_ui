@@ -36,10 +36,32 @@ class WPopover extends StatelessWidget
   }
 }
 
-class WPopoverOn extends BaseOn {}
+class WPopoverOn extends BaseOn {
+  Function()? show;
+  Function()? afterEnter;
+  Function()? hide;
+  Function()? afterLeave;
+}
 
-class WPopoverProp extends BaseProp {}
+class WPopoverProp extends BaseProp {
+  late String trigger;
+  late String? title;
+  late String? content;
+  late String width;
+  late String placement;
+  late bool disabled;
+  late bool value;
+  late double offset;
+  late String transition;
+  late bool visibleArrow;
+  late String popperOptions;
+  late String popperClass;
+  late int openDelay;
+  late int closeDelay;
+  late int tabindex;
+}
 
 class WPopoverSlot extends BaseSlot {
-  WPopoverSlot(defaultSlotBefore) : super(defaultSlotBefore);
+  Widget? reference;
+  WPopoverSlot(defaultSlotBefore, {this.reference}) : super(defaultSlotBefore);
 }

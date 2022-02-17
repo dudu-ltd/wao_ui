@@ -38,8 +38,14 @@ class WCalendar extends StatelessWidget
 
 class WCalendarOn extends BaseOn {}
 
-class WCalendarProp extends BaseProp {}
+class WCalendarProp extends BaseProp {
+  late dynamic value;
+  late List range;
+  late int firstDayOfWeek;
+  WCalendarProp({this.value, this.range = const [], this.firstDayOfWeek = 1});
+}
 
 class WCalendarSlot extends BaseSlot {
-  WCalendarSlot(defaultSlotBefore) : super(defaultSlotBefore);
+  Widget Function(DateTime, dynamic)? dateCell;
+  WCalendarSlot(defaultSlotBefore, {this.dateCell}) : super(defaultSlotBefore);
 }

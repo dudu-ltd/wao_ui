@@ -37,8 +37,20 @@ class WCard extends StatelessWidget
 
 class WCardOn extends BaseOn {}
 
-class WCardProp extends BaseProp {}
+class WCardProp extends BaseProp {
+  late String? header;
+  late Object bodyStyle;
+
+  /// always | hover | never
+  late String shadow;
+  WCardProp({
+    this.header,
+    this.bodyStyle = const {'padding': '20px'},
+    this.shadow = 'always',
+  });
+}
 
 class WCardSlot extends BaseSlot {
-  WCardSlot(defaultSlotBefore) : super(defaultSlotBefore);
+  Widget? header;
+  WCardSlot(defaultSlotBefore, {this.header}) : super(defaultSlotBefore);
 }

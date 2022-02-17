@@ -38,7 +38,15 @@ class WDivider extends StatelessWidget
 
 class WDividerOn extends BaseOn {}
 
-class WDividerProp extends BaseProp {}
+class WDividerProp extends BaseProp {
+  late Axis direction;
+  late Alignment contentPosition;
+
+  WDividerProp({
+    this.direction = Axis.horizontal,
+    this.contentPosition = Alignment.center,
+  });
+}
 
 class WDividerSlot extends BaseSlot {
   WDividerSlot(defaultSlotBefore) : super(defaultSlotBefore);
