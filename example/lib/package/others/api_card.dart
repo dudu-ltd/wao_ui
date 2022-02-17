@@ -5,32 +5,30 @@ class ApiCard extends StatelessWidget {
   const ApiCard({Key? key}) : super(key: key);
 
   Widget get basic {
-    return SizedBox(
-      width: 400,
-      child: WCard(
-        slots: WCardSlot(
-          List.generate(
-            4,
-            (index) => Text('列表内容${index + 1}'),
-          ),
-          header: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Expanded(
-                child: Text(
-                  '卡片名称',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                ),
+    return WCard(
+      style: WCardStyle(width: 480),
+      slots: WCardSlot(
+        List.generate(
+          4,
+          (index) => Text('列表内容${index + 1}'),
+        ),
+        header: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Expanded(
+              child: Text(
+                '卡片名称',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
-              WButton(
-                props: WButtonProp(type: 'text', size: 'mini'),
-                slots: WButtonSlot(Text(
-                  '操作按钮',
-                  style: TextStyle(color: CfgGlobal.primaryColor),
-                )),
-              ),
-            ],
-          ),
+            ),
+            WButton(
+              props: WButtonProp(type: 'text', size: 'mini'),
+              slots: WButtonSlot(Text(
+                '操作按钮',
+                style: TextStyle(color: CfgGlobal.primaryColor),
+              )),
+            ),
+          ],
         ),
       ),
     );
@@ -137,26 +135,32 @@ class ApiCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(30.0),
-      child: ListView(clipBehavior: Clip.none, children: [
-        const Text('WCard'),
-        ____________________________________,
-        const Text('基本用法'),
-        ____________________________________,
-        basic,
-        ____________________________________,
-        const Text('简单卡片'),
-        ____________________________________,
-        simple,
-        ____________________________________,
-        const Text('带图片'),
-        ____________________________________,
-        picture,
-        ____________________________________,
-        const Text('卡片阴影'),
-        ____________________________________,
-        shadow,
-        ____________________________________,
-      ]),
+      child: SingleChildScrollView(
+        clipBehavior: Clip.none,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('WCard'),
+            ____________________________________,
+            const Text('基本用法'),
+            ____________________________________,
+            basic,
+            ____________________________________,
+            const Text('简单卡片'),
+            ____________________________________,
+            simple,
+            ____________________________________,
+            const Text('带图片'),
+            ____________________________________,
+            picture,
+            ____________________________________,
+            const Text('卡片阴影'),
+            ____________________________________,
+            shadow,
+            ____________________________________,
+          ],
+        ),
+      ),
     );
   }
 
