@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 Widget borderWrapper(Widget child, Border? border, bool needBorder,
     {EdgeInsets? padding, EdgeInsets? margin, BorderRadius? borderRadius}) {
   if (needBorder) {
-    return DecoratedBox(
+    return Container(
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         border: border,
       ),
-      child: paddingWrapper(
-        marginWrapper(child, margin),
-        padding,
-        true,
-      ),
+      padding: padding,
+      margin: margin,
+      child: child,
     );
   }
   return child;
@@ -28,11 +26,11 @@ Widget paddingWrapper(Widget child, EdgeInsets? padding, needPadding) {
   return child;
 }
 
-Widget marginWrapper(Widget child, EdgeInsets? margin, {needMargin = true}) {
-  if (needMargin && margin != null) {
-    return Padding(
+Widget marginWrapper(Widget child, EdgeInsets margin, {needMargin = true}) {
+  if (needMargin) {
+    return Container(
       child: child,
-      padding: margin,
+      margin: margin,
     );
   }
   return child;
@@ -121,7 +119,7 @@ Widget shadowWrapper(
   need = true,
 }) {
   if (need) {
-    return DecoratedBox(
+    return Container(
       child: child,
       decoration: BoxDecoration(
         color: backgroundColor ?? Colors.white,

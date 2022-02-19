@@ -12,9 +12,9 @@ class ApiButton extends StatelessWidget {
     var defaultBtnGroup = [
       WButton(
         slots: WButtonSlot('默认按钮'),
-        props: WButtonProp(type: 'text'),
+        // props: WButtonProp(type: 'text'),
         on: WButtonOn(click: () {
-          main2();
+          // main2();
         }),
       ),
       WButton(
@@ -46,10 +46,11 @@ class ApiButton extends StatelessWidget {
 
     var plainBtnGroup = [
       WButton(
-          slots: WButtonSlot(
-            '默认按钮',
-          ),
-          props: WButtonProp(plain: true, type: 'text')),
+        slots: WButtonSlot(
+          '默认按钮',
+        ),
+        props: WButtonProp(plain: true),
+      ),
       WButton(
           slots: WButtonSlot(
             '主要按钮',
@@ -79,10 +80,11 @@ class ApiButton extends StatelessWidget {
 
     var roundBtnGroup = [
       WButton(
-          slots: WButtonSlot(
-            '默认按钮',
-          ),
-          props: WButtonProp(round: true, type: 'text')),
+        slots: WButtonSlot(
+          '默认按钮',
+        ),
+        props: WButtonProp(round: true, type: 'text'),
+      ),
       WButton(
           slots: WButtonSlot(
             '主要按钮',

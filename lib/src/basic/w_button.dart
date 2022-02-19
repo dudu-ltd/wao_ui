@@ -50,8 +50,8 @@ class WButton extends StatelessWidget
     var baseColor = cfgGlobal.color.val($props.type);
     return MouseStateBuilder(
       builder: (context, mouseState) {
-        TypeButtonColor colors =
-            TypeButtonColor.byPlain(baseColor, $props.plain, mouseState);
+        TypeButtonColor colors = TypeButtonColor.byPlain(
+            baseColor, $props.plain, mouseState, $props.type);
         handleDefaultSlot(colors);
         var btn = Container(
           alignment: Alignment.center,
@@ -70,7 +70,7 @@ class WButton extends StatelessWidget
             border: !$props.typeIsText
                 ? Border.all(
                     width: 1,
-                    color: cfgGlobal.color.val($props.type),
+                    color: colors.borderColor,
                   )
                 : null,
           ),
@@ -103,14 +103,19 @@ class WButton extends StatelessWidget
 
   Widget _inkWellWrapper(Widget btn, TypeButtonColor colors, Radius radius) {
     if ($props.loading) return btn;
-    return InkWell(
-      splashColor: colors.splashColor.withOpacity(.3),
-      focusColor: colors.focus,
-      hoverColor: colors.hover,
-      highlightColor: colors.highlight,
+
+    return Material(
+      color: colors.background,
       borderRadius: BorderRadius.all(radius),
-      onTap: $on.click,
-      child: btn,
+      child: InkWell(
+        splashColor: colors.splashColor.withOpacity(.3),
+        focusColor: colors.focus,
+        hoverColor: colors.hover,
+        highlightColor: colors.highlight,
+        borderRadius: BorderRadius.all(radius),
+        onTap: $on.click,
+        child: btn,
+      ),
     );
   }
 
@@ -136,41 +141,83 @@ class WButton extends StatelessWidget
 }
 
 class TypeButtonColor {
+  late Color background;
   late Color splashColor;
   late Color display;
   late Color hover;
   late Color inner;
   late Color focus;
   late Color highlight;
+  late Color borderColor;
   TypeButtonColor({
+    required this.background,
     required this.splashColor,
     required this.display,
     required this.hover,
     required this.inner,
     required this.focus,
     required this.highlight,
+    required this.borderColor,
   });
   factory TypeButtonColor.byPlain(
-      MaterialColor baseColor, bool plain, mouseState) {
+      MaterialColor baseColor, bool plain, mouseState, type) {
     TypeButtonColor result;
-    if (plain) {
-      result = TypeButtonColor(
-        splashColor: baseColor.shade100,
-        display: baseColor.shade100,
-        hover: baseColor.shade400,
-        inner: mouseState.isMouseOver ? baseColor.shade50 : baseColor.shade600,
-        focus: baseColor.shade500,
-        highlight: baseColor.shade700,
-      );
+    if (type == null) {
+      baseColor = cfgGlobal.color.primary;
+      if (plain) {
+        result = TypeButtonColor(
+            background: CfgGlobal.blankColor.withAlpha(150),
+            splashColor: CfgGlobal.blankColor,
+            display: CfgGlobal.blankColor,
+            hover: CfgGlobal.blankColor.withAlpha(150),
+            inner: mouseState.isMouseOver
+                ? cfgGlobal.color.primary.shade400
+                : Colors.grey,
+            focus: CfgGlobal.blankColor,
+            highlight: CfgGlobal.blankColor,
+            borderColor: mouseState.isMouseOver
+                ? cfgGlobal.color.primary.shade400
+                : Colors.grey.shade300);
+      } else {
+        result = TypeButtonColor(
+            background: CfgGlobal.blankColor.withAlpha(150),
+            splashColor: baseColor.shade100,
+            display: baseColor.shade50,
+            hover: CfgGlobal.blankColor.withAlpha(150),
+            inner: mouseState.isMouseOver
+                ? cfgGlobal.color.primary.shade400
+                : Colors.grey,
+            focus: baseColor.shade50,
+            highlight: baseColor.shade100,
+            borderColor: mouseState.isMouseOver
+                ? cfgGlobal.color.primary.shade400
+                : Colors.grey.shade300);
+      }
     } else {
-      result = TypeButtonColor(
-        splashColor: baseColor.shade500,
-        display: baseColor.shade400,
-        hover: baseColor.shade50,
-        inner: mouseState.isMouseOver ? baseColor.shade900 : baseColor.shade600,
-        focus: baseColor.shade300,
-        highlight: baseColor.shade100,
-      );
+      if (plain) {
+        result = TypeButtonColor(
+          background: baseColor.withAlpha(50),
+          splashColor: baseColor.shade100,
+          display: baseColor.shade100,
+          hover: baseColor.shade400,
+          inner:
+              mouseState.isMouseOver ? baseColor.shade50 : baseColor.shade600,
+          focus: baseColor.shade500,
+          highlight: baseColor.shade700,
+          borderColor: baseColor,
+        );
+      } else {
+        result = TypeButtonColor(
+          background: baseColor.withAlpha(255),
+          splashColor: baseColor.shade500,
+          display: baseColor.shade400,
+          hover: baseColor.shade300,
+          inner: baseColor.shade50,
+          focus: baseColor.shade300,
+          highlight: baseColor.shade100,
+          borderColor: baseColor,
+        );
+      }
     }
     return result;
   }
@@ -201,7 +248,7 @@ var buttonTypes = [
 
 class WButtonProp extends BaseProp {
   late String size;
-  late String type;
+  late String? type;
   late bool plain;
   late bool round;
   late bool circle;
@@ -227,7 +274,7 @@ class WButtonProp extends BaseProp {
     active,
   }) {
     this.size = buttonSize.contains(size) ? size : 'small';
-    this.type = buttonTypes.contains(type) ? type : 'info';
+    this.type = buttonTypes.contains(type) ? type : null;
     this.plain = plain ?? false;
     this.round = round ?? false;
     this.circle = circle ?? false;
