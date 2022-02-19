@@ -86,6 +86,8 @@ class CfgGlobal {
     padding: const EdgeInsets.all(14),
   );
 
+  WCarouselStyle carousel = WCarouselStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -227,11 +229,31 @@ class WPadding {
 }
 
 class WColor {
+  static const MaterialColor white = MaterialColor(
+    _greyPrimaryValue,
+    <int, Color>{
+      50: Color(0xFFFFFFFF),
+      100: Color(0xFFFFFFFF),
+      200: Color(0xFFFFFFFF),
+      300: Color(0xFFFFFFFF),
+      350: Color(
+          0xFFD6D6D6), // only for raised button while pressed in light theme
+      400: Color(0xFFFFFFFF),
+      500: Color(_greyPrimaryValue),
+      600: Color(0xFFFFFFFF),
+      700: Color(0xFFFFFFFF),
+      800: Color(0xFFFFFFFF),
+      850: Color(0xFFFFFFFF), // only for background color in dark theme
+      900: Color(0xFFFFFFFF),
+    },
+  );
+  static const int _greyPrimaryValue = 0xFFFFFFFF;
   MaterialColor primary = CfgGlobal.primaryColor;
   MaterialColor success = Colors.green;
   MaterialColor waring = Colors.orange;
   MaterialColor danger = Colors.pink;
   MaterialColor info = Colors.grey;
+  MaterialColor def = white;
 
   WColor._privateConstrucor();
   static final WColor _instance = WColor._privateConstrucor();
@@ -250,7 +272,7 @@ class WColor {
                     ? danger
                     : k == 'info'
                         ? info
-                        : info;
+                        : def;
   }
 }
 

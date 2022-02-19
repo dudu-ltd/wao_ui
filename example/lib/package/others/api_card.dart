@@ -54,7 +54,6 @@ class ApiCard extends StatelessWidget {
             padding: EdgeInsets.zero,
             spacing: 0,
           ),
-          props: WCardProp(shadow: 'hover'),
           slots: WCardSlot([
             Image.network(
                 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'),
@@ -133,33 +132,30 @@ class ApiCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: SingleChildScrollView(
-        clipBehavior: Clip.none,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('WCard'),
-            ____________________________________,
-            const Text('基本用法'),
-            ____________________________________,
-            basic,
-            ____________________________________,
-            const Text('简单卡片'),
-            ____________________________________,
-            simple,
-            ____________________________________,
-            const Text('带图片'),
-            ____________________________________,
-            picture,
-            ____________________________________,
-            const Text('卡片阴影'),
-            ____________________________________,
-            shadow,
-            ____________________________________,
-          ],
-        ),
+    return SingleChildScrollView(
+      clipBehavior: Clip.none,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('WCard'),
+          ____________________________________,
+          const Text('基本用法'),
+          ____________________________________,
+          basic,
+          ____________________________________,
+          const Text('简单卡片'),
+          ____________________________________,
+          simple,
+          ____________________________________,
+          const Text('带图片'),
+          ____________________________________,
+          picture,
+          ____________________________________,
+          const Text('卡片阴影'),
+          ____________________________________,
+          shadow,
+          ____________________________________,
+        ],
       ),
     );
   }
