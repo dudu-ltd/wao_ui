@@ -16,7 +16,8 @@ class ApiCarousel extends StatelessWidget {
               children: [
                 Text('默认 Hover 指示器触发'),
                 WCarousel(
-                  props: WCarouselProp(height: '150px'),
+                  props: WCarouselProp(
+                      height: '150px', initialIndex: 2, trigger: 'hover'),
                   style: WCarouselStyle(height: 250),
                   slots: WCarouselSlot(
                     List.generate(
@@ -107,6 +108,45 @@ class ApiCarousel extends StatelessWidget {
                       style: TextStyle(fontSize: 80, color: Colors.white),
                     ),
                   ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget get img {
+    var picList = [
+      'https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF',
+      'https://t7.baidu.com/it/u=963301259,1982396977&fm=193&f=GIF',
+      'https://t7.baidu.com/it/u=1575628574,1150213623&fm=193&f=GIF',
+      'https://t7.baidu.com/it/u=737555197,308540855&fm=193&f=GIF',
+      'https://t7.baidu.com/it/u=91673060,7145840&fm=193&f=GIF',
+      'https://t7.baidu.com/it/u=2291349828,4144427007&fm=193&f=GIF',
+      'https://t7.baidu.com/it/u=1297102096,3476971300&fm=193&f=GIF',
+      'https://t7.baidu.com/it/u=852388090,130270862&fm=193&f=GIF',
+      'https://t7.baidu.com/it/u=4283365501,347124022&fm=193&f=GIF',
+    ];
+    return WCarousel(
+      style: WCarouselStyle(height: 600),
+      props: WCarouselProp(
+        height: '200px',
+        type: 'card',
+        interval: 4000,
+        initialIndex: 2,
+        trigger: 'hover',
+      ),
+      slots: WCarouselSlot(
+        List.generate(
+          picList.length,
+          (index) {
+            return WCarouselItem(
+              slots: WCarouselItemSlot(
+                Image.network(
+                  picList[index],
+                  fit: BoxFit.fitWidth,
                 ),
               ),
             );
@@ -215,6 +255,7 @@ class ApiCarousel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          img,
           const Text('WCarousel'),
           ____________________________________,
           const Text('基本用法'),

@@ -5,7 +5,6 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_widget.dart';
-import 'package:wao_ui/core/utils/layout_util.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 import '../../core/utils/color_util.dart';
@@ -43,7 +42,7 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
   late Animation<double> arrowOffset;
   late Animation<double> arrowOpacity;
   late double _width = 0;
-  late ValueNotifier currentIndex = ValueNotifier(0.0);
+  late ValueNotifier currentIndex = ValueNotifier(widget.$props.initialIndex);
   late int lastIndex = 0;
 
   late AnimationController itemController;
@@ -63,20 +62,24 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
   late Animation<double> blurItemScale;
   late Animation<double> focusItemScale;
 
+  bool isHover = false;
+
   @override
   void initState() {
     super.initState();
     initItemOffset();
     int ttl = 300;
-    arrowController =
-        AnimationController(duration: Duration(milliseconds: ttl), vsync: this);
-    arrowOpacity =
-        Tween(begin: widget.$props.isArrowAlways ? 1.0 : 0.0, end: 1.0)
-            .animate(arrowController);
-    arrowOffset =
-        Tween(begin: widget.$props.isArrowAlways ? 16.0 : 0.0, end: 16.0)
-            .animate(arrowController)
-          ..addListener(updateView);
+    if (!widget.$props.isArrowNever) {
+      arrowController = AnimationController(
+          duration: Duration(milliseconds: ttl), vsync: this);
+      arrowOpacity =
+          Tween(begin: widget.$props.isArrowAlways ? 1.0 : 0.0, end: 1.0)
+              .animate(arrowController);
+      arrowOffset =
+          Tween(begin: widget.$props.isArrowAlways ? 16.0 : 0.0, end: 16.0)
+              .animate(arrowController)
+            ..addListener(updateView);
+    }
 
     itemController =
         AnimationController(duration: Duration(milliseconds: ttl), vsync: this);
@@ -122,6 +125,19 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
         initItemOffset();
       });
     });
+
+    autoplay();
+  }
+
+  autoplay() {
+    if (widget.$props.autoplay) {
+      Timer.periodic(
+        Duration(milliseconds: widget.$props.interval),
+        (timer) {
+          if (!isHover) next();
+        },
+      );
+    }
   }
 
   Color get focusColor {
@@ -148,7 +164,7 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
 
   setNextItemOffset() {
     for (var i = 0; i < items.length; i++) {
-      var value = (i - acturalCurrent) * itemWidth;
+      var value = (i - currentIndex.value) * itemWidth;
       if (nextItemOffset.length == i) {
         nextItemOffset.add(value);
       } else {
@@ -168,17 +184,12 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
     return widget.$props.isCard ? _width * .83 : _width * 1;
   }
 
-  double get acturalCurrent {
-    var acturalCurrent = currentIndex.value % items.length;
-    return acturalCurrent + 0.0;
-  }
-
   initItemOffset() {
     for (var i = 0; i < items.length; i++) {
       if (itemOffset.length == i) {
-        itemOffset.add(itemWidth * i);
+        itemOffset.add(itemWidth * (i - currentIndex.value));
       } else {
-        itemOffset[i] = itemWidth * i;
+        itemOffset[i] = itemWidth * (i - currentIndex.value);
       }
     }
     lastItemOffset = itemOffset.sublist(0);
@@ -202,11 +213,13 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-    arrowOffset.removeListener(updateView);
-    itemOffsetAnimation.removeListener(updateItemOffset);
-    arrowController.dispose();
+    // arrowOffset.removeListener(updateView);
+    // itemOffsetAnimation.removeListener(updateItemOffset);
+    if (!widget.$props.isArrowNever) {
+      arrowController.dispose();
+    }
+
     itemController.dispose();
     currentIndex.dispose();
 
@@ -220,8 +233,14 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      onEnter: (event) => arrowController.forward(),
-      onExit: (event) => arrowController.reverse(),
+      onEnter: (event) {
+        isHover = true;
+        arrowController.forward();
+      },
+      onExit: (event) {
+        isHover = false;
+        arrowController.reverse();
+      },
       child: widget.$props.isOutside
           ? Column(
               children: [inner, nav],
@@ -238,7 +257,7 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
       );
       return widget.$props.isCard
           ? Transform.scale(
-              scale: acturalCurrent == index
+              scale: currentIndex.value == index
                   ? focusItemScale.value
                   : lastIndex == index
                       ? blurItemScale.value
@@ -247,7 +266,7 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
             )
           : offset;
     });
-    var zIndexHigh = itemList[acturalCurrent.toInt()];
+    var zIndexHigh = itemList[currentIndex.value.toInt()];
     itemList.remove(zIndexHigh);
     itemList.add(zIndexHigh);
     return SizedBox(
@@ -255,7 +274,7 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
       width: double.infinity,
       child: ClipRect(
         child: Stack(
-          alignment: FractionalOffset(.6, .5),
+          fit: StackFit.expand,
           children: [
             ...itemList,
             ...arrow,
@@ -269,14 +288,15 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
   Widget get nav {
     var handles = List.generate(items.length, (index) {
       return Listener(
-        onPointerHover: (e) {
-          lastIndex = currentIndex.value.toInt();
-          currentIndex.value = index;
-        },
+        behavior: HitTestBehavior.translucent,
+        onPointerHover:
+            widget.$props.triggerIsHover ? (e) => switchTo(index) : null,
+        onPointerUp:
+            !widget.$props.triggerIsHover ? (e) => switchTo(index) : null,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(4.0, 12.0, 4.0, 12.0),
           child: ColoredBox(
-            color: acturalCurrent == index
+            color: currentIndex.value == index
                 ? focusBtnColor.value ?? focusColor
                 : lastIndex == index
                     ? blurBtnColor.value ?? blurColor
@@ -315,10 +335,7 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
         child: Opacity(
           opacity: arrowOpacity.value,
           child: WButton(
-            on: WButtonOn(click: () {
-              lastIndex = currentIndex.value.toInt();
-              currentIndex.value--;
-            }),
+            on: WButtonOn(click: prev),
             slots: WButtonSlot(
               Icons.arrow_back_ios_rounded,
             ),
@@ -336,10 +353,7 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
         child: Opacity(
           opacity: arrowOpacity.value,
           child: WButton(
-            on: WButtonOn(click: () {
-              lastIndex = currentIndex.value.toInt();
-              currentIndex.value++;
-            }),
+            on: WButtonOn(click: next),
             slots: WButtonSlot(
               Icons.arrow_forward_ios,
             ),
@@ -354,6 +368,29 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
     ];
   }
 
+  switchTo(n) {
+    lastIndex = currentIndex.value.toInt();
+    currentIndex.value = n;
+  }
+
+  prev() {
+    var p = currentIndex.value - 1;
+    if (!widget.$props.loop && p < 0) {
+      return;
+    }
+    var prev = p % items.length;
+    switchTo(prev);
+  }
+
+  next() {
+    var n = currentIndex.value + 1;
+    if (!widget.$props.loop && n >= items.length) {
+      return;
+    }
+    var next = n % items.length;
+    switchTo(next);
+  }
+
   double? get height {
     return widget.$style.height ?? cfgGlobal.carousel.height;
   }
@@ -364,11 +401,14 @@ class WCarouselOn extends BaseOn {
 }
 
 class WCarouselProp extends BaseProp {
+  @Deprecated(
+    '\n请通过 WCarouselStyle.height 进行高度设置。\n样式属性由 style 统一管理。\nUse "WCarouselStyle height" instead. ',
+  )
   late String? height;
   late int initialIndex;
   late String trigger;
   late bool autoplay;
-  late double interval;
+  late int interval;
   late String indicatorPosition;
   late String arrow;
   late String? type;
@@ -376,7 +416,10 @@ class WCarouselProp extends BaseProp {
   late Axis direction;
 
   WCarouselProp({
-    this.height,
+    @Deprecated(
+      '\n请通过 WCarouselStyle.height 进行高度设置。\n样式属性由 style 统一管理。\nUse "WCarouselStyle height" instead. ',
+    )
+        this.height,
     this.initialIndex = 0,
     this.trigger = 'click',
     this.autoplay = true,
@@ -385,7 +428,7 @@ class WCarouselProp extends BaseProp {
     this.arrow = 'hover',
     this.type,
     this.loop = true,
-    this.direction = Axis.horizontal,
+    this.direction = Axis.horizontal, // TODO 做方向性的实现。
   });
 
   get isOutside {
@@ -398,6 +441,14 @@ class WCarouselProp extends BaseProp {
 
   get isArrowAlways {
     return arrow == 'always';
+  }
+
+  get isArrowNever {
+    return arrow == 'never';
+  }
+
+  get triggerIsHover {
+    return trigger == 'hover';
   }
 }
 
