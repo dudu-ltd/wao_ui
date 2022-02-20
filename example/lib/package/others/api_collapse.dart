@@ -109,7 +109,10 @@ class ApiCollapse extends StatelessWidget {
             return Row(
               children: const [
                 Text('一致性 Consistency'),
-                Icon(Icons.info),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.info, size: 13),
+                ),
               ],
             );
           }),
@@ -135,20 +138,25 @@ class ApiCollapse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const Text('WCollapse'),
-      ____________________________________,
-      const Text('基本用法'),
-      ____________________________________,
-      basic,
-      const Text('手风琴效果'),
-      ____________________________________,
-      accordion,
-      ____________________________________,
-      const Text('自定义'),
-      ____________________________________,
-      custom,
-    ]);
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('WCollapse'),
+          ____________________________________,
+          const Text('基本用法'),
+          ____________________________________,
+          basic,
+          const Text('手风琴效果'),
+          ____________________________________,
+          accordion,
+          ____________________________________,
+          const Text('自定义'),
+          ____________________________________,
+          custom,
+        ],
+      ),
+    );
   }
 
   final Widget ____________________________________ = const SizedBox(
