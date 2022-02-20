@@ -4,13 +4,18 @@ import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_style.dart';
 
-// ignore: must_be_immutable
 abstract class BaseWidget<O extends BaseOn, P extends BaseProp,
     S extends BaseSlot, T extends BaseStyle> extends Widget {
-  late O $on;
-  late P $props;
-  late S $slots;
-  late T $style;
+  final O $on;
+  final P $props;
+  final S $slots;
+  final T $style;
 
-  BaseWidget({Key? key}) : super(key: key);
+  const BaseWidget({
+    Key? key,
+    required this.$props,
+    required this.$slots,
+    required this.$style,
+    required this.$on,
+  }) : super(key: key);
 }
