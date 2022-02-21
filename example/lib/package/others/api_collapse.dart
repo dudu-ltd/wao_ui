@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/others/w_collapse.dart';
 import 'package:wao_ui/wao_ui.dart';
 
@@ -96,6 +97,20 @@ class ApiCollapse extends StatelessWidget {
         value: activeNames,
         accordion: true,
       ),
+      slots: WCollapseSlot(inner),
+    );
+  }
+
+  Widget get custom {
+    var activeNames = 1;
+    return WCollapse(
+      on: WCollapseOn(change: (e) {
+        print(e);
+      }),
+      props: WCollapseProp(
+        value: activeNames,
+        accordion: true,
+      ),
       slots: WCollapseSlot([
         WCollapseItem(
           props: WCollapseItemProp(
@@ -122,20 +137,6 @@ class ApiCollapse extends StatelessWidget {
     );
   }
 
-  Widget get custom {
-    var activeNames = 1;
-    return WCollapse(
-      on: WCollapseOn(change: (e) {
-        print(e);
-      }),
-      props: WCollapseProp(
-        value: activeNames,
-        accordion: true,
-      ),
-      slots: WCollapseSlot(inner),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -146,14 +147,32 @@ class ApiCollapse extends StatelessWidget {
           ____________________________________,
           const Text('基本用法'),
           ____________________________________,
-          basic,
+          borderWrapper(
+            basic,
+            Border.all(color: Colors.grey.shade200),
+            true,
+            margin: EdgeInsets.fromLTRB(50, 10, 50, 10),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          ),
           const Text('手风琴效果'),
           ____________________________________,
-          accordion,
+          borderWrapper(
+            accordion,
+            Border.all(color: Colors.grey.shade200),
+            true,
+            margin: EdgeInsets.fromLTRB(50, 10, 50, 10),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          ),
           ____________________________________,
           const Text('自定义'),
           ____________________________________,
-          custom,
+          borderWrapper(
+            custom,
+            Border.all(color: Colors.grey.shade200),
+            true,
+            margin: EdgeInsets.fromLTRB(50, 10, 50, 10),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          ),
         ],
       ),
     );
