@@ -52,6 +52,8 @@ class WDialog extends StatelessWidget
   showInPage(context) {
     // ignore: prefer_function_declarations_over_variables
     var builder = (BuildContext context) {
+      var title =
+          $slots.title ?? ($props.title != null ? Text($props.title!) : null);
       return AlertDialog(
         titlePadding: const EdgeInsets.fromLTRB(5.0, 2.0, 5.0, 0.0),
         contentPadding: const EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 5.0),
@@ -59,21 +61,21 @@ class WDialog extends StatelessWidget
         buttonPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         titleTextStyle: const TextStyle(fontSize: 16.0, color: Colors.black),
         alignment: getAlign(context),
-        title:
-            $slots.title ?? ($props.title != null ? Text($props.title!) : null),
+        title: title != null ? centerWrapper(title) : null,
         content: $slots.first,
         actions: $slots.footer == null
             ? []
             : List.generate(
                 $slots.footer!.length,
                 (index) {
-                  return Listener(
+                  var foot = Listener(
                     onPointerUp: (e) {
                       $props.visible = false;
                       Navigator.of(context).pop();
                     },
                     child: $slots.footer![index],
                   );
+                  return centerWrapper(foot);
                 },
               ),
       );
@@ -81,6 +83,15 @@ class WDialog extends StatelessWidget
     showDialog(context: context, builder: builder).then((val) {
       $props.visible = false;
     });
+  }
+
+  centerWrapper(Widget child) {
+    return $props.center
+        ? Align(
+            alignment: Alignment.center,
+            child: child,
+          )
+        : child;
   }
 
   Alignment getAlign(BuildContext ctx) {
@@ -119,25 +130,24 @@ class WDialog extends StatelessWidget
     $props.visible = false;
     return $slots.btn != null
         ? InkWell(
-            onTap: () {
-              $props.visible = true;
-            },
+            onTap: open,
             child: $slots.btn!,
           )
         : $props.btn != null
             ? TextButton(
-                onPressed: () {
-                  $props.visible = true;
-                },
+                onPressed: open,
                 child: Text($props.btn!),
               )
             : const Offstage();
   }
+
+  open() {
+    $props.visible = true;
+    show?.call(true);
+  }
 }
 
-class WDialogOn extends BaseOn {
-  late Function beforeClose;
-}
+class WDialogOn extends BaseOn {}
 
 class WDialogProp extends BaseProp {
   Observable? _visibleListener;
@@ -166,6 +176,7 @@ class WDialogProp extends BaseProp {
   late bool closeOnClickModal;
   late bool closeOnPressEscape;
   late bool showClose;
+  late Function? beforeClose;
   late bool center;
   late bool destroyOnClose;
 
@@ -184,6 +195,7 @@ class WDialogProp extends BaseProp {
     closeOnClickModal,
     closeOnPressEscape,
     showClose,
+    this.beforeClose,
     center,
     destroyOnClose,
   }) {

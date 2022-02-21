@@ -21,6 +21,7 @@ export 'src/form/w_checkbox.dart';
 export 'src/form/w_color_picker.dart';
 export 'src/form/w_date_picker.dart';
 export 'src/form/w_date_time_picker.dart';
+export 'src/form/w_form.dart';
 export 'src/form/w_input_number.dart';
 export 'src/form/w_input.dart';
 export 'src/form/w_radio.dart';
