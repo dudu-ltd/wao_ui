@@ -75,6 +75,7 @@ class WButton extends StatelessWidget
                 : null,
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if ($props.icon != null)
                 Icon(
@@ -212,7 +213,7 @@ class TypeButtonColor {
           splashColor: baseColor.shade500,
           display: baseColor.shade400,
           hover: baseColor.shade300,
-          inner: baseColor.shade50,
+          inner: type == 'text' ? CfgGlobal.primaryColor : baseColor.shade50,
           focus: baseColor.shade300,
           highlight: baseColor.shade100,
           borderColor: baseColor,
