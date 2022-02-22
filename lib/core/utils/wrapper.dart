@@ -119,10 +119,10 @@ Widget shadowWrapper(
   need = true,
 }) {
   if (need) {
-    return Container(
+    return DecoratedBox(
       child: child,
       decoration: BoxDecoration(
-        color: backgroundColor ?? Colors.white,
+        // color: backgroundColor ?? Colors.white,
         // borderRadius: BorderRadius.circular(8.0),
         boxShadow: shadow,
       ),
