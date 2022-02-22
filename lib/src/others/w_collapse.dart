@@ -38,7 +38,7 @@ class WCollapse extends StatefulWidget
   State<WCollapse> createState() => _WCollapseState();
 }
 
-class _WCollapseState extends State<WCollapse> {
+class _WCollapseState extends State<WCollapse> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -52,6 +52,12 @@ class _WCollapseState extends State<WCollapse> {
         }
       });
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -204,7 +210,7 @@ class WCollapseItem extends StatefulWidget
 }
 
 class _WCollapseItemState extends State<WCollapseItem>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController expandController;
 
   late Animation<double> iconAngle;
@@ -248,6 +254,7 @@ class _WCollapseItemState extends State<WCollapseItem>
   void dispose() {
     widget.$props._expanded.dispose();
     expandController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

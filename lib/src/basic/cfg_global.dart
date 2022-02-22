@@ -45,6 +45,8 @@ class CfgGlobal {
 
   WInputStyle input = WInputStyle();
 
+  WDrawerStyle drawer = WDrawerStyle();
+
   WSelectStyle select = WSelectStyle(
     width: 240,
     panelBorder: 1,
@@ -1111,9 +1113,17 @@ class WDividerStyle extends BaseStyle {
 }
 
 class WDrawerStyle extends BaseStyle {
+  List<BoxShadow>? boxShadow;
+  TextStyle? titleTextStyle;
+  double? titlePadding;
+  double? bodyPadding;
   WDrawerStyle({
     double? width,
     double? height,
+    this.boxShadow,
+    this.titleTextStyle,
+    this.titlePadding,
+    this.bodyPadding,
   }) : super(
           height: height,
           width: width,

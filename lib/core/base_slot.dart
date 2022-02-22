@@ -22,6 +22,28 @@ class BaseSlot {
     return defaultSlot == null ? Container() : defaultSlot![0];
   }
 
+  Widget get col {
+    if (hasDefault) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: defaultSlot!,
+      );
+    }
+    return Column();
+  }
+
+  Widget get row {
+    if (hasDefault) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: defaultSlot!,
+      );
+    }
+    return Row();
+  }
+
   set defaultSlotBefore(defaultSlotBefore) {
     _defaultSlotBefore = defaultSlotBefore;
     setDefaultSlot();

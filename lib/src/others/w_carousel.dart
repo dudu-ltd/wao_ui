@@ -37,7 +37,8 @@ class WCarousel extends StatefulWidget
   State<WCarousel> createState() => _WCarouselState();
 }
 
-class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
+class _WCarouselState extends State<WCarousel>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController arrowController;
   late Animation<double> arrowOffset;
   late Animation<double> arrowOpacity;
@@ -228,6 +229,7 @@ class _WCarouselState extends State<WCarousel> with TickerProviderStateMixin {
 
     blurItemController.dispose();
     focusItemController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override

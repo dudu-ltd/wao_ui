@@ -34,7 +34,7 @@ class WDialog extends StatelessWidget
   Function(bool value)? show;
 
   setShow(BuildContext context) {
-    show = (bool visible) {
+    show = ([bool visible = true]) {
       if (!visible) return;
       if ($props.appendToBody) {
         showInWindow(context);
