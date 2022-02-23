@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
 class WBreadcrumb extends StatelessWidget
@@ -49,7 +49,7 @@ class WBreadcrumb extends StatelessWidget
     checkSlot();
     var defaultSlot = $slots.defaultSlotBefore;
 
-    $slots.defaultSlot = defaultSlot is List<Widget>
+    defaultSlot = defaultSlot is List<Widget>
         ? defaultSlot
         : defaultSlot is Widget
             ? [defaultSlot]
@@ -89,10 +89,10 @@ class WBreadcrumb extends StatelessWidget
 
   List<Widget> get slotJoinSep {
     List<Widget> result = [];
-    var slotLen = $slots.defaultSlot!.length;
+    var slotLen = defaultSlot.length;
     var _sep = sep;
     for (var i = 0; i < slotLen; i++) {
-      result.add($slots.defaultSlot![i]);
+      result.add(defaultSlot[i]);
       if (i < slotLen - 1) {
         result.add(_sep);
       }

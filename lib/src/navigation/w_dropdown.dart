@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
 // ignore: implementation_imports
@@ -68,7 +68,7 @@ class _WDropdownState extends State<WDropdown>
     GlobalKey popupKey = GlobalKey();
     Widget btn = Row(
       children: [
-        widget.$slots.first,
+        widget.first,
         if (widget.$props.splitButton)
           _triggerWrapper(
               const Icon(Icons.keyboard_arrow_down_rounded), popupKey),
@@ -85,8 +85,7 @@ class _WDropdownState extends State<WDropdown>
       onCanceled: () => open = false,
       offset: const Offset(0, 30),
       itemBuilder: (context) {
-        var items =
-            (widget.$slots.dropdown as WDropdownMenu).$slots.defaultSlot ?? [];
+        var items = (widget.$slots.dropdown as WDropdownMenu).defaultSlot;
         return List.generate(items.length, (index) {
           return PopupMenuItem(
             child: items[index],
@@ -132,15 +131,20 @@ class WDropdown extends StatefulWidget
     $slots = slots ?? WDropdownSlot(null);
     $style = style ?? WDropdownStyle();
     init();
+  }
+  @override
+  setDefaultSlotSub() {
     if ($slots.defaultSlotBefore is String) {
-      $slots.defaultSlot = [
+      return [
         WButton(
           slots: WButtonSlot($slots.defaultSlotBefore!),
           props: WButtonProp(type: $props.type),
         )
       ];
     }
+    return [];
   }
+
   @override
   _WDropdownState createState() => _WDropdownState();
 }
@@ -218,7 +222,7 @@ class WDropdownMenu extends StatelessWidget
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: $slots.defaultSlot ?? [],
+        children: defaultSlot,
       ),
     );
   }
@@ -252,7 +256,7 @@ class WDropdownItem extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return $slots.first;
+    return first;
   }
 }
 

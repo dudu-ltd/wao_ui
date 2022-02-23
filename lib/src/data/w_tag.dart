@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
@@ -70,8 +70,8 @@ class WTag extends StatelessWidget
   }
 
   List<Widget> get tagMain {
-    if ($slots.defaultSlot != null) {
-      return $slots.defaultSlot!;
+    if (defaultSlot != null) {
+      return defaultSlot;
     } else {
       if ($slots.defaultSlotBefore is String) {
         var text = $slots.defaultSlotBefore as String;

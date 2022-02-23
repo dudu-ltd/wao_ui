@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
@@ -259,10 +259,10 @@ class WCheckboxGroup extends StatelessWidget
       $on.change?.call($props.value.value);
       sizeLimit();
     });
-    if ($slots.defaultSlot != null) {
-      var len = $slots.defaultSlot!.length;
+    if (defaultSlot != null) {
+      var len = defaultSlot.length;
       for (var i = 0; i < len; i++) {
-        var child = $slots.defaultSlot![i];
+        var child = defaultSlot[i];
         if (child is WCheckbox) {
           child.$props.value = $props.value;
           child.$props.disabled |= $props.disabled;
@@ -283,58 +283,55 @@ class WCheckboxGroup extends StatelessWidget
 
   void sizeLimit() {
     var checked = 0;
-    if ($slots.defaultSlot != null) {
-      var len = $slots.defaultSlot!.length;
+    var len = defaultSlot.length;
+    for (var i = 0; i < len; i++) {
+      var child = defaultSlot[i];
+      if (child is WCheckbox) {
+        if (child.$props.isSelected) checked++;
+      } else if (child is WCheckboxButton) {
+        if (child.$props.isSelected) checked++;
+      }
+    }
+    if (checked > $props.min && ($props.max == null || checked < $props.max!)) {
       for (var i = 0; i < len; i++) {
-        var child = $slots.defaultSlot![i];
+        var child = defaultSlot[i];
         if (child is WCheckbox) {
-          if (child.$props.isSelected) checked++;
+          child.$props.disabled = child.$props._disabled;
         } else if (child is WCheckboxButton) {
-          if (child.$props.isSelected) checked++;
+          child.$props.disabled = child.$props._disabled;
         }
       }
-      if (checked > $props.min &&
-          ($props.max == null || checked < $props.max!)) {
-        for (var i = 0; i < len; i++) {
-          var child = $slots.defaultSlot![i];
-          if (child is WCheckbox) {
+    } else if (($props.max != null && checked >= $props.max!)) {
+      for (var i = 0; i < len; i++) {
+        var child = defaultSlot[i];
+        if (child is WCheckbox) {
+          if (!child.$props.isSelected) {
+            child.$props.disabled = true;
+          } else {
             child.$props.disabled = child.$props._disabled;
-          } else if (child is WCheckboxButton) {
+          }
+        } else if (child is WCheckboxButton) {
+          if (!child.$props.isSelected) {
+            child.$props.disabled = true;
+          } else {
             child.$props.disabled = child.$props._disabled;
           }
         }
-      } else if (($props.max != null && checked >= $props.max!)) {
-        for (var i = 0; i < len; i++) {
-          var child = $slots.defaultSlot![i];
-          if (child is WCheckbox) {
-            if (!child.$props.isSelected) {
-              child.$props.disabled = true;
-            } else {
-              child.$props.disabled = child.$props._disabled;
-            }
-          } else if (child is WCheckboxButton) {
-            if (!child.$props.isSelected) {
-              child.$props.disabled = true;
-            } else {
-              child.$props.disabled = child.$props._disabled;
-            }
+      }
+    } else if (checked == $props.min) {
+      for (var i = 0; i < len; i++) {
+        var child = defaultSlot[i];
+        if (child is WCheckbox) {
+          if (child.$props.isSelected) {
+            child.$props.disabled = true;
+          } else {
+            child.$props.disabled = child.$props._disabled;
           }
-        }
-      } else if (checked == $props.min) {
-        for (var i = 0; i < len; i++) {
-          var child = $slots.defaultSlot![i];
-          if (child is WCheckbox) {
-            if (child.$props.isSelected) {
-              child.$props.disabled = true;
-            } else {
-              child.$props.disabled = child.$props._disabled;
-            }
-          } else if (child is WCheckboxButton) {
-            if (child.$props.isSelected) {
-              child.$props.disabled = true;
-            } else {
-              child.$props.disabled = child.$props._disabled;
-            }
+        } else if (child is WCheckboxButton) {
+          if (child.$props.isSelected) {
+            child.$props.disabled = true;
+          } else {
+            child.$props.disabled = child.$props._disabled;
           }
         }
       }
@@ -344,17 +341,15 @@ class WCheckboxGroup extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var children = <Widget>[];
-    if ($slots.hasDefault) {
-      int len = $slots.defaultSlot!.length;
-      for (var i = 0; i < len; i++) {
-        children.add(
-          marginWrapper(
-            $slots.defaultSlot![i],
-            const EdgeInsets.only(left: 12),
-            needMargin: i != 0 && $slots.first is WCheckbox,
-          ),
-        );
-      }
+    int len = defaultSlot.length;
+    for (var i = 0; i < len; i++) {
+      children.add(
+        marginWrapper(
+          defaultSlot[i],
+          const EdgeInsets.only(left: 12),
+          needMargin: i != 0 && first is WCheckbox,
+        ),
+      );
     }
     return Row(children: children);
   }

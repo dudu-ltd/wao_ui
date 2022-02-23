@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/wao_ui.dart';
 

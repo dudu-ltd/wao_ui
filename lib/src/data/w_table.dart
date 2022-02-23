@@ -6,7 +6,7 @@ import 'package:simple_observable/simple_observable.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/data/w_empty.dart';
@@ -69,9 +69,9 @@ class _WTableState extends State<WTable> {
 
   List<DataColumn> get columns2 {
     return List.generate(
-        widget.$slots.defaultSlot!.length,
+        widget.defaultSlot.length,
         (i) => DataColumn(
-            label: getHeader(widget.$slots.defaultSlot as List<WTableColumn>)));
+            label: getHeader(widget.defaultSlot as List<WTableColumn>)));
   }
 
   List<DataRow> get rows2 {
@@ -88,8 +88,7 @@ class _WTableState extends State<WTable> {
       constWrapper(
         Column(
           children: [
-            if (widget.$props.showHeader!)
-              getHeader(widget.$slots.defaultSlot as List<WTableColumn>),
+            if (widget.$props.showHeader!) getHeader(widget.defaultSlot),
             if (widget.$props.data.isEmpty && whenEmpty != null)
               whenEmpty!
             else if (widget.$props.height != null)
@@ -112,12 +111,11 @@ class _WTableState extends State<WTable> {
     return WEmpty(slots: WEmptySlot(const Text('暂无数据')));
   }
 
-  addActualFields(
-      List<WTableColumn> _columns, List<WTableColumn> actualFields) {
+  addActualFields(List<Widget> _columns, List<WTableColumn> actualFields) {
     for (var column in _columns) {
-      if (column.$slots.defaultSlot is List<WTableColumn>) {
-        addActualFields(
-            column.$slots.defaultSlot as List<WTableColumn>, actualFields);
+      column as WTableColumn;
+      if (column.defaultSlot is List<WTableColumn>) {
+        addActualFields(column.defaultSlot as List<WTableColumn>, actualFields);
       } else {
         actualFields.add(column);
       }
@@ -125,9 +123,7 @@ class _WTableState extends State<WTable> {
   }
 
   List<WTableColumn> get actualFields {
-    List<WTableColumn> columns = widget.$slots.defaultSlot != null
-        ? widget.$slots.defaultSlot as List<WTableColumn>
-        : <WTableColumn>[];
+    List<Widget> columns = widget.defaultSlot;
     var actualFields = <WTableColumn>[];
     addActualFields(columns, actualFields);
     return actualFields;
@@ -220,8 +216,8 @@ class _WTableState extends State<WTable> {
     var child;
     if (column.$slots.defaultSlotBefore is Function) {
       child = (column.$slots.defaultSlotBefore as Function).call(row);
-    } else if (column.$slots.defaultSlot is List<Widget>) {
-      child = column.$slots.defaultSlot;
+    } else if (column.defaultSlot is List<Widget>) {
+      child = column.defaultSlot;
     } else {
       var val = column.$props.prop == null ? '' : column.$props.prop?.call(row);
       child = Text(
@@ -249,13 +245,13 @@ class _WTableState extends State<WTable> {
           );
   }
 
-  Widget getHeader(List<WTableColumn> columns) {
+  Widget getHeader(List<Widget> columns) {
     var columnLen = columns.length;
     return Row(
       children: List.generate(
         columnLen,
         (index) {
-          WTableColumn column = columns[index];
+          WTableColumn column = columns[index] as WTableColumn;
           Widget th = getHeaderCell(column);
           var header = column.$props.width == null
               ? Expanded(
@@ -274,12 +270,11 @@ class _WTableState extends State<WTable> {
   Widget getHeaderCell(WTableColumn column) {
     if (column.$slots.header != null) {
       return column.$slots.header!.call(column);
-    } else if (column.$slots.defaultSlot != null &&
-        column.$slots.defaultSlot!.isNotEmpty) {
+    } else if (column.defaultSlot != null && column.defaultSlot.isNotEmpty) {
       return Column(
         children: [
           Text(column.$props.label ?? ''),
-          getHeader(column.$slots.defaultSlot as List<WTableColumn>)
+          getHeader(column.defaultSlot as List<WTableColumn>)
         ],
       );
     }

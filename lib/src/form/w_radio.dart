@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
@@ -229,10 +229,10 @@ class WRadioGroup extends StatelessWidget
     $style = style ?? WRadioGroupStyle();
     init();
 
-    if ($slots.defaultSlot != null) {
-      var len = $slots.defaultSlot!.length;
+    if (defaultSlot != null) {
+      var len = defaultSlot.length;
       for (var i = 0; i < len; i++) {
-        var child = $slots.defaultSlot![i];
+        var child = defaultSlot[i];
         if (child is WRadio) {
           child.$props.value = $props.value;
           child.$props.disabled |= $props.disabled;
@@ -251,17 +251,15 @@ class WRadioGroup extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var children = <Widget>[];
-    if ($slots.hasDefault) {
-      int len = $slots.defaultSlot!.length;
-      for (var i = 0; i < len; i++) {
-        children.add(
-          marginWrapper(
-            $slots.defaultSlot![i],
-            const EdgeInsets.only(left: 8),
-            needMargin: i != 0 && $slots.first is WRadio,
-          ),
-        );
-      }
+    int len = defaultSlot.length;
+    for (var i = 0; i < len; i++) {
+      children.add(
+        marginWrapper(
+          defaultSlot[i],
+          const EdgeInsets.only(left: 8),
+          needMargin: i != 0 && first is WRadio,
+        ),
+      );
     }
     return Row(children: children);
   }

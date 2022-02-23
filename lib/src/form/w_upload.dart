@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
@@ -102,8 +102,8 @@ class _WUploadState extends State<WUpload> {
       bindPicker(widget.$slots.trigger!, _triggers);
     }
 
-    if (widget.$slots.hasDefault) {
-      for (var child in widget.$slots.defaultSlot!) {
+    if (widget.defaultSlot.isEmpty) {
+      for (var child in widget.defaultSlot) {
         if (widget.$slots.trigger == null) {
           bindPicker(child, _triggers);
         } else {
@@ -462,7 +462,7 @@ class _WUploadState extends State<WUpload> {
           .height;
     }
 
-    for (var child in widget.$slots.defaultSlot!) {
+    for (var child in widget.defaultSlot) {
       if (child.key != null) {
         var newHeight = ((child.key as GlobalKey)
                 .currentContext!
