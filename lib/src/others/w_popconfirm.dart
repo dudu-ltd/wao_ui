@@ -7,18 +7,9 @@ import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WPopconfirm extends StatelessWidget
-    implements
-        BaseWidget<WPopconfirmOn, WPopconfirmProp, WPopconfirmSlot,
+    with
+        BaseMixins<WPopconfirmOn, WPopconfirmProp, WPopconfirmSlot,
             WPopconfirmStyle> {
-  @override
-  late final WPopconfirmOn $on;
-  @override
-  late final WPopconfirmProp $props;
-  @override
-  late final WPopconfirmSlot $slots;
-  @override
-  late WPopconfirmStyle $style;
-
   WPopconfirm({
     Key? key,
     WPopconfirmOn? on,
@@ -30,6 +21,7 @@ class WPopconfirm extends StatelessWidget
     $props = props ?? WPopconfirmProp();
     $slots = slots ?? WPopconfirmSlot(null);
     $style = style ?? WPopconfirmStyle();
+    init();
   }
 
   @override

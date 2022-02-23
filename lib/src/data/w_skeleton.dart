@@ -6,17 +6,7 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WSkeleton extends StatelessWidget
-    implements
-        BaseWidget<WSkeletonOn, WSkeletonProp, WSkeletonSlot, WSkeletonStyle> {
-  @override
-  late final WSkeletonOn $on;
-  @override
-  late final WSkeletonProp $props;
-  @override
-  late final WSkeletonSlot $slots;
-  @override
-  late WSkeletonStyle $style;
-
+    with BaseMixins<WSkeletonOn, WSkeletonProp, WSkeletonSlot, WSkeletonStyle> {
   WSkeleton({
     Key? key,
     WSkeletonOn? on,
@@ -28,6 +18,7 @@ class WSkeleton extends StatelessWidget
     $props = props ?? WSkeletonProp();
     $slots = slots ?? WSkeletonSlot(null);
     $style = style ?? WSkeletonStyle();
+    init();
   }
 
   @override

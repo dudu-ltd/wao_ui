@@ -12,16 +12,7 @@ import '../../core/base_form_prop.dart';
 import '../../core/utils/layout_util.dart';
 
 class WSlider extends StatefulWidget
-    implements BaseWidget<WSliderOn, WSliderProp, WSliderSlot, WSliderStyle> {
-  @override
-  late final WSliderOn $on;
-  @override
-  late final WSliderProp $props;
-  @override
-  late final WSliderSlot $slots;
-  @override
-  late WSliderStyle $style;
-
+    with BaseMixins<WSliderOn, WSliderProp, WSliderSlot, WSliderStyle> {
   WSlider({
     Key? key,
     WSliderOn? on,
@@ -33,6 +24,7 @@ class WSlider extends StatefulWidget
     $props = props ?? WSliderProp();
     $slots = slots ?? WSliderSlot(null);
     $style = style ?? WSliderStyle();
+    init();
   }
 
   @override

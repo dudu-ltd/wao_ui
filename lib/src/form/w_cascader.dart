@@ -27,17 +27,7 @@ import '../../core/utils/color_util.dart';
 ///
 ///
 class WCascader extends StatefulWidget
-    implements
-        BaseWidget<WCascaderOn, WCascaderProp, WCascaderSlot, WCascaderStyle> {
-  @override
-  late final WCascaderOn $on;
-  @override
-  late final WCascaderProp $props;
-  @override
-  late final WCascaderSlot $slots;
-  @override
-  late final WCascaderStyle $style;
-
+    with BaseMixins<WCascaderOn, WCascaderProp, WCascaderSlot, WCascaderStyle> {
   WCascader({
     Key? key,
     WCascaderOn? on,
@@ -49,6 +39,7 @@ class WCascader extends StatefulWidget
     $props = props ?? WCascaderProp(options: []);
     $slots = slots ?? WCascaderSlot(null);
     $style = style ?? WCascaderStyle();
+    init();
   }
 
   @override
@@ -224,21 +215,9 @@ class WCascaderSlot extends BaseSlot {
 ///
 ///
 class WCascaderPanel extends StatefulWidget
-    implements
-        BaseWidget<WCascaderPanelOn, WCascaderPanelProp, WCascaderPanelSlot,
+    with
+        BaseMixins<WCascaderPanelOn, WCascaderPanelProp, WCascaderPanelSlot,
             WCascaderPanelStyle> {
-  @override
-  late final WCascaderPanelOn $on;
-
-  @override
-  late final WCascaderPanelProp $props;
-
-  @override
-  late final WCascaderPanelSlot $slots;
-
-  @override
-  late final WCascaderPanelStyle $style;
-
   WCascaderPanel({
     Key? key,
     WCascaderPanelOn? on,
@@ -250,6 +229,7 @@ class WCascaderPanel extends StatefulWidget
     $props = props ?? WCascaderPanelProp(options: []);
     $slots = slots ?? WCascaderPanelSlot(null);
     $style = style ?? WCascaderPanelStyle();
+    init();
   }
 
   @override
@@ -509,21 +489,9 @@ class PanelPropDetail {
 ///
 ///
 class WCascaderMenu extends StatelessWidget
-    implements
-        BaseWidget<WCascaderMenuOn, WCascaderMenuProp, WCascaderMenuSlot,
+    with
+        BaseMixins<WCascaderMenuOn, WCascaderMenuProp, WCascaderMenuSlot,
             WCascaderMenuStyle> {
-  @override
-  late final WCascaderMenuOn $on;
-
-  @override
-  late final WCascaderMenuProp $props;
-
-  @override
-  late final WCascaderMenuSlot $slots;
-
-  @override
-  late final WCascaderMenuStyle $style;
-
   WCascaderMenu({
     Key? key,
     WCascaderMenuOn? on,
@@ -535,6 +503,7 @@ class WCascaderMenu extends StatelessWidget
     $props = props ?? WCascaderMenuProp(options: []);
     $slots = slots ?? WCascaderMenuSlot(null);
     $style = style ?? WCascaderMenuStyle();
+    init();
   }
 
   @override
@@ -633,21 +602,9 @@ class WCascaderMenuSlot extends BaseSlot {
 ///
 ///
 class WCascaderNode extends StatelessWidget
-    implements
-        BaseWidget<WCascaderNodeOn, WCascaderNodeProp, WCascaderNodeSlot,
+    with
+        BaseMixins<WCascaderNodeOn, WCascaderNodeProp, WCascaderNodeSlot,
             WCascaderNodeStyle> {
-  @override
-  late final WCascaderNodeOn $on;
-
-  @override
-  late final WCascaderNodeProp $props;
-
-  @override
-  late final WCascaderNodeSlot $slots;
-
-  @override
-  late final WCascaderNodeStyle $style;
-
   bool get _isSelected {
     // print(
     //     '${$props.pickedValue} \n contains \n ${$props.option} \n is ${$props.pickedValue.contains($props.option)}');
@@ -666,6 +623,7 @@ class WCascaderNode extends StatelessWidget
     $props = props ?? WCascaderNodeProp(option: {});
     $slots = slots ?? WCascaderNodeSlot(null);
     $style = style ?? WCascaderNodeStyle();
+    init();
   }
 
   @override

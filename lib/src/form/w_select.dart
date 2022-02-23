@@ -18,16 +18,7 @@ import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 // TODO option disable 状态下，如果当前值刚好是禁用项，需要清掉
 class WSelect extends StatefulWidget
-    implements BaseWidget<WSelectOn, WSelectProp, WSelectSlot, WSelectStyle> {
-  @override
-  late final WSelectOn $on;
-  @override
-  late final WSelectProp $props;
-  @override
-  late final WSelectSlot $slots;
-  @override
-  late final WSelectStyle $style;
-
+    with BaseMixins<WSelectOn, WSelectProp, WSelectSlot, WSelectStyle> {
   late Widget Function(WSelect, _WSelectState)? panelInsideBuilder;
 
   late List<dynamic> Function()? valueLabelsGetter;
@@ -45,6 +36,7 @@ class WSelect extends StatefulWidget
     $props = props ?? WSelectProp();
     $slots = slots ?? WSelectSlot(null);
     $style = style ?? WSelectStyle();
+    init();
 
     if (panelInsideBuilder != null) {
       assert(valueLabelsGetter != null,
@@ -641,21 +633,9 @@ class WSelectSlot extends BaseSlot {
 }
 
 class WOptionGroup extends StatelessWidget
-    implements
-        BaseWidget<WOptionGroupOn, WOptionGroupProp, WOptionGroupSlot,
+    with
+        BaseMixins<WOptionGroupOn, WOptionGroupProp, WOptionGroupSlot,
             WOptionGroupStyle> {
-  @override
-  late final WOptionGroupOn $on;
-
-  @override
-  late final WOptionGroupProp $props;
-
-  @override
-  late final WOptionGroupSlot $slots;
-
-  @override
-  late final WOptionGroupStyle $style;
-
   WOptionGroup({
     Key? key,
     WOptionGroupOn? on,
@@ -667,6 +647,7 @@ class WOptionGroup extends StatelessWidget
     $props = props ?? WOptionGroupProp(label: '');
     $slots = slots ?? WOptionGroupSlot(null);
     $style = style ?? WOptionGroupStyle();
+    init();
   }
 
   @override
@@ -707,16 +688,7 @@ class WOptionGroupSlot extends BaseSlot {
 }
 
 class WOption extends StatelessWidget
-    implements BaseWidget<WOptionOn, WOptionProp, WOptionSlot, WOptionStyle> {
-  @override
-  late final WOptionOn $on;
-  @override
-  late final WOptionProp $props;
-  @override
-  late final WOptionSlot $slots;
-  @override
-  late final WOptionStyle $style;
-
+    with BaseMixins<WOptionOn, WOptionProp, WOptionSlot, WOptionStyle> {
   WOption({
     Key? key,
     WOptionOn? on,
@@ -728,6 +700,7 @@ class WOption extends StatelessWidget
     $props = props ?? WOptionProp();
     $slots = slots ?? WOptionSlot(null);
     $style = style ?? WOptionStyle();
+    init();
   }
 
   @override

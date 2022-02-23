@@ -32,7 +32,7 @@ export 'src/form/w_transfer.dart';
 export 'src/form/w_upload.dart';
 export 'src/navigation/w_breadcrumb.dart';
 export 'src/navigation/w_dropdown.dart';
-export 'src/navigation/w_nav_menu.dart';
+export 'src/navigation/w_menu.dart';
 export 'src/navigation/w_page_header.dart';
 export 'src/navigation/w_steps.dart';
 export 'src/navigation/w_tabs.dart';

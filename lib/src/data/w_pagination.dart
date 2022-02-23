@@ -9,18 +9,9 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
 
 class WPagination extends StatefulWidget
-    implements
-        BaseWidget<WPaginationOn, WPaginationProp, WPaginationSlot,
+    with
+        BaseMixins<WPaginationOn, WPaginationProp, WPaginationSlot,
             WPaginationStyle> {
-  @override
-  late final WPaginationOn $on;
-  @override
-  late final WPaginationProp $props;
-  @override
-  late final WPaginationSlot $slots;
-  @override
-  late WPaginationStyle $style;
-
   WPagination({
     Key? key,
     WPaginationOn? on,
@@ -32,6 +23,7 @@ class WPagination extends StatefulWidget
     $props = props ?? WPaginationProp();
     $slots = slots ?? WPaginationSlot(null);
     $style = style ?? WPaginationStyle();
+    init();
   }
 
   @override

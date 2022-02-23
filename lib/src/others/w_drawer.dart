@@ -51,16 +51,7 @@ class _WDrawerState extends State<WDrawer> {
 }
 
 class WDrawer extends StatefulWidget
-    implements BaseWidget<WDrawerOn, WDrawerProp, WDrawerSlot, WDrawerStyle> {
-  @override
-  late final WDrawerOn $on;
-  @override
-  late final WDrawerProp $props;
-  @override
-  late final WDrawerSlot $slots;
-  @override
-  late WDrawerStyle $style;
-
+    with BaseMixins<WDrawerOn, WDrawerProp, WDrawerSlot, WDrawerStyle> {
   WDrawer({
     Key? key,
     WDrawerOn? on,
@@ -72,6 +63,7 @@ class WDrawer extends StatefulWidget
     $props = props ?? WDrawerProp();
     $slots = slots ?? WDrawerSlot(null);
     $style = style ?? WDrawerStyle();
+    init();
   }
   @override
   State<WDrawer> createState() => _WDrawerState();
@@ -154,15 +146,7 @@ class WDrawerSlot extends BaseSlot {
 }
 
 class WDrawerView extends StatefulWidget
-    implements BaseWidget<WDrawerOn, WDrawerProp, WDrawerSlot, WDrawerStyle> {
-  @override
-  late final WDrawerOn $on;
-  @override
-  late final WDrawerProp $props;
-  @override
-  late final WDrawerSlot $slots;
-  @override
-  late final WDrawerStyle $style;
+    with BaseMixins<WDrawerOn, WDrawerProp, WDrawerSlot, WDrawerStyle> {
   WDrawerView({
     Key? key,
     WDrawerOn? on,
@@ -174,6 +158,7 @@ class WDrawerView extends StatefulWidget
     $props = props ?? WDrawerProp();
     $slots = slots ?? WDrawerSlot(null);
     $style = style ?? WDrawerStyle();
+    init();
   }
 
   @override

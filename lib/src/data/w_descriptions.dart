@@ -16,8 +16,8 @@ var borderSide = BorderSide(
 
 ///
 class WDescriptions extends StatefulWidget
-    implements
-        BaseWidget<WDescriptionsOn, WDescriptionsProp, WDescriptionsSlot,
+    with
+        BaseMixins<WDescriptionsOn, WDescriptionsProp, WDescriptionsSlot,
             WDescriptionsStyle> {
   @override
   late final WDescriptionsOn $on;
@@ -257,18 +257,9 @@ class WDescriptionsSlot extends BaseSlot {
 
 ///
 class WDescriptionsItem extends StatelessWidget
-    implements
-        BaseWidget<WDescriptionsItemOn, WDescriptionsItemProp,
+    with
+        BaseMixins<WDescriptionsItemOn, WDescriptionsItemProp,
             WDescriptionsItemSlot, WDescriptionsItemStyle> {
-  @override
-  late final WDescriptionsItemOn $on;
-  @override
-  late final WDescriptionsItemProp $props;
-  @override
-  late final WDescriptionsItemSlot $slots;
-  @override
-  late WDescriptionsItemStyle $style;
-
   WDescriptionsItem({
     Key? key,
     WDescriptionsItemOn? on,
@@ -280,6 +271,7 @@ class WDescriptionsItem extends StatelessWidget
     $props = props ?? WDescriptionsItemProp();
     $slots = slots ?? WDescriptionsItemSlot(null);
     $style = style ?? WDescriptionsItemStyle();
+    init();
   }
 
   @override
@@ -378,11 +370,11 @@ class WDescriptionsItemSlot extends BaseSlot {
   Widget? label;
   WDescriptionsItemSlot(defaultSlotBefore, {this.label})
       : super(defaultSlotBefore);
-  @override
-  setDefaultSlot() {
-    super.setDefaultSlot();
-    if (defaultSlotBefore is String) {
-      defaultSlot = [SelectableText(defaultSlotBefore)];
-    }
-  }
+  // @override
+  // setDefaultSlot() {
+  //   super.setDefaultSlot();
+  //   if (defaultSlotBefore is String) {
+  //     defaultSlot = [SelectableText(defaultSlotBefore)];
+  //   }
+  // }
 }

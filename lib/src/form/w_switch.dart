@@ -11,16 +11,7 @@ import 'package:wao_ui/wao_ui.dart';
 
 // TODO 补充组件焦点切换事件的调用
 class WSwitch extends StatefulWidget
-    implements BaseWidget<WSwitchOn, WSwitchProp, WSwitchSlot, WSwitchStyle> {
-  @override
-  late final WSwitchOn $on;
-  @override
-  late final WSwitchProp $props;
-  @override
-  late final WSwitchSlot $slots;
-  @override
-  late WSwitchStyle $style;
-
+    with BaseMixins<WSwitchOn, WSwitchProp, WSwitchSlot, WSwitchStyle> {
   bool flutterStyle;
 
   WSwitch({
@@ -35,6 +26,7 @@ class WSwitch extends StatefulWidget
     $props = props ?? WSwitchProp();
     $slots = slots ?? WSwitchSlot(null);
     $style = style ?? WSwitchStyle();
+    init();
   }
   @override
   _WSwitchState createState() => _WSwitchState();

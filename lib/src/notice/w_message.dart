@@ -6,17 +6,7 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WMessage extends StatelessWidget
-    implements
-        BaseWidget<WMessageOn, WMessageProp, WMessageSlot, WMessageStyle> {
-  @override
-  late final WMessageOn $on;
-  @override
-  late final WMessageProp $props;
-  @override
-  late final WMessageSlot $slots;
-  @override
-  late WMessageStyle $style;
-
+    with BaseMixins<WMessageOn, WMessageProp, WMessageSlot, WMessageStyle> {
   WMessage({
     Key? key,
     WMessageOn? on,
@@ -28,6 +18,7 @@ class WMessage extends StatelessWidget
     $props = props ?? WMessageProp();
     $slots = slots ?? WMessageSlot(null);
     $style = style ?? WMessageStyle();
+    init();
   }
 
   @override

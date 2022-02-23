@@ -12,16 +12,7 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/data/w_empty.dart';
 
 class WTable extends StatefulWidget
-    implements BaseWidget<WTableOn, WTableProp, WTableSlot, WTableStyle> {
-  @override
-  late final WTableOn $on;
-  @override
-  late final WTableProp $props;
-  @override
-  late final WTableSlot $slots;
-  @override
-  late WTableStyle $style;
-
+    with BaseMixins<WTableOn, WTableProp, WTableSlot, WTableStyle> {
   WTable({
     Key? key,
     WTableOn? on,
@@ -33,6 +24,7 @@ class WTable extends StatefulWidget
     $props = props ?? WTableProp();
     $slots = slots ?? WTableSlot(null);
     $style = style ?? WTableStyle();
+    init();
   }
 
   late Observable<List> _dataListener;
@@ -448,8 +440,8 @@ class WTableSlot extends BaseSlot {
 }
 
 class WTableColumn extends StatelessWidget
-    implements
-        BaseWidget<WTableColumnOn, WTableColumnProp, WTableColumnSlot,
+    with
+        BaseMixins<WTableColumnOn, WTableColumnProp, WTableColumnSlot,
             WTableColumnStyle> {
   @override
   late final WTableColumnOn $on;

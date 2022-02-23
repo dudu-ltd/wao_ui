@@ -8,16 +8,7 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WCard extends StatelessWidget
-    implements BaseWidget<WCardOn, WCardProp, WCardSlot, WCardStyle> {
-  @override
-  late final WCardOn $on;
-  @override
-  late final WCardProp $props;
-  @override
-  late final WCardSlot $slots;
-  @override
-  late WCardStyle $style;
-
+    with BaseMixins<WCardOn, WCardProp, WCardSlot, WCardStyle> {
   WCard({
     Key? key,
     WCardOn? on,
@@ -29,6 +20,7 @@ class WCard extends StatelessWidget
     $props = props ?? WCardProp();
     $slots = slots ?? WCardSlot(null);
     $style = style ?? WCardStyle();
+    init();
   }
 
   bool isHover = false;

@@ -6,18 +6,9 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WInfiniteScroll extends StatelessWidget
-    implements
-        BaseWidget<WInfiniteScrollOn, WInfiniteScrollProp, WInfiniteScrollSlot,
+    with
+        BaseMixins<WInfiniteScrollOn, WInfiniteScrollProp, WInfiniteScrollSlot,
             WInfiniteScrollStyle> {
-  @override
-  late final WInfiniteScrollOn $on;
-  @override
-  late final WInfiniteScrollProp $props;
-  @override
-  late final WInfiniteScrollSlot $slots;
-  @override
-  late WInfiniteScrollStyle $style;
-
   WInfiniteScroll({
     Key? key,
     WInfiniteScrollOn? on,
@@ -29,6 +20,7 @@ class WInfiniteScroll extends StatelessWidget
     $props = props ?? WInfiniteScrollProp();
     $slots = slots ?? WInfiniteScrollSlot(null);
     $style = style ?? WInfiniteScrollStyle();
+    init();
   }
 
   @override
