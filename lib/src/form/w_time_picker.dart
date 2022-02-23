@@ -6,18 +6,9 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WTimePicker extends StatelessWidget
-    implements
-        BaseWidget<WTimePickerOn, WTimePickerProp, WTimePickerSlot,
+    with
+        BaseMixins<WTimePickerOn, WTimePickerProp, WTimePickerSlot,
             WTimePickerStyle> {
-  @override
-  late final WTimePickerOn $on;
-  @override
-  late final WTimePickerProp $props;
-  @override
-  late final WTimePickerSlot $slots;
-  @override
-  late WTimePickerStyle $style;
-
   WTimePicker({
     Key? key,
     WTimePickerOn? on,

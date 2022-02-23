@@ -16,16 +16,7 @@ import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 class WUpload extends StatefulWidget
-    implements BaseWidget<WUploadOn, WUploadProp, WUploadSlot, WUploadStyle> {
-  @override
-  late final WUploadOn $on;
-  @override
-  late final WUploadProp $props;
-  @override
-  late final WUploadSlot $slots;
-  @override
-  late WUploadStyle $style;
-
+    with BaseMixins<WUploadOn, WUploadProp, WUploadSlot, WUploadStyle> {
   late _WUploadState state;
 
   WUpload({
@@ -39,6 +30,7 @@ class WUpload extends StatefulWidget
     $props = props ?? WUploadProp();
     $slots = slots ?? WUploadSlot(null);
     $style = style ?? WUploadStyle();
+    init();
   }
 
   @override

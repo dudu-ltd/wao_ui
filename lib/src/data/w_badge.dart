@@ -7,20 +7,9 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:simple_observable/simple_observable.dart';
 
 class WBadge extends StatefulWidget
-    implements BaseWidget<WBadgeOn, WBadgeProp, WBadgeSlot, WBadgeStyle> {
+    with BaseMixins<WBadgeOn, WBadgeProp, WBadgeSlot, WBadgeStyle> {
   @override
   _WBadgeState createState() => _WBadgeState();
-
-  @override
-  late final WBadgeOn $on;
-
-  @override
-  late final WBadgeProp $props;
-
-  @override
-  late final WBadgeSlot $slots;
-  @override
-  late WBadgeStyle $style;
 
   WBadge(
     Widget? defaultSlot, {
@@ -34,6 +23,7 @@ class WBadge extends StatefulWidget
     $props = props ?? WBadgeProp();
     $slots = slots ?? WBadgeSlot(defaultSlot);
     $style = style ?? WBadgeStyle();
+    init();
   }
 }
 

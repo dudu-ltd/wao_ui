@@ -6,18 +6,9 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WContainerLayout extends StatefulWidget
-    implements
-        BaseWidget<WContainerLayoutOn, WContainerLayoutProp,
+    with
+        BaseMixins<WContainerLayoutOn, WContainerLayoutProp,
             WContainerLayoutSlot, WContainerLayoutStyle> {
-  @override
-  late final WContainerLayoutOn $on;
-  @override
-  late final WContainerLayoutProp $props;
-  @override
-  late final WContainerLayoutSlot $slots;
-  @override
-  late WContainerLayoutStyle $style;
-
   WContainerLayout({
     Key? key,
     WContainerLayoutOn? on,
@@ -29,6 +20,7 @@ class WContainerLayout extends StatefulWidget
     $props = props ?? WContainerLayoutProp();
     $slots = slots ?? WContainerLayoutSlot(null);
     $style = style ?? WContainerLayoutStyle();
+    init();
   }
 
   static Color devideColor = Colors.grey.shade50;

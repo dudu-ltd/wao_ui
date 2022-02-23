@@ -9,16 +9,7 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 class WRadio extends StatefulWidget
-    implements BaseWidget<WRadioOn, WRadioProp, WRadioSlot, WRadioStyle> {
-  @override
-  late final WRadioOn $on;
-  @override
-  late final WRadioProp $props;
-  @override
-  late final WRadioSlot $slots;
-  @override
-  late WRadioStyle $style;
-
+    with BaseMixins<WRadioOn, WRadioProp, WRadioSlot, WRadioStyle> {
   WRadio({
     Key? key,
     WRadioOn? on,
@@ -30,6 +21,7 @@ class WRadio extends StatefulWidget
     $props = props ?? WRadioProp();
     $slots = slots ?? WRadioSlot(null);
     $style = style ?? WRadioStyle();
+    init();
   }
 
   @override
@@ -221,18 +213,9 @@ class WRadioSlot extends BaseSlot {
 }
 
 class WRadioGroup extends StatelessWidget
-    implements
-        BaseWidget<WRadioGroupOn, WRadioGroupProp, WRadioGroupSlot,
+    with
+        BaseMixins<WRadioGroupOn, WRadioGroupProp, WRadioGroupSlot,
             WRadioGroupStyle> {
-  @override
-  late final WRadioGroupOn $on;
-  @override
-  late final WRadioGroupProp $props;
-  @override
-  late final WRadioGroupSlot $slots;
-  @override
-  late WRadioGroupStyle $style;
-
   WRadioGroup({
     Key? key,
     WRadioGroupOn? on,
@@ -244,6 +227,7 @@ class WRadioGroup extends StatelessWidget
     $props = props ?? WRadioGroupProp();
     $slots = slots ?? WRadioGroupSlot(null);
     $style = style ?? WRadioGroupStyle();
+    init();
 
     if ($slots.defaultSlot != null) {
       var len = $slots.defaultSlot!.length;
@@ -421,18 +405,9 @@ class _WRadioButtonState extends State<WRadioButton> {
 }
 
 class WRadioButton extends StatefulWidget
-    implements
-        BaseWidget<WRadioButtonOn, WRadioButtonProp, WRadioButtonSlot,
+    with
+        BaseMixins<WRadioButtonOn, WRadioButtonProp, WRadioButtonSlot,
             WRadioButtonStyle> {
-  @override
-  late final WRadioButtonOn $on;
-  @override
-  late final WRadioButtonProp $props;
-  @override
-  late final WRadioButtonSlot $slots;
-  @override
-  late WRadioButtonStyle $style;
-
   WRadioButton({
     Key? key,
     WRadioButtonOn? on,
@@ -444,6 +419,7 @@ class WRadioButton extends StatefulWidget
     $props = props ?? WRadioButtonProp();
     $slots = slots ?? WRadioButtonSlot(null);
     $style = style ?? WRadioButtonStyle();
+    init();
   }
 
   @override

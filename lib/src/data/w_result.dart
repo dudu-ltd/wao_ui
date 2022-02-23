@@ -7,16 +7,7 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
 class WResult extends StatelessWidget
-    implements BaseWidget<WResultOn, WResultProp, WResultSlot, WResultStyle> {
-  @override
-  late final WResultOn $on;
-  @override
-  late final WResultProp $props;
-  @override
-  late final WResultSlot $slots;
-  @override
-  late WResultStyle $style;
-
+    with BaseMixins<WResultOn, WResultProp, WResultSlot, WResultStyle> {
   WResult({
     Key? key,
     WResultOn? on,
@@ -28,6 +19,7 @@ class WResult extends StatelessWidget
     $props = props ?? WResultProp();
     $slots = slots ?? WResultSlot(null);
     $style = style ?? WResultStyle();
+    init();
   }
 
   @override

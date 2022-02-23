@@ -6,17 +6,7 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WPopover extends StatelessWidget
-    implements
-        BaseWidget<WPopoverOn, WPopoverProp, WPopoverSlot, WPopoverStyle> {
-  @override
-  late final WPopoverOn $on;
-  @override
-  late final WPopoverProp $props;
-  @override
-  late final WPopoverSlot $slots;
-  @override
-  late WPopoverStyle $style;
-
+    with BaseMixins<WPopoverOn, WPopoverProp, WPopoverSlot, WPopoverStyle> {
   WPopover({
     Key? key,
     WPopoverOn? on,
@@ -28,6 +18,7 @@ class WPopover extends StatelessWidget
     $props = props ?? WPopoverProp();
     $slots = slots ?? WPopoverSlot(null);
     $style = style ?? WPopoverStyle();
+    init();
   }
 
   @override

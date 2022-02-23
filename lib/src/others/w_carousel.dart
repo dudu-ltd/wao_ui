@@ -10,17 +10,7 @@ import 'package:wao_ui/wao_ui.dart';
 import '../../core/utils/color_util.dart';
 
 class WCarousel extends StatefulWidget
-    implements
-        BaseWidget<WCarouselOn, WCarouselProp, WCarouselSlot, WCarouselStyle> {
-  @override
-  late final WCarouselOn $on;
-  @override
-  late final WCarouselProp $props;
-  @override
-  late final WCarouselSlot $slots;
-  @override
-  late WCarouselStyle $style;
-
+    with BaseMixins<WCarouselOn, WCarouselProp, WCarouselSlot, WCarouselStyle> {
   WCarousel({
     Key? key,
     WCarouselOn? on,
@@ -32,6 +22,7 @@ class WCarousel extends StatefulWidget
     $props = props ?? WCarouselProp();
     $slots = slots ?? WCarouselSlot(null);
     $style = style ?? WCarouselStyle();
+    init();
   }
   @override
   State<WCarousel> createState() => _WCarouselState();
@@ -459,21 +450,9 @@ class WCarouselSlot extends BaseSlot {
 }
 
 class WCarouselItem extends StatefulWidget
-    implements
-        BaseWidget<WCarouselItemOn, WCarouselItemProp, WCarouselItemSlot,
+    with
+        BaseMixins<WCarouselItemOn, WCarouselItemProp, WCarouselItemSlot,
             WCarouselItemStyle> {
-  @override
-  late final WCarouselItemOn $on;
-
-  @override
-  late final WCarouselItemProp $props;
-
-  @override
-  late final WCarouselItemSlot $slots;
-
-  @override
-  late final WCarouselItemStyle $style;
-
   WCarouselItem({
     Key? key,
     WCarouselItemOn? on,
@@ -485,6 +464,7 @@ class WCarouselItem extends StatefulWidget
     $props = props ?? WCarouselItemProp();
     $slots = slots ?? WCarouselItemSlot(null);
     $style = style ?? WCarouselItemStyle();
+    init();
   }
   @override
   State<WCarouselItem> createState() => _WCarouselItemState();

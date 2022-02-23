@@ -40,23 +40,14 @@ class PlainTreeProp extends BaseProp {
 }
 
 class PlainTree extends StatefulWidget
-    implements
-        BaseWidget<PlainTreeOn, PlainTreeProp, PlainTreeSlot, PlainTreeStyle> {
-  @override
-  late PlainTreeOn $on;
-  @override
-  late PlainTreeProp $props;
-  @override
-  late PlainTreeSlot $slots;
-  @override
-  late PlainTreeStyle $style;
-
-  PlainTree({Key? key, on, props})
-      : this.$on = on ?? PlainTreeOn(),
-        this.$props = props ?? PlainTreeProp(data: []),
-        this.$slots = PlainTreeSlot(null),
-        super(key: key);
-
+    with BaseMixins<PlainTreeOn, PlainTreeProp, PlainTreeSlot, PlainTreeStyle> {
+  PlainTree({Key? key, on, props}) : super(key: key) {
+    $on = on ?? PlainTreeOn();
+    $props = props ?? PlainTreeProp(data: []);
+    $slots = PlainTreeSlot(null);
+    $style = PlainTreeStyle();
+    init();
+  }
   _TreeState? state;
   @override
   _TreeState createState() => state = _TreeState();

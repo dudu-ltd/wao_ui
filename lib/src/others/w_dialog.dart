@@ -7,16 +7,7 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WDialog extends StatelessWidget
-    implements BaseWidget<WDialogOn, WDialogProp, WDialogSlot, WDialogStyle> {
-  @override
-  late final WDialogOn $on;
-  @override
-  late final WDialogProp $props;
-  @override
-  late final WDialogSlot $slots;
-  @override
-  late WDialogStyle $style;
-
+    with BaseMixins<WDialogOn, WDialogProp, WDialogSlot, WDialogStyle> {
   WDialog({
     Key? key,
     WDialogOn? on,
@@ -28,6 +19,7 @@ class WDialog extends StatelessWidget
     $props = props ?? WDialogProp();
     $slots = slots ?? WDialogSlot(null);
     $style = style ?? WDialogStyle();
+    init();
     $props._widget = this;
   }
 

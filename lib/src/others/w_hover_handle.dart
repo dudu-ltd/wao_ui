@@ -8,21 +8,9 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
 
 class WHoverHandle extends StatefulWidget
-    implements
-        BaseWidget<WHoverHandleOn, WHoverHandleProp, WHoverHandleSlot,
+    with
+        BaseMixins<WHoverHandleOn, WHoverHandleProp, WHoverHandleSlot,
             WHoverHandleStyle> {
-  @override
-  late final WHoverHandleOn $on;
-
-  @override
-  late final WHoverHandleProp $props;
-
-  @override
-  late final WHoverHandleSlot $slots;
-
-  @override
-  late final WHoverHandleStyle $style;
-
   @override
   State<WHoverHandle> createState() => _WHoverHandleState();
   WHoverHandle({
@@ -36,6 +24,7 @@ class WHoverHandle extends StatefulWidget
     $props = props ?? WHoverHandleProp();
     $slots = slots ?? WHoverHandleSlot(null);
     $style = style ?? WHoverHandleStyle();
+    init();
   }
 
   bool isHover = false;

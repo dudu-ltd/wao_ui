@@ -6,17 +6,7 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WTimeline extends StatelessWidget
-    implements
-        BaseWidget<WTimelineOn, WTimelineProp, WTimelineSlot, WTimelineStyle> {
-  @override
-  late final WTimelineOn $on;
-  @override
-  late final WTimelineProp $props;
-  @override
-  late final WTimelineSlot $slots;
-  @override
-  late WTimelineStyle $style;
-
+    with BaseMixins<WTimelineOn, WTimelineProp, WTimelineSlot, WTimelineStyle> {
   WTimeline({
     Key? key,
     WTimelineOn? on,
@@ -28,6 +18,7 @@ class WTimeline extends StatelessWidget
     $props = props ?? WTimelineProp();
     $slots = slots ?? WTimelineSlot(null);
     $style = style ?? WTimelineStyle();
+    init();
   }
 
   @override
@@ -51,21 +42,9 @@ class WTimelineSlot extends BaseSlot {
 }
 
 class WTimelineItem extends StatelessWidget
-    implements
-        BaseWidget<WTimelineItemOn, WTimelineItemProp, WTimelineItemSlot,
+    with
+        BaseMixins<WTimelineItemOn, WTimelineItemProp, WTimelineItemSlot,
             WTimelineItemStyle> {
-  @override
-  late final WTimelineItemOn $on;
-
-  @override
-  late final WTimelineItemProp $props;
-
-  @override
-  late final WTimelineItemSlot $slots;
-
-  @override
-  late final WTimelineItemStyle $style;
-
   WTimelineItem({
     Key? key,
     WTimelineItemOn? on,
@@ -77,6 +56,7 @@ class WTimelineItem extends StatelessWidget
     $props = props ?? WTimelineItemProp();
     $slots = slots ?? WTimelineItemSlot(null);
     $style = style ?? WTimelineItemStyle();
+    init();
   }
 
   @override

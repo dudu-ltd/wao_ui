@@ -9,16 +9,7 @@ import 'package:wao_ui/src/basic/w_button.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 class WTag extends StatelessWidget
-    implements BaseWidget<WTagOn, WTagProp, WTagSlot, WTagStyle> {
-  @override
-  late final WTagOn $on;
-  @override
-  late final WTagProp $props;
-  @override
-  late final WTagSlot $slots;
-  @override
-  late WTagStyle $style;
-
+    with BaseMixins<WTagOn, WTagProp, WTagSlot, WTagStyle> {
   WTag({
     Key? key,
     WTagOn? on,
@@ -30,6 +21,7 @@ class WTag extends StatelessWidget
     $props = props ?? WTagProp();
     $slots = slots ?? WTagSlot(null);
     $style = style ?? WTagStyle();
+    init();
   }
 
   @override

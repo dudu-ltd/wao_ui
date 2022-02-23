@@ -6,17 +6,7 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WTooltip extends StatelessWidget
-    implements
-        BaseWidget<WTooltipOn, WTooltipProp, WTooltipSlot, WTooltipStyle> {
-  @override
-  late final WTooltipOn $on;
-  @override
-  late final WTooltipProp $props;
-  @override
-  late final WTooltipSlot $slots;
-  @override
-  late WTooltipStyle $style;
-
+    with BaseMixins<WTooltipOn, WTooltipProp, WTooltipSlot, WTooltipStyle> {
   WTooltip({
     Key? key,
     WTooltipOn? on,
@@ -28,6 +18,7 @@ class WTooltip extends StatelessWidget
     $props = props ?? WTooltipProp();
     $slots = slots ?? WTooltipSlot(null);
     $style = style ?? WTooltipStyle();
+    init();
   }
 
   @override

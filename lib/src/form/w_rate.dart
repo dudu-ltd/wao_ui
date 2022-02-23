@@ -7,16 +7,7 @@ import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WRate extends StatelessWidget
-    implements BaseWidget<WRateOn, WRateProp, WRateSlot, WRateStyle> {
-  @override
-  late final WRateOn $on;
-  @override
-  late final WRateProp $props;
-  @override
-  late final WRateSlot $slots;
-  @override
-  late WRateStyle $style;
-
+    with BaseMixins<WRateOn, WRateProp, WRateSlot, WRateStyle> {
   WRate({
     Key? key,
     WRateOn? on,
@@ -28,6 +19,7 @@ class WRate extends StatelessWidget
     $props = props ?? WRateProp();
     $slots = slots ?? WRateSlot(null);
     $style = style ?? WRateStyle();
+    init();
   }
 
   @override

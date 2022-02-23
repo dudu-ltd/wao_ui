@@ -10,17 +10,7 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WCollapse extends StatefulWidget
-    implements
-        BaseWidget<WCollapseOn, WCollapseProp, WCollapseSlot, WCollapseStyle> {
-  @override
-  late final WCollapseOn $on;
-  @override
-  late final WCollapseProp $props;
-  @override
-  late final WCollapseSlot $slots;
-  @override
-  late WCollapseStyle $style;
-
+    with BaseMixins<WCollapseOn, WCollapseProp, WCollapseSlot, WCollapseStyle> {
   WCollapse({
     Key? key,
     WCollapseOn? on,
@@ -32,6 +22,7 @@ class WCollapse extends StatefulWidget
     $props = props ?? WCollapseProp();
     $slots = slots ?? WCollapseSlot(null);
     $style = style ?? WCollapseStyle();
+    init();
   }
 
   @override
@@ -177,21 +168,9 @@ class WCollapseSlot extends BaseSlot {
 ///
 ///
 class WCollapseItem extends StatefulWidget
-    implements
-        BaseWidget<WCollapseItemOn, WCollapseItemProp, WCollapseItemSlot,
+    with
+        BaseMixins<WCollapseItemOn, WCollapseItemProp, WCollapseItemSlot,
             WCollapseItemStyle> {
-  @override
-  late final WCollapseItemOn $on;
-
-  @override
-  late final WCollapseItemProp $props;
-
-  @override
-  late final WCollapseItemSlot $slots;
-
-  @override
-  late final WCollapseItemStyle $style;
-
   WCollapseItem({
     Key? key,
     WCollapseItemOn? on,
@@ -203,6 +182,7 @@ class WCollapseItem extends StatefulWidget
     $props = props ?? WCollapseItemProp();
     $slots = slots ?? WCollapseItemSlot(null);
     $style = style ?? WCollapseItemStyle();
+    init();
   }
 
   @override

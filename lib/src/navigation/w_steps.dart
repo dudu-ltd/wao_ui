@@ -6,16 +6,7 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WSteps extends StatelessWidget
-    implements BaseWidget<WStepsOn, WStepsProp, WStepsSlot, WStepsStyle> {
-  @override
-  late final WStepsOn $on;
-  @override
-  late final WStepsProp $props;
-  @override
-  late final WStepsSlot $slots;
-  @override
-  late WStepsStyle $style;
-
+    with BaseMixins<WStepsOn, WStepsProp, WStepsSlot, WStepsStyle> {
   WSteps({
     Key? key,
     WStepsOn? on,
@@ -70,19 +61,7 @@ class WStepsSlot extends BaseSlot {
 ///
 
 class WStep extends StatelessWidget
-    implements BaseWidget<WStepOn, WStepProp, WStepSlot, WStepStyle> {
-  @override
-  late final WStepOn $on;
-
-  @override
-  late final WStepProp $props;
-
-  @override
-  late final WStepSlot $slots;
-
-  @override
-  late final WStepStyle $style;
-
+    with BaseMixins<WStepOn, WStepProp, WStepSlot, WStepStyle> {
   WStep({
     Key? key,
     WStepOn? on,
@@ -94,6 +73,7 @@ class WStep extends StatelessWidget
     $props = props ?? WStepProp();
     $slots = slots ?? WStepSlot(null);
     $style = style ?? WStepStyle();
+    init();
   }
 
   @override

@@ -9,16 +9,7 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import '../../core/utils/collect_util.dart';
 
 class WInput extends StatefulWidget
-    implements BaseWidget<WInputOn, WInputProp, WInputSlot, WInputStyle> {
-  @override
-  late final WInputOn $on;
-  @override
-  late final WInputProp $props;
-  @override
-  late final WInputSlot $slots;
-  @override
-  late final WInputStyle $style;
-
+    with BaseMixins<WInputOn, WInputProp, WInputSlot, WInputStyle> {
   WInput({
     Key? key,
     WInputOn? on,
@@ -33,6 +24,7 @@ class WInput extends StatefulWidget
     $props = props ?? WInputProp();
     $slots = slots ?? WInputSlot(null);
     $style = style ?? WInputStyle();
+    init();
   }
 
   MainAxisSize? $prefixSize;
@@ -515,18 +507,9 @@ class WInputSlot extends BaseSlot {
 }
 
 class WAutocomplete extends StatelessWidget
-    implements
-        BaseWidget<WAutocompleteOn, WAutocompleteProp, WAutocompleteSlot,
+    with
+        BaseMixins<WAutocompleteOn, WAutocompleteProp, WAutocompleteSlot,
             WAutocompleteStyle> {
-  @override
-  late final WAutocompleteOn $on;
-  @override
-  late final WAutocompleteProp $props;
-  @override
-  late final WAutocompleteSlot $slots;
-  @override
-  late WAutocompleteStyle $style;
-
   WAutocomplete({
     Key? key,
     WAutocompleteOn? on,
@@ -538,6 +521,7 @@ class WAutocomplete extends StatelessWidget
     $props = props ?? WAutocompleteProp(value: '');
     $slots = slots ?? WAutocompleteSlot(null);
     $style = style ?? WAutocompleteStyle();
+    init();
   }
 
   @override

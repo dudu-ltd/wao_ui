@@ -90,6 +90,11 @@ class CfgGlobal {
 
   WCarouselStyle carousel = WCarouselStyle();
 
+  WMenuStyle menu = WMenuStyle();
+  WSubmenuStyle submenu = WSubmenuStyle();
+  WMenuItemStyle menuItem = WMenuItemStyle();
+  WMenuItemGroupStyle menuItemGroup = WMenuItemGroupStyle();
+
   CfgGlobal._privateConstrucor();
 
   static final CfgGlobal _instance = CfgGlobal._privateConstrucor();
@@ -874,20 +879,24 @@ class WDropdownItemStyle extends BaseStyle {
         );
 }
 
-class WNavMenuStyle extends BaseStyle {
-  WNavMenuStyle({
+class WMenuStyle extends BaseStyle {
+  WMenuStyle({
     double? width,
     double? height,
+    double? minHeight,
   }) : super(
           height: height,
           width: width,
+          minHeight: minHeight,
         );
 }
 
-class WSubMenuStyle extends BaseStyle {
-  WSubMenuStyle({
+class WSubmenuStyle extends BaseStyle {
+  double? panelBorder;
+  WSubmenuStyle({
     double? width,
     double? height,
+    this.panelBorder,
   }) : super(
           height: height,
           width: width,
@@ -904,8 +913,8 @@ class WMenuItemStyle extends BaseStyle {
         );
 }
 
-class WMenuGroupStyle extends BaseStyle {
-  WMenuGroupStyle({
+class WMenuItemGroupStyle extends BaseStyle {
+  WMenuItemGroupStyle({
     double? width,
     double? height,
   }) : super(

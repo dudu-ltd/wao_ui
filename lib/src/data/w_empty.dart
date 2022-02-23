@@ -8,16 +8,7 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
 class WEmpty extends StatelessWidget
-    implements BaseWidget<WEmptyOn, WEmptyProp, WEmptySlot, WEmptyStyle> {
-  @override
-  late final WEmptyOn $on;
-  @override
-  late final WEmptyProp $props;
-  @override
-  late final WEmptySlot $slots;
-  @override
-  late WEmptyStyle $style;
-
+    with BaseMixins<WEmptyOn, WEmptyProp, WEmptySlot, WEmptyStyle> {
   WEmpty({
     Key? key,
     WEmptyOn? on,
@@ -29,6 +20,7 @@ class WEmpty extends StatelessWidget
     $props = props ?? WEmptyProp();
     $slots = slots ?? WEmptySlot(null);
     $style = style ?? WEmptyStyle();
+    init();
   }
 
   @override

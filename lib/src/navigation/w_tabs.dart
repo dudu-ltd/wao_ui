@@ -6,16 +6,7 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WTabs extends StatelessWidget
-    implements BaseWidget<WTabsOn, WTabsProp, WTabsSlot, WTabsStyle> {
-  @override
-  late final WTabsOn $on;
-  @override
-  late final WTabsProp $props;
-  @override
-  late final WTabsSlot $slots;
-  @override
-  late WTabsStyle $style;
-
+    with BaseMixins<WTabsOn, WTabsProp, WTabsSlot, WTabsStyle> {
   WTabs({
     Key? key,
     WTabsOn? on,
@@ -27,6 +18,7 @@ class WTabs extends StatelessWidget
     $props = props ?? WTabsProp();
     $slots = slots ?? WTabsSlot(null);
     $style = style ?? WTabsStyle();
+    init();
   }
 
   @override
@@ -83,20 +75,7 @@ class WTabsSlot extends BaseSlot {
 ///
 ///
 class WTabPane extends StatelessWidget
-    implements
-        BaseWidget<WTabPaneOn, WTabPaneProp, WTabPaneSlot, WTabPaneStyle> {
-  @override
-  late final WTabPaneOn $on;
-
-  @override
-  late final WTabPaneProp $props;
-
-  @override
-  late final WTabPaneSlot $slots;
-
-  @override
-  late final WTabPaneStyle $style;
-
+    with BaseMixins<WTabPaneOn, WTabPaneProp, WTabPaneSlot, WTabPaneStyle> {
   WTabPane({
     Key? key,
     WTabPaneOn? on,

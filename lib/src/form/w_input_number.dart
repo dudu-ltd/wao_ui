@@ -10,18 +10,9 @@ import 'w_input.dart';
 
 // TODO 添加对键盘上下键的监听
 class WInputNumber extends StatelessWidget
-    implements
-        BaseWidget<WInputNumberOn, WInputNumberProp, WInputNumberSlot,
+    with
+        BaseMixins<WInputNumberOn, WInputNumberProp, WInputNumberSlot,
             WInputNumberStyle> {
-  @override
-  late final WInputNumberOn $on;
-  @override
-  late final WInputNumberProp $props;
-  @override
-  late final WInputNumberSlot $slots;
-  @override
-  late WInputNumberStyle $style;
-
   WInputNumber({
     Key? key,
     WInputNumberOn? on,
@@ -33,6 +24,7 @@ class WInputNumber extends StatelessWidget
     $props = props ?? WInputNumberProp();
     $slots = slots ?? WInputNumberSlot(null);
     $style = style ?? WInputNumberStyle();
+    init();
   }
 
   @override

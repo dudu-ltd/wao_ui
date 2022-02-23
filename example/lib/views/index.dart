@@ -34,7 +34,7 @@ import 'package:example/package/form/api_transfer.dart';
 import 'package:example/package/form/api_upload.dart';
 import 'package:example/package/navigation/api_breadcrumb.dart';
 import 'package:example/package/navigation/api_dropdown.dart';
-import 'package:example/package/navigation/api_nav_menu.dart';
+import 'package:example/package/navigation/api_menu.dart';
 import 'package:example/package/navigation/api_page_header.dart';
 import 'package:example/package/navigation/api_steps.dart';
 import 'package:example/package/navigation/api_tabs.dart';
@@ -65,7 +65,7 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  late BuildContext navContext;
+  BuildContext? navContext;
 
   static final Map<String, Widget> _route = {
     'WButton': ApiButton(),
@@ -98,7 +98,7 @@ class _IndexPageState extends State<IndexPage> {
     'WUpload': ApiUpload(),
     'WBreadcrumb': ApiBreadcrumb(),
     'WDropdown': ApiDropdown(),
-    'WNavMenu': ApiNavMenu(),
+    'WMenu': ApiMenu(),
     'WPageHeader': ApiPageHeader(),
     'WSteps': ApiSteps(),
     'WTabs': ApiTabs(),
@@ -135,7 +135,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'WDrawer',
+      initialRoute: 'WMenu',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -163,7 +163,8 @@ class _IndexPageState extends State<IndexPage> {
                 nodeClick: (ctx, node) {
                   return () {
                     if (!kIsWeb) (appWindow.title = node.text);
-                    Navigator.pushNamed(navContext, node.id);
+                    if (navContext != null)
+                      Navigator.pushNamed(navContext!, node.id);
                   };
                 },
               ),
@@ -225,7 +226,7 @@ class _IndexPageState extends State<IndexPage> {
                     "children": [
                       {"id": "WBreadcrumb", "text": "WBreadcrumb"},
                       {"id": "WDropdown", "text": "WDropdown"},
-                      {"id": "WNavMenu", "text": "WNavMenu"},
+                      {"id": "WMenu", "text": "WMenu"},
                       {"id": "WPageHeader", "text": "WPageHeader"},
                       {"id": "WSteps", "text": "WSteps"},
                       {"id": "WTabs", "text": "WTabs"}

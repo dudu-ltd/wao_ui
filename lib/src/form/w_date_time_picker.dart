@@ -6,18 +6,9 @@ import 'package:wao_ui/core/base_widget.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WDateTimePicker extends StatelessWidget
-    implements
-        BaseWidget<WDateTimePickerOn, WDateTimePickerProp, WDateTimePickerSlot,
+    with
+        BaseMixins<WDateTimePickerOn, WDateTimePickerProp, WDateTimePickerSlot,
             WDateTimePickerStyle> {
-  @override
-  late final WDateTimePickerOn $on;
-  @override
-  late final WDateTimePickerProp $props;
-  @override
-  late final WDateTimePickerSlot $slots;
-  @override
-  late WDateTimePickerStyle $style;
-
   WDateTimePicker({
     Key? key,
     WDateTimePickerOn? on,
@@ -29,6 +20,7 @@ class WDateTimePicker extends StatelessWidget
     $props = props ?? WDateTimePickerProp();
     $slots = slots ?? WDateTimePickerSlot(null);
     $style = style ?? WDateTimePickerStyle();
+    init();
   }
 
   @override

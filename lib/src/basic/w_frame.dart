@@ -7,16 +7,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WFrame extends StatelessWidget
-    implements BaseWidget<WFrameOn, WFrameProp, WFrameSlot, WFrameStyle> {
-  @override
-  late final WFrameOn $on;
-  @override
-  late final WFrameProp $props;
-  @override
-  late final WFrameSlot $slots;
-  @override
-  late WFrameStyle $style;
-
+    with BaseMixins<WFrameOn, WFrameProp, WFrameSlot, WFrameStyle> {
   WFrame({
     Key? key,
     WFrameOn? on,
@@ -28,6 +19,7 @@ class WFrame extends StatelessWidget
     $props = props ?? WFrameProp();
     $slots = slots ?? WFrameSlot(null);
     $style = style ?? WFrameStyle();
+    init();
   }
 
   @override
