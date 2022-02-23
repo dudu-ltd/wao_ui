@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
@@ -72,7 +72,7 @@ class WButton extends StatelessWidget
                   color: colors.inner,
                   size: 16,
                 ),
-              $slots.defaultSlot![0],
+              defaultSlot.first,
               if ($props.iconRight != null)
                 Icon(
                   $props.iconRight,
@@ -110,7 +110,7 @@ class WButton extends StatelessWidget
   }
 
   handleDefaultSlot(TypeButtonColor colors) {
-    $slots.defaultSlot = [
+    $defaultSlot = [
       $slots.defaultSlotBefore == null
           ? Text('', style: TextStyle(color: colors.inner))
           : $slots.defaultSlotBefore is IconData

@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
@@ -29,7 +29,7 @@ class WEmpty extends StatelessWidget
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Column(
-          children: [image, description, ...($slots.defaultSlot ?? [])],
+          children: [image, description, ...defaultSlot],
         ),
       ],
     );

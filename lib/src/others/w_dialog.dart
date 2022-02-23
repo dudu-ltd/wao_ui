@@ -3,7 +3,7 @@ import 'package:simple_observable/simple_observable.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WDialog extends StatelessWidget
@@ -54,7 +54,7 @@ class WDialog extends StatelessWidget
         titleTextStyle: const TextStyle(fontSize: 16.0, color: Colors.black),
         alignment: getAlign(context),
         title: title != null ? centerWrapper(title) : null,
-        content: $slots.first,
+        content: first,
         actions: $slots.footer == null
             ? []
             : List.generate(

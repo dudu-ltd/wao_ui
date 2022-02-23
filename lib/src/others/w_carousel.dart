@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 import '../../core/utils/color_util.dart';
@@ -317,7 +317,7 @@ class _WCarouselState extends State<WCarousel>
   }
 
   List get items {
-    return widget.$slots.defaultSlot ?? [];
+    return widget.defaultSlot;
   }
 
   List<Widget> get arrow {
@@ -473,7 +473,7 @@ class WCarouselItem extends StatefulWidget
 class _WCarouselItemState extends State<WCarouselItem> {
   @override
   Widget build(BuildContext context) {
-    return widget.$slots.defaultSlot!.first;
+    return widget.defaultSlot.first;
   }
 }
 

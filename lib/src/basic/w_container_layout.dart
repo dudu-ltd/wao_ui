@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WContainerLayout extends StatefulWidget
@@ -174,9 +174,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
     // 主窗口
     middle.children.add(Expanded(
       child: FractionallySizedBox(
-        child: widget.$slots.defaultSlot == null
-            ? null
-            : widget.$slots.defaultSlot![0],
+        child: widget.defaultSlot.first,
         widthFactor: 1,
         heightFactor: 1,
         alignment: Alignment.topLeft,

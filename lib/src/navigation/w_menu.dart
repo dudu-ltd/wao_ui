@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 mixin MenuChildMixin on Widget {
-  late WMenu rootMenu;
+  WMenu? rootMenu = null;
 }
 
 class _WMenuState extends State<WMenu> {
@@ -20,8 +20,7 @@ class _WMenuState extends State<WMenu> {
     var child;
     child = ColoredBox(
       color: widget.$props.backgroundColor,
-      child:
-          widget.$props.modeIsVertical ? widget.$slots.col : widget.$slots.row,
+      child: widget.$props.modeIsVertical ? widget.col : widget.row,
     );
     if (widget.$props.modeIsVertical) {
       child = ConstrainedBox(
@@ -73,15 +72,20 @@ class WMenu extends StatefulWidget
     $slots = slots ?? WMenuSlot(null);
     $style = style ?? WMenuStyle();
     init();
-    handleSlot(
-      {
-        MenuChildMixin: (Widget child) {
-          child as MenuChildMixin;
-          child.rootMenu = this;
-        }
-      },
-    );
   }
+
+  @override
+  Map<Type, Function(Widget)> slotTypeHandles() {
+    var handles = <Type, Function(Widget)>{};
+    $slots.allowSlotTypes.forEach((element) {
+      handles[element] = (Widget child) {
+        child as MenuChildMixin;
+        child.rootMenu = this;
+      };
+    });
+    return handles;
+  }
+
   @override
   State<WMenu> createState() => _WMenuState();
 }
@@ -245,7 +249,7 @@ class _WSubmenuState extends State<WSubmenu>
 
   Widget get panelInside {
     return SizedBox(
-      child: widget.$slots.col,
+      child: widget.col,
     );
   }
 }
@@ -340,7 +344,7 @@ class WMenuItem extends StatelessWidget
         child: Align(
           child: Row(
             children: [
-              $slots.col,
+              col,
               if ($slots.title != null) $slots.title!,
             ],
           ),
@@ -348,6 +352,22 @@ class WMenuItem extends StatelessWidget
         ),
       ),
     );
+  }
+
+  @override
+  setDefaultSlotSub() {
+    if ($slots.defaultSlotBefore is String) {
+      // var w = slotToWidget($slots.defaultSlotBefore);
+      return [
+        Text(
+          $slots.defaultSlotBefore,
+          style: TextStyle(
+            color: rootMenu?.$props.textColor,
+          ),
+        )
+      ];
+    }
+    return [];
   }
 
   double get lineHeight {

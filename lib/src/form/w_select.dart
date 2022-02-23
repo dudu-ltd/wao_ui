@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/layout_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
@@ -267,7 +267,7 @@ class _WSelectState extends State<WSelect>
     if (widget.panelInsideBuilder != null) {
       return widget.panelInsideBuilder!.call(widget, this);
     }
-    var defaultPanelInside = widget.$slots.defalutEmpty
+    var defaultPanelInside = widget.defaultSlot.isEmpty
         ? Align(
             child: Text(
               widget.$props.noDataText,
@@ -278,7 +278,7 @@ class _WSelectState extends State<WSelect>
         : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: widget.$slots.defaultSlot ?? [],
+              children: widget.defaultSlot,
             ),
           );
     return SizedBox(
@@ -305,8 +305,8 @@ class _WSelectState extends State<WSelect>
     widget.$props.$valueListener.addListener(() {
       if (widget.$props.automaticDropup && !widget.$props.multiple) hidePanel();
     });
-    if (!widget.$slots.defalutEmpty) {
-      _setEvent(widget.$slots.defaultSlot);
+    if (widget.defaultSlot.isNotEmpty) {
+      _setEvent(widget.defaultSlot);
     }
   }
 
@@ -323,7 +323,7 @@ class _WSelectState extends State<WSelect>
             fn(e);
           };
         } else if (slot is WOptionGroup) {
-          _setEvent(slot.$slots.defaultSlot);
+          _setEvent(slot.defaultSlot);
         }
       },
     );
@@ -662,7 +662,7 @@ class WOptionGroup extends StatelessWidget
             style: TextStyle(color: Theme.of(context).hintColor, fontSize: 12),
           ),
         ),
-        if (!$slots.defalutEmpty) ...$slots.defaultSlot!,
+        if (defaultSlot.isNotEmpty) ...defaultSlot,
         Padding(
           padding: const EdgeInsets.fromLTRB(18, 8, 18, 8),
           child: Divider(

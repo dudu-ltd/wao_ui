@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/core/utils/is_enum.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
@@ -44,32 +44,16 @@ class WDescriptions extends StatefulWidget
   @override
   _WDescriptionsState createState() => _WDescriptionsState();
 
-  void checkSlot() {
-    var slot = $slots.defaultSlotBefore;
-    if (slot is! List<Widget> &&
-        slot is! Map &&
-        slot is! Widget &&
-        slot is! List<WDescriptionsData> &&
-        slot is! WDescriptionsData) {
-      throw Exception(
-        "目前 defaultSlot 仅支持以下类型: List<Widget>、Map、Widget、List<WDescriptionsData>、WDescriptionsData。",
-      );
-    }
-  }
-
-  void setDefaultSlot() {
-    checkSlot();
-    var defaultSlot = $slots.defaultSlotBefore;
-    if (defaultSlot is List<Widget>) {
-      $slots.defaultSlot = defaultSlot;
-    } else if (defaultSlot is Widget) {
-      $slots.defaultSlot = [defaultSlot];
-    } else if (defaultSlot is Map ||
-        defaultSlot is List<WDescriptionsData> ||
-        defaultSlot is WDescriptionsData) {
-      $slots.defaultSlot = descriptionsItems;
+  List<Widget> get defaultSlots {
+    if ($slots.defaultSlotBefore is String) {
+      var w = slotToWidget($slots.defaultSlotBefore);
+      return [if (w != null) w];
+    } else if ($slots.defaultSlotBefore is Map ||
+        $slots.defaultSlotBefore is List<WDescriptionsData> ||
+        $slots.defaultSlotBefore is WDescriptionsData) {
+      return descriptionsItems;
     } else {
-      $slots.defaultSlot = [];
+      return [];
     }
   }
 
@@ -176,11 +160,10 @@ class WDescriptions extends StatefulWidget
 class _WDescriptionsState extends State<WDescriptions> {
   @override
   Widget build(BuildContext context) {
-    widget.setDefaultSlot();
     return FractionallySizedBox(
       widthFactor: 1,
       child: Column(
-        children: [header, ...widget.$slots.defaultSlot!],
+        children: [header, ...widget.defaultSlot],
       ),
     );
   }
@@ -283,7 +266,7 @@ class WDescriptionsItem extends StatelessWidget
           _borderWrapper(label),
         ),
       ),
-      _paddingWrapper($slots.defaultSlot![0]),
+      _paddingWrapper(defaultSlot.first),
     ];
     if (isVertical($props.direction)) {
       child = Column(
@@ -370,11 +353,12 @@ class WDescriptionsItemSlot extends BaseSlot {
   Widget? label;
   WDescriptionsItemSlot(defaultSlotBefore, {this.label})
       : super(defaultSlotBefore);
-  // @override
-  // setDefaultSlot() {
-  //   super.setDefaultSlot();
-  //   if (defaultSlotBefore is String) {
-  //     defaultSlot = [SelectableText(defaultSlotBefore)];
-  //   }
-  // }
+  @override
+  List<Type> allowSlotTypes = [
+    List<Widget>,
+    Map,
+    Widget,
+    List<WDescriptionsData>,
+    WDescriptionsData
+  ];
 }

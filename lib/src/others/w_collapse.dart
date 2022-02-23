@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
@@ -36,7 +36,7 @@ class _WCollapseState extends State<WCollapse> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        for (var element in widget.$slots.defaultSlot!) {
+        for (var element in widget.defaultSlot) {
           element as WCollapseItem;
           initItemsStatus(element);
           addItemsListener(element);
@@ -57,7 +57,7 @@ class _WCollapseState extends State<WCollapse> with WidgetsBindingObserver {
         BorderSide(color: borderColor, width: borderWidth, style: borderStyle);
     return borderWrapper(
       Column(
-        children: widget.$slots.defaultSlot!,
+        children: widget.defaultSlot,
       ),
       Border(top: border, bottom: border),
       true,
@@ -81,7 +81,7 @@ class _WCollapseState extends State<WCollapse> with WidgetsBindingObserver {
       if (widget.$props.accordion && element.$props._expanded.value) {
         widget.$props.value = element.$props.name;
         widget.$on.change?.call(widget.$props.value);
-        for (var other in widget.$slots.defaultSlot!) {
+        for (var other in widget.defaultSlot) {
           other as WCollapseItem;
           if (element != other) other.$props._expanded.value = false;
         }
@@ -93,7 +93,7 @@ class _WCollapseState extends State<WCollapse> with WidgetsBindingObserver {
   void updateValue() {
     widget.$props.value = widget.$props.value ?? [];
     widget.$props.value.clear();
-    for (var element in widget.$slots.defaultSlot!) {
+    for (var element in widget.defaultSlot) {
       element as WCollapseItem;
       if (element.$props._expanded.value) {
         widget.$props.value.add(element.$props.name);
@@ -294,7 +294,7 @@ class _WCollapseItemState extends State<WCollapseItem>
                   key: scrollKey,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  children: widget.$slots.defaultSlot ?? [],
+                  children: widget.defaultSlot,
                 ),
               ),
             ),

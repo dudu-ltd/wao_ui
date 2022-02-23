@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_widget.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/layout_util.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
@@ -47,7 +47,7 @@ class _WHoverHandleState extends State<WHoverHandle> {
       child: Stack(
         clipBehavior: Clip.hardEdge,
         children: [
-          widget.$slots.first,
+          widget.first,
           Offstage(
             offstage: !widget.isHover,
             child: InkWell(
@@ -62,9 +62,9 @@ class _WHoverHandleState extends State<WHoverHandle> {
 
   Widget? get handlers {
     if (widget.$slots.defaultSlotBefore == null) return null;
-    assert(widget.$slots.first.key != null,
+    assert(widget.first.key != null,
         'WHoverHandle 子组件必须有 key。(Key is neccessary in inner widget.)');
-    GlobalKey key = widget.$slots.first.key! as GlobalKey;
+    GlobalKey key = widget.first.key! as GlobalKey;
     print(key.currentContext);
     if (key.currentContext != null) {
       final RenderBox box = key.currentContext!.findRenderObject() as RenderBox;
