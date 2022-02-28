@@ -68,7 +68,7 @@ class _WDropdownState extends State<WDropdown>
     GlobalKey popupKey = GlobalKey();
     Widget btn = Row(
       children: [
-        widget.first,
+        widget.$first,
         if (widget.$props.splitButton)
           _triggerWrapper(
               const Icon(Icons.keyboard_arrow_down_rounded), popupKey),
@@ -132,17 +132,20 @@ class WDropdown extends StatefulWidget
     $style = style ?? WDropdownStyle();
     init();
   }
+
   @override
-  setDefaultSlotSub() {
-    if ($slots.defaultSlotBefore is String) {
-      return [
-        WButton(
-          slots: WButtonSlot($slots.defaultSlotBefore!),
-          props: WButtonProp(type: $props.type),
-        )
-      ];
-    }
-    return [];
+  List<SlotTranslator> get slotTranslatorsCustom {
+    return [
+      SlotTranslator(
+        String,
+        (slot, i, conponent) {
+          return WButton(
+            slots: WButtonSlot(slot),
+            props: WButtonProp(type: $props.type),
+          );
+        },
+      )
+    ];
   }
 
   @override
@@ -256,7 +259,7 @@ class WDropdownItem extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return first;
+    return $first;
   }
 }
 

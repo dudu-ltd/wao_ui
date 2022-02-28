@@ -290,7 +290,7 @@ class _WDrawerViewState extends State<WDrawerView>
   Widget get body {
     return Padding(
       padding: EdgeInsets.all(bodyPadding),
-      child: widget.col,
+      child: widget.$col,
     );
   }
 

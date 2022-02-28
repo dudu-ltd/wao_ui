@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class BaseStyle {
+  Color? color;
   double? width;
   double? height;
   double? minWidth;
@@ -11,8 +12,10 @@ class BaseStyle {
   EdgeInsets? margin;
   Border? border;
   Color? backgroundColor;
+  Color? hoverBackgroundColor;
   Color? borderColor;
   BaseStyle({
+    this.color,
     this.width,
     this.height,
     this.minWidth,
@@ -23,6 +26,7 @@ class BaseStyle {
     this.margin,
     this.border,
     this.backgroundColor,
+    this.hoverBackgroundColor,
     this.borderColor,
   });
 }

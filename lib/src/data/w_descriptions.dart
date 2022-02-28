@@ -46,7 +46,7 @@ class WDescriptions extends StatefulWidget
 
   List<Widget> get defaultSlots {
     if ($slots.defaultSlotBefore is String) {
-      var w = slotToWidget($slots.defaultSlotBefore);
+      var w = slotToWidget($slots.defaultSlotBefore, 0);
       return [if (w != null) w];
     } else if ($slots.defaultSlotBefore is Map ||
         $slots.defaultSlotBefore is List<WDescriptionsData> ||
@@ -115,6 +115,18 @@ class WDescriptions extends StatefulWidget
         );
       }
     }
+  }
+
+  @override
+  List<SlotTranslator> get slotTranslatorsCustom {
+    return [
+      SlotTranslator(
+        Map,
+        (a, b, c) {
+          return Container();
+        },
+      )
+    ];
   }
 
   /// 根据描述项的位次，及每行的列数，获取该元素所应该有的边距

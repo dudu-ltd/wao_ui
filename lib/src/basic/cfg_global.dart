@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_style.dart';
+import 'package:wao_ui/core/utils/color_util.dart';
 
 CfgGlobal cfgGlobal = CfgGlobal();
 
@@ -880,15 +881,28 @@ class WDropdownItemStyle extends BaseStyle {
 }
 
 class WMenuStyle extends BaseStyle {
+  late Color activeColor;
   WMenuStyle({
+    Color? color,
+    Color? activeColor,
     double? width,
     double? height,
     double? minHeight,
+    Color? backgroundColor,
+    Color? hoverBackgroundColor,
   }) : super(
           height: height,
           width: width,
           minHeight: minHeight,
-        );
+          backgroundColor: backgroundColor,
+          hoverBackgroundColor: hoverBackgroundColor,
+        ) {
+    this.color = color ?? ColorUtil.hexToColor('#303133');
+    this.backgroundColor = backgroundColor ?? ColorUtil.hexToColor('#FFFFFF');
+    this.hoverBackgroundColor =
+        hoverBackgroundColor ?? ColorUtil.hexToColor('#ecf5ff');
+    this.activeColor = activeColor ?? ColorUtil.hexToColor('#409EFF');
+  }
 }
 
 class WSubmenuStyle extends BaseStyle {
@@ -907,9 +921,11 @@ class WMenuItemStyle extends BaseStyle {
   WMenuItemStyle({
     double? width,
     double? height,
+    EdgeInsets? padding,
   }) : super(
           height: height,
           width: width,
+          padding: padding,
         );
 }
 

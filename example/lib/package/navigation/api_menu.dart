@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/src/navigation/w_menu.dart';
 import 'package:wao_ui/wao_ui.dart';
 
@@ -20,6 +21,7 @@ class ApiMenu extends StatelessWidget {
           props: WMenuProp(
             defaultActive: activeIndex,
             mode: 'horizontal',
+            menuTrigger: 'click',
           ),
           on: WMenuOn(select: handleSelect),
           slots: WMenuSlot(
@@ -61,11 +63,15 @@ class ApiMenu extends StatelessWidget {
                             slots: WMenuItemSlot('选项3'),
                           ),
                         ],
-                        title: Text('选项4'),
+                        title: WMenuItem(
+                          slots: WMenuItemSlot('选项4'),
+                        ),
                       ),
                     ),
                   ],
-                  title: const Text('我的工作台'),
+                  title: WMenuItem(
+                    slots: WMenuItemSlot('我的工作台'),
+                  ),
                 ),
               ),
               WMenuItem(
@@ -85,9 +91,12 @@ class ApiMenu extends StatelessWidget {
           props: WMenuProp(
             defaultActive: activeIndex,
             mode: 'horizontal',
-            backgroundColor: '#545c64',
-            textColor: '#FFFFFF',
-            activeTextColor: '#ffd04b',
+          ),
+          style: WMenuStyle(
+            backgroundColor: ColorUtil.hexToColor('#545c64'),
+            color: ColorUtil.hexToColor('#FFFFFF'),
+            activeColor: ColorUtil.hexToColor('#ffd04b'),
+            hoverBackgroundColor: Color.fromRGBO(67, 74, 80, 1),
           ),
           on: WMenuOn(select: handleSelect),
           slots: WMenuSlot(
@@ -129,11 +138,21 @@ class ApiMenu extends StatelessWidget {
                             slots: WMenuItemSlot('选项3'),
                           ),
                         ],
-                        title: Text('选项4'),
+                        title: WMenuItem(
+                          slots: WMenuItemSlot('选项4'),
+                        ),
                       ),
                     ),
                   ],
-                  title: const Text('我的工作台'),
+                  title: WMenuItem(
+                    slots: WMenuItemSlot('我的工作台'),
+                  ),
+                  // titleBuild: (sub) {
+                  //   return Text(
+                  //     '我的工作台',
+                  //     style: TextStyle(color: sub.rootMenu?.$props.textColor),
+                  //   );
+                  // },
                 ),
               ),
               WMenuItem(
@@ -142,7 +161,7 @@ class ApiMenu extends StatelessWidget {
               ),
               WMenuItem(
                 props: WMenuItemProp(index: '4'),
-                slots: WMenuItemSlot(Text('订单管理')),
+                slots: WMenuItemSlot('订单管理'),
               ),
             ],
           ),
@@ -194,7 +213,9 @@ class ApiMenu extends StatelessWidget {
                                   slots: WMenuItemSlot('选项2'),
                                 ),
                               ],
-                              title: const Text('分组一'),
+                              title: WMenuItem(
+                                slots: WMenuItemSlot('分组一'),
+                              ),
                             ),
                           ),
                           WMenuItemGroup(
@@ -219,37 +240,39 @@ class ApiMenu extends StatelessWidget {
                                   ),
                                 )
                               ],
-                              title: Text('选项4'),
+                              title: WMenuItem(
+                                slots: WMenuItemSlot('选项4'),
+                              ),
                             ),
                           ),
                         ],
-                        title: Row(
-                          children: const [
-                            Icon(Icons.location_on),
-                            Text('导航一'),
-                          ],
+                        title: WMenuItem(
+                          slots: WMenuItemSlot(
+                            Icons.location_on,
+                            title: '导航一',
+                          ),
                         ),
                       ),
                     ),
                     WMenuItem(
                       props: WMenuItemProp(index: '2'),
                       slots: WMenuItemSlot(
-                        Icon(Icons.menu),
-                        title: Text('导航二'),
+                        Icons.menu,
+                        title: '导航二',
                       ),
                     ),
                     WMenuItem(
                       props: WMenuItemProp(index: '3', disabled: true),
                       slots: WMenuItemSlot(
-                        Icon(Icons.document_scanner),
-                        title: Text('导航三'),
+                        Icons.document_scanner,
+                        title: '导航三',
                       ),
                     ),
                     WMenuItem(
                       props: WMenuItemProp(index: '4'),
                       slots: WMenuItemSlot(
-                        Icon(Icons.settings),
-                        title: Text('导航四'),
+                        Icons.settings,
+                        title: '导航四',
                       ),
                     ),
                   ],
@@ -269,9 +292,6 @@ class ApiMenu extends StatelessWidget {
               WMenu(
                 props: WMenuProp(
                   defaultActive: activeIndex2,
-                  backgroundColor: '#545c64',
-                  textColor: '#FFFFFF',
-                  activeTextColor: '#ffd04b',
                 ),
                 on: WMenuOn(
                   close: handleClose,
@@ -279,6 +299,13 @@ class ApiMenu extends StatelessWidget {
                 ),
                 slots: WMenuSlot(
                   [
+                    WMenuItem(
+                      props: WMenuItemProp(index: '4'),
+                      slots: WMenuItemSlot(
+                        Icons.settings,
+                        title: '导航四',
+                      ),
+                    ),
                     WSubmenu(
                       props: WSubmenuProp(index: '1'),
                       slots: WSubmenuSlot(
@@ -295,7 +322,9 @@ class ApiMenu extends StatelessWidget {
                                   slots: WMenuItemSlot('选项2'),
                                 ),
                               ],
-                              title: const Text('分组一'),
+                              title: WMenuItem(
+                                slots: WMenuItemSlot('分组一'),
+                              ),
                             ),
                           ),
                           WMenuItemGroup(
@@ -320,37 +349,39 @@ class ApiMenu extends StatelessWidget {
                                   ),
                                 )
                               ],
-                              title: Text('选项4'),
+                              title: WMenuItem(
+                                slots: WMenuItemSlot('选项4'),
+                              ),
                             ),
                           ),
                         ],
-                        title: Row(
-                          children: const [
-                            Icon(Icons.location_on),
-                            Text('导航一'),
-                          ],
+                        title: WMenuItem(
+                          slots: WMenuItemSlot(
+                            Icons.location_on,
+                            title: '导航一',
+                          ),
                         ),
                       ),
                     ),
                     WMenuItem(
                       props: WMenuItemProp(index: '2'),
                       slots: WMenuItemSlot(
-                        Icon(Icons.menu),
-                        title: Text('导航二'),
+                        Icons.menu,
+                        title: '导航二',
                       ),
                     ),
                     WMenuItem(
                       props: WMenuItemProp(index: '3', disabled: true),
                       slots: WMenuItemSlot(
-                        Icon(Icons.document_scanner),
-                        title: Text('导航三'),
+                        Icons.document_scanner,
+                        title: '导航三',
                       ),
                     ),
                     WMenuItem(
                       props: WMenuItemProp(index: '4'),
                       slots: WMenuItemSlot(
-                        Icon(Icons.settings),
-                        title: Text('导航四'),
+                        Icons.settings,
+                        title: '导航四',
                       ),
                     ),
                   ],
@@ -358,6 +389,10 @@ class ApiMenu extends StatelessWidget {
                 style: WMenuStyle(
                   width: 200,
                   minHeight: 400,
+                  backgroundColor: ColorUtil.hexToColor('#545c64'),
+                  hoverBackgroundColor: Color.fromRGBO(67, 74, 80, 1),
+                  color: ColorUtil.hexToColor('#FFFFFF'),
+                  activeColor: ColorUtil.hexToColor('#ffd04b'),
                 ),
               ),
             ],
@@ -369,6 +404,10 @@ class ApiMenu extends StatelessWidget {
 
   Widget get collapse {
     var isCollapse = ValueNotifier(true);
+    WMenu? menu = null;
+    isCollapse.addListener((() {
+      menu?.collapse.value = isCollapse.value;
+    }));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -383,7 +422,7 @@ class ApiMenu extends StatelessWidget {
                 slots: WRadioButtonSlot('收起')),
           ]),
         ),
-        WMenu(
+        menu = WMenu(
           props: WMenuProp(
             defaultActive: '1-4-1',
             collapse: isCollapse.value,
@@ -395,32 +434,33 @@ class ApiMenu extends StatelessWidget {
               ),
               slots: WSubmenuSlot(
                 null,
-                title: Row(
-                  children: [
-                    Icon(Icons.location_on),
-                  ],
+                title: WMenuItem(
+                  slots: WMenuItemSlot(
+                    Icons.location_on,
+                    title: '导航一',
+                  ),
                 ),
               ),
             ),
             WMenuItem(
               props: WMenuItemProp(index: '2'),
               slots: WMenuItemSlot(
-                Icon(Icons.menu),
-                title: Text('导航二'),
+                Icons.menu,
+                title: '导航二',
               ),
             ),
             WMenuItem(
               props: WMenuItemProp(index: '3', disabled: true),
               slots: WMenuItemSlot(
-                Icon(Icons.document_scanner),
-                title: Text('导航三'),
+                Icons.document_scanner,
+                title: '导航三',
               ),
             ),
             WMenuItem(
               props: WMenuItemProp(index: '4'),
               slots: WMenuItemSlot(
-                Icon(Icons.settings),
-                title: Text('导航四'),
+                Icons.settings,
+                title: '导航四',
               ),
             ),
           ]),
@@ -429,38 +469,6 @@ class ApiMenu extends StatelessWidget {
             minHeight: 400,
           ),
         ),
-        /*   
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">导航一</span>
-            </template>
-            <el-menu-item-group>
-              <span slot="title">分组一</span>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <span slot="title">选项4</span>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
-          </el-menu-item>
-          <el-menu-item index="3" disabled>
-            <i class="el-icon-document"></i>
-            <span slot="title">导航三</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航四</span>
-          </el-menu-item>
-        */
       ],
     );
   }

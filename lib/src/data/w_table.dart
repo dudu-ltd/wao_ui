@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 import 'package:simple_observable/simple_observable.dart';
@@ -53,6 +51,18 @@ class WTable extends StatefulWidget
       doLayout	对 Table 进行重新布局。当 Table 或其祖先元素由隐藏切换为显示时，可能需要调用此方法	—
       sort	手动对 Table 进行排序。参数prop属性指定排序列，order指定排序顺序。
    */
+
+  @override
+  List<SlotTranslator> get slotTranslatorsCustom {
+    return <SlotTranslator>[
+      SlotTranslator(
+        WTableColumnProp,
+        (prop, i, conponent) {
+          return WTableColumn(props: prop);
+        },
+      )
+    ];
+  }
 }
 
 class _WTableState extends State<WTable> {
@@ -216,7 +226,7 @@ class _WTableState extends State<WTable> {
     var child;
     if (column.$slots.defaultSlotBefore is Function) {
       child = (column.$slots.defaultSlotBefore as Function).call(row);
-    } else if (column.defaultSlot is List<Widget>) {
+    } else if (column.$slots.defaultSlotBefore is List<Widget>) {
       child = column.defaultSlot;
     } else {
       var val = column.$props.prop == null ? '' : column.$props.prop?.call(row);
@@ -270,11 +280,11 @@ class _WTableState extends State<WTable> {
   Widget getHeaderCell(WTableColumn column) {
     if (column.$slots.header != null) {
       return column.$slots.header!.call(column);
-    } else if (column.defaultSlot != null && column.defaultSlot.isNotEmpty) {
+    } else if (column.defaultSlot.isNotEmpty) {
       return Column(
         children: [
           Text(column.$props.label ?? ''),
-          getHeader(column.defaultSlot as List<WTableColumn>)
+          getHeader(column.defaultSlot)
         ],
       );
     }

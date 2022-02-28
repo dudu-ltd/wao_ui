@@ -27,6 +27,24 @@ class WCollapse extends StatefulWidget
 
   @override
   State<WCollapse> createState() => _WCollapseState();
+
+  WCollapseItem itemWrapper(Widget child, i) {
+    if (child is WCollapseItem) {
+      return child;
+    } else {
+      return WCollapseItem(
+        props: WCollapseItemProp(name: i, title: ''),
+        slots: WCollapseItemSlot(child),
+      );
+    }
+  }
+
+  @override
+  List<SlotTranslator> get slotTranslatorsCustom {
+    return [
+      SlotTranslator(Widget, (slot, i, conponent) => itemWrapper(slot, i))
+    ];
+  }
 }
 
 class _WCollapseState extends State<WCollapse> with WidgetsBindingObserver {
@@ -130,31 +148,6 @@ class WCollapseProp extends BaseProp {
 
 class WCollapseSlot extends BaseSlot {
   WCollapseSlot(defaultSlotBefore) : super(defaultSlotBefore);
-
-  @override
-  setDefaultSlot() {
-    if (defaultSlotBefore is Widget) {
-      defaultSlot = [itemWrapper(defaultSlotBefore, 0)];
-    } else if (defaultSlotBefore is List<Widget>) {
-      defaultSlot = List.generate(defaultSlotBefore.length, (index) {
-        return itemWrapper(defaultSlotBefore[index], index);
-      });
-    } else {
-      defaultSlot = <WCollapseItem>[];
-      setDefaultSlotSub();
-    }
-  }
-
-  WCollapseItem itemWrapper(Widget child, i) {
-    if (child is WCollapseItem) {
-      return child;
-    } else {
-      return WCollapseItem(
-        props: WCollapseItemProp(name: i, title: ''),
-        slots: WCollapseItemSlot(child),
-      );
-    }
-  }
 }
 
 ///
