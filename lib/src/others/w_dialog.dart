@@ -54,7 +54,7 @@ class WDialog extends StatelessWidget
         titleTextStyle: const TextStyle(fontSize: 16.0, color: Colors.black),
         alignment: getAlign(context),
         title: title != null ? centerWrapper(title) : null,
-        content: first,
+        content: $first,
         actions: $slots.footer == null
             ? []
             : List.generate(

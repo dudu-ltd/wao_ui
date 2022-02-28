@@ -347,7 +347,7 @@ class WCheckboxGroup extends StatelessWidget
         marginWrapper(
           defaultSlot[i],
           const EdgeInsets.only(left: 12),
-          needMargin: i != 0 && first is WCheckbox,
+          needMargin: i != 0 && $first is WCheckbox,
         ),
       );
     }

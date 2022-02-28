@@ -33,51 +33,26 @@ class WBreadcrumb extends StatelessWidget
     );
   }
 
-  void checkSlot() {
-    var slot = $slots.defaultSlotBefore;
-    if (slot is! List<Widget> &&
-        slot is! List<Map> &&
-        slot is! Widget &&
-        slot is! List<WBreadcrumbData> &&
-        slot is! WBreadcrumbData) {
-      throw Exception(
-          "目前 defaultSlot 仅支持以下类型: List<Widget>、List<Map>、Widget、List<WBreadcrumbData>、WBreadcrumbData。");
-    }
-  }
-
-  void setDefaultSlot() {
-    checkSlot();
-    var defaultSlot = $slots.defaultSlotBefore;
-
-    defaultSlot = defaultSlot is List<Widget>
-        ? defaultSlot
-        : defaultSlot is Widget
-            ? [defaultSlot]
-            : defaultSlot is List<Map> ||
-                    defaultSlot is List<WBreadcrumbData> ||
-                    defaultSlot is WBreadcrumbData
-                ? breadcrumbItems
-                : [];
-  }
-
-  List<Widget> get breadcrumbItems {
-    var defaultSlot = $slots.defaultSlotBefore;
-    return defaultSlot is List<WBreadcrumbData>
-        ? List.generate(defaultSlot.length, (index) {
-            return createItem(defaultSlot[index]);
-          })
-        : defaultSlot is List<Map>
-            ? List.generate(defaultSlot.length, (index) {
-                return createItem(
-                  WBreadcrumbData(
-                    text: defaultSlot[index][$props.itemTextField],
-                    icon: defaultSlot[index][$props.itemIconField],
-                  ),
-                );
-              })
-            : [
-                createItem(defaultSlot),
-              ];
+  List<SlotTranslator> get slotTranslatorCustom {
+    return [
+      SlotTranslator(
+        WBreadcrumbData,
+        (slot, i, c) {
+          return createItem(slot);
+        },
+      ),
+      SlotTranslator(
+        Map,
+        (data, i, c) {
+          return createItem(
+            WBreadcrumbData(
+              text: data[$props.itemTextField],
+              icon: data[$props.itemIconField],
+            ),
+          );
+        },
+      )
+    ];
   }
 
   WBreadcrumbItem createItem(WBreadcrumbData data) {

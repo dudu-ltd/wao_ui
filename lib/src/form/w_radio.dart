@@ -257,7 +257,7 @@ class WRadioGroup extends StatelessWidget
         marginWrapper(
           defaultSlot[i],
           const EdgeInsets.only(left: 8),
-          needMargin: i != 0 && first is WRadio,
+          needMargin: i != 0 && $first is WRadio,
         ),
       );
     }
