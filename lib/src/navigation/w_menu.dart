@@ -13,10 +13,27 @@ export 'menu/w_submenu.dart';
 
 mixin HasRootMenu on Widget {
   WMenu? rootMenu = null;
+  int level = 1;
 
   Widget injectRootMenu(slot, int i, conponent) {
+    setLevel(slot, conponent);
+    slot.$style.padding =
+        EdgeInsets.fromLTRB(slot.level * stepPadding, 0, stepPadding, 0);
+    slot.$style.height = 50.0;
     slot.rootMenu = conponent.rootMenu;
     return slot as Widget;
+  }
+
+  void setLevel(slot, conponent) {
+    slot.level = (conponent.level ?? 1) + 1;
+  }
+
+  double get stepPadding {
+    return rootMenu?.stepPadding ?? cfgGlobal.menu.stepPadding ?? 20.0;
+  }
+
+  double get paddingVal {
+    return level * stepPadding;
   }
 }
 
@@ -55,6 +72,10 @@ class WMenu extends StatefulWidget
 
   @override
   State<WMenu> createState() => _WMenuState();
+
+  double get stepPadding {
+    return $style.stepPadding ?? cfgGlobal.menu.stepPadding ?? 20.0;
+  }
 }
 
 class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
@@ -67,6 +88,16 @@ class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
     bindValueHandle();
     bindOpenedsHandle();
     setAnimations();
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    _widthControl.dispose();
+    widget.value.dispose();
+    widget.openeds.dispose();
+    widget.collapse.dispose();
+    super.dispose();
   }
 
   setAnimations() {

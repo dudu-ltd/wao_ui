@@ -94,24 +94,42 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     return defaultSlot.isNotEmpty ? defaultSlot[0] : Container();
   }
 
-  Widget get $col {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: defaultSlot,
-    );
-  }
-
   bool get $hasDefalutSlot {
     return defaultSlot.isNotEmpty;
   }
 
-  Widget get $row {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+  Widget get $col {
+    return Column(
+      key: $childrenKey,
+      crossAxisAlignment: $crossAxisAlign,
+      mainAxisSize: $mainAxisSize,
       children: defaultSlot,
     );
+  }
+
+  Widget get $row {
+    return Row(
+      key: $childrenKey,
+      mainAxisAlignment: $mainAxisAlign,
+      mainAxisSize: $mainAxisSize,
+      children: defaultSlot,
+    );
+  }
+
+  GlobalKey? get $childrenKey {
+    return null;
+  }
+
+  MainAxisAlignment get $mainAxisAlign {
+    return MainAxisAlignment.start;
+  }
+
+  CrossAxisAlignment get $crossAxisAlign {
+    return CrossAxisAlignment.start;
+  }
+
+  MainAxisSize get $mainAxisSize {
+    return MainAxisSize.min;
   }
 
   instanceof(t, type) {

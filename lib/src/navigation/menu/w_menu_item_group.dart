@@ -26,25 +26,27 @@ class WMenuItemGroup extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    defaultSlot;
     return Column(
       children: [
         SizedBox(
           height: lineHeight,
           child: Align(
-            child: title,
-            alignment: Alignment.center,
+            child: Padding(
+              padding:
+                  $style.padding ?? EdgeInsets.only(left: level * stepPadding),
+              child: title,
+            ),
+            alignment: Alignment.centerLeft,
           ),
         ),
-        // $slots.col,
+        $col,
       ],
     );
-    // return Column(
-    //   children: [
-    //     title,
-    //     $slots.col,
-    //   ],
-    // );
+  }
+
+  @override
+  void setLevel(slot, conponent) {
+    slot.level = (conponent.level ?? 1);
   }
 
   @override
@@ -57,11 +59,18 @@ class WMenuItemGroup extends StatelessWidget
   }
 
   Widget get title {
-    return $slots.title ?? Text($props.title ?? '');
+    return $slots.title ??
+        Text(
+          $props.title ?? '',
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.grey,
+          ),
+        );
   }
 
-  double get lineHeight {
-    return 60;
+  double? get lineHeight {
+    return $style.height ?? cfgGlobal.menuItemGroup.height;
   }
 }
 
@@ -73,7 +82,7 @@ class WMenuItemGroupProp extends BaseProp {
 }
 
 class WMenuItemGroupSlot extends BaseSlot {
-  WMenuItem? title;
+  Widget? title;
   WMenuItemGroupSlot(defaultSlotBefore, {this.title})
       : super(defaultSlotBefore);
 }

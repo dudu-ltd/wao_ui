@@ -887,6 +887,7 @@ class WMenuStyle extends BaseStyle {
   late Color activeColor;
   late Color prefixColor;
   late Color suffixColor;
+  late double? stepPadding;
   WMenuStyle({
     Color? color,
     Color? activeColor,
@@ -897,6 +898,7 @@ class WMenuStyle extends BaseStyle {
     Color? hoverBackgroundColor,
     Color? prefixColor,
     Color? suffixColor,
+    this.stepPadding,
   }) : super(
           height: height,
           width: width,
