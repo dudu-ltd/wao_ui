@@ -182,6 +182,7 @@ class ApiMenu extends StatelessWidget {
     };
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Column(
@@ -202,6 +203,7 @@ class ApiMenu extends StatelessWidget {
                       slots: WSubmenuSlot(
                         [
                           WMenuItemGroup(
+                            props: WMenuItemGroupProp(title: '分组一'),
                             slots: WMenuItemGroupSlot(
                               [
                                 WMenuItem(
@@ -213,9 +215,6 @@ class ApiMenu extends StatelessWidget {
                                   slots: WMenuItemSlot('选项2'),
                                 ),
                               ],
-                              title: WMenuItem(
-                                slots: WMenuItemSlot('分组一'),
-                              ),
                             ),
                           ),
                           WMenuItemGroup(
@@ -279,6 +278,7 @@ class ApiMenu extends StatelessWidget {
                 ),
                 style: WMenuStyle(
                   width: 200,
+                  // stepPadding: 11.0,
                   minHeight: 400,
                   color: ColorUtil.hexToColor('#303133'),
                 ),

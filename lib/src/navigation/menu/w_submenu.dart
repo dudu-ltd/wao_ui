@@ -9,8 +9,16 @@ class WSubmenu extends StatefulWidget
     with
         HasRootMenu,
         BaseMixins<WSubmenuOn, WSubmenuProp, WSubmenuSlot, WSubmenuStyle> {
-  late AnimationController expandController;
+  // late AnimationController expandController;
+  late AnimationController itemsPanelController;
   late Animation<double> itemsPanelHeight;
+
+  GlobalKey childrenKey = GlobalKey();
+
+  @override
+  get $childrenKey {
+    return childrenKey;
+  }
 
   WSubmenu({
     Key? key,
@@ -49,18 +57,24 @@ class WSubmenu extends StatefulWidget
   }
 }
 
-class _WSubmenuState extends State<WSubmenu> with TickerProviderStateMixin {
-  Function(void Function())? panelSetState;
-  BuildContext? panelContext;
-  late OverlayEntry panelOverlay;
-
+class _WSubmenuState extends State<WSubmenu>
+    with TickerProviderStateMixin /*, WidgetsBindingObserver */ {
   @override
   void initState() {
-    widget.expandController =
+    widget.itemsPanelController =
         AnimationController(vsync: this, duration: CfgGlobal.duration);
-    widget.itemsPanelHeight = Tween(begin: 0.0, end: 200.0)
-        .animate(widget.expandController)
+    widget.itemsPanelHeight = Tween(end: 0.0, begin: 700.0)
+        .animate(widget.itemsPanelController)
       ..addListener(updateView);
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   setState(() {
+    //     widget.itemsPanelHeight = Tween(
+    //       begin: 0.0,
+    //       end: (widget.childrenKey.currentContext)?.size?.height ?? 700.0,
+    //     ).animate(widget.itemsPanelController)
+    //       ..addListener(updateView);
+    //   });
+    // });
     super.initState();
   }
 
@@ -68,13 +82,29 @@ class _WSubmenuState extends State<WSubmenu> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    widget.expandController.dispose();
+    widget.itemsPanelController.dispose();
+    // WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return title;
+    return Column(
+      children: [
+        if (title != null) title!,
+        if (widget.rootMenu?.$props.modeIsVertical ?? false)
+          ConstrainedBox(
+            constraints:
+                BoxConstraints(maxHeight: widget.itemsPanelHeight.value),
+            child: SingleChildScrollView(
+              child: FractionallySizedBox(
+                widthFactor: 1,
+                child: widget.$col,
+              ),
+            ),
+          ),
+      ],
+    );
   }
 
   double get panelBorder {
@@ -87,16 +117,20 @@ class _WSubmenuState extends State<WSubmenu> with TickerProviderStateMixin {
     );
   }
 
-  Widget get title {
+  Widget? get title {
     widget.$slots.title?.rootMenu = widget.rootMenu;
     if (widget.$slots.title != null) {
       if (widget.$slots.title is WMenuItem) {
-        widget.$slots.title!.$slots.suffix =
-            widget.$slots.title!.$slots.suffix ?? Icons.expand_more;
-        widget.$slots.title!.rootMenu = widget.rootMenu;
-        widget.$slots.title!.belongTo = widget;
+        WMenuItem _title = widget.$slots.title!;
+        // var
+        _title
+          ..$style.padding = EdgeInsets.fromLTRB(
+              widget.paddingVal, 0.0, widget.stepPadding, 0.0)
+          ..$slots.suffix = _title.$slots.suffix ?? Icons.expand_more
+          ..rootMenu = widget.rootMenu
+          ..belongTo = widget;
       }
-      return widget.$slots.title!;
+      return widget.$slots.title;
     } else {
       return const Text('');
     }

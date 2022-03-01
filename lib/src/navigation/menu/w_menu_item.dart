@@ -73,13 +73,13 @@ class WMenuItem extends StatefulWidget
   }
 
   double get lineHeight {
-    return 60;
+    return $style.height ?? cfgGlobal.menuItem.height ?? 60;
   }
 
   EdgeInsets get padding {
     return $style.padding ??
         cfgGlobal.menuItem.padding ??
-        const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0);
+        EdgeInsets.fromLTRB(paddingVal, 0.0, stepPadding, 0.0);
   }
 }
 
@@ -116,6 +116,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
           Duration(milliseconds: showTime),
           () {
             widget.expandController.forward();
+            widget.belongTo?.itemsPanelController.forward();
           },
         );
       } else {
@@ -123,6 +124,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
           Duration(milliseconds: hideTime),
           () {
             widget.expandController.reverse();
+            widget.belongTo?.itemsPanelController.reverse();
           },
         );
       }
@@ -171,6 +173,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    widget.rootMenu?.collapse.removeListener(updateView);
     widget.expandController.dispose();
     widget.bgController.dispose();
     widget.isExpand.dispose();
