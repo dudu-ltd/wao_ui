@@ -60,7 +60,7 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
       ..addListener(() {
         setState(() {});
       });
-    Timer(const Duration(milliseconds: 300), () {
+    Timer(CfgGlobal.duration, () {
       if (!widget.flutterStyle && isActive) switchAnimation.forward();
     });
   }

@@ -74,8 +74,8 @@ class _WSelectState extends State<WSelect>
     super.initState();
     _isExpand.addListener(changePanelAction);
 
-    iconSpinController = AnimationController(
-        duration: const Duration(milliseconds: 200), vsync: this);
+    iconSpinController =
+        AnimationController(duration: CfgGlobal.duration, vsync: this);
 
     spin = Tween(begin: 0.0, end: -pi).animate(iconSpinController);
 

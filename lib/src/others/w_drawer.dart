@@ -177,7 +177,7 @@ class _WDrawerViewState extends State<WDrawerView>
 
     panelController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: CfgGlobal.duration,
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

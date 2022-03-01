@@ -280,6 +280,7 @@ class ApiMenu extends StatelessWidget {
                 style: WMenuStyle(
                   width: 200,
                   minHeight: 400,
+                  color: ColorUtil.hexToColor('#303133'),
                 ),
               ),
             ],

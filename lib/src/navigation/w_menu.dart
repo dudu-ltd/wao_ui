@@ -71,7 +71,7 @@ class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
 
   setAnimations() {
     _widthControl = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: CfgGlobal.duration,
       vsync: this,
     );
 
