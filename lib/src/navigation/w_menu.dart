@@ -76,8 +76,8 @@ class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
     );
 
     _width = (widget.$props.collapse
-            ? Tween(begin: 79.0, end: width)
-            : Tween(begin: width, end: 79.0))
+            ? Tween(begin: 64.0, end: width)
+            : Tween(begin: width, end: 64.0))
         .animate(_widthControl)
       ..addListener(updateView);
   }
@@ -157,7 +157,9 @@ class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
   }
 
   double get minHeight {
-    return widget.$style.minHeight ?? cfgGlobal.menu.minHeight ?? 0.0;
+    return widget.collapse.value
+        ? 0
+        : widget.$style.minHeight ?? cfgGlobal.menu.minHeight ?? 0.0;
   }
 
   Color get background {
@@ -223,6 +225,10 @@ class WMenuProp extends BaseProp {
 
   bool get triggerIsHover {
     return menuTrigger == 'hover';
+  }
+
+  bool get triggerIsClick {
+    return menuTrigger == 'click';
   }
 }
 
