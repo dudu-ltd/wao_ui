@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -60,7 +57,7 @@ class _WSubmenuState extends State<WSubmenu> with TickerProviderStateMixin {
   @override
   void initState() {
     widget.expandController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+        AnimationController(vsync: this, duration: CfgGlobal.duration);
     widget.itemsPanelHeight = Tween(begin: 0.0, end: 200.0)
         .animate(widget.expandController)
       ..addListener(updateView);
@@ -88,12 +85,6 @@ class _WSubmenuState extends State<WSubmenu> with TickerProviderStateMixin {
     return SizedBox(
       child: widget.$col,
     );
-  }
-
-  Widget get titleContent {
-    return widget.rootMenu != null && widget.rootMenu!.$props.modeIsVertical
-        ? Expanded(child: title)
-        : title;
   }
 
   Widget get title {

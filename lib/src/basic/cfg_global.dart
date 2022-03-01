@@ -11,6 +11,9 @@ class CfgGlobal {
   static MaterialColor primaryColor = Colors.blue;
   static MaterialColor disabledColor = Colors.grey;
   static Color blankColor = Colors.white;
+
+  static Duration duration = const Duration(milliseconds: 300);
+
   WFont font = WFont();
   WBorderRadius borderRadius = WBorderRadius();
   WBorderStyle borderStyle = WBorderStyle();
@@ -882,6 +885,8 @@ class WDropdownItemStyle extends BaseStyle {
 
 class WMenuStyle extends BaseStyle {
   late Color activeColor;
+  late Color prefixColor;
+  late Color suffixColor;
   WMenuStyle({
     Color? color,
     Color? activeColor,
@@ -890,6 +895,8 @@ class WMenuStyle extends BaseStyle {
     double? minHeight,
     Color? backgroundColor,
     Color? hoverBackgroundColor,
+    Color? prefixColor,
+    Color? suffixColor,
   }) : super(
           height: height,
           width: width,
@@ -898,6 +905,8 @@ class WMenuStyle extends BaseStyle {
           hoverBackgroundColor: hoverBackgroundColor,
         ) {
     this.color = color ?? ColorUtil.hexToColor('#303133');
+    this.prefixColor = prefixColor ?? ColorUtil.hexToColor('#909399');
+    this.suffixColor = suffixColor ?? ColorUtil.hexToColor('#909399');
     this.backgroundColor = backgroundColor ?? ColorUtil.hexToColor('#FFFFFF');
     this.hoverBackgroundColor =
         hoverBackgroundColor ?? ColorUtil.hexToColor('#ecf5ff');

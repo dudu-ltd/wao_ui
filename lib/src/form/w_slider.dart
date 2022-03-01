@@ -44,10 +44,10 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     setTempValue(null);
-    minController = AnimationController(
-        duration: const Duration(milliseconds: 200), vsync: this);
-    maxController = AnimationController(
-        duration: const Duration(milliseconds: 200), vsync: this);
+    minController =
+        AnimationController(duration: CfgGlobal.duration, vsync: this);
+    maxController =
+        AnimationController(duration: CfgGlobal.duration, vsync: this);
     var timer = Timer(
       const Duration(microseconds: 1),
       () {

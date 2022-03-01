@@ -58,7 +58,7 @@ class WMenuItem extends StatefulWidget
       (slot, i, conponent) {
         return Icon(
           slot,
-          color: conponent.rootMenu?.$style.color,
+          color: conponent.rootMenu?.$style.prefixColor,
         );
       },
     );
@@ -88,14 +88,14 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
   void initState() {
     // 设置展开动画
     widget.expandController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+        AnimationController(vsync: this, duration: CfgGlobal.duration);
     widget.iconAngle = Tween(begin: 0.0, end: pi)
         .animate(widget.expandController)
       ..addListener(updateView);
 
     // 设置鼠标浮入动画
     widget.bgController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+        AnimationController(vsync: this, duration: CfgGlobal.duration);
     widget.bgColor = ColorTween(
             begin: widget.rootMenu?.$style.backgroundColor,
             end: widget.rootMenu?.$style.hoverBackgroundColor)
@@ -249,7 +249,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
             child: Icon(
               widget.$slots.suffix,
               size: 16,
-              color: widget.rootMenu?.$style.color,
+              color: widget.rootMenu?.$style.suffixColor,
             ),
           ),
         ),

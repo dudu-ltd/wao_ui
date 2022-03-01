@@ -204,7 +204,7 @@ class _WCollapseItemState extends State<WCollapseItem>
 
     expandController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: CfgGlobal.duration,
     );
 
     expandController.addListener(updateView);
