@@ -37,7 +37,7 @@ class Api extends StatelessWidget {
                   main: main,
                   footer: const Text('状态栏')),
             ),
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       routes: {
         //路由注册表
         "ContainerLayout": (BuildContext context) => const ApiContainerLayout(),

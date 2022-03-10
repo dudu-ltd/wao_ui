@@ -138,7 +138,7 @@ class WDropdown extends StatefulWidget
     return [
       SlotTranslator(
         String,
-        (slot, i, conponent) {
+        (slot, i, component) {
           return WButton(
             slots: WButtonSlot(slot),
             props: WButtonProp(type: $props.type),

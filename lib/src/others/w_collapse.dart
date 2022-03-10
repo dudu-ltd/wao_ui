@@ -42,7 +42,7 @@ class WCollapse extends StatefulWidget
   @override
   List<SlotTranslator> get slotTranslatorsCustom {
     return [
-      SlotTranslator(Widget, (slot, i, conponent) => itemWrapper(slot, i))
+      SlotTranslator(Widget, (slot, i, component) => itemWrapper(slot, i))
     ];
   }
 }

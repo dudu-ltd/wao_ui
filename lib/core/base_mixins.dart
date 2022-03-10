@@ -69,7 +69,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     return [
       SlotTranslator(
         String,
-        (slot, i, conponent) {
+        (slot, i, component) {
           return Text(slot);
         },
       ),
@@ -99,11 +99,17 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   }
 
   Widget get $col {
+    var d = defaultSlot;
+    var i = d.length;
     return Column(
       key: $childrenKey,
       crossAxisAlignment: $crossAxisAlign,
       mainAxisSize: $mainAxisSize,
-      children: defaultSlot,
+      children: List.generate(
+          i,
+          (index) => Container(
+                child: d[index],
+              )),
     );
   }
 

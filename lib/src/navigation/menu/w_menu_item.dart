@@ -41,11 +41,14 @@ class WMenuItem extends StatefulWidget
   SlotTranslator get stringToWidget {
     return SlotTranslator(
       String,
-      (slot, i, conponent) {
+      (slot, i, component) {
         return Text(
           slot,
           style: TextStyle(
-            color: conponent.rootMenu?.$style.color,
+            // fontSize: 18,
+            color: rootMenu?.value.value == $props.index
+                ? component.rootMenu?.$style.activeColor
+                : component.rootMenu?.$style.color,
           ),
         );
       },
@@ -55,10 +58,10 @@ class WMenuItem extends StatefulWidget
   SlotTranslator get iconDataToWidget {
     return SlotTranslator(
       IconData,
-      (slot, i, conponent) {
+      (slot, i, component) {
         return Icon(
           slot,
-          color: conponent.rootMenu?.$style.prefixColor,
+          color: component.rootMenu?.$style.prefixColor,
         );
       },
     );
@@ -73,7 +76,7 @@ class WMenuItem extends StatefulWidget
   }
 
   double get lineHeight {
-    return $style.height ?? cfgGlobal.menuItem.height ?? 60;
+    return $style.height ?? cfgGlobal.menuItem.height ?? 50;
   }
 
   EdgeInsets get padding {
@@ -108,7 +111,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
 
   valueChangeBind() {
     widget.rootMenu?.collapse.addListener(updateView);
-
+    widget.rootMenu?.value.addListener(updateView);
     // 触发展开动画
     widget.isExpand.addListener(() {
       if (widget.isExpand.value) {
@@ -116,7 +119,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
           Duration(milliseconds: showTime),
           () {
             widget.expandController.forward();
-            widget.belongTo?.itemsPanelController.forward();
+            widget.belongTo?.showSubmenu.value = true;
           },
         );
       } else {
@@ -124,7 +127,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
           Duration(milliseconds: hideTime),
           () {
             widget.expandController.reverse();
-            widget.belongTo?.itemsPanelController.reverse();
+            widget.belongTo?.showSubmenu.value = false;
           },
         );
       }
@@ -138,6 +141,11 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
         widget.bgController.reverse();
       }
     });
+
+    bool isOpen = widget.rootMenu?.openeds.value
+            .contains(widget.belongTo?.$props.index) ??
+        false;
+    widget.isExpand.value = isOpen;
   }
 
   int get showTime {
@@ -168,6 +176,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
     if (!expandByHover) {
       widget.isExpand.value = !widget.isExpand.value;
       widget.$on.click?.call();
+      widget.rootMenu?.value.value = widget.$props.index;
     }
   }
 
@@ -186,7 +195,11 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var itemBody = Row(
-      children: [...defaultAsPrefix, ...title, ...suffix],
+      children: [
+        ...defaultAsPrefix,
+        ...title,
+        ...suffix,
+      ],
     );
     var box = boxWrapper(itemBody);
     return eventWrapper(box);
@@ -204,16 +217,23 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
   }
 
   Widget boxWrapper(Widget child) {
-    return ColoredBox(
-      color: widget.bgColor.value ??
-          widget.rootMenu?.$style.backgroundColor ??
-          Colors.transparent,
-      child: SizedBox(
-        height: widget.lineHeight,
-        child: Padding(
-          padding: widget.padding,
-          child: child,
+    return Container(
+      child: child,
+      height: widget.lineHeight,
+      padding: widget.padding,
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 2,
+            color: widget.$props.index == widget.rootMenu?.value.value &&
+                    (widget.rootMenu?.$props.modeIsHorizontal ?? false)
+                ? widget.rootMenu?.$style.activeColor ?? Colors.transparent
+                : Colors.transparent,
+          ),
         ),
+        color: widget.bgColor.value ??
+            widget.rootMenu?.$style.backgroundColor ??
+            Colors.transparent,
       ),
     );
   }
@@ -225,13 +245,17 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
           padding: const EdgeInsets.only(right: 5.0),
           child: widget.$row,
         ),
-      if (widget.$hasDefalutSlot && !iconNeedPadding) widget.$row,
+      if (widget.$hasDefalutSlot && !iconNeedPadding && widget.level > 1)
+        Expanded(child: widget.$row),
+      if (widget.$hasDefalutSlot && !iconNeedPadding && widget.level <= 1)
+        widget.$row,
     ];
   }
 
   List<Widget> get title {
+    var hasTitle = widget.$slots.title != null;
     return <Widget>[
-      if (widget.$slots.title != null)
+      if (hasTitle && widget.rootMenu!.$props.modeIsVertical)
         Expanded(
           child: Offstage(
             offstage: widget.rootMenu!.collapse.value,
@@ -239,6 +263,8 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
                 widget.stringToWidget.fn.call(widget.$slots.title!, 0, widget),
           ),
         ),
+      if (hasTitle && widget.rootMenu!.$props.modeIsHorizontal)
+        widget.stringToWidget.fn.call(widget.$slots.title!, 0, widget)
     ];
   }
 
@@ -251,7 +277,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
             angle: widget.iconAngle.value,
             child: Icon(
               widget.$slots.suffix,
-              size: 16,
+              size: 12,
               color: widget.rootMenu?.$style.suffixColor,
             ),
           ),
