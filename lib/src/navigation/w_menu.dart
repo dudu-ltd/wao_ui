@@ -13,32 +13,42 @@ export 'menu/w_submenu.dart';
 
 mixin HasRootMenu on Widget {
   WMenu? rootMenu = null;
-  int level = 1;
+  int level = 0;
 
-  Widget injectRootMenu(slot, int i, conponent) {
-    setLevel(slot, conponent);
-    slot.$style.padding =
-        EdgeInsets.fromLTRB(slot.level * stepPadding, 0, stepPadding, 0);
+  Widget injectRootMenu(slot, int i, component) {
+    setLevel(slot, component);
+    slot.$style.padding = EdgeInsets.fromLTRB(
+      paddingVal,
+      0,
+      stepPadding,
+      0,
+    );
     slot.$style.height = 50.0;
-    slot.rootMenu = conponent.rootMenu;
+    slot.rootMenu = component.rootMenu;
     return slot as Widget;
   }
 
-  void setLevel(slot, conponent) {
-    slot.level = (conponent.level ?? 1) + 1;
+  void setLevel(slot, component) {
+    slot.level = component.level + 1;
   }
 
   double get stepPadding {
-    return rootMenu?.stepPadding ?? cfgGlobal.menu.stepPadding ?? 20.0;
+    return rootMenu?.$style.stepPadding ?? cfgGlobal.menu.stepPadding ?? 20.0;
   }
 
   double get paddingVal {
-    return level * stepPadding;
+    return (level < 1 || useOverlay ? 1 : level) * stepPadding;
+  }
+
+  bool get useOverlay {
+    if (rootMenu == null) return false;
+    return rootMenu!.$props.modeIsHorizontal ||
+        (rootMenu!.$props.modeIsVertical && rootMenu!.collapse.value);
   }
 }
 
 class WMenu extends StatefulWidget
-    with BaseMixins<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle> {
+    with BaseMixins<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>, HasRootMenu {
   WMenu({
     Key? key,
     WMenuOn? on,
@@ -56,8 +66,10 @@ class WMenu extends StatefulWidget
   late ValueNotifier<List<dynamic>> openeds;
   late ValueNotifier<bool> collapse;
 
-  Widget injectRootMenu(slot, int i, conponent) {
-    slot.rootMenu = conponent;
+  Widget injectRootMenu(slot, int i, component) {
+    // slot.rootMenu = component;
+    rootMenu = this;
+    super.injectRootMenu(slot, i, component);
     return slot as Widget;
   }
 
@@ -72,10 +84,6 @@ class WMenu extends StatefulWidget
 
   @override
   State<WMenu> createState() => _WMenuState();
-
-  double get stepPadding {
-    return $style.stepPadding ?? cfgGlobal.menu.stepPadding ?? 20.0;
-  }
 }
 
 class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
@@ -125,9 +133,10 @@ class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
         if (widget.$props.uniqueOpened &&
             !widget.openeds.value.contains(widget.value.value)) {
           widget.openeds.value.add(widget.value.value);
-          widget.openeds.notifyListeners();
+          // widget.openeds.notifyListeners();
         }
       }
+      setState(() {});
     });
   }
 

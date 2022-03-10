@@ -32,8 +32,7 @@ class WMenuItemGroup extends StatelessWidget
           height: lineHeight,
           child: Align(
             child: Padding(
-              padding:
-                  $style.padding ?? EdgeInsets.only(left: level * stepPadding),
+              padding: $style.padding ?? EdgeInsets.only(left: paddingVal),
               child: title,
             ),
             alignment: Alignment.centerLeft,
@@ -42,11 +41,6 @@ class WMenuItemGroup extends StatelessWidget
         $col,
       ],
     );
-  }
-
-  @override
-  void setLevel(slot, conponent) {
-    slot.level = (conponent.level ?? 1);
   }
 
   @override
@@ -62,7 +56,7 @@ class WMenuItemGroup extends StatelessWidget
     return $slots.title ??
         Text(
           $props.title ?? '',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
             color: Colors.grey,
           ),
@@ -70,7 +64,7 @@ class WMenuItemGroup extends StatelessWidget
   }
 
   double? get lineHeight {
-    return $style.height ?? cfgGlobal.menuItemGroup.height;
+    return $style.height ?? cfgGlobal.menuItemGroup.height ?? 60;
   }
 }
 

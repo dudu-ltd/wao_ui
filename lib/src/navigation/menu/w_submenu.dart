@@ -5,15 +5,20 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
+import '../../mixins/has_overlay_mixin.dart';
+
 class WSubmenu extends StatefulWidget
     with
         HasRootMenu,
         BaseMixins<WSubmenuOn, WSubmenuProp, WSubmenuSlot, WSubmenuStyle> {
   // late AnimationController expandController;
+  late ValueNotifier<bool> showSubmenu = ValueNotifier(false);
   late AnimationController itemsPanelController;
   late Animation<double> itemsPanelHeight;
 
   GlobalKey childrenKey = GlobalKey();
+
+  GlobalKey submenuKey = GlobalKey();
 
   @override
   get $childrenKey {
@@ -43,7 +48,7 @@ class WSubmenu extends StatefulWidget
       SlotTranslator(WSubmenu, injectRootMenu),
       SlotTranslator(WMenuItemGroup, injectRootMenu),
       SlotTranslator(WMenuItem, injectRootMenu),
-      SlotTranslator(String, (slot, i, conponent) {
+      SlotTranslator(String, (slot, i, component) {
         return Text(
           slot,
           style: TextStyle(color: rootMenu?.$style.color),
@@ -51,31 +56,58 @@ class WSubmenu extends StatefulWidget
       }),
     ];
   }
-
-  double get lineHeight {
-    return 60;
-  }
 }
 
 class _WSubmenuState extends State<WSubmenu>
-    with TickerProviderStateMixin /*, WidgetsBindingObserver */ {
+    with TickerProviderStateMixin, HasOverlayMixin, WidgetsBindingObserver {
+  @override
+  GlobalKey get triggerWidgetKey {
+    return widget.submenuKey;
+  }
+
   @override
   void initState() {
+    widget.showSubmenu.addListener(() {
+      if (widget.useOverlay) {
+        if (widget.showSubmenu.value) {
+          showPanelAction();
+        } else {
+          hidePanelAction();
+        }
+      } else {
+        if (widget.showSubmenu.value) {
+          widget.itemsPanelController.forward();
+        } else {
+          widget.itemsPanelController.reverse();
+        }
+      }
+    });
     widget.itemsPanelController =
         AnimationController(vsync: this, duration: CfgGlobal.duration);
     widget.itemsPanelHeight = Tween(end: 0.0, begin: 700.0)
         .animate(widget.itemsPanelController)
       ..addListener(updateView);
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   setState(() {
-    //     widget.itemsPanelHeight = Tween(
-    //       begin: 0.0,
-    //       end: (widget.childrenKey.currentContext)?.size?.height ?? 700.0,
-    //     ).animate(widget.itemsPanelController)
-    //       ..addListener(updateView);
-    //   });
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        widget.itemsPanelHeight = Tween(
+          begin: 0.0,
+          end: (widget.childrenKey.currentContext)?.size?.height ?? 700.0,
+        ).animate(widget.itemsPanelController)
+          ..addListener(updateView);
+      });
+
+      doOpen();
+    });
+    setAnimationWhenInit();
     super.initState();
+  }
+
+  doOpen() {
+    bool isOpen =
+        widget.rootMenu?.openeds.value.contains(widget.$props.index) ?? false;
+    if (isOpen) {
+      widget.itemsPanelController.forward();
+    }
   }
 
   updateView() => setState(() {});
@@ -83,16 +115,19 @@ class _WSubmenuState extends State<WSubmenu>
   @override
   void dispose() {
     widget.itemsPanelController.dispose();
-    // WidgetsBinding.instance.removeObserver(this);
+    // panelController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      key: widget.submenuKey,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (title != null) title!,
-        if (widget.rootMenu?.$props.modeIsVertical ?? false)
+        if (!widget.useOverlay)
           ConstrainedBox(
             constraints:
                 BoxConstraints(maxHeight: widget.itemsPanelHeight.value),
@@ -107,14 +142,9 @@ class _WSubmenuState extends State<WSubmenu>
     );
   }
 
+  @override
   double get panelBorder {
     return widget.$style.panelBorder ?? cfgGlobal.submenu.panelBorder ?? 1;
-  }
-
-  Widget get panelInside {
-    return SizedBox(
-      child: widget.$col,
-    );
   }
 
   Widget? get title {
@@ -133,6 +163,33 @@ class _WSubmenuState extends State<WSubmenu>
       return widget.$slots.title;
     } else {
       return const Text('');
+    }
+  }
+
+  @override
+  Widget get panelInside {
+    if (widget.useOverlay) {
+      if (widget.rootMenu!.$props.triggerIsClick) {
+        return Listener(
+          child: SingleChildScrollView(child: widget.$col),
+          onPointerUp: (e) =>
+              widget.showSubmenu.value = !widget.showSubmenu.value,
+        );
+      } else {
+        return SizedBox(
+          child: MouseRegion(
+            onEnter: (e) {
+              if (widget.rootMenu!.$props.triggerIsHover) {
+                widget.showSubmenu.value = true;
+              }
+            },
+            onExit: (e) => widget.showSubmenu.value = false,
+            child: SingleChildScrollView(child: widget.$col),
+          ),
+        );
+      }
+    } else {
+      return Container();
     }
   }
 }

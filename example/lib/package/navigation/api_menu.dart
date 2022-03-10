@@ -35,6 +35,14 @@ class ApiMenu extends StatelessWidget {
                 slots: WSubmenuSlot(
                   [
                     WMenuItem(
+                      props: WMenuItemProp(index: '2-2'),
+                      slots: WMenuItemSlot('选项2'),
+                    ),
+                    WMenuItem(
+                      props: WMenuItemProp(index: '2-2'),
+                      slots: WMenuItemSlot('选项2'),
+                    ),
+                    WMenuItem(
                       props: WMenuItemProp(index: '2-1'),
                       slots: WMenuItemSlot('选项1'),
                     ),
@@ -70,7 +78,7 @@ class ApiMenu extends StatelessWidget {
                     ),
                   ],
                   title: WMenuItem(
-                    slots: WMenuItemSlot('我的工作台'),
+                    slots: WMenuItemSlot(null, title: '我的工作台'),
                   ),
                 ),
               ),
@@ -109,6 +117,22 @@ class ApiMenu extends StatelessWidget {
                 props: WSubmenuProp(index: '2'),
                 slots: WSubmenuSlot(
                   [
+                    WMenuItem(
+                      props: WMenuItemProp(index: '2-2'),
+                      slots: WMenuItemSlot('选项2'),
+                    ),
+                    WMenuItem(
+                      props: WMenuItemProp(index: '2-2'),
+                      slots: WMenuItemSlot('选项2'),
+                    ),
+                    WMenuItem(
+                      props: WMenuItemProp(index: '2-2'),
+                      slots: WMenuItemSlot('选项2'),
+                    ),
+                    WMenuItem(
+                      props: WMenuItemProp(index: '2-2'),
+                      slots: WMenuItemSlot('选项2'),
+                    ),
                     WMenuItem(
                       props: WMenuItemProp(index: '2-1'),
                       slots: WMenuItemSlot('选项1'),
@@ -293,6 +317,7 @@ class ApiMenu extends StatelessWidget {
               WMenu(
                 props: WMenuProp(
                   defaultActive: activeIndex2,
+                  // defaultOpeneds: ['1', '1-4'],
                 ),
                 on: WMenuOn(
                   close: handleClose,
