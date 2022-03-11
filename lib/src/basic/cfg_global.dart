@@ -15,6 +15,7 @@ class CfgGlobal {
   static Duration duration = const Duration(milliseconds: 300);
 
   WFont font = WFont();
+  WBorder border = WBorder();
   WBorderRadius borderRadius = WBorderRadius();
   WBorderStyle borderStyle = WBorderStyle();
   WPadding padding = WPadding();
@@ -95,6 +96,7 @@ class CfgGlobal {
   WCarouselStyle carousel = WCarouselStyle();
 
   WMenuStyle menu = WMenuStyle();
+  WTabsStyle tabs = WTabsStyle();
   WSubmenuStyle submenu = WSubmenuStyle();
   WMenuItemStyle menuItem = WMenuItemStyle();
   WMenuItemGroupStyle menuItemGroup = WMenuItemGroupStyle();
@@ -142,6 +144,58 @@ class WBorderStyle {
 }
 
 class WBorder {
+  static BorderSide common =
+      BorderSide(color: cfgGlobal.color.info.shade300, width: 1);
+
+  static Border excludeLeft = Border(
+    top: WBorder.common,
+    bottom: WBorder.common,
+    right: WBorder.common,
+  );
+
+  static Border excludeRight = Border(
+    top: WBorder.common,
+    bottom: WBorder.common,
+    left: WBorder.common,
+  );
+
+  static Border excludeTop = Border(
+    left: WBorder.common,
+    bottom: WBorder.common,
+    right: WBorder.common,
+  );
+
+  static Border excludeBottom = Border(
+    top: WBorder.common,
+    left: WBorder.common,
+    right: WBorder.common,
+  );
+
+  var m = {
+    'left': 'right',
+    'right': 'left',
+    'top': 'bottom',
+    'bottom': 'top',
+  };
+  Border excludeReverse(String side) {
+    return exclude(m[side]);
+  }
+
+  Border exclude(String? side) {
+    switch (side) {
+      case 'left':
+        return excludeLeft;
+      case 'right':
+        return excludeRight;
+      case 'top':
+        return excludeTop;
+      case 'bottom':
+        return excludeBottom;
+      default:
+        throw Exception('[$side] is not be support for border exclude');
+    }
+  }
+
   static Border all(String? k, [String? type]) {
     double radius = cfgGlobal.borderStyle.val(k);
     return Border.all(width: .5, color: cfgGlobal.color.val(type).shade200);
@@ -981,7 +1035,19 @@ class WStepStyle extends BaseStyle {
 }
 
 class WTabsStyle extends BaseStyle {
+  WTabItemStyle? item;
   WTabsStyle({
+    double? width,
+    double? height,
+    this.item,
+  }) : super(
+          height: height,
+          width: width,
+        );
+}
+
+class WTabItemStyle extends BaseStyle {
+  WTabItemStyle({
     double? width,
     double? height,
   }) : super(

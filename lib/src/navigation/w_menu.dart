@@ -15,7 +15,7 @@ mixin HasRootMenu on Widget {
   WMenu? rootMenu = null;
   int level = 0;
 
-  Widget injectRootMenu(slot, int i, component) {
+  Widget injectRootMenu(slot, int i, component, len) {
     setLevel(slot, component);
     slot.$style.padding = EdgeInsets.fromLTRB(
       paddingVal,
@@ -66,10 +66,10 @@ class WMenu extends StatefulWidget
   late ValueNotifier<List<dynamic>> openeds;
   late ValueNotifier<bool> collapse;
 
-  Widget injectRootMenu(slot, int i, component) {
+  Widget injectRootMenu(slot, int i, component, len) {
     // slot.rootMenu = component;
     rootMenu = this;
-    super.injectRootMenu(slot, i, component);
+    super.injectRootMenu(slot, i, component, len);
     return slot as Widget;
   }
 

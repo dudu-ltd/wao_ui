@@ -50,7 +50,7 @@ class WCard extends StatelessWidget
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if ($slots.header != null) ...[
-                        paddingWrapper($slots.header!, padding, true),
+                        paddingWrapper($slots.header!, padding: padding),
                         const Divider(height: 1),
                       ],
                       paddingWrapper(
@@ -60,8 +60,7 @@ class WCard extends StatelessWidget
                           crossAxisAlignment: WrapCrossAlignment.start,
                           children: defaultSlot,
                         ),
-                        padding,
-                        padding != null,
+                        padding: padding,
                       ),
                     ],
                   ),

@@ -43,7 +43,11 @@ class WEmpty extends StatelessWidget
             color: cfgGlobal.empty.descriptionColor,
           ),
         );
-    return paddingWrapper(desc, cfgGlobal.empty.descriptionPadding, true);
+    return paddingWrapper(
+      desc,
+      padding: cfgGlobal.empty.descriptionPadding,
+      need: true,
+    );
   }
 
   Widget get image {

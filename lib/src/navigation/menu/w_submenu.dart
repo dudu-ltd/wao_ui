@@ -48,7 +48,7 @@ class WSubmenu extends StatefulWidget
       SlotTranslator(WSubmenu, injectRootMenu),
       SlotTranslator(WMenuItemGroup, injectRootMenu),
       SlotTranslator(WMenuItem, injectRootMenu),
-      SlotTranslator(String, (slot, i, component) {
+      SlotTranslator(String, (slot, i, component, len) {
         return Text(
           slot,
           style: TextStyle(color: rootMenu?.$style.color),

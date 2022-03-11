@@ -41,7 +41,7 @@ class WMenuItem extends StatefulWidget
   SlotTranslator get stringToWidget {
     return SlotTranslator(
       String,
-      (slot, i, component) {
+      (slot, i, component, len) {
         return Text(
           slot,
           style: TextStyle(
@@ -58,7 +58,7 @@ class WMenuItem extends StatefulWidget
   SlotTranslator get iconDataToWidget {
     return SlotTranslator(
       IconData,
-      (slot, i, component) {
+      (slot, i, component, len) {
         return Icon(
           slot,
           color: component.rootMenu?.$style.prefixColor,
@@ -259,12 +259,13 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
         Expanded(
           child: Offstage(
             offstage: widget.rootMenu!.collapse.value,
-            child:
-                widget.stringToWidget.fn.call(widget.$slots.title!, 0, widget),
+            child: widget.stringToWidget.fn.call(widget.$slots.title!, 0,
+                widget, widget.$defaultSlotBeforeLength),
           ),
         ),
       if (hasTitle && widget.rootMenu!.$props.modeIsHorizontal)
-        widget.stringToWidget.fn.call(widget.$slots.title!, 0, widget)
+        widget.stringToWidget.fn.call(
+            widget.$slots.title!, 0, widget, widget.$defaultSlotBeforeLength)
     ];
   }
 

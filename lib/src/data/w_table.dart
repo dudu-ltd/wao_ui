@@ -57,7 +57,7 @@ class WTable extends StatefulWidget
     return <SlotTranslator>[
       SlotTranslator(
         WTableColumnProp,
-        (prop, i, component) {
+        (prop, i, component, len) {
           return WTableColumn(props: prop);
         },
       )

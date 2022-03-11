@@ -37,13 +37,13 @@ class WBreadcrumb extends StatelessWidget
     return [
       SlotTranslator(
         WBreadcrumbData,
-        (slot, i, c) {
+        (slot, i, c, len) {
           return createItem(slot);
         },
       ),
       SlotTranslator(
         Map,
-        (data, i, c) {
+        (data, i, c, len) {
           return createItem(
             WBreadcrumbData(
               text: data[$props.itemTextField],

@@ -22,7 +22,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     }
     if ($slots.defaultSlotBefore is List) {
       var slots = <Widget>[];
-      for (var i = 0; i < $slots.defaultSlotBefore.length; i++) {
+      for (var i = 0; i < $defaultSlotBeforeLength; i++) {
         var w = slotToWidget($slots.defaultSlotBefore[i], i);
         if (w != null) {
           slots.add(w);
@@ -49,7 +49,8 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     var t = slot.runtimeType;
     for (var translator in translators) {
       if (t == translator.type || instanceof(t, translator.type)) {
-        newWidget = translator.fn.call(slot, 0, this);
+        newWidget =
+            translator.fn.call(slot, index, this, $defaultSlotBeforeLength);
         break;
       }
     }
@@ -69,7 +70,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     return [
       SlotTranslator(
         String,
-        (slot, i, component) {
+        (slot, i, component, len) {
           return Text(slot);
         },
       ),
@@ -142,11 +143,17 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     return type == Map &&
         t.toString().startsWith('_InternalImmutableLinkedHashMap');
   }
+
+  int get $defaultSlotBeforeLength {
+    return $slots.defaultSlotBefore is List
+        ? $slots.defaultSlotBefore.length
+        : 1;
+  }
 }
 
 class SlotTranslator {
   late Type type;
-  late Widget Function(dynamic, int, dynamic) fn;
+  late Widget Function(dynamic, int, dynamic, int) fn;
   SlotTranslator(this.type, this.fn);
   @override
   String toString() {

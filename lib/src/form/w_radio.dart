@@ -249,6 +249,35 @@ class WRadioGroup extends StatelessWidget
   }
 
   @override
+  // TODO: implement slotTranslatorsCustom
+  List<SlotTranslator> get slotTranslatorsCustom {
+    return [
+      SlotTranslator(
+        WRadio,
+        (slot, i, component, len) {
+          slot.$props
+            ..value = $props.value
+            ..disabled |= $props.disabled
+            ..size = $props.size;
+          return slot;
+        },
+      ),
+      SlotTranslator(
+        WRadioButton,
+        (slot, i, component, len) {
+          slot.$props
+            .._value = $props.value
+            ..disabled |= $props.disabled
+            .._size = $props.size
+            ..isFirst = i == 0
+            ..isLast = i == len - 1;
+          return slot;
+        },
+      )
+    ];
+  }
+
+  @override
   Widget build(BuildContext context) {
     var children = <Widget>[];
     int len = defaultSlot.length;
