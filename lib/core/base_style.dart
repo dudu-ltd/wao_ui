@@ -14,6 +14,7 @@ class BaseStyle {
   Color? backgroundColor;
   Color? hoverBackgroundColor;
   Color? borderColor;
+  double? fontSize;
   BaseStyle({
     this.color,
     this.width,
@@ -28,5 +29,6 @@ class BaseStyle {
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.borderColor,
+    this.fontSize,
   });
 }

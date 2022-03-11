@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
 
+Widget alignWrapper(Widget child,
+    {Alignment align = Alignment.centerLeft, bool need = true}) {
+  if (need) {
+    return Align(
+      alignment: align,
+      child: child,
+    );
+  }
+  return child;
+}
+
 Widget borderWrapper(Widget child, Border? border, bool needBorder,
     {EdgeInsets? padding, EdgeInsets? margin, BorderRadius? borderRadius}) {
   if (needBorder) {
@@ -16,8 +27,9 @@ Widget borderWrapper(Widget child, Border? border, bool needBorder,
   return child;
 }
 
-Widget paddingWrapper(Widget child, EdgeInsets? padding, needPadding) {
-  if (needPadding && padding != null) {
+Widget paddingWrapper(Widget child,
+    {EdgeInsets? padding = const EdgeInsets.all(8.0), bool need = true}) {
+  if (need && padding != null) {
     return Padding(
       padding: padding,
       child: child,
@@ -70,6 +82,22 @@ Widget expandedScrollWrapper(child, needExpanded) {
       child = SingleChildScrollView(child: child);
     }
     return Expanded(child: child);
+  }
+  return child;
+}
+
+Widget expandedWrapper(child, expandedChild, {need = true, row = true}) {
+  if (need) {
+    var children = <Widget>[
+      child,
+      Expanded(
+        child: expandedChild,
+      )
+    ];
+    if (row) {
+      return Row(children: children);
+    }
+    return Column(children: children);
   }
   return child;
 }
