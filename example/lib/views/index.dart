@@ -1,8 +1,11 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/package/Index.dart';
+import 'package:example/views/header.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:wao_ui/core/env.dart';
+import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/src/basic/w_container_layout.dart';
 import 'package:wao_ui/src/tree/tree.dart';
 import 'package:example/package/basic/api_button.dart';
@@ -57,6 +60,7 @@ import 'package:example/package/others/api_popconfirm.dart';
 import 'package:example/package/others/api_popover.dart';
 import 'package:example/package/others/api_timeline.dart';
 import 'package:example/package/others/api_tooltip.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({Key? key}) : super(key: key);
@@ -153,16 +157,187 @@ class _IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     Navigator nav = createNav();
-    return Scaffold(
-      body: WContainerLayout(
+    var activeIndex = '1';
+    var activeIndex2 = '2';
+
+    var handleClose = (key, keyPath) {
+      print('$key $keyPath');
+    };
+    var handleOpen = (key, keyPath) {
+      print('$key $keyPath');
+    };
+    return WFrame()
+      ..$slots.header = SizedBox(
+        width: 600,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Icon(Icons.flutter_dash),
+            ),
+            // SizedBox(
+            //   height: 40,
+            //   child: WImage()
+            //     ..$props.src = 'assets:logo.png'
+            //     ..$props.fit = BoxFit.fitHeight,
+            // ),
+            Expanded(
+              child: WMenu(
+                style: WMenuStyle(
+                    stepPadding: 5,
+                    // backgroundColor: CfgGlobal.primaryColor.shade50,
+                    backgroundColor: Colors.grey.shade800,
+                    hoverBackgroundColor: Colors.grey.shade700,
+                    prefixColor: Colors.white,
+                    color: Colors.white,
+                    activeColor: Colors.white,
+                    submenu: WSubmenuStyle(
+                        menuItem: WMenuItemStyle(height: 28, fontSize: 12))),
+                props: WMenuProp(
+                  defaultActive: activeIndex,
+                  mode: 'horizontal',
+                  menuTrigger: 'click',
+                ),
+                // on: WMenuOn(select: handleSelect),
+                slots: WMenuSlot(
+                  [
+                    WMenuItem(
+                      props: WMenuItemProp(index: '1'),
+                      slots: WMenuItemSlot('处理中心'),
+                    ),
+                    WSubmenu(
+                      props: WSubmenuProp(index: '2'),
+                      slots: WSubmenuSlot(
+                        [
+                          WMenuItem(
+                            props: WMenuItemProp(index: '2-2'),
+                            slots: WMenuItemSlot('选项2'),
+                          ),
+                          WMenuItem(
+                            props: WMenuItemProp(index: '2-2'),
+                            slots: WMenuItemSlot('选项2'),
+                          ),
+                          WMenuItem(
+                            props: WMenuItemProp(index: '2-1'),
+                            slots: WMenuItemSlot('选项1'),
+                          ),
+                          WMenuItem(
+                            props: WMenuItemProp(index: '2-2'),
+                            slots: WMenuItemSlot('选项2'),
+                          ),
+                          WMenuItem(
+                            props: WMenuItemProp(index: '2-3'),
+                            slots: WMenuItemSlot('选项3'),
+                          ),
+                          WSubmenu(
+                            props: WSubmenuProp(index: '2-4'),
+                            slots: WSubmenuSlot(
+                              [
+                                WMenuItem(
+                                  props: WMenuItemProp(index: '2-4-1'),
+                                  slots: WMenuItemSlot('选项1'),
+                                ),
+                                WMenuItem(
+                                  props: WMenuItemProp(index: '2-4-2'),
+                                  slots: WMenuItemSlot('选项2'),
+                                ),
+                                WMenuItem(
+                                  props: WMenuItemProp(index: '2-4-3'),
+                                  slots: WMenuItemSlot('选项3'),
+                                ),
+                              ],
+                              title: WMenuItem(
+                                slots: WMenuItemSlot('选项4'),
+                              ),
+                            ),
+                          ),
+                        ],
+                        title: WMenuItem(
+                          slots: WMenuItemSlot(null, title: '我的工作台'),
+                        ),
+                      ),
+                    ),
+                    WMenuItem(
+                      props: WMenuItemProp(index: '3', disabled: true),
+                      slots: WMenuItemSlot('消息中心'),
+                    ),
+                    WMenuItem(
+                      props: WMenuItemProp(index: '4'),
+                      slots: WMenuItemSlot('订单管理'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      )
+      ..$slots.main = WContainerLayout(
         slots: WContainerLayoutSlot(
           nav,
+          asideRight: FractionallySizedBox(
+            heightFactor: 1,
+            child: WMenu(
+              props: WMenuProp(
+                defaultActive: '1-4-1',
+                collapse: true,
+              ),
+              slots: WMenuSlot([
+                WSubmenu(
+                  props: WSubmenuProp(
+                    index: '1',
+                  ),
+                  slots: WSubmenuSlot(
+                    null,
+                    title: WMenuItem(
+                      slots: WMenuItemSlot(
+                        Icons.location_on,
+                        title: '导航一',
+                      ),
+                    ),
+                  ),
+                ),
+                WMenuItem(
+                  props: WMenuItemProp(index: '2'),
+                  slots: WMenuItemSlot(
+                    Icons.menu,
+                    title: '导航二',
+                  ),
+                ),
+                WMenuItem(
+                  props: WMenuItemProp(index: '3', disabled: true),
+                  slots: WMenuItemSlot(
+                    Icons.document_scanner,
+                    title: '导航三',
+                  ),
+                ),
+                WMenuItem(
+                  props: WMenuItemProp(index: '4'),
+                  slots: WMenuItemSlot(
+                    Icons.settings,
+                    title: '导航四',
+                  ),
+                ),
+              ]),
+              style: WMenuStyle(
+                backgroundColor: Colors.grey.shade800,
+                hoverBackgroundColor: Colors.grey.shade700,
+                prefixColor: Colors.white,
+                stepPadding: 12,
+                width: 200,
+                minHeight: 400,
+              ),
+            ),
+          ),
+          footer: ColoredBox(
+              color: Colors.blueAccent, child: Center(child: Text('状态栏'))),
           asideLeft: SingleChildScrollView(
             child: PlainTree(
               on: PlainTreeOn(
                 nodeClick: (ctx, node) {
                   return () {
-                    if (!kIsWeb) (appWindow.title = node.text);
+                    if (isPc) (appWindow.title = node.text);
                     if (navContext != null)
                       Navigator.pushNamed(navContext!, node.id);
                   };
@@ -278,8 +453,8 @@ class _IndexPageState extends State<IndexPage> {
         props: WContainerLayoutProp(
           leftJudge: true,
           asideLeftMinWidth: 200.0,
+          asideRightWidth: 46.0,
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      );
   }
 }

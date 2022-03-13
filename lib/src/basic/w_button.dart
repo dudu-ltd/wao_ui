@@ -88,7 +88,7 @@ class WButton extends StatelessWidget
   }
 
   double get buttonMinWidth {
-    return $style.minWidth ?? cfgGlobal.button.minWidth ?? 30;
+    return $style?.minWidth ?? cfgGlobal.button.minWidth ?? 30;
   }
 
   Widget _inkWellWrapper(Widget btn, TypeButtonColor colors, Radius radius) {

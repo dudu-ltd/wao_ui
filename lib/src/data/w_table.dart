@@ -448,15 +448,6 @@ class WTableColumn extends StatelessWidget
     with
         BaseMixins<WTableColumnOn, WTableColumnProp, WTableColumnSlot,
             WTableColumnStyle> {
-  @override
-  late final WTableColumnOn $on;
-  @override
-  late final WTableColumnProp $props;
-  @override
-  late final WTableColumnSlot $slots;
-  @override
-  late WTableColumnStyle $style;
-
   WTableColumn({
     Key? key,
     WTableColumnOn? on,

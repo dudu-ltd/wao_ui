@@ -23,26 +23,39 @@ class WImage extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    errorBuilder(context, object, track) {
+      return $slots.error ?? Icon(Icons.error);
+    }
+
+    Widget loadingBuilder(context, wdg, loadingProgress) {
+      if (loadingProgress == null) return wdg;
+
+      return $slots.placeholder ??
+          WProgress(
+              props: WProgressProp(
+            format: (p) => p == 100 ? '满' : '${p.toInt()}%',
+            percentage: loadingProgress.cumulativeBytesLoaded /
+                (loadingProgress.expectedTotalBytes ?? 1) *
+                100,
+            // type: 'circle',
+          ));
+    }
+
     if ($props.src != null) {
+      if ($props.src!.startsWith('assets:')) {
+        print('use assets');
+        return Image.asset(
+          $props.src!.replaceFirst('assets:', ''),
+          fit: $props.fit,
+          errorBuilder: errorBuilder,
+          // loadingBuilder: loadingBuilder,
+        );
+      }
       return Image.network(
         $props.src!,
         fit: $props.fit,
-        errorBuilder: (context, object, track) {
-          return $slots.error ?? Icon(Icons.error);
-        },
-        loadingBuilder: (context, wdg, loadingProgress) {
-          if (loadingProgress == null) return wdg;
-
-          return $slots.placeholder ??
-              WProgress(
-                  props: WProgressProp(
-                format: (p) => p == 100 ? '满' : '${p.toInt()}%',
-                percentage: loadingProgress.cumulativeBytesLoaded /
-                    (loadingProgress.expectedTotalBytes ?? 1) *
-                    100,
-                // type: 'circle',
-              ));
-        },
+        errorBuilder: errorBuilder,
+        loadingBuilder: loadingBuilder,
       );
     }
     return Container(child: $slots.error ?? const Text('加载失败'));

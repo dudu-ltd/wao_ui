@@ -10,7 +10,7 @@ class CfgGlobal {
   // static MaterialColor primaryColor = Colors.deepPurple;
   static MaterialColor primaryColor = Colors.blue;
   static MaterialColor disabledColor = Colors.grey;
-  static Color blankColor = Colors.white;
+  static Color blankColor = Colors.transparent;
 
   static Duration duration = const Duration(milliseconds: 300);
 
@@ -297,19 +297,18 @@ class WColor {
   static const MaterialColor white = MaterialColor(
     _greyPrimaryValue,
     <int, Color>{
-      50: Color(0xFFFFFFFF),
-      100: Color(0xFFFFFFFF),
-      200: Color(0xFFFFFFFF),
-      300: Color(0xFFFFFFFF),
-      350: Color(
-          0xFFD6D6D6), // only for raised button while pressed in light theme
-      400: Color(0xFFFFFFFF),
-      500: Color(_greyPrimaryValue),
-      600: Color(0xFFFFFFFF),
-      700: Color(0xFFFFFFFF),
-      800: Color(0xFFFFFFFF),
-      850: Color(0xFFFFFFFF), // only for background color in dark theme
-      900: Color(0xFFFFFFFF),
+      50: Colors.transparent,
+      100: Colors.transparent,
+      200: Colors.transparent,
+      300: Colors.transparent,
+      350: Colors.transparent,
+      400: Colors.transparent,
+      500: Colors.transparent,
+      600: Colors.transparent,
+      700: Colors.transparent,
+      800: Colors.transparent,
+      850: Colors.transparent,
+      900: Colors.transparent,
     },
   );
   static const int _greyPrimaryValue = 0xFFFFFFFF;
@@ -942,6 +941,7 @@ class WMenuStyle extends BaseStyle {
   late Color prefixColor;
   late Color suffixColor;
   late double? stepPadding;
+  late WSubmenuStyle? submenu;
   WMenuStyle({
     Color? color,
     Color? activeColor,
@@ -953,6 +953,7 @@ class WMenuStyle extends BaseStyle {
     Color? prefixColor,
     Color? suffixColor,
     this.stepPadding,
+    this.submenu,
   }) : super(
           height: height,
           width: width,
@@ -963,7 +964,7 @@ class WMenuStyle extends BaseStyle {
     this.color = color ?? ColorUtil.hexToColor('#303133');
     this.prefixColor = prefixColor ?? ColorUtil.hexToColor('#909399');
     this.suffixColor = suffixColor ?? ColorUtil.hexToColor('#909399');
-    this.backgroundColor = backgroundColor ?? ColorUtil.hexToColor('#FFFFFF');
+    this.backgroundColor = backgroundColor ?? Colors.transparent;
     this.hoverBackgroundColor =
         hoverBackgroundColor ?? ColorUtil.hexToColor('#ecf5ff');
     this.activeColor = activeColor ?? ColorUtil.hexToColor('#409EFF');
@@ -972,10 +973,12 @@ class WMenuStyle extends BaseStyle {
 
 class WSubmenuStyle extends BaseStyle {
   double? panelBorder;
+  WMenuItemStyle? menuItem;
   WSubmenuStyle({
     double? width,
     double? height,
     this.panelBorder,
+    this.menuItem,
   }) : super(
           height: height,
           width: width,
@@ -984,10 +987,12 @@ class WSubmenuStyle extends BaseStyle {
 
 class WMenuItemStyle extends BaseStyle {
   WMenuItemStyle({
+    double? fontSize,
     double? width,
     double? height,
     EdgeInsets? padding,
   }) : super(
+          fontSize: fontSize,
           height: height,
           width: width,
           padding: padding,

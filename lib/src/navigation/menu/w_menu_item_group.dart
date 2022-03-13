@@ -32,7 +32,7 @@ class WMenuItemGroup extends StatelessWidget
           height: lineHeight,
           child: Align(
             child: Padding(
-              padding: $style.padding ?? EdgeInsets.only(left: paddingVal),
+              padding: $style?.padding ?? EdgeInsets.only(left: paddingVal),
               child: title,
             ),
             alignment: Alignment.centerLeft,
@@ -64,7 +64,7 @@ class WMenuItemGroup extends StatelessWidget
   }
 
   double? get lineHeight {
-    return $style.height ?? cfgGlobal.menuItemGroup.height ?? 60;
+    return $style?.height ?? cfgGlobal.menuItemGroup.height ?? 60;
   }
 }
 

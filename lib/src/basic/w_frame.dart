@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -5,6 +8,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:wao_ui/wao_ui.dart';
+
+import '../../core/env.dart';
 
 class WFrame extends StatelessWidget
     with BaseMixins<WFrameOn, WFrameProp, WFrameSlot, WFrameStyle> {
@@ -24,12 +29,10 @@ class WFrame extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Flex(
-        direction: Axis.vertical,
-        children: [
-          WindowTitleBarBox(
+    Widget? title = isPc
+        ? WindowTitleBarBox(
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 $slots.icon != null
                     ? MoveWindow(
@@ -45,10 +48,29 @@ class WFrame extends StatelessWidget
                       )
                     : Container(),
                 Expanded(child: MoveWindow()),
-                getButtions()
+                if (isPc) getButtions()
               ],
             ),
-          ),
+          )
+        : FractionallySizedBox(widthFactor: 1, child: $slots.header);
+    var appBar = AppBar(
+      shadowColor: Colors.transparent,
+      toolbarHeight: 30,
+      iconTheme: IconThemeData().copyWith(size: 14, opacity: kIsWeb ? 0 : 1),
+      backgroundColor: Colors.grey.shade800,
+      foregroundColor: CfgGlobal.primaryColor,
+      actions: [if (isPc) getButtions()],
+      toolbarTextStyle: TextStyle(fontSize: 14),
+      flexibleSpace: title,
+      leading: $slots.icon,
+      titleSpacing: 0,
+    );
+    return Scaffold(
+      appBar: appBar,
+      body: Flex(
+        direction: Axis.vertical,
+        children: [
+          // title ?? Container(),
           Expanded(child: $slots.main ?? Container()),
           $slots.footer ?? Container()
         ],

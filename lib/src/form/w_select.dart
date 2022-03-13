@@ -426,11 +426,15 @@ class _WSelectState extends State<WSelect>
   }
 
   double get panelWidth {
-    return widget.$style.panelMaxWidth ?? cfgGlobal.select.panelMaxWidth ?? 240;
+    return widget.$style?.panelMaxWidth ??
+        cfgGlobal.select.panelMaxWidth ??
+        240;
   }
 
   double get panelMinWidth {
-    return widget.$style.panelMinWidth ?? cfgGlobal.select.panelMinWidth ?? 180;
+    return widget.$style?.panelMinWidth ??
+        cfgGlobal.select.panelMinWidth ??
+        180;
   }
 
   // 为浮窗添加小箭头角标
@@ -482,15 +486,15 @@ class _WSelectState extends State<WSelect>
   // }
 
   double get panelBorder {
-    return widget.$style.panelBorder ?? cfgGlobal.select.panelBorder ?? 1;
+    return widget.$style?.panelBorder ?? cfgGlobal.select.panelBorder ?? 1;
   }
 
   double get panelHeight {
-    return widget.$style.panelHeight ?? cfgGlobal.select.panelHeight ?? 274.0;
+    return widget.$style?.panelHeight ?? cfgGlobal.select.panelHeight ?? 274.0;
   }
 
   Color get noDataTextColor {
-    return widget.$style.noDataTextColor ??
+    return widget.$style?.noDataTextColor ??
         cfgGlobal.select.noDataTextColor ??
         Colors.grey.shade600;
   }
@@ -771,7 +775,7 @@ class WOption extends StatelessWidget
   }
 
   Color get disableColor {
-    return $style.disabledColor ??
+    return $style?.disabledColor ??
         cfgGlobal.option.disabledColor ??
         Colors.grey.shade400;
   }

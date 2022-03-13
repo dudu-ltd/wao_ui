@@ -58,5 +58,6 @@ export 'src/others/w_popconfirm.dart';
 export 'src/others/w_popover.dart';
 export 'src/others/w_timeline.dart';
 export 'src/others/w_tooltip.dart';
+export 'src/nested_route.dart';
 
 export 'src/tree/tree.dart';

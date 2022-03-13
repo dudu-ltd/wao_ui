@@ -2,13 +2,17 @@ name: wao_ui
 description: An base UI framework for windows.
 version: 0.0.1
 homepage: http:over-sky.cn
+publish_to: none
 
 environment:
   sdk: ">=2.15.0-172.0.dev <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
-  bitsdojo_window: ^0.1.1+1
+  bitsdojo_window: 
+    git:
+      url: https://github.com/CorvusYe/bitsdojo_window
+      path: bitsdojo_window
   dio: ^4.0.4
   file_picker: ^4.3.0
   flutter:

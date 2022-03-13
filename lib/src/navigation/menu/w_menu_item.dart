@@ -45,7 +45,7 @@ class WMenuItem extends StatefulWidget
         return Text(
           slot,
           style: TextStyle(
-            // fontSize: 18,
+            fontSize: fontSize,
             color: rootMenu?.value.value == $props.index
                 ? component.rootMenu?.$style.activeColor
                 : component.rootMenu?.$style.color,
@@ -61,6 +61,7 @@ class WMenuItem extends StatefulWidget
       (slot, i, component, len) {
         return Icon(
           slot,
+          size: 20,
           color: component.rootMenu?.$style.prefixColor,
         );
       },
@@ -76,11 +77,21 @@ class WMenuItem extends StatefulWidget
   }
 
   double get lineHeight {
-    return $style.height ?? cfgGlobal.menuItem.height ?? 50;
+    return $style?.height ??
+        rootMenu?.$style?.submenu?.menuItem?.height ??
+        cfgGlobal.menuItem.height ??
+        50;
+  }
+
+  double get fontSize {
+    return $style?.fontSize ??
+        rootMenu?.$style?.submenu?.menuItem?.fontSize ??
+        cfgGlobal.menuItem.fontSize ??
+        14;
   }
 
   EdgeInsets get padding {
-    return $style.padding ??
+    return $style?.padding ??
         cfgGlobal.menuItem.padding ??
         EdgeInsets.fromLTRB(paddingVal, 0.0, stepPadding, 0.0);
   }
@@ -100,8 +111,8 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
     widget.bgController =
         AnimationController(vsync: this, duration: CfgGlobal.duration);
     widget.bgColor = ColorTween(
-            begin: widget.rootMenu?.$style.backgroundColor,
-            end: widget.rootMenu?.$style.hoverBackgroundColor)
+            begin: widget.rootMenu?.$style?.backgroundColor,
+            end: widget.rootMenu?.$style?.hoverBackgroundColor)
         .animate(widget.bgController)
       ..addListener(updateView);
 
@@ -227,12 +238,12 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
             width: 2,
             color: widget.$props.index == widget.rootMenu?.value.value &&
                     (widget.rootMenu?.$props.modeIsHorizontal ?? false)
-                ? widget.rootMenu?.$style.activeColor ?? Colors.transparent
+                ? widget.rootMenu?.$style?.activeColor ?? Colors.transparent
                 : Colors.transparent,
           ),
         ),
         color: widget.bgColor.value ??
-            widget.rootMenu?.$style.backgroundColor ??
+            widget.rootMenu?.$style?.backgroundColor ??
             Colors.transparent,
       ),
     );
@@ -279,7 +290,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
             child: Icon(
               widget.$slots.suffix,
               size: 12,
-              color: widget.rootMenu?.$style.suffixColor,
+              color: widget.rootMenu?.$style?.suffixColor,
             ),
           ),
         ),

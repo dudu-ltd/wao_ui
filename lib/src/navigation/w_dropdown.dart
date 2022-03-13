@@ -89,6 +89,7 @@ class _WDropdownState extends State<WDropdown>
         return List.generate(items.length, (index) {
           return PopupMenuItem(
             child: items[index],
+            onTap: widget.$on.click,
           );
         });
       },
@@ -153,7 +154,7 @@ class WDropdown extends StatefulWidget
 }
 
 class WDropdownOn extends BaseOn {
-  Function? click;
+  Function()? click;
   Function? command;
   Function? visibleChange;
   WDropdownOn({this.click, this.command, this.visibleChange});
