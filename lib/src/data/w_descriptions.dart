@@ -19,15 +19,6 @@ class WDescriptions extends StatefulWidget
     with
         BaseMixins<WDescriptionsOn, WDescriptionsProp, WDescriptionsSlot,
             WDescriptionsStyle> {
-  @override
-  late final WDescriptionsOn $on;
-  @override
-  late final WDescriptionsProp $props;
-  @override
-  late final WDescriptionsSlot $slots;
-  @override
-  late WDescriptionsStyle $style;
-
   WDescriptions({
     Key? key,
     WDescriptionsOn? on,
@@ -330,7 +321,7 @@ class WDescriptionsItem extends StatelessWidget
   }
 
   EdgeInsets get padding {
-    return $style.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
+    return $style?.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
   }
 }
 

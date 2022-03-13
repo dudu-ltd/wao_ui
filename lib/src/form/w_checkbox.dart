@@ -170,7 +170,7 @@ class _WCheckboxState extends State<WCheckbox> {
   }
 
   EdgeInsets get padding {
-    return widget.$style.padding ??
+    return widget.$style?.padding ??
         cfgGlobal.checkbox.padding ??
         const EdgeInsets.all(8.0);
   }

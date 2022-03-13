@@ -11,7 +11,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   late final O $on;
   late final P $props;
   late final S $slots;
-  late final T $style;
+  late final T? $style;
   List<Widget>? $defaultSlot;
 
   init() {}

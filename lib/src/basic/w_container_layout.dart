@@ -120,7 +120,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
   @override
   Widget build(BuildContext context) {
     var col = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [],
     );
     if (widget.$slots.header != null) {
@@ -137,7 +137,10 @@ class _WContainerLayoutState extends State<WContainerLayout> {
       );
     }
 
-    var middle = Row(children: []);
+    var middle = Row(
+      children: [],
+      crossAxisAlignment: CrossAxisAlignment.start,
+    );
     addLeftAndRight(middle);
 
     col.children.add(Expanded(child: middle));

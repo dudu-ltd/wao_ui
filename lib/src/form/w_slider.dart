@@ -352,41 +352,41 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
   }
 
   Color get inactiveColor {
-    return widget.$style.inactiveColor ??
+    return widget.$style?.inactiveColor ??
         cfgGlobal.slider.inactiveColor ??
         CfgGlobal.disabledColor.shade300;
   }
 
   Color get activeColor {
-    return widget.$style.activeColor ??
+    return widget.$style?.activeColor ??
         cfgGlobal.slider.activeColor ??
         CfgGlobal.primaryColor;
   }
 
   Color get thumbColor {
-    return widget.$style.thumbColor ??
+    return widget.$style?.thumbColor ??
         cfgGlobal.slider.thumbColor ??
         Colors.white;
   }
 
   double get height {
-    return widget.$style.height ?? cfgGlobal.slider.height ?? 6.0;
+    return widget.$style?.height ?? cfgGlobal.slider.height ?? 6.0;
   }
 
   double get valueRadiusOuter {
-    return widget.$style.valueRadiusOuter ??
+    return widget.$style?.valueRadiusOuter ??
         cfgGlobal.slider.valueRadiusOuter ??
         10.0;
   }
 
   double get valueRadiusInner {
-    return widget.$style.valueRadiusInner ??
+    return widget.$style?.valueRadiusInner ??
         cfgGlobal.slider.valueRadiusInner ??
         8.0;
   }
 
   double get width {
-    return widget.$style.width ?? cfgGlobal.slider.width ?? 800;
+    return widget.$style?.width ?? cfgGlobal.slider.width ?? 800;
   }
 }
 

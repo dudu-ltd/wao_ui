@@ -312,15 +312,15 @@ class _WDrawerViewState extends State<WDrawerView>
   }
 
   double get titlePadding {
-    return widget.$style.titlePadding ?? cfgGlobal.drawer.titlePadding ?? 20;
+    return widget.$style?.titlePadding ?? cfgGlobal.drawer.titlePadding ?? 20;
   }
 
   double get bodyPadding {
-    return widget.$style.bodyPadding ?? cfgGlobal.drawer.bodyPadding ?? 20;
+    return widget.$style?.bodyPadding ?? cfgGlobal.drawer.bodyPadding ?? 20;
   }
 
   TextStyle get titleTextStyle {
-    return widget.$style.titleTextStyle ??
+    return widget.$style?.titleTextStyle ??
         cfgGlobal.drawer.titleTextStyle ??
         const TextStyle(
           decoration: TextDecoration.none,
@@ -335,7 +335,7 @@ class _WDrawerViewState extends State<WDrawerView>
   }
 
   List<BoxShadow> get shadow {
-    return widget.$style.boxShadow ??
+    return widget.$style?.boxShadow ??
         cfgGlobal.drawer.boxShadow ??
         const [
           BoxShadow(
