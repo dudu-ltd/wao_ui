@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BaseSlot {
   List<Widget>? defaultSlot;
-  dynamic defaultSlotBefore;
+  dynamic $;
 
-  BaseSlot(this.defaultSlotBefore);
+  BaseSlot(this.$);
 }

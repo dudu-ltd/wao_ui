@@ -42,7 +42,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
   _WContainerLayoutState(this.$props);
   setMain(main) {
     setState(() {
-      widget.$slots.defaultSlotBefore = main;
+      widget.$slots.$ = main;
     });
   }
 

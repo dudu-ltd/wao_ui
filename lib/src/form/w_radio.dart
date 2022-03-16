@@ -69,10 +69,10 @@ class _WRadioState extends State<WRadio> {
                 ),
               ),
             ),
-            widget.$slots.defaultSlotBefore is Widget
-                ? widget.$slots.defaultSlotBefore
+            widget.$slots.$ is Widget
+                ? widget.$slots.$
                 : Text(
-                    widget.$slots.defaultSlotBefore ?? 'null',
+                    widget.$slots.$ ?? 'null',
                     style: TextStyle(
                       color: labelColor,
                       fontSize: height + 1,
@@ -358,10 +358,10 @@ class _WRadioButtonState extends State<WRadioButton> {
               borderRadius: borderRadius,
               border: border,
             ),
-            child: widget.$slots.defaultSlotBefore is Widget
-                ? widget.$slots.defaultSlotBefore
+            child: widget.$slots.$ is Widget
+                ? widget.$slots.$
                 : Text(
-                    widget.$slots.defaultSlotBefore ?? 'null',
+                    widget.$slots.$ ?? 'null',
                     style: TextStyle(
                       color: state.isMouseOver &&
                               !widget.$props.isSelected &&

@@ -89,12 +89,10 @@ class _WCheckboxState extends State<WCheckbox> {
                         size: height - 2,
                       ),
                     )),
-                widget.$slots.defaultSlotBefore is Widget
-                    ? widget.$slots.defaultSlotBefore
+                widget.$slots.$ is Widget
+                    ? widget.$slots.$
                     : Text(
-                        widget.$slots.defaultSlotBefore ??
-                            widget.$props.label ??
-                            'null',
+                        widget.$slots.$ ?? widget.$props.label ?? 'null',
                         style: TextStyle(
                           color: labelColor,
                           fontSize: height + 1,
@@ -467,10 +465,10 @@ class _WCheckboxButtonState extends State<WCheckboxButton> {
               borderRadius: borderRadius,
               border: border,
             ),
-            child: widget.$slots.defaultSlotBefore is Widget
-                ? widget.$slots.defaultSlotBefore
+            child: widget.$slots.$ is Widget
+                ? widget.$slots.$
                 : Text(
-                    widget.$slots.defaultSlotBefore ?? 'null',
+                    widget.$slots.$ ?? 'null',
                     style: TextStyle(
                       color: state.isMouseOver &&
                               !widget.$props.isSelected &&

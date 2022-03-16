@@ -118,7 +118,7 @@ class _WBadgeState extends State<WBadge> {
   }
 
   Widget get child {
-    return widget.$slots.defaultSlotBefore;
+    return widget.$slots.$;
   }
 
   update(e) {

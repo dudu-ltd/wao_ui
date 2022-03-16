@@ -10,7 +10,7 @@ class CfgGlobal {
   // static MaterialColor primaryColor = Colors.deepPurple;
   static MaterialColor primaryColor = Colors.blue;
   static MaterialColor disabledColor = Colors.grey;
-  static Color blankColor = Colors.transparent;
+  static Color blankColor = Colors.white;
 
   static Duration duration = const Duration(milliseconds: 300);
 
