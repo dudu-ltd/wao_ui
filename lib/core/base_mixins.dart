@@ -20,17 +20,17 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     if ($defaultSlot != null) {
       return $defaultSlot!;
     }
-    if ($slots.defaultSlotBefore is List) {
+    if ($slots.$ is List) {
       var slots = <Widget>[];
       for (var i = 0; i < $defaultSlotBeforeLength; i++) {
-        var w = slotToWidget($slots.defaultSlotBefore[i], i);
+        var w = slotToWidget($slots.$[i], i);
         if (w != null) {
           slots.add(w);
         }
       }
       return slots;
     } else {
-      var w = slotToWidget($slots.defaultSlotBefore, 0);
+      var w = slotToWidget($slots.$, 0);
       return [if (w != null) w];
     }
   }
@@ -145,9 +145,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   }
 
   int get $defaultSlotBeforeLength {
-    return $slots.defaultSlotBefore is List
-        ? $slots.defaultSlotBefore.length
-        : 1;
+    return $slots.$ is List ? $slots.$.length : 1;
   }
 }
 

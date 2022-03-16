@@ -40,6 +40,9 @@ dependencies:
       url: https://github.com/CorvusYe/bitsdojo_window
       path: bitsdojo_window
 
+  flutter_md: 
+    path: D:\work\codes\gitee\flutter_md
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,6 +68,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - logo.png
+    - assets/md/WTabs.md
+    - assets/md/WButton.md
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

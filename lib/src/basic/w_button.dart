@@ -111,18 +111,18 @@ class WButton extends StatelessWidget
 
   handleDefaultSlot(TypeButtonColor colors) {
     $defaultSlot = [
-      $slots.defaultSlotBefore == null
+      $slots.$ == null
           ? Text('', style: TextStyle(color: colors.inner))
-          : $slots.defaultSlotBefore is IconData
+          : $slots.$ is IconData
               ? Icon(
-                  $slots.defaultSlotBefore,
+                  $slots.$,
                   color: colors.inner,
                 )
-              : $slots.defaultSlotBefore is Widget
-                  ? $slots.defaultSlotBefore
-                  : $slots.defaultSlotBefore is String
+              : $slots.$ is Widget
+                  ? $slots.$
+                  : $slots.$ is String
                       ? Text(
-                          $slots.defaultSlotBefore,
+                          $slots.$,
                           style: TextStyle(color: colors.inner),
                         )
                       : Container(),

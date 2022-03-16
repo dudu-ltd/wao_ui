@@ -57,7 +57,7 @@ class WFrame extends StatelessWidget
       shadowColor: Colors.transparent,
       toolbarHeight: 30,
       iconTheme: IconThemeData().copyWith(size: 14, opacity: kIsWeb ? 0 : 1),
-      backgroundColor: Colors.grey.shade800,
+      backgroundColor: Colors.white,
       foregroundColor: CfgGlobal.primaryColor,
       actions: [if (isPc) getButtions()],
       toolbarTextStyle: TextStyle(fontSize: 14),

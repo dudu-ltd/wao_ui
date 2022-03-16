@@ -11,7 +11,7 @@ class Home extends StatelessWidget {
     return Scaffold(
       body: WContainerLayout()
         ..$slots.header = Header()
-        ..$slots.defaultSlotBefore = IndexPage(),
+        ..$slots.$ = IndexPage(),
     );
   }
 }

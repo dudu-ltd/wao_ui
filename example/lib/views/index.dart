@@ -1,4 +1,5 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:example/main.dart';
 import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/package/Index.dart';
 import 'package:example/views/header.dart';
@@ -61,6 +62,8 @@ import 'package:example/package/others/api_popover.dart';
 import 'package:example/package/others/api_timeline.dart';
 import 'package:example/package/others/api_tooltip.dart';
 import 'package:wao_ui/wao_ui.dart';
+
+import 'api_detail.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({Key? key}) : super(key: key);
@@ -132,14 +135,15 @@ class _IndexPageState extends State<IndexPage> {
     return (BuildContext nContext, Animation<double> animation,
         Animation<double> secondaryAnimation) {
       navContext = nContext;
-      return _route[routeName] ?? const Index();
+      return ApiDetail(name: routeName);
+      // return _route[routeName] ?? const Index();
     };
   }
 
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'WTabs',
+      initialRoute: 'WButton',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -167,112 +171,111 @@ class _IndexPageState extends State<IndexPage> {
       print('$key $keyPath');
     };
     return WFrame()
-      ..$slots.header = SizedBox(
-        width: 600,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Icon(Icons.flutter_dash),
-            ),
-            // SizedBox(
-            //   height: 40,
-            //   child: WImage()
-            //     ..$props.src = 'assets:logo.png'
-            //     ..$props.fit = BoxFit.fitHeight,
-            // ),
-            Expanded(
-              child: WMenu(
-                style: WMenuStyle(
-                    stepPadding: 5,
-                    // backgroundColor: CfgGlobal.primaryColor.shade50,
-                    backgroundColor: Colors.grey.shade800,
-                    hoverBackgroundColor: Colors.grey.shade700,
-                    prefixColor: Colors.white,
-                    color: Colors.white,
-                    activeColor: Colors.white,
-                    submenu: WSubmenuStyle(
-                        menuItem: WMenuItemStyle(height: 28, fontSize: 12))),
-                props: WMenuProp(
-                  defaultActive: activeIndex,
-                  mode: 'horizontal',
-                  menuTrigger: 'click',
-                ),
-                // on: WMenuOn(select: handleSelect),
-                slots: WMenuSlot(
-                  [
-                    WMenuItem(
-                      props: WMenuItemProp(index: '1'),
-                      slots: WMenuItemSlot('处理中心'),
-                    ),
-                    WSubmenu(
-                      props: WSubmenuProp(index: '2'),
-                      slots: WSubmenuSlot(
-                        [
-                          WMenuItem(
-                            props: WMenuItemProp(index: '2-2'),
-                            slots: WMenuItemSlot('选项2'),
-                          ),
-                          WMenuItem(
-                            props: WMenuItemProp(index: '2-2'),
-                            slots: WMenuItemSlot('选项2'),
-                          ),
-                          WMenuItem(
-                            props: WMenuItemProp(index: '2-1'),
-                            slots: WMenuItemSlot('选项1'),
-                          ),
-                          WMenuItem(
-                            props: WMenuItemProp(index: '2-2'),
-                            slots: WMenuItemSlot('选项2'),
-                          ),
-                          WMenuItem(
-                            props: WMenuItemProp(index: '2-3'),
-                            slots: WMenuItemSlot('选项3'),
-                          ),
-                          WSubmenu(
-                            props: WSubmenuProp(index: '2-4'),
-                            slots: WSubmenuSlot(
-                              [
-                                WMenuItem(
-                                  props: WMenuItemProp(index: '2-4-1'),
-                                  slots: WMenuItemSlot('选项1'),
-                                ),
-                                WMenuItem(
-                                  props: WMenuItemProp(index: '2-4-2'),
-                                  slots: WMenuItemSlot('选项2'),
-                                ),
-                                WMenuItem(
-                                  props: WMenuItemProp(index: '2-4-3'),
-                                  slots: WMenuItemSlot('选项3'),
-                                ),
-                              ],
-                              title: WMenuItem(
-                                slots: WMenuItemSlot('选项4'),
-                              ),
-                            ),
-                          ),
-                        ],
-                        title: WMenuItem(
-                          slots: WMenuItemSlot(null, title: '我的工作台'),
-                        ),
-                      ),
-                    ),
-                    WMenuItem(
-                      props: WMenuItemProp(index: '3', disabled: true),
-                      slots: WMenuItemSlot('消息中心'),
-                    ),
-                    WMenuItem(
-                      props: WMenuItemProp(index: '4'),
-                      slots: WMenuItemSlot('订单管理'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      )
+      // ..$slots.header = SizedBox(
+      //   width: 600,
+      //   child: Row(
+      //     mainAxisSize: MainAxisSize.min,
+      //     children: [
+      //       Padding(
+      //         padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      //         child: Icon(
+      //           Icons.flutter_dash,
+      //           color: Colors.white,
+      //         ),
+      //       ),
+      //       // SizedBox(
+      //       //   height: 40,
+      //       //   child: WImage()
+      //       //     ..$props.src = 'assets:logo.png'
+      //       //     ..$props.fit = BoxFit.fitHeight,
+      //       // ),
+      //       Expanded(
+      //         child: WMenu(
+      //           style: WMenuStyle(
+      //               stepPadding: 5,
+      //               // backgroundColor: CfgGlobal.primaryColor.shade50,
+      //               backgroundColor: Colors.white,
+      //               hoverBackgroundColor: Colors.grey.shade200,
+      //               prefixColor: Colors.grey.shade600,
+      //               color: Colors.grey.shade600,
+      //               activeColor: Colors.grey.shade600,
+      //               submenu: WSubmenuStyle(
+      //                   menuItem: WMenuItemStyle(height: 28, fontSize: 12))),
+      //           props: WMenuProp(
+      //             defaultActive: activeIndex,
+      //             mode: 'horizontal',
+      //             menuTrigger: 'click',
+      //           ),
+      //           // on: WMenuOn(select: handleSelect),
+      //           slots: WMenuSlot(
+      //             [
+      //               WMenuItem(
+      //                 props: WMenuItemProp(index: '1'),
+      //                 slots: WMenuItemSlot('组件'),
+      //               ),
+      //               WSubmenu(
+      //                 props: WSubmenuProp(index: '2'),
+      //                 slots: WSubmenuSlot(
+      //                   [
+      //                     WMenuItem(
+      //                       props: WMenuItemProp(index: '2-2'),
+      //                       slots: WMenuItemSlot('选项2'),
+      //                     ),
+      //                     WMenuItem(
+      //                       props: WMenuItemProp(index: '2-2'),
+      //                       slots: WMenuItemSlot('选项2'),
+      //                     ),
+      //                     WMenuItem(
+      //                       props: WMenuItemProp(index: '2-1'),
+      //                       slots: WMenuItemSlot('选项1'),
+      //                     ),
+      //                     WMenuItem(
+      //                       props: WMenuItemProp(index: '2-2'),
+      //                       slots: WMenuItemSlot('选项2'),
+      //                     ),
+      //                     WMenuItem(
+      //                       props: WMenuItemProp(index: '2-3'),
+      //                       slots: WMenuItemSlot('选项3'),
+      //                     ),
+      //                     WSubmenu(
+      //                       props: WSubmenuProp(index: '2-4'),
+      //                       slots: WSubmenuSlot(
+      //                         [
+      //                           WMenuItem(
+      //                             props: WMenuItemProp(index: '2-4-1'),
+      //                             slots: WMenuItemSlot('选项1'),
+      //                           ),
+      //                           WMenuItem(
+      //                             props: WMenuItemProp(index: '2-4-2'),
+      //                             slots: WMenuItemSlot('选项2'),
+      //                           ),
+      //                           WMenuItem(
+      //                             props: WMenuItemProp(index: '2-4-3'),
+      //                             slots: WMenuItemSlot('选项3'),
+      //                           ),
+      //                         ],
+      //                         title: WMenuItem(
+      //                           slots: WMenuItemSlot('选项4'),
+      //                         ),
+      //                       ),
+      //                     ),
+      //                   ],
+      //                   title: WMenuItem(
+      //                     slots: WMenuItemSlot(null, title: '我的工作台'),
+      //                   ),
+      //                 ),
+      //               ),
+      //               WMenuItem(
+      //                 props: WMenuItemProp(index: '3', disabled: true),
+      //                 slots: WMenuItemSlot('消息中心'),
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // )
       ..$slots.main = WContainerLayout(
         slots: WContainerLayoutSlot(
           nav,
@@ -321,9 +324,11 @@ class _IndexPageState extends State<IndexPage> {
                 ),
               ]),
               style: WMenuStyle(
-                backgroundColor: Colors.grey.shade800,
-                hoverBackgroundColor: Colors.grey.shade700,
-                prefixColor: Colors.white,
+                backgroundColor: Colors.white,
+                hoverBackgroundColor: Colors.grey.shade200,
+                prefixColor: Colors.grey.shade600,
+                color: Colors.grey.shade600,
+                activeColor: Colors.grey.shade600,
                 stepPadding: 12,
                 width: 200,
                 minHeight: 400,

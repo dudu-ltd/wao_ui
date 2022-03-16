@@ -12,13 +12,13 @@ class ApiTabs extends StatelessWidget {
         print(e);
       }
       ..$props.value = 'second'
-      ..$slots.defaultSlotBefore = [
+      ..$slots.$ = [
         WTabPane()
           ..$props.label = '用户管理'
           ..$props.name = 'first'
-          ..$slots.defaultSlotBefore = [
+          ..$slots.$ = [
             WButton()
-              ..$slots.defaultSlotBefore = '测试'
+              ..$slots.$ = '测试'
               ..$on.click = () {
                 print('ceui');
               },
@@ -26,15 +26,15 @@ class ApiTabs extends StatelessWidget {
         WTabPane()
           ..$props.label = '配置管理'
           ..$props.name = 'second'
-          ..$slots.defaultSlotBefore = '配置管理',
+          ..$slots.$ = '配置管理',
         WTabPane()
           ..$props.label = '角色管理'
           ..$props.name = 'third'
-          ..$slots.defaultSlotBefore = '角色管理',
+          ..$slots.$ = '角色管理',
         WTabPane()
           ..$props.label = '定时任务补偿'
           ..$props.name = 'fourth'
-          ..$slots.defaultSlotBefore = '定时任务补偿',
+          ..$slots.$ = '定时任务补偿',
       ];
 
     return tabs;
@@ -48,23 +48,23 @@ class ApiTabs extends StatelessWidget {
       }
       ..$props.value = 'second'
       ..$props.type = 'card'
-      ..$slots.defaultSlotBefore = [
+      ..$slots.$ = [
         WTabPane()
           ..$props.label = '用户管理'
           ..$props.name = 'first'
-          ..$slots.defaultSlotBefore = '用户管理',
+          ..$slots.$ = '用户管理',
         WTabPane()
           ..$props.label = '配置管理'
           ..$props.name = 'second'
-          ..$slots.defaultSlotBefore = '配置管理',
+          ..$slots.$ = '配置管理',
         WTabPane()
           ..$props.label = '角色管理'
           ..$props.name = 'third'
-          ..$slots.defaultSlotBefore = '角色管理',
+          ..$slots.$ = '角色管理',
         WTabPane()
           ..$props.label = '定时任务补偿'
           ..$props.name = 'fourth'
-          ..$slots.defaultSlotBefore = '定时任务补偿',
+          ..$slots.$ = '定时任务补偿',
       ];
     return tabs;
   }
@@ -74,23 +74,23 @@ class ApiTabs extends StatelessWidget {
     tabs
       ..$props.value = 'second'
       ..$props.type = 'border-card'
-      ..$slots.defaultSlotBefore = [
+      ..$slots.$ = [
         WTabPane()
           ..$props.label = '用户管理'
           ..$props.name = 'first'
-          ..$slots.defaultSlotBefore = '用户管理',
+          ..$slots.$ = '用户管理',
         WTabPane()
           ..$props.label = '配置管理'
           ..$props.name = 'second'
-          ..$slots.defaultSlotBefore = '配置管理',
+          ..$slots.$ = '配置管理',
         WTabPane()
           ..$props.label = '角色管理'
           ..$props.name = 'third'
-          ..$slots.defaultSlotBefore = '角色管理',
+          ..$slots.$ = '角色管理',
         WTabPane()
           ..$props.label = '定时任务补偿'
           ..$props.name = 'fourth'
-          ..$slots.defaultSlotBefore = '定时任务补偿',
+          ..$slots.$ = '定时任务补偿',
       ];
     return tabs;
   }
@@ -107,23 +107,23 @@ class ApiTabs extends StatelessWidget {
           ..$props.value = 'second'
           ..$props.type = 'card'
           ..$props.tabPosition = position.value
-          ..$slots.defaultSlotBefore = [
+          ..$slots.$ = [
             WTabPane()
               ..$props.label = '用户管理'
               ..$props.name = 'first'
-              ..$slots.defaultSlotBefore = '用户管理',
+              ..$slots.$ = '用户管理',
             WTabPane()
               ..$props.label = '配置管理'
               ..$props.name = 'second'
-              ..$slots.defaultSlotBefore = '配置管理',
+              ..$slots.$ = '配置管理',
             WTabPane()
               ..$props.label = '角色管理'
               ..$props.name = 'third'
-              ..$slots.defaultSlotBefore = '角色管理',
+              ..$slots.$ = '角色管理',
             WTabPane()
               ..$props.label = '定时任务补偿'
               ..$props.name = 'fourth'
-              ..$slots.defaultSlotBefore = '定时任务补偿',
+              ..$slots.$ = '定时任务补偿',
           ];
       },
     );
@@ -131,19 +131,19 @@ class ApiTabs extends StatelessWidget {
       children: [
         WRadioGroup()
           ..$props.value = position
-          ..$slots.defaultSlotBefore = [
+          ..$slots.$ = [
             WRadioButton()
               ..$props.label = 'top'
-              ..$slots.defaultSlotBefore = 'top',
+              ..$slots.$ = 'top',
             WRadioButton()
               ..$props.label = 'right'
-              ..$slots.defaultSlotBefore = 'right',
+              ..$slots.$ = 'right',
             WRadioButton()
               ..$props.label = 'bottom'
-              ..$slots.defaultSlotBefore = 'bottom',
+              ..$slots.$ = 'bottom',
             WRadioButton()
               ..$props.label = 'left'
-              ..$slots.defaultSlotBefore = 'left',
+              ..$slots.$ = 'left',
           ],
         tabs,
       ],

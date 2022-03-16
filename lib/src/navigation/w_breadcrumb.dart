@@ -21,7 +21,7 @@ class WBreadcrumb extends StatelessWidget
     $props = props ?? WBreadcrumbProp();
     $slots = slots ?? WBreadcrumbSlot(defaultSlot);
     $style = style ?? WBreadcrumbStyle();
-    $slots.defaultSlotBefore = defaultSlot;
+    $slots.$ = defaultSlot;
     init();
   }
 

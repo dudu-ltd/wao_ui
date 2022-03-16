@@ -10,7 +10,7 @@ class Header extends StatelessWidget {
     return Row(
       children: [
         WButton()
-          ..$slots.defaultSlotBefore = '学习'
+          ..$slots.$ = '学习'
           ..$on.click = () {
             Navigator.pushNamed(
               context,

@@ -36,12 +36,12 @@ class WDescriptions extends StatefulWidget
   _WDescriptionsState createState() => _WDescriptionsState();
 
   List<Widget> get defaultSlots {
-    if ($slots.defaultSlotBefore is String) {
-      var w = slotToWidget($slots.defaultSlotBefore, 0);
+    if ($slots.$ is String) {
+      var w = slotToWidget($slots.$, 0);
       return [if (w != null) w];
-    } else if ($slots.defaultSlotBefore is Map ||
-        $slots.defaultSlotBefore is List<WDescriptionsData> ||
-        $slots.defaultSlotBefore is WDescriptionsData) {
+    } else if ($slots.$ is Map ||
+        $slots.$ is List<WDescriptionsData> ||
+        $slots.$ is WDescriptionsData) {
       return descriptionsItems;
     } else {
       return [];
@@ -49,7 +49,7 @@ class WDescriptions extends StatefulWidget
   }
 
   List<Widget> get descriptionsItems {
-    var defaultSlot = $slots.defaultSlotBefore;
+    var defaultSlot = $slots.$;
     var result = <Widget>[];
     if (defaultSlot is List<WDescriptionsData>) {
       var children;
@@ -69,7 +69,7 @@ class WDescriptions extends StatefulWidget
 
   void addFromMap(List<Widget> result) {
     assert($props.fields != null, '\$props.fields 属性不可为空 !');
-    var defaultSlot = $slots.defaultSlotBefore;
+    var defaultSlot = $slots.$;
     var children;
     var len = $props.fields!.length;
     for (var i = 0; i < len; i++) {

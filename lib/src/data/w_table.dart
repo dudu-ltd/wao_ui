@@ -224,9 +224,9 @@ class _WTableState extends State<WTable> {
 
   Widget value(WTableColumn column, dynamic row) {
     var child;
-    if (column.$slots.defaultSlotBefore is Function) {
-      child = (column.$slots.defaultSlotBefore as Function).call(row);
-    } else if (column.$slots.defaultSlotBefore is List<Widget>) {
+    if (column.$slots.$ is Function) {
+      child = (column.$slots.$ as Function).call(row);
+    } else if (column.$slots.$ is List<Widget>) {
       child = column.defaultSlot;
     } else {
       var val = column.$props.prop == null ? '' : column.$props.prop?.call(row);
@@ -424,7 +424,7 @@ class WTableSlot extends BaseSlot {
   WTableSlot(columns) : super(columns);
   @override
   setDefaultSlot() {
-    var columns = defaultSlotBefore;
+    var columns = $;
     if (columns == null && defaultSlot == null) defaultSlot = [];
     if (columns is List<WTableColumn>) {
       defaultSlot = columns;
@@ -571,7 +571,7 @@ class WTableColumnSlot extends BaseSlot {
   @override
   setDefaultSlot() {
     if (defaultSlot != null && defaultSlot!.isNotEmpty) return;
-    var columns = defaultSlotBefore;
+    var columns = $;
     if (columns == null && defaultSlot != null) {
       defaultSlot = [];
     } else if (columns is List<WTableColumn>) {

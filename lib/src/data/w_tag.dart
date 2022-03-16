@@ -73,8 +73,8 @@ class WTag extends StatelessWidget
     if (defaultSlot != null) {
       return defaultSlot;
     } else {
-      if ($slots.defaultSlotBefore is String) {
-        var text = $slots.defaultSlotBefore as String;
+      if ($slots.$ is String) {
+        var text = $slots.$ as String;
         return [
           Tooltip(
             message: text,
