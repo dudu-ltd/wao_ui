@@ -81,7 +81,7 @@ class _WPaginationState extends State<WPagination> {
   prevPage() => jumpPage(--widget.$props.currentPage);
 
   Widget currentPage(btnPage) {
-    MaterialColor pkc = cfgGlobal.color.val('primary');
+    MaterialColor pkc = CfgGlobal.color('primary');
     return Text(
       '${btnPage}',
       style: TextStyle(
@@ -138,8 +138,8 @@ class _WPaginationState extends State<WPagination> {
         Icons.arrow_back_ios_rounded,
         size: 19,
         color: widget.$props.background
-            ? cfgGlobal.color.val('primary')
-            : cfgGlobal.color.val('info'),
+            ? CfgGlobal.color('primary')
+            : CfgGlobal.color('info'),
       ),
       prevPage,
     );
@@ -183,8 +183,8 @@ class _WPaginationState extends State<WPagination> {
         Icons.arrow_forward_ios_rounded,
         size: 19,
         color: widget.$props.background
-            ? cfgGlobal.color.val('primary')
-            : cfgGlobal.color.val('info'),
+            ? CfgGlobal.color('primary')
+            : CfgGlobal.color('info'),
       ),
       nextPage,
     );

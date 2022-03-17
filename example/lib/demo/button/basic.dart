@@ -41,24 +41,24 @@ var buttonBasic = Demo(
                 ..$props.plain = true
                 ..$slots.$ = '默认按钮',
               WButton()
-                ..$props.type = 'primary'
                 ..$props.plain = true
+                ..$props.type = 'primary'
                 ..$slots.$ = '主要按钮',
               WButton()
-                ..$props.type = 'success'
                 ..$props.plain = true
+                ..$props.type = 'success'
                 ..$slots.$ = '成功按钮',
               WButton()
-                ..$props.type = 'warning'
                 ..$props.plain = true
+                ..$props.type = 'warning'
                 ..$slots.$ = '警告按钮',
               WButton()
-                ..$props.type = 'danger'
                 ..$props.plain = true
+                ..$props.type = 'danger'
                 ..$slots.$ = '危险按钮',
               WButton()
-                ..$props.type = 'info'
                 ..$props.plain = true
+                ..$props.type = 'info'
                 ..$slots.$ = '信息按钮',
             ],
           ),

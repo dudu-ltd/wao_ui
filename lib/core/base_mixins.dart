@@ -12,9 +12,19 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   late final P $props;
   late final S $slots;
   late final T? $style;
+
+  late final BaseStyle style = BaseStyle();
+
   List<Widget>? $defaultSlot;
 
   init() {}
+
+  Widget wrap<E extends BaseStyle>(Widget content, E style) {
+    print('build --');
+    return Container(
+      child: content,
+    );
+  }
 
   List<Widget> get defaultSlot {
     if ($defaultSlot != null) {

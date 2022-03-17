@@ -8,12 +8,14 @@ import 'package:example/views/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/env.dart';
+import 'package:wao_ui/core/theme_element.dart';
 import 'package:wao_ui/wao_ui.dart';
 import 'package:wao_ui/wao_ui_origin.dart';
 
 import 'routes.dart';
 
 void main() {
+  element();
   runApp(const Api());
   // CfgGlobal.primaryColor = Colors.orange;
   doWhenWindowReady(() {

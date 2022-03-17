@@ -52,7 +52,7 @@ class _WBadgeState extends State<WBadge> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(4),
         child: Container(
-          color: cfgGlobal.color.val(widget.$props.type),
+          color: CfgGlobal.color(widget.$props.type),
           padding: const EdgeInsets.all(4),
         ),
       ),
@@ -100,7 +100,7 @@ class _WBadgeState extends State<WBadge> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(50),
       child: Container(
-        color: cfgGlobal.color.val(widget.$props.type),
+        color: CfgGlobal.color(widget.$props.type),
         padding: EdgeInsets.fromLTRB(paddingH, paddingV, paddingH, paddingV),
         child: Text(badgeNum, style: const TextStyle(color: Colors.white)),
       ),

@@ -95,7 +95,7 @@ class WTabs extends StatelessWidget
               $props.positionIsHorizontal ? Axis.horizontal : Axis.vertical,
           children: children,
         ),
-        cfgGlobal.color.info.shade300,
+        CfgGlobal.infoColor.shade300,
         $props.typeIsCard,
       ),
       cfgGlobal.border.excludeReverse($props.tabPosition),
@@ -121,10 +121,10 @@ class WTabs extends StatelessWidget
         borderWrapper(
           colorWrapper(
             child,
-            cfgGlobal.color.def,
+            CfgGlobal.textColor,
             true,
           ),
-          Border.all(color: cfgGlobal.color.info.shade300),
+          Border.all(color: CfgGlobal.infoColor.shade300),
           $props.typeIsBorderCard,
         ),
         need: $props.typeIsBorderCard,
@@ -137,7 +137,7 @@ class WTabs extends StatelessWidget
     var borderSide = BorderSide(
       color: active && !$props.typeIsBorderCard
           ? Colors.white
-          : cfgGlobal.color.info.shade300,
+          : CfgGlobal.infoColor.shade300,
       width: 1,
     );
     return borderWrapper(

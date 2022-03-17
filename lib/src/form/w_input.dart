@@ -124,8 +124,7 @@ class WInputState extends State<WInput> {
             child: Text(
               '$count / $total',
               style: TextStyle(
-                color:
-                    count > total ? cfgGlobal.color.danger : placeholderColor,
+                color: count > total ? CfgGlobal.dangerColor : placeholderColor,
               ),
             ),
           )
@@ -256,7 +255,7 @@ class WInputState extends State<WInput> {
             ),
       focusedBorder: baseBorder,
       focusedErrorBorder: baseBorder.copyWith(
-        borderSide: BorderSide(color: cfgGlobal.color.danger),
+        borderSide: BorderSide(color: CfgGlobal.dangerColor),
       ),
       hoverColor: Colors.red,
       border: baseBorder.copyWith(

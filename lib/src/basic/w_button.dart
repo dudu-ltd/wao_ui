@@ -25,191 +25,149 @@ class WButton extends StatelessWidget
     init();
   }
 
+  bool get isHover {
+    return mouseState?.isMouseOver ?? false;
+  }
+
+  void styleWrap() {
+    style.merge(cfgGlobal.button);
+    style.wrap(
+      [
+        $style?.mini ?? cfgGlobal.button.mini,
+        $style?.small ?? cfgGlobal.button.small,
+        $style?.medium ?? cfgGlobal.button.medium,
+        $style?.primary ?? cfgGlobal.button.primary,
+        $style?.success ?? cfgGlobal.button.success,
+        $style?.warning ?? cfgGlobal.button.warning,
+        $style?.danger ?? cfgGlobal.button.danger,
+        $style?.info ?? cfgGlobal.button.info,
+        $style?.text ?? cfgGlobal.button.text,
+        $style?.isRound ?? cfgGlobal.button.isRound,
+        $style?.isCircle ?? cfgGlobal.button.isCircle,
+        $style?.isDisabled ?? cfgGlobal.button.isDisabled,
+        $style?.isPlain ?? cfgGlobal.button.isPlain,
+        $style?.hover ?? cfgGlobal.button.hover,
+        $style?.active ?? cfgGlobal.button.active,
+      ],
+      this,
+    );
+  }
+
+  var mouseState;
+
   @override
   Widget build(BuildContext context) {
-    var radius = Radius.circular(
-      $props.circle
-          ? cfgGlobal.borderRadius.circle
-          : $props.round
-              ? cfgGlobal.borderRadius.round
-              : cfgGlobal.borderRadius.val($props.size),
-    );
-    var paddingV = cfgGlobal.padding.val($props.size);
-    var paddingH = paddingV / ($props.circle ? 1 : .4);
-    var baseColor = cfgGlobal.color.val($props.type);
     return MouseStateBuilder(
       builder: (context, mouseState) {
-        TypeButtonColor colors = TypeButtonColor.byPlain(
-            baseColor, $props.plain, mouseState, $props.type);
-        handleDefaultSlot(colors);
-        var btn = Container(
-          alignment: Alignment.center,
+        this.mouseState = mouseState;
+        styleWrap();
+        var btn;
+        btn = Container(
+          alignment: style.textAlign,
           constraints: BoxConstraints(minWidth: buttonMinWidth),
-          padding: EdgeInsets.fromLTRB(
-            $props.icon != null && !$props.circle ? paddingH - 4 : paddingH,
-            paddingV,
-            $props.iconRight != null && !$props.circle
-                ? paddingH - 4
-                : paddingH,
-            paddingV,
-          ),
+          padding: style.padding,
           decoration: BoxDecoration(
-            color: $props.active ? colors.focus : null,
-            borderRadius: BorderRadius.all(radius),
-            border: !$props.typeIsText
-                ? Border.all(
-                    width: 1,
-                    color: colors.borderColor,
-                  )
-                : null,
+            color: Colors.transparent,
+            borderRadius: BorderRadius.all(style.radius!),
+            border: style.border,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if ($props.icon != null)
-                Icon(
-                  $props.icon,
-                  color: colors.inner,
-                  size: 16,
-                ),
-              defaultSlot.first,
-              if ($props.iconRight != null)
-                Icon(
-                  $props.iconRight,
-                  color: colors.inner,
-                  size: 16,
-                ),
-            ],
-          ),
+          child: content,
         );
-        return _inkWellWrapper(btn, colors, radius);
+        btn = MouseRegion(
+          cursor: style.cursor!,
+          child: btn,
+        );
+        return _inkWellWrapper(btn, radius);
       },
     );
+  }
+
+  Widget get content {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if ($props.icon != null)
+          Icon(
+            $props.icon,
+            color: style.color,
+            size: style.fontSize,
+          ),
+        defaultSlot.first,
+        if ($props.iconRight != null)
+          Icon(
+            $props.iconRight,
+            color: style.color,
+            size: style.fontSize,
+          ),
+      ],
+    );
+  }
+
+  Widget _inkWellWrapper(Widget btn, Radius radius) {
+    if ($props.loading) return btn;
+
+    return Material(
+      color: style.backgroundColor,
+      borderRadius: BorderRadius.all(style.radius!),
+      child: $props.disabled
+          ? btn
+          : InkWell(
+              splashColor: CfgGlobal.color($props.type).shade900,
+              focusColor: CfgGlobal.color($props.type).shade700,
+              hoverColor: CfgGlobal.color($props.type).shade700,
+              highlightColor: CfgGlobal.color($props.type).shade900,
+              borderRadius: BorderRadius.all(style.radius!),
+              onTap: $on.click,
+              child: btn,
+            ),
+    );
+  }
+
+  @override
+  List<SlotTranslator> get slotTranslatorsCustom {
+    return <SlotTranslator>[
+      SlotTranslator(
+        IconData,
+        (s, i, c, l) {
+          return Icon(
+            $slots.$,
+            color: style.color,
+          );
+        },
+      ),
+      SlotTranslator(
+        Null,
+        (s, i, c, l) => Text('', style: TextStyle(color: style.color)),
+      ),
+      SlotTranslator(
+        String,
+        (s, i, c, l) {
+          return Text(
+            $slots.$,
+            style: TextStyle(
+              color: style.color,
+              fontSize: style.fontSize,
+            ),
+          );
+        },
+      ),
+    ];
   }
 
   double get buttonMinWidth {
     return $style?.minWidth ?? cfgGlobal.button.minWidth ?? 30;
   }
 
-  Widget _inkWellWrapper(Widget btn, TypeButtonColor colors, Radius radius) {
-    if ($props.loading) return btn;
-
-    return Material(
-      color: colors.background,
-      borderRadius: BorderRadius.all(radius),
-      child: InkWell(
-        splashColor: colors.splashColor.withOpacity(.3),
-        focusColor: colors.focus,
-        hoverColor: colors.hover,
-        highlightColor: colors.highlight,
-        borderRadius: BorderRadius.all(radius),
-        onTap: $on.click,
-        child: btn,
-      ),
-    );
-  }
-
-  handleDefaultSlot(TypeButtonColor colors) {
-    $defaultSlot = [
-      $slots.$ == null
-          ? Text('', style: TextStyle(color: colors.inner))
-          : $slots.$ is IconData
-              ? Icon(
-                  $slots.$,
-                  color: colors.inner,
-                )
-              : $slots.$ is Widget
-                  ? $slots.$
-                  : $slots.$ is String
-                      ? Text(
-                          $slots.$,
-                          style: TextStyle(color: colors.inner),
-                        )
-                      : Container(),
-    ];
-  }
-}
-
-class TypeButtonColor {
-  late Color background;
-  late Color splashColor;
-  late Color display;
-  late Color hover;
-  late Color inner;
-  late Color focus;
-  late Color highlight;
-  late Color borderColor;
-  TypeButtonColor({
-    required this.background,
-    required this.splashColor,
-    required this.display,
-    required this.hover,
-    required this.inner,
-    required this.focus,
-    required this.highlight,
-    required this.borderColor,
-  });
-  factory TypeButtonColor.byPlain(
-      MaterialColor baseColor, bool plain, mouseState, type) {
-    TypeButtonColor result;
-    if (type == null) {
-      baseColor = cfgGlobal.color.primary;
-      if (plain) {
-        result = TypeButtonColor(
-            background: CfgGlobal.blankColor.withAlpha(150),
-            splashColor: CfgGlobal.blankColor,
-            display: CfgGlobal.blankColor,
-            hover: CfgGlobal.blankColor.withAlpha(150),
-            inner: mouseState.isMouseOver
-                ? cfgGlobal.color.primary.shade400
-                : Colors.grey,
-            focus: CfgGlobal.blankColor,
-            highlight: CfgGlobal.blankColor,
-            borderColor: mouseState.isMouseOver
-                ? cfgGlobal.color.primary.shade400
-                : Colors.grey.shade300);
-      } else {
-        result = TypeButtonColor(
-            background: CfgGlobal.blankColor.withAlpha(150),
-            splashColor: baseColor.shade100,
-            display: baseColor.shade50,
-            hover: CfgGlobal.blankColor.withAlpha(150),
-            inner: mouseState.isMouseOver
-                ? cfgGlobal.color.primary.shade400
-                : Colors.grey,
-            focus: baseColor.shade50,
-            highlight: baseColor.shade100,
-            borderColor: mouseState.isMouseOver
-                ? cfgGlobal.color.primary.shade400
-                : Colors.grey.shade300);
-      }
-    } else {
-      if (plain) {
-        result = TypeButtonColor(
-          background: baseColor.withAlpha(50),
-          splashColor: baseColor.shade100,
-          display: baseColor.shade100,
-          hover: baseColor.shade400,
-          inner:
-              mouseState.isMouseOver ? baseColor.shade50 : baseColor.shade600,
-          focus: baseColor.shade500,
-          highlight: baseColor.shade700,
-          borderColor: baseColor,
+  Radius get radius {
+    return $style?.radius ??
+        cfgGlobal.button.radius ??
+        Radius.circular(
+          $props.circle
+              ? cfgGlobal.borderRadius.circle
+              : $props.round
+                  ? cfgGlobal.borderRadius.round
+                  : cfgGlobal.borderRadius.val($props.size),
         );
-      } else {
-        result = TypeButtonColor(
-          background: baseColor.withAlpha(255),
-          splashColor: baseColor.shade500,
-          display: baseColor.shade400,
-          hover: baseColor.shade300,
-          inner: type == 'text' ? CfgGlobal.primaryColor : baseColor.shade50,
-          focus: baseColor.shade300,
-          highlight: baseColor.shade100,
-          borderColor: baseColor,
-        );
-      }
-    }
-    return result;
   }
 }
 
@@ -278,6 +236,42 @@ class WButtonProp extends BaseProp {
 
   bool get typeIsText {
     return type == 'text';
+  }
+
+  bool get typeIsPrimary {
+    return type == 'primary';
+  }
+
+  bool get typeIsSuccess {
+    return type == 'success';
+  }
+
+  bool get typeIsWarning {
+    return type == 'warning';
+  }
+
+  bool get typeIsDanger {
+    return type == 'danger';
+  }
+
+  bool get typeIsInfo {
+    return type == 'info';
+  }
+
+  bool get typeIsEmpty {
+    return type == null;
+  }
+
+  bool get sizeIsMini {
+    return size == 'mini';
+  }
+
+  bool get sizeIsSmall {
+    return size == 'small';
+  }
+
+  bool get sizeIsMedium {
+    return size == 'medium';
   }
 }
 

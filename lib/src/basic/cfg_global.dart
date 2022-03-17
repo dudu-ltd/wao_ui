@@ -4,13 +4,50 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 
+import 'w_button.dart';
+
 CfgGlobal cfgGlobal = CfgGlobal();
+
+typedef StyleWrap<W> = void Function(W);
 
 class CfgGlobal {
   // static MaterialColor primaryColor = Colors.deepPurple;
   static MaterialColor primaryColor = Colors.blue;
+  static MaterialColor successColor = Colors.lightGreen;
+  static MaterialColor warningColor = Colors.orange;
+  static MaterialColor dangerColor = Colors.red;
+  static MaterialColor infoColor = Colors.grey;
+  static MaterialColor textColor = Colors.blue;
   static MaterialColor disabledColor = Colors.grey;
-  static Color blankColor = Colors.white;
+  static Color blankColor = const MaterialColor(
+    0xFF303133,
+    <int, Color>{
+      50: Color(0xFFFFFFFF),
+      100: Color(0xFFF2F6FC),
+      200: Color(0xFFEBEEF5),
+      300: Color(0xFFE4E7ED),
+      400: Color(0xFFDCDFE6),
+      500: Color(0xFFC0C4CC),
+      600: Color(0xFF909399),
+      700: Color(0xFF606266),
+      800: Color(0xFF303133),
+      900: Color(0xFF000000),
+    },
+  );
+
+  static MaterialColor color(String? k) {
+    return k == 'primary'
+        ? CfgGlobal.primaryColor
+        : k == 'success'
+            ? CfgGlobal.successColor
+            : k == 'warning'
+                ? CfgGlobal.warningColor
+                : k == 'danger' || k == 'exception' || k == 'error'
+                    ? CfgGlobal.dangerColor
+                    : k == 'info'
+                        ? CfgGlobal.infoColor
+                        : CfgGlobal.textColor;
+  }
 
   static Duration duration = const Duration(milliseconds: 300);
 
@@ -19,7 +56,6 @@ class CfgGlobal {
   WBorderRadius borderRadius = WBorderRadius();
   WBorderStyle borderStyle = WBorderStyle();
   WPadding padding = WPadding();
-  WColor color = WColor();
   WAvatarSize avatarSize = WAvatarSize();
 
   WBadgeFont badgeFont = WBadgeFont();
@@ -145,7 +181,7 @@ class WBorderStyle {
 
 class WBorder {
   static BorderSide common =
-      BorderSide(color: cfgGlobal.color.info.shade300, width: 1);
+      BorderSide(color: CfgGlobal.infoColor.shade300, width: 1);
 
   static Border excludeLeft = Border(
     top: WBorder.common,
@@ -198,7 +234,7 @@ class WBorder {
 
   static Border all(String? k, [String? type]) {
     double radius = cfgGlobal.borderStyle.val(k);
-    return Border.all(width: .5, color: cfgGlobal.color.val(type).shade200);
+    return Border.all(width: .5, color: CfgGlobal.color(type).shade200);
   }
 }
 
@@ -293,53 +329,6 @@ class WPadding {
   }
 }
 
-class WColor {
-  static const MaterialColor white = MaterialColor(
-    _greyPrimaryValue,
-    <int, Color>{
-      50: Colors.transparent,
-      100: Colors.transparent,
-      200: Colors.transparent,
-      300: Colors.transparent,
-      350: Colors.transparent,
-      400: Colors.transparent,
-      500: Colors.transparent,
-      600: Colors.transparent,
-      700: Colors.transparent,
-      800: Colors.transparent,
-      850: Colors.transparent,
-      900: Colors.transparent,
-    },
-  );
-  static const int _greyPrimaryValue = 0xFFFFFFFF;
-  MaterialColor primary = CfgGlobal.primaryColor;
-  MaterialColor success = Colors.green;
-  MaterialColor waring = Colors.orange;
-  MaterialColor danger = Colors.pink;
-  MaterialColor info = Colors.grey;
-  MaterialColor def = white;
-
-  WColor._privateConstrucor();
-  static final WColor _instance = WColor._privateConstrucor();
-  factory WColor() {
-    return _instance;
-  }
-
-  MaterialColor val(String? k) {
-    return k == 'primary'
-        ? primary
-        : k == 'success'
-            ? success
-            : k == 'warning'
-                ? waring
-                : k == 'danger' || k == 'exception' || k == 'error'
-                    ? danger
-                    : k == 'info'
-                        ? info
-                        : def;
-  }
-}
-
 class WBreadcrumbStyle extends BaseStyle {
   WBreadcrumbStyle({EdgeInsets? padding}) : super(padding: padding);
 }
@@ -386,6 +375,25 @@ class WPaginationStyle extends BaseStyle {
 
 class WButtonStyle extends BaseStyle {
   double? minWidth = 30;
+  void Function(WButton)? primary;
+  void Function(WButton)? success;
+  void Function(WButton)? warning;
+  void Function(WButton)? danger;
+  void Function(WButton)? info;
+  void Function(WButton)? text;
+
+  void Function(WButton)? mini;
+  void Function(WButton)? small;
+  void Function(WButton)? medium;
+  void Function(WButton)? large;
+
+  void Function(WButton)? isRound;
+  void Function(WButton)? isCircle;
+  void Function(WButton)? isDisabled;
+  void Function(WButton)? isPlain;
+
+  void Function(WButton)? hover;
+  void Function(WButton)? active;
 
   WButtonStyle({
     double? width,
@@ -394,6 +402,7 @@ class WButtonStyle extends BaseStyle {
     double? minHeight,
     double? maxWidth,
     double? maxHeight,
+    Radius? radius,
   }) : super(
           height: height,
           width: width,
@@ -401,6 +410,7 @@ class WButtonStyle extends BaseStyle {
           minWidth: minWidth,
           maxHeight: maxHeight,
           maxWidth: maxWidth,
+          radius: radius,
         );
 }
 

@@ -133,7 +133,7 @@ class WTag extends StatelessWidget
   }
 
   MaterialColor get color {
-    return cfgGlobal.color.val($props.type);
+    return CfgGlobal.color($props.type);
   }
 
   Color get closeButtonBackground {
