@@ -50,7 +50,7 @@ class WResult extends StatelessWidget
     return $slots.icon ??
         Icon(
           cfgGlobal.result.icon($props.icon),
-          color: cfgGlobal.color.val($props.icon),
+          color: CfgGlobal.color($props.icon),
           size: 72,
         );
   }

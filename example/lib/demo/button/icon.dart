@@ -24,7 +24,7 @@ var buttonIcon = Demo(
             ..$slots.$ = '搜索',
           WButton()
             ..$props.type = 'primary'
-            ..$props.icon = Icons.upload
+            ..$props.iconRight = Icons.upload
             ..$slots.$ = '上传',
         ],
       ),
@@ -51,7 +51,7 @@ Row(
           ..$slots.$ = '搜索',
         WButton()
           ..$props.type = 'primary'
-          ..$props.icon = Icons.upload
+          ..$props.iconRight = Icons.upload
           ..$slots.$ = '上传',
       ],
     ),

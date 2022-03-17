@@ -63,7 +63,7 @@ class _WProgressState extends State<WProgress> {
         }
       }
     }
-    return cfgGlobal.color.val(widget.$props.status ?? 'primary');
+    return CfgGlobal.color(widget.$props.status ?? 'primary');
   }
 
   Widget line() {

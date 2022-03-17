@@ -223,7 +223,7 @@ class _WUploadState extends State<WUpload> {
                 width: 46,
                 height: 26,
                 child: ColoredBox(
-                  color: cfgGlobal.color.success.withAlpha(255 ~/ 4 * 3),
+                  color: CfgGlobal.successColor.withAlpha(255 ~/ 4 * 3),
                 ),
               ),
             ),
@@ -310,7 +310,7 @@ class _WUploadState extends State<WUpload> {
             Icon(
               Icons.check_circle_outline,
               size: 14,
-              color: cfgGlobal.color.success,
+              color: CfgGlobal.successColor,
             )
         ],
       ),
