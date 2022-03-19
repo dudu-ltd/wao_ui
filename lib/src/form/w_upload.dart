@@ -236,7 +236,7 @@ class _WUploadState extends State<WUpload> {
               child: Icon(
                 Icons.check,
                 size: 12,
-                color: CfgGlobal.blankColor,
+                color: CfgGlobal.basicColor,
               ),
             ),
           ),
@@ -247,7 +247,7 @@ class _WUploadState extends State<WUpload> {
       child: row,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(cfgGlobal.borderRadius.large),
+        borderRadius: widget.style.borderRadius,
       ),
     );
   }

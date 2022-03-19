@@ -5,7 +5,6 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
-import 'package:wao_ui/src/basic/w_button.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 class WTag extends StatelessWidget
@@ -28,7 +27,7 @@ class WTag extends StatelessWidget
   Widget build(BuildContext context) {
     return Container(
       decoration: decoration,
-      padding: padding,
+      padding: style.padding,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [...tagMain, ...closeButton],
@@ -41,7 +40,7 @@ class WTag extends StatelessWidget
         ? [
             marginWrapper(
               closeButtonMain,
-              EdgeInsets.only(left: paddingH),
+              EdgeInsets.only(left: $style?.padding?.left ?? 0),
             )
           ]
         : [];
@@ -94,25 +93,12 @@ class WTag extends StatelessWidget
     return [];
   }
 
-  EdgeInsets get padding {
-    return EdgeInsets.fromLTRB(
-        paddingH, paddingV, $props.closable ? paddingV : paddingH, paddingV);
-  }
-
-  double get paddingV {
-    return cfgGlobal.padding.val($props.size!);
-  }
-
-  double get paddingH {
-    return paddingV / .4;
-  }
-
   BoxDecoration get decoration {
     BoxDecoration decoration = BoxDecoration(
-        color: backgroundColor,
-        border: WBorder.all($props.size, $props.type),
-        borderRadius: BorderRadius.all(
-            Radius.circular(cfgGlobal.borderRadius.val($props.size))));
+      color: backgroundColor,
+      border: WBorder.all($props.size, $props.type),
+      borderRadius: style.borderRadius,
+    );
     return decoration;
   }
 

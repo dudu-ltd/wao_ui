@@ -81,8 +81,7 @@ class _WCheckboxState extends State<WCheckbox> {
                           color: backgroundColor,
                           border: Border.all(
                               color: borderColor(state.isMouseOver), width: 1),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(radius))),
+                          borderRadius: widget.style.borderRadius),
                       child: Icon(
                         statusIcon,
                         color: statusIconColor,
@@ -103,11 +102,7 @@ class _WCheckboxState extends State<WCheckbox> {
             Border.fromBorderSide(
                 BorderSide(width: 1, color: borderColor(false))),
             widget.$props.border,
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                cfgGlobal.borderRadius.val(widget.$props.size),
-              ),
-            ),
+            borderRadius: widget.style.borderRadius,
           ),
         );
       },
@@ -145,10 +140,6 @@ class _WCheckboxState extends State<WCheckbox> {
 
   double get height {
     return cfgGlobal.checkbox.val(widget.$props.size);
-  }
-
-  double get radius {
-    return cfgGlobal.checkbox.borderRadius(widget.$props.size);
   }
 
   Color get labelColor {
@@ -430,14 +421,6 @@ class _WCheckboxButtonState extends State<WCheckboxButton> {
     });
   }
 
-  double get paddingV {
-    return cfgGlobal.padding.val(widget.$props._size);
-  }
-
-  double get paddingH {
-    return paddingV * 2;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Listener(
@@ -458,8 +441,7 @@ class _WCheckboxButtonState extends State<WCheckboxButton> {
       child: MouseStateBuilder(
         builder: (context, state) {
           return Container(
-            padding:
-                EdgeInsets.fromLTRB(paddingH, paddingV, paddingH, paddingV),
+            padding: widget.style.padding,
             decoration: BoxDecoration(
               color: backgroudColor,
               borderRadius: borderRadius,

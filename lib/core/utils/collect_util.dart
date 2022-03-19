@@ -1,3 +1,6 @@
+import 'dart:collection';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void addSlot(dynamic slot, List<Widget> list) {
@@ -21,4 +24,18 @@ bool contains(List<dynamic> list, dynamic item) {
     if (item.toString() == element.toString()) return true;
   }
   return false;
+}
+
+List<T> findByListKey<T>(Map<List<List>, T> map, List key) {
+  var selectors = map.keys; // [[['.s', '.t'], ['.y', '.l', '.e']]]
+  var result = <T>[];
+  for (var entry in map.entries) {
+    for (var selector in entry.key) {
+      // [['.s', '.t'], ['.y', '.l', '.e']]
+      if (key.toSet().containsAll(selector) && entry.value != null) {
+        result.add(entry.value!);
+      }
+    }
+  }
+  return result;
 }

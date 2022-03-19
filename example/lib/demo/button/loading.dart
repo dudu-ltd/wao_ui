@@ -7,6 +7,7 @@ var buttonLoading = Demo(
   Row(
     children: [
       WButton()
+        ..$props.type = 'primary'
         ..$props.loading = true
         ..$slots.$ = '加载中'
     ],

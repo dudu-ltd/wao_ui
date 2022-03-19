@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
+import 'package:wao_ui/src/others/w_spin.dart';
 import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
@@ -25,29 +28,35 @@ class WButton extends StatelessWidget
     init();
   }
 
-  bool get isHover {
-    return mouseState?.isMouseOver ?? false;
+  final FocusNode focusNode = FocusNode();
+
+  var setState;
+
+  bool isHover = false;
+
+  bool active = false;
+
+  bool get focus {
+    return focusNode.hasFocus;
   }
 
   void styleWrap() {
     style.merge(cfgGlobal.button);
     style.wrap(
       [
-        $style?.mini ?? cfgGlobal.button.mini,
-        $style?.small ?? cfgGlobal.button.small,
-        $style?.medium ?? cfgGlobal.button.medium,
-        $style?.primary ?? cfgGlobal.button.primary,
-        $style?.success ?? cfgGlobal.button.success,
-        $style?.warning ?? cfgGlobal.button.warning,
-        $style?.danger ?? cfgGlobal.button.danger,
-        $style?.info ?? cfgGlobal.button.info,
-        $style?.text ?? cfgGlobal.button.text,
-        $style?.isRound ?? cfgGlobal.button.isRound,
-        $style?.isCircle ?? cfgGlobal.button.isCircle,
-        $style?.isDisabled ?? cfgGlobal.button.isDisabled,
-        $style?.isPlain ?? cfgGlobal.button.isPlain,
-        $style?.hover ?? cfgGlobal.button.hover,
-        $style?.active ?? cfgGlobal.button.active,
+        $style?.type ?? cfgGlobal.button.type,
+        // $style?.mini ?? cfgGlobal.button.mini,
+        // $style?.small ?? cfgGlobal.button.small,
+        // $style?.medium ?? cfgGlobal.button.medium,
+        // $style?.isRound ?? cfgGlobal.button.isRound,
+        // $style?.isCircle ?? cfgGlobal.button.isCircle,
+        // $style?.isDisabled ?? cfgGlobal.button.isDisabled,
+        // $style?.isPlain ?? cfgGlobal.button.isPlain,
+        // $style?.hover ?? cfgGlobal.button.hover,
+        // $style?.active ?? cfgGlobal.button.active,
+        // $style?.whenText ?? cfgGlobal.button.whenText,
+        // $style?.whenTextHover ?? cfgGlobal.button.whenTextHover,
+        // $style?.whenTextDisabled ?? cfgGlobal.button.whenTextDisabled,
       ],
       this,
     );
@@ -57,69 +66,78 @@ class WButton extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return MouseStateBuilder(
-      builder: (context, mouseState) {
-        this.mouseState = mouseState;
-        styleWrap();
-        var btn;
-        btn = Container(
-          alignment: style.textAlign,
-          constraints: BoxConstraints(minWidth: buttonMinWidth),
-          padding: style.padding,
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.all(style.radius!),
-            border: style.border,
-          ),
-          child: content,
-        );
-        btn = MouseRegion(
-          cursor: style.cursor!,
-          child: btn,
-        );
-        return _inkWellWrapper(btn, radius);
-      },
-    );
+    return StatefulBuilder(builder: (context, setState) {
+      styleWrap();
+      var btn = Container(
+        alignment: style.textAlign,
+        constraints: BoxConstraints(minWidth: buttonMinWidth),
+        padding: style.padding,
+        decoration: BoxDecoration(
+          color: style.backgroundColor,
+          borderRadius: BorderRadius.all(style.radius!),
+          border: style.border,
+        ),
+        child: content,
+      );
+
+      return MouseRegion(
+        opaque: false,
+        onEnter: (e) {
+          isHover = true;
+          setState(() {});
+        },
+        onExit: (e) {
+          isHover = false;
+          setState(() {});
+        },
+        cursor: style.cursor!,
+        child: Material(
+          color: style.backgroundColor,
+          borderRadius: BorderRadius.all(style.radius!),
+          child: $props.disabled
+              ? btn
+              : InkWell(
+                  focusNode: focusNode,
+                  hoverColor: style.borderColor,
+                  borderRadius: BorderRadius.all(style.radius!),
+                  onTap: () => $on.click,
+                  onTapDown: (e) => setState(() => active = true),
+                  onTapUp: (e) => setState(() => active = false),
+                  child: btn,
+                ),
+        ),
+      );
+    });
   }
 
   Widget get content {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    Widget box = const SizedBox(
+      width: 5,
+    );
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      runAlignment: WrapAlignment.spaceBetween,
+      spacing: 5,
       children: [
-        if ($props.icon != null)
-          Icon(
-            $props.icon,
-            color: style.color,
-            size: style.fontSize,
+        if ($props.loading)
+          WSpin(
+            child: iconCenter(Icons.rotate_right_rounded),
           ),
+        if ($props.icon != null) iconCenter($props.icon!),
         defaultSlot.first,
-        if ($props.iconRight != null)
-          Icon(
-            $props.iconRight,
-            color: style.color,
-            size: style.fontSize,
-          ),
+        if ($props.iconRight != null) iconCenter($props.iconRight!)
       ],
     );
   }
 
-  Widget _inkWellWrapper(Widget btn, Radius radius) {
-    if ($props.loading) return btn;
-
-    return Material(
-      color: style.backgroundColor,
-      borderRadius: BorderRadius.all(style.radius!),
-      child: $props.disabled
-          ? btn
-          : InkWell(
-              splashColor: CfgGlobal.color($props.type).shade900,
-              focusColor: CfgGlobal.color($props.type).shade700,
-              hoverColor: CfgGlobal.color($props.type).shade700,
-              highlightColor: CfgGlobal.color($props.type).shade900,
-              borderRadius: BorderRadius.all(style.radius!),
-              onTap: $on.click,
-              child: btn,
-            ),
+  Widget iconCenter(IconData icon) {
+    return SizedBox(
+      height: (style.fontSize ?? 14) / CfgGlobal.fontRate,
+      child: Icon(
+        icon,
+        color: style.color,
+        size: (style.fontSize ?? 14) / CfgGlobal.fontRate,
+      ),
     );
   }
 
@@ -129,10 +147,7 @@ class WButton extends StatelessWidget
       SlotTranslator(
         IconData,
         (s, i, c, l) {
-          return Icon(
-            $slots.$,
-            color: style.color,
-          );
+          return iconCenter(s);
         },
       ),
       SlotTranslator(
@@ -156,18 +171,6 @@ class WButton extends StatelessWidget
 
   double get buttonMinWidth {
     return $style?.minWidth ?? cfgGlobal.button.minWidth ?? 30;
-  }
-
-  Radius get radius {
-    return $style?.radius ??
-        cfgGlobal.button.radius ??
-        Radius.circular(
-          $props.circle
-              ? cfgGlobal.borderRadius.circle
-              : $props.round
-                  ? cfgGlobal.borderRadius.round
-                  : cfgGlobal.borderRadius.val($props.size),
-        );
   }
 }
 

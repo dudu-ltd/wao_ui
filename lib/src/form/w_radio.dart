@@ -82,11 +82,7 @@ class _WRadioState extends State<WRadio> {
         ),
         Border.fromBorderSide(BorderSide(width: 1, color: borderColor)),
         widget.$props.border,
-        borderRadius: BorderRadius.all(
-          Radius.circular(
-            cfgGlobal.borderRadius.val(widget.$props.size),
-          ),
-        ),
+        borderRadius: widget.style.borderRadius,
       ),
     );
   }
@@ -333,7 +329,7 @@ class _WRadioButtonState extends State<WRadioButton> {
   }
 
   double get paddingV {
-    return cfgGlobal.padding.val(widget.$props._size);
+    return widget.style.padding?.left ?? 0;
   }
 
   double get paddingH {

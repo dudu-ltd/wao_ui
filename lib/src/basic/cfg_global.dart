@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_style.dart';
+import 'package:wao_ui/core/swatch/size_swatch.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 
 import 'w_button.dart';
@@ -11,15 +12,34 @@ CfgGlobal cfgGlobal = CfgGlobal();
 typedef StyleWrap<W> = void Function(W);
 
 class CfgGlobal {
+  static double fontRate = .72;
+
+  static double goldRate = 0.618;
+  static Map<List<List<String>>, BaseStyle?> css = {};
   // static MaterialColor primaryColor = Colors.deepPurple;
   static MaterialColor primaryColor = Colors.blue;
   static MaterialColor successColor = Colors.lightGreen;
   static MaterialColor warningColor = Colors.orange;
   static MaterialColor dangerColor = Colors.red;
   static MaterialColor infoColor = Colors.grey;
-  static MaterialColor textColor = Colors.blue;
+  static MaterialColor textColor = const MaterialColor(
+    0xFF303133,
+    <int, Color>{
+      50: Color(0xFFFFFFFF),
+      100: Color(0xFFF2F6FC),
+      200: Color(0xFFEBEEF5),
+      300: Color(0xFFE4E7ED),
+      400: Color(0xFFDCDFE6),
+      500: Color(0xFFC0C4CC),
+      600: Color(0xFF909399),
+      700: Color(0xFF606266),
+      800: Color(0xFF303133),
+      900: Color(0xFF000000),
+    },
+  );
+  static MaterialColor defaultColor = Colors.blue;
   static MaterialColor disabledColor = Colors.grey;
-  static Color blankColor = const MaterialColor(
+  static MaterialColor basicColor = const MaterialColor(
     0xFF303133,
     <int, Color>{
       50: Color(0xFFFFFFFF),
@@ -46,16 +66,63 @@ class CfgGlobal {
                     ? CfgGlobal.dangerColor
                     : k == 'info'
                         ? CfgGlobal.infoColor
-                        : CfgGlobal.textColor;
+                        : k == 'text'
+                            ? CfgGlobal.textColor
+                            : CfgGlobal.defaultColor;
   }
 
   static Duration duration = const Duration(milliseconds: 300);
 
+  static WEdgeInsets padding = WEdgeInsets(
+    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+    const {
+      'zero': EdgeInsets.zero,
+      'mini': EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+      'small': EdgeInsets.symmetric(vertical: 9, horizontal: 15),
+      'medium': EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      'large': EdgeInsets.symmetric(vertical: 12, horizontal: 22),
+    },
+  );
+
+  static WEdgeInsets roundPadding = CfgGlobal.padding;
+
+  static WEdgeInsets circlePadding = WEdgeInsets(
+    const EdgeInsets.all(10),
+    const {
+      'zero': EdgeInsets.zero,
+      'mini': EdgeInsets.all(7),
+      'small': EdgeInsets.all(9),
+      'medium': EdgeInsets.all(10),
+      'large': EdgeInsets.all(12),
+    },
+  );
+
+  static WFontSize fontSize = WFontSize(
+    14,
+    const {
+      'zero': 13,
+      'mini': 14,
+      'small': 16,
+      'medium': 18,
+      'large': 20,
+    },
+  );
+
+  static WBorderRadius circularBorderRadius = WBorderRadius(
+    BorderRadius.circular(1.0),
+    {
+      'zero': BorderRadius.zero,
+      'mini': BorderRadius.circular(1),
+      'small': BorderRadius.circular(2),
+      'medium': BorderRadius.circular(4),
+      'large': BorderRadius.circular(30),
+    },
+  );
+
   WFont font = WFont();
   WBorder border = WBorder();
-  WBorderRadius borderRadius = WBorderRadius();
   WBorderStyle borderStyle = WBorderStyle();
-  WPadding padding = WPadding();
+
   WAvatarSize avatarSize = WAvatarSize();
 
   WBadgeFont badgeFont = WBadgeFont();
@@ -238,38 +305,6 @@ class WBorder {
   }
 }
 
-class WBorderRadius {
-  double none = 0.0;
-  double mini = 2.0;
-  double small = 3.0;
-  double medium = 4.0;
-  double large = 5.0;
-  double circle = 30.0;
-  double round = 30.0;
-
-  WBorderRadius._privateConstrucor();
-  static final WBorderRadius _instance = WBorderRadius._privateConstrucor();
-  factory WBorderRadius() {
-    return _instance;
-  }
-
-  double val(String? k) {
-    return k == 'none'
-        ? none
-        : k == 'mini'
-            ? mini
-            : k == 'small'
-                ? small
-                : k == 'medium'
-                    ? medium
-                    : k == 'large'
-                        ? large
-                        : k == 'round'
-                            ? round
-                            : small;
-  }
-}
-
 class WBadgeFont {
   double size = 10;
   WBadgeFont._privateConstrucor();
@@ -375,12 +410,10 @@ class WPaginationStyle extends BaseStyle {
 
 class WButtonStyle extends BaseStyle {
   double? minWidth = 30;
-  void Function(WButton)? primary;
-  void Function(WButton)? success;
-  void Function(WButton)? warning;
-  void Function(WButton)? danger;
-  void Function(WButton)? info;
-  void Function(WButton)? text;
+  void Function(WButton)? type;
+  void Function(WButton)? whenText;
+  void Function(WButton)? whenTextHover;
+  void Function(WButton)? whenTextDisabled;
 
   void Function(WButton)? mini;
   void Function(WButton)? small;
@@ -517,10 +550,6 @@ class WCheckboxStyle extends BaseStyle {
                 : size == 'mini'
                     ? iconCheckboxMini
                     : iconCheckboxLarge;
-  }
-
-  double borderRadius(String size) {
-    return val(size) * .2;
   }
 
   WCheckboxStyle({

@@ -109,9 +109,7 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
           color: color,
           width: btnInnerBorder,
         ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(cfgGlobal.borderRadius.round),
-        ),
+        borderRadius: widget.style.borderRadius,
         color: color,
       ),
       child: SizedBox(
@@ -132,9 +130,7 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
             color: color,
             width: btnInnerBorder,
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(cfgGlobal.borderRadius.circle),
-          ),
+          borderRadius: widget.style.borderRadius,
         ),
         child: const ClipOval(
           child: ColoredBox(
