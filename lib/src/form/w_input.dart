@@ -140,8 +140,11 @@ class WInputState extends State<WInput> {
     ];
     return children.isNotEmpty
         ? Padding(
-            padding:
-                EdgeInsets.fromLTRB(children.length > 1 ? padding : 0, 0, 0, 0),
+            padding: EdgeInsets.fromLTRB(
+                children.length > 1 ? (widget.style.padding?.left ?? 0) : 0,
+                0,
+                0,
+                0),
             child: Row(
               mainAxisSize: widget.$prefixSize ?? MainAxisSize.min,
               mainAxisAlignment:
@@ -179,8 +182,11 @@ class WInputState extends State<WInput> {
     ];
     return children.isNotEmpty
         ? Padding(
-            padding:
-                EdgeInsets.fromLTRB(0, 0, children.length > 1 ? padding : 0, 0),
+            padding: EdgeInsets.fromLTRB(
+                0,
+                0,
+                children.length > 1 ? (widget.style.padding?.right ?? 0) : 0,
+                0),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -237,9 +243,7 @@ class WInputState extends State<WInput> {
       suffixIcon: suffixIcon,
       prefixIconColor: placeholderColor,
       suffixIconColor: placeholderColor,
-      contentPadding: hasSlot
-          ? const EdgeInsets.fromLTRB(0, 0, 0, 0)
-          : EdgeInsets.fromLTRB(fontSize, padding, fontSize, padding),
+      contentPadding: widget.style.padding,
       hintStyle: TextStyle(color: placeholderColor, fontSize: fontSize),
       hintText: widget.$props.placeholder,
       label: label,
@@ -298,11 +302,7 @@ class WInputState extends State<WInput> {
   }
 
   double get minHeight {
-    return fontSize + cfgGlobal.padding.val(widget.$props.size) * 2;
-  }
-
-  double get padding {
-    return cfgGlobal.padding.val(widget.$props.size);
+    return fontSize + (CfgGlobal.padding[widget.$props.size]?.left ?? 1) * 2.0;
   }
 
   double get fontSize {

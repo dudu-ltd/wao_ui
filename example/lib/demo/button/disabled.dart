@@ -25,16 +25,16 @@ var buttonDisabled = Demo(
                 ..$slots.$ = '成功按钮',
               WButton()
                 ..$props.disabled = true
+                ..$props.type = 'info'
+                ..$slots.$ = '信息按钮',
+              WButton()
+                ..$props.disabled = true
                 ..$props.type = 'warning'
                 ..$slots.$ = '警告按钮',
               WButton()
                 ..$props.disabled = true
                 ..$props.type = 'danger'
                 ..$slots.$ = '危险按钮',
-              WButton()
-                ..$props.disabled = true
-                ..$props.type = 'info'
-                ..$slots.$ = '信息按钮',
             ],
           ),
         ],
@@ -59,6 +59,11 @@ var buttonDisabled = Demo(
                 ..$props.plain = true
                 ..$slots.$ = '成功按钮',
               WButton()
+                ..$props.type = 'info'
+                ..$props.disabled = true
+                ..$props.plain = true
+                ..$slots.$ = '信息按钮',
+              WButton()
                 ..$props.type = 'warning'
                 ..$props.disabled = true
                 ..$props.plain = true
@@ -68,11 +73,6 @@ var buttonDisabled = Demo(
                 ..$props.disabled = true
                 ..$props.plain = true
                 ..$slots.$ = '危险按钮',
-              WButton()
-                ..$props.type = 'info'
-                ..$props.disabled = true
-                ..$props.plain = true
-                ..$slots.$ = '信息按钮',
             ],
           ),
         ],
@@ -101,16 +101,16 @@ var buttonDisabled = Demo(
                 ..$slots.$ = '成功按钮',
               WButton()
                 ..$props.disabled = true
+                ..$props.type = 'info'
+                ..$slots.$ = '信息按钮',
+              WButton()
+                ..$props.disabled = true
                 ..$props.type = 'warning'
                 ..$slots.$ = '警告按钮',
               WButton()
                 ..$props.disabled = true
                 ..$props.type = 'danger'
                 ..$slots.$ = '危险按钮',
-              WButton()
-                ..$props.disabled = true
-                ..$props.type = 'info'
-                ..$slots.$ = '信息按钮',
             ],
           ),
         ],
@@ -135,6 +135,11 @@ var buttonDisabled = Demo(
                 ..$props.plain = true
                 ..$slots.$ = '成功按钮',
               WButton()
+                ..$props.type = 'info'
+                ..$props.disabled = true
+                ..$props.plain = true
+                ..$slots.$ = '信息按钮',
+              WButton()
                 ..$props.type = 'warning'
                 ..$props.disabled = true
                 ..$props.plain = true
@@ -144,11 +149,6 @@ var buttonDisabled = Demo(
                 ..$props.disabled = true
                 ..$props.plain = true
                 ..$slots.$ = '危险按钮',
-              WButton()
-                ..$props.type = 'info'
-                ..$props.disabled = true
-                ..$props.plain = true
-                ..$slots.$ = '信息按钮',
             ],
           ),
         ],
