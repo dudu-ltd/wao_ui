@@ -279,62 +279,62 @@ class _IndexPageState extends State<IndexPage> {
       ..$slots.main = WContainerLayout(
         slots: WContainerLayoutSlot(
           nav,
-          asideRight: FractionallySizedBox(
-            heightFactor: 1,
-            child: WMenu(
-              props: WMenuProp(
-                defaultActive: '1-4-1',
-                collapse: true,
-              ),
-              slots: WMenuSlot([
-                WSubmenu(
-                  props: WSubmenuProp(
-                    index: '1',
-                  ),
-                  slots: WSubmenuSlot(
-                    null,
-                    title: WMenuItem(
-                      slots: WMenuItemSlot(
-                        Icons.location_on,
-                        title: '导航一',
-                      ),
-                    ),
-                  ),
-                ),
-                WMenuItem(
-                  props: WMenuItemProp(index: '2'),
-                  slots: WMenuItemSlot(
-                    Icons.menu,
-                    title: '导航二',
-                  ),
-                ),
-                WMenuItem(
-                  props: WMenuItemProp(index: '3', disabled: true),
-                  slots: WMenuItemSlot(
-                    Icons.document_scanner,
-                    title: '导航三',
-                  ),
-                ),
-                WMenuItem(
-                  props: WMenuItemProp(index: '4'),
-                  slots: WMenuItemSlot(
-                    Icons.settings,
-                    title: '导航四',
-                  ),
-                ),
-              ]),
-              style: WMenuStyle(
-                backgroundColor: Colors.white,
-                hoverBackgroundColor: Colors.grey.shade200,
-                prefixColor: Colors.grey.shade600,
-                color: Colors.grey.shade600,
-                activeColor: Colors.grey.shade600,
-                stepPadding: 12,
-                width: 200,
-                minHeight: 400,
-              ),
-            ),
-          ),
+          // asideRight: FractionallySizedBox(
+          //   heightFactor: 1,
+          //   child: WMenu(
+          //     props: WMenuProp(
+          //       defaultActive: '1-4-1',
+          //       collapse: true,
+          //     ),
+          //     slots: WMenuSlot([
+          //       WSubmenu(
+          //         props: WSubmenuProp(
+          //           index: '1',
+          //         ),
+          //         slots: WSubmenuSlot(
+          //           null,
+          //           title: WMenuItem(
+          //             slots: WMenuItemSlot(
+          //               Icons.location_on,
+          //               title: '导航一',
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       WMenuItem(
+          //         props: WMenuItemProp(index: '2'),
+          //         slots: WMenuItemSlot(
+          //           Icons.menu,
+          //           title: '导航二',
+          //         ),
+          //       ),
+          //       WMenuItem(
+          //         props: WMenuItemProp(index: '3', disabled: true),
+          //         slots: WMenuItemSlot(
+          //           Icons.document_scanner,
+          //           title: '导航三',
+          //         ),
+          //       ),
+          //       WMenuItem(
+          //         props: WMenuItemProp(index: '4'),
+          //         slots: WMenuItemSlot(
+          //           Icons.settings,
+          //           title: '导航四',
+          //         ),
+          //       ),
+          //     ]),
+          //     style: WMenuStyle(
+          //       backgroundColor: Colors.white,
+          //       hoverBackgroundColor: Colors.grey.shade200,
+          //       prefixColor: Colors.grey.shade600,
+          //       color: Colors.grey.shade600,
+          //       activeColor: Colors.grey.shade600,
+          //       stepPadding: 12,
+          //       width: 200,
+          //       minHeight: 400,
+          //     ),
+          //   ),
+          // ),
           footer: ColoredBox(
               color: Colors.blueAccent, child: Center(child: Text('状态栏'))),
           asideLeft: SingleChildScrollView(
