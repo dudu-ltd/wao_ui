@@ -10,11 +10,16 @@ class BaseStyle {
   double? minHeight;
   double? maxWidth;
   double? maxHeight;
+  // margin
+  double? marginLeft;
+  double? marginRight;
+  double? marginTop;
+  double? marginBottom;
+  // padding
   double? paddingLeft;
   double? paddingRight;
   double? paddingTop;
   double? paddingBottom;
-  EdgeInsets? margin;
   Color? backgroundColor;
   Color? hoverBackgroundColor;
   Border? border;
@@ -68,6 +73,23 @@ class BaseStyle {
     );
   }
 
+  set margin(EdgeInsets? margin) {
+    if (margin == null) return;
+    paddingLeft = margin.left;
+    paddingTop = margin.top;
+    paddingRight = margin.right;
+    paddingBottom = margin.bottom;
+  }
+
+  EdgeInsets? get margin {
+    return EdgeInsets.fromLTRB(
+      marginLeft ?? 0,
+      marginTop ?? 0,
+      marginRight ?? 0,
+      marginBottom ?? 0,
+    );
+  }
+
   BaseStyle({
     this.color,
     this.width,
@@ -76,13 +98,17 @@ class BaseStyle {
     this.minHeight,
     this.maxWidth,
     this.maxHeight,
+    // margin
+    this.marginLeft,
+    this.marginRight,
+    this.marginTop,
+    this.marginBottom,
     // padding
     this.paddingLeft,
     this.paddingRight,
     this.paddingTop,
     this.paddingBottom,
-    // padding
-    this.margin,
+    //
     this.border,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -134,6 +160,10 @@ class BaseStyle {
     paddingTop = pickStyle(paddingTop, source.paddingTop, force: force);
     paddingBottom =
         pickStyle(paddingBottom, source.paddingBottom, force: force);
+    marginLeft = pickStyle(marginLeft, source.marginLeft, force: force);
+    marginRight = pickStyle(marginRight, source.marginRight, force: force);
+    marginTop = pickStyle(marginTop, source.marginTop, force: force);
+    marginBottom = pickStyle(marginBottom, source.marginBottom, force: force);
 
     borderTopLeftRadius = pickStyle(
       borderTopLeftRadius,
