@@ -40,18 +40,9 @@ class Api extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Wao ui Home',
         theme: ThemeData(
-          primarySwatch: CfgGlobal.primaryColor,
-        ),
-        // home: kIsWeb
-        //     ? main
-        //     : WFrame(
-        //         slots: WFrameSlot(
-        //           null,
-        //           header: const Text('Wao ui Api'),
-        //           main: main,
-        //           footer: const Text('状态栏'),
-        //         ),
-        //       ),
+            fontFamily: 'PingFang',
+            primarySwatch: CfgGlobal.primaryColor,
+            textTheme: TextTheme(bodyText2: TextStyle(height: 1.3))),
         themeMode: ThemeMode.dark,
         onGenerateRoute: buildNestedRoutes(
           {

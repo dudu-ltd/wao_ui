@@ -10,9 +10,7 @@ import 'package:wao_ui/src/others/w_spin.dart';
 import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
-// TODO 修改按钮前景色
-// TODO 使 icon 跟 defaultSlot 并存
-class WButton extends StatelessWidget
+class WButton extends StatefulWidget
     with BaseMixins<WButtonOn, WButtonProp, WButtonSlot, WButtonStyle> {
   WButton({
     Key? key,
@@ -27,17 +25,14 @@ class WButton extends StatelessWidget
     $style = style ?? WButtonStyle();
     init();
   }
-
-  final FocusNode focusNode = FocusNode();
-
-  var setState;
+  FocusNode? focusNode;
 
   bool isHover = false;
 
   bool active = false;
 
   bool get focus {
-    return focusNode.hasFocus;
+    return focusNode?.hasFocus ?? false;
   }
 
   void styleWrap() {
@@ -62,73 +57,8 @@ class WButton extends StatelessWidget
     );
   }
 
-  var mouseState;
-
   @override
-  Widget build(BuildContext context) {
-    return StatefulBuilder(builder: (context, setState) {
-      styleWrap();
-      var btn = Container(
-        alignment: style.textAlign,
-        constraints: BoxConstraints(minWidth: buttonMinWidth),
-        padding: style.padding,
-        decoration: BoxDecoration(
-          color: style.backgroundColor,
-          borderRadius: BorderRadius.all(style.radius!),
-          border: style.border,
-        ),
-        child: content,
-      );
-
-      return MouseRegion(
-        opaque: false,
-        onEnter: (e) {
-          isHover = true;
-          setState(() {});
-        },
-        onExit: (e) {
-          isHover = false;
-          setState(() {});
-        },
-        cursor: style.cursor!,
-        child: Material(
-          color: style.backgroundColor,
-          borderRadius: BorderRadius.all(style.radius!),
-          child: $props.disabled
-              ? btn
-              : InkWell(
-                  focusNode: focusNode,
-                  hoverColor: style.borderColor,
-                  borderRadius: BorderRadius.all(style.radius!),
-                  onTap: () => $on.click,
-                  onTapDown: (e) => setState(() => active = true),
-                  onTapUp: (e) => setState(() => active = false),
-                  child: btn,
-                ),
-        ),
-      );
-    });
-  }
-
-  Widget get content {
-    Widget box = const SizedBox(
-      width: 5,
-    );
-    return Wrap(
-      alignment: WrapAlignment.spaceBetween,
-      runAlignment: WrapAlignment.spaceBetween,
-      spacing: 5,
-      children: [
-        if ($props.loading)
-          WSpin(
-            child: iconCenter(Icons.rotate_right_rounded),
-          ),
-        if ($props.icon != null) iconCenter($props.icon!),
-        defaultSlot.first,
-        if ($props.iconRight != null) iconCenter($props.iconRight!)
-      ],
-    );
-  }
+  State<WButton> createState() => _WButtonState();
 
   Widget iconCenter(IconData icon) {
     return SizedBox(
@@ -168,9 +98,99 @@ class WButton extends StatelessWidget
       ),
     ];
   }
+}
+
+class _WButtonState extends State<WButton> {
+  late final FocusNode focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode = widget.focusNode ?? FocusNode();
+    widget.focusNode = focusNode;
+    focusNode.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    focusNode.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    widget.styleWrap();
+    var btn = Container(
+      alignment: widget.style.textAlign,
+      // constraints: BoxConstraints(minWidth: buttonMinWidth),
+      padding: widget.style.padding,
+      decoration: BoxDecoration(
+        // color: widget.style.backgroundColor,
+        borderRadius: widget.style.borderRadius,
+        // borderRadius: BorderRadius.circular(30),
+        border: widget.style.border,
+      ),
+      child: content,
+    );
+
+    return MouseRegion(
+      opaque: false,
+      onEnter: (e) {
+        widget.isHover = true;
+        setState(() {});
+      },
+      onExit: (e) {
+        widget.isHover = false;
+        setState(() {});
+      },
+      cursor: widget.style.cursor!,
+      child: Material(
+        type: MaterialType.button,
+        color: widget.style.backgroundColor,
+        borderRadius: widget.style.borderRadius,
+        // borderRadius: BorderRadius.circular(30),
+        child: widget.$props.disabled
+            ? btn
+            : InkWell(
+                focusNode: widget.focusNode,
+                hoverColor: widget.style.borderColor,
+                borderRadius: widget.style.borderRadius,
+                // borderRadius: BorderRadius.circular(30),
+                onTap: widget.$on.click,
+                onTapDown: (e) => setState(() => widget.active = true),
+                onTapUp: (e) => setState(() => widget.active = false),
+                child: btn,
+              ),
+      ),
+    );
+  }
+
+  Widget get content {
+    Widget box = const SizedBox(
+      width: 5,
+    );
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      runAlignment: WrapAlignment.spaceBetween,
+      spacing: 5,
+      children: [
+        if (widget.$props.loading)
+          WSpin(
+            child: widget.iconCenter(Icons.rotate_right_rounded),
+          ),
+        if (widget.$props.icon != null) widget.iconCenter(widget.$props.icon!),
+        widget.defaultSlot.first,
+        if (widget.$props.iconRight != null)
+          widget.iconCenter(widget.$props.iconRight!)
+      ],
+    );
+  }
 
   double get buttonMinWidth {
-    return $style?.minWidth ?? cfgGlobal.button.minWidth ?? 30;
+    return widget.$style?.minWidth ?? cfgGlobal.button.minWidth ?? 30;
   }
 }
 
@@ -209,6 +229,11 @@ class WButtonProp extends BaseProp {
   IconData? iconRight;
   late bool autofocus;
 
+  bool isFirst = false;
+  bool isLast = false;
+
+  bool inGroup = false;
+
   late bool active;
 
   WButtonProp({
@@ -223,8 +248,10 @@ class WButtonProp extends BaseProp {
     iconRight,
     autofocus,
     active,
+    this.isFirst = false,
+    this.isLast = false,
   }) {
-    this.size = buttonSize.contains(size) ? size : 'small';
+    this.size = size;
     this.type = buttonTypes.contains(type) ? type : null;
     this.plain = plain ?? false;
     this.round = round ?? false;
@@ -280,4 +307,52 @@ class WButtonProp extends BaseProp {
 
 class WButtonSlot extends BaseSlot {
   WButtonSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+class WButtonGroup extends StatelessWidget
+    with
+        BaseMixins<WButtonGroupOn, WButtonGroupProp, WButtonGroupSlot,
+            WButtonGroupStyle> {
+  WButtonGroup({
+    Key? key,
+    WButtonGroupOn? on,
+    WButtonGroupProp? props,
+    WButtonGroupSlot? slots,
+    WButtonGroupStyle? style,
+  }) : super(key: key) {
+    $on = on ?? WButtonGroupOn();
+    $props = props ?? WButtonGroupProp();
+    $slots = slots ?? WButtonGroupSlot(null);
+    $style = style ?? WButtonGroupStyle();
+  }
+
+  @override
+  List<SlotTranslator> get slotTranslatorsCustom {
+    return <SlotTranslator>[
+      SlotTranslator(WButton, (slot, i, conponent, len) {
+        slot as WButton;
+        slot.$props.inGroup = true;
+        if (i == 0) {
+          slot.$props.isFirst = true;
+        }
+        if (i == len - 1) {
+          slot.$props.isLast = true;
+        }
+        return slot;
+      })
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return $row;
+  }
+}
+
+class WButtonGroupOn extends BaseOn {}
+
+class WButtonGroupProp extends BaseProp {}
+
+class WButtonGroupSlot extends BaseSlot {
+  WButtonGroupSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }

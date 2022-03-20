@@ -119,6 +119,52 @@ class CfgGlobal {
     },
   );
 
+  static WBorderRadius leftCircularBorderRadius = WBorderRadius(
+    const BorderRadius.only(topLeft: Radius.circular(1.0)),
+    const {
+      'zero': BorderRadius.zero,
+      'mini': BorderRadius.only(
+        topLeft: Radius.circular(1.0),
+        bottomLeft: Radius.circular(1.0),
+      ),
+      'small': BorderRadius.only(
+        topLeft: Radius.circular(2.0),
+        bottomLeft: Radius.circular(2.0),
+      ),
+      'medium': BorderRadius.only(
+        topLeft: Radius.circular(4.0),
+        bottomLeft: Radius.circular(4.0),
+      ),
+      'large': BorderRadius.only(
+        topLeft: Radius.circular(30),
+        bottomLeft: Radius.circular(30),
+      ),
+    },
+  );
+
+  static WBorderRadius rightCircularBorderRadius = WBorderRadius(
+    const BorderRadius.only(topLeft: Radius.circular(1.0)),
+    const {
+      'zero': BorderRadius.zero,
+      'mini': BorderRadius.only(
+        topLeft: Radius.circular(1.0),
+        bottomLeft: Radius.circular(1.0),
+      ),
+      'small': BorderRadius.only(
+        topLeft: Radius.circular(2.0),
+        bottomLeft: Radius.circular(2.0),
+      ),
+      'medium': BorderRadius.only(
+        topLeft: Radius.circular(4.0),
+        bottomLeft: Radius.circular(4.0),
+      ),
+      'large': BorderRadius.only(
+        topLeft: Radius.circular(30),
+        bottomLeft: Radius.circular(30),
+      ),
+    },
+  );
+
   WFont font = WFont();
   WBorder border = WBorder();
   WBorderStyle borderStyle = WBorderStyle();
@@ -140,6 +186,7 @@ class CfgGlobal {
   WPaginationStyle pagination = WPaginationStyle();
 
   WButtonStyle button = WButtonStyle();
+  WButtonGroupStyle buttonGroup = WButtonGroupStyle();
 
   WProgressStyle progress = WProgressStyle();
 
@@ -443,9 +490,10 @@ class WButtonStyle extends BaseStyle {
           minWidth: minWidth,
           maxHeight: maxHeight,
           maxWidth: maxWidth,
-          radius: radius,
         );
 }
+
+class WButtonGroupStyle extends BaseStyle {}
 
 class WProgressStyle extends BaseStyle {
   IconData successIcon = Icons.check_circle_outline_rounded;

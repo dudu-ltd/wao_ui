@@ -10,7 +10,6 @@ class BaseStyle {
   double? minHeight;
   double? maxWidth;
   double? maxHeight;
-  EdgeInsets? padding;
   double? paddingLeft;
   double? paddingRight;
   double? paddingTop;
@@ -23,10 +22,51 @@ class BaseStyle {
   Color? borderColor;
   double? fontSize;
   FontWeight? fontWeight;
-  Radius? radius;
-  BorderRadius? borderRadius;
   MouseCursor? cursor;
   Alignment? textAlign;
+
+  Radius? borderTopLeftRadius;
+  Radius? borderBottomLeftRadius;
+  Radius? borderTopRightRadius;
+  Radius? borderBottomRightRadius;
+
+  set borderRadius(BorderRadius? borderRadius) {
+    if (borderRadius == null) return;
+    borderTopLeftRadius = borderRadius.topLeft;
+    borderBottomLeftRadius = borderRadius.bottomLeft;
+    borderTopRightRadius = borderRadius.topRight;
+    borderBottomRightRadius = borderRadius.bottomRight;
+  }
+
+  BorderRadius? get borderRadius {
+    if (borderTopLeftRadius == null &&
+        borderBottomLeftRadius == null &&
+        borderTopRightRadius == null &&
+        borderBottomRightRadius == null) return null;
+    return BorderRadius.only(
+      topLeft: borderTopLeftRadius ?? Radius.zero,
+      topRight: borderTopRightRadius ?? Radius.zero,
+      bottomLeft: borderBottomLeftRadius ?? Radius.zero,
+      bottomRight: borderBottomRightRadius ?? Radius.zero,
+    );
+  }
+
+  set padding(EdgeInsets? padding) {
+    if (padding == null) return;
+    paddingLeft = padding.left;
+    paddingTop = padding.top;
+    paddingRight = padding.right;
+    paddingBottom = padding.bottom;
+  }
+
+  EdgeInsets? get padding {
+    return EdgeInsets.fromLTRB(
+      paddingLeft ?? 0,
+      paddingTop ?? 0,
+      paddingRight ?? 0,
+      paddingBottom ?? 0,
+    );
+  }
 
   BaseStyle({
     this.color,
@@ -36,26 +76,37 @@ class BaseStyle {
     this.minHeight,
     this.maxWidth,
     this.maxHeight,
-    this.padding,
+    // padding
     this.paddingLeft,
     this.paddingRight,
     this.paddingTop,
     this.paddingBottom,
+    // padding
     this.margin,
     this.border,
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.borderColor,
     this.fontSize,
-    this.radius,
-    this.borderRadius,
-  });
+    // border-radius
+    this.borderTopLeftRadius,
+    this.borderBottomLeftRadius,
+    this.borderTopRightRadius,
+    this.borderBottomRightRadius,
+    //
+    BorderRadius? borderRadius,
+    EdgeInsets? padding,
+  }) {
+    this.padding = padding;
+    this.borderRadius = borderRadius;
+  }
   @override
   String toString() {
     return '''{
-      color: $color,
-      background: $backgroundColor,
-      borderColor: $borderColor
+      borderTopLeftRadius: $borderTopLeftRadius,
+      borderBottomLeftRadius: $borderBottomLeftRadius,
+      borderTopRightRadius: $borderTopRightRadius,
+      borderBottomRightRadius,: $borderBottomRightRadius,
     }''';
   }
 
@@ -68,7 +119,6 @@ class BaseStyle {
     minHeight = pickStyle(minHeight, source.minHeight, force: force);
     maxWidth = pickStyle(maxWidth, source.maxWidth, force: force);
     maxHeight = pickStyle(maxHeight, source.maxHeight, force: force);
-    padding = pickStyle(padding, source.padding, force: force);
     margin = pickStyle(margin, source.margin, force: force);
     border = pickStyle(border, source.border, force: force);
     backgroundColor =
@@ -77,15 +127,34 @@ class BaseStyle {
         pickStyle(hoverBackgroundColor, source.hoverBackgroundColor);
     borderColor = pickStyle(borderColor, source.borderColor, force: force);
     fontSize = pickStyle(fontSize, source.fontSize, force: force);
-    radius = pickStyle(radius, source.radius, force: force);
     cursor = pickStyle(cursor, source.cursor, force: force);
     textAlign = pickStyle(textAlign, source.textAlign, force: force);
-    borderRadius = pickStyle(borderRadius, source.borderRadius, force: force);
     paddingLeft = pickStyle(paddingLeft, source.paddingLeft, force: force);
     paddingRight = pickStyle(paddingRight, source.paddingRight, force: force);
     paddingTop = pickStyle(paddingTop, source.paddingTop, force: force);
     paddingBottom =
         pickStyle(paddingBottom, source.paddingBottom, force: force);
+
+    borderTopLeftRadius = pickStyle(
+      borderTopLeftRadius,
+      source.borderTopLeftRadius,
+      force: force,
+    );
+    borderBottomLeftRadius = pickStyle(
+      borderBottomLeftRadius,
+      source.borderBottomLeftRadius,
+      force: force,
+    );
+    borderTopRightRadius = pickStyle(
+      borderTopRightRadius,
+      source.borderTopRightRadius,
+      force: force,
+    );
+    borderBottomRightRadius = pickStyle(
+      borderBottomRightRadius,
+      source.borderBottomRightRadius,
+      force: force,
+    );
     return this;
   }
 
@@ -96,6 +165,19 @@ class BaseStyle {
       }
     }
     return target ?? source;
+  }
+
+  T? mergeValue<T>(T? target, T? source, {bool force = false}) {
+    if (target == null) return source;
+    if (target is BorderRadius && source is BorderRadius) {
+      return target.copyWith(
+        topLeft: source.topLeft,
+        topRight: source.topRight,
+        bottomLeft: source.bottomLeft,
+        bottomRight: source.bottomRight,
+      ) as T;
+    }
+    return target;
   }
 
   wrap<W extends BaseMixins>(List<StyleWrap<W>?> wraps, W w) {

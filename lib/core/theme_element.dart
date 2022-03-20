@@ -7,10 +7,17 @@ import '../wao_ui.dart';
 import 'base_style.dart';
 import 'swatch/size_swatch.dart';
 
+not(String str) {
+  return ':not($str)';
+}
+
 element() {
   var focus = ':focus';
   var hover = ':hover';
   var active = ':active';
+
+  var firstChild = ':first-child';
+  var lastChild = ':last-child';
 
   var isPlain = '.is-plain';
   var isDisabled = '.is-disabled';
@@ -31,6 +38,7 @@ element() {
   var mediumSuf = '--medium';
 
   var _button = '.el-button';
+  var _buttonGroup = '.el-button-group';
 
   CfgGlobal.primaryColor = const MaterialColor(
     0xFF409eff,
@@ -179,7 +187,7 @@ element() {
   );
 
   CfgGlobal.circularBorderRadius = WBorderRadius(
-    BorderRadius.circular(1.0),
+    BorderRadius.circular(20),
     {
       'zero': BorderRadius.zero,
       'mini': BorderRadius.circular(2),
@@ -202,11 +210,11 @@ element() {
       ..fontWeight = FontWeight.w500
       ..padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 20)
       ..fontSize = 14
-      ..radius = const Radius.circular(4),
+      ..borderRadius = CfgGlobal.circularBorderRadius.small,
     [
       [_button, isRound]
     ]: BaseStyle()
-      ..radius = const Radius.circular(20)
+      ..borderRadius = CfgGlobal.circularBorderRadius
       ..padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
     [
       [_button, focus],
@@ -262,12 +270,12 @@ element() {
     [
       [_button, isRound],
     ]: BaseStyle()
-      ..radius = const Radius.circular(20)
+      ..borderRadius = CfgGlobal.circularBorderRadius.large
       ..padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 23),
     [
       [_button, isCircle],
     ]: BaseStyle()
-      ..radius = const Radius.circular(200)
+      ..borderRadius = CfgGlobal.circularBorderRadius.large
       ..padding = const EdgeInsets.all(12),
 
     /// 颜色设置，不同类型结构相同，当前是 primary
@@ -646,7 +654,7 @@ element() {
     ]: BaseStyle(
       padding: CfgGlobal.padding.medium,
       fontSize: CfgGlobal.fontSize.small,
-      borderRadius: CfgGlobal.circularBorderRadius.medium,
+      borderRadius: CfgGlobal.circularBorderRadius.small,
     ),
     [
       [_button, '$_button$mediumSuf', isRound]
@@ -692,24 +700,48 @@ element() {
     ]: BaseStyle(
       padding: CfgGlobal.circlePadding.mini,
     ),
+
+    // .el-button-group
+    [
+      [_buttonGroup, _button, firstChild],
+    ]: BaseStyle(
+      borderTopRightRadius: Radius.zero,
+      borderBottomRightRadius: Radius.zero,
+    ),
+    [
+      [_buttonGroup, _button, lastChild],
+    ]: BaseStyle(
+      borderTopLeftRadius: Radius.zero,
+      borderBottomLeftRadius: Radius.zero,
+    ),
+    [
+      [_buttonGroup, _button, firstChild, lastChild],
+    ]: BaseStyle(
+      borderRadius: CfgGlobal.circularBorderRadius.small,
+    ),
+    [
+      [_buttonGroup, _button, firstChild, lastChild, isRound],
+    ]: BaseStyle(
+      borderRadius: CfgGlobal.circularBorderRadius,
+    ),
+    [
+      [_buttonGroup, _button, firstChild, lastChild, isCircle],
+    ]: BaseStyle(
+      borderRadius: CfgGlobal.circularBorderRadius.large,
+    ),
+    [
+      [_buttonGroup, _button, '${not(firstChild)}${not(lastChild)}']
+    ]: BaseStyle(
+      borderRadius: BorderRadius.zero,
+    )
   };
 
   // .el-button
   cfgGlobal.button = WButtonStyle();
-  cfgGlobal.button
-    ..cursor = SystemMouseCursors.click
-    ..backgroundColor = Colors.white
-    ..border = const Border.fromBorderSide(BorderSide(color: Color(0xFFdcdfe6)))
-    ..color = const Color(0xFF606266)
-    ..textAlign = Alignment.center
-    ..margin = EdgeInsets.zero
-    ..fontWeight = FontWeight.w500
-    ..padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 20)
-    ..fontSize = 14
-    ..radius = const Radius.circular(4);
 
   cfgGlobal.button.type = (WButton btn) {
     var selector = [
+      if (btn.$props.inGroup) _buttonGroup,
       _button,
       if (btn.$props.type != null) '$_button--${btn.$props.type}',
       '$_button--${btn.$props.size}',
@@ -721,149 +753,22 @@ element() {
       if (btn.$props.circle) isCircle,
       if (btn.$props.round) isRound,
       if (btn.$props.disabled) isDisabled,
+      if (btn.$props.isFirst) firstChild,
+      if (btn.$props.isLast) lastChild,
+      if (btn.$props.inGroup && (!btn.$props.isFirst && !btn.$props.isLast))
+        '${not(firstChild)}${not(lastChild)}',
     ];
+
     List<BaseStyle?> styles =
         findByListKey<BaseStyle?>(CfgGlobal.css, selector);
+    print(styles);
     for (var style in styles) {
       btn.style.merge(style, force: true);
     }
+    print(btn.style);
     btn.style.border = Border.fromBorderSide(BorderSide(
       color: btn.style.borderColor ?? Colors.white,
       width: btn.style.borderWidth,
     ));
-
-    btn.style.borderRadius = BorderRadius.all(btn.style.radius ?? Radius.zero);
-    btn.style.padding = EdgeInsets.fromLTRB(
-      btn.style.paddingLeft ?? btn.style.padding?.left ?? 0,
-      btn.style.paddingTop ?? btn.style.padding?.top ?? 0,
-      btn.style.paddingRight ?? btn.style.padding?.right ?? 0,
-      btn.style.paddingBottom ?? btn.style.padding?.bottom ?? 0,
-    );
-    // MaterialColor color = CfgGlobal.color(btn.$props.type);
-    // btn.style
-    //   ..color = btn.$style?.color ?? Colors.white
-    //   ..backgroundColor = btn.$style?.backgroundColor ?? color.shade800
-    //   ..borderColor = btn.$style?.borderColor ?? color.shade800
-    //   ..border =
-    //       Border.fromBorderSide(BorderSide(color: btn.style.borderColor!));
-  };
-
-  cfgGlobal.button.whenText = (WButton btn) {
-    if (!btn.$props.typeIsText) return;
-    btn.style
-      ..color = btn.$style?.color ?? CfgGlobal.primaryColor.shade800
-      ..backgroundColor = btn.$style?.backgroundColor ?? Colors.white
-      ..borderColor = btn.$style?.borderColor ?? Colors.white
-      ..border =
-          Border.fromBorderSide(BorderSide(color: btn.style.borderColor!));
-  };
-
-  cfgGlobal.button.mini = (WButton btn) {
-    if (!btn.$props.sizeIsMini) return;
-    btn.style
-      ..padding = btn.$style?.padding ??
-          const EdgeInsets.symmetric(vertical: 7, horizontal: 15)
-      ..fontSize = btn.$style?.fontSize ?? 12
-      ..radius = btn.$style?.radius ?? const Radius.circular(3);
-  };
-
-  cfgGlobal.button.small = (WButton btn) {
-    if (btn.$props.sizeIsSmall) {
-      btn.style
-        ..padding = btn.$style?.padding ??
-            const EdgeInsets.symmetric(vertical: 9, horizontal: 15)
-        ..fontSize = btn.$style?.fontSize ?? 12
-        ..radius = btn.$style?.radius ?? const Radius.circular(3);
-    }
-  };
-
-  cfgGlobal.button.medium = (WButton btn) {
-    if (!btn.$props.sizeIsMedium) return;
-    btn.style
-      ..padding = btn.$style?.padding ??
-          const EdgeInsets.symmetric(vertical: 10, horizontal: 20)
-      ..fontSize = btn.$style?.fontSize ?? 14
-      ..radius = btn.$style?.radius ?? const Radius.circular(4);
-    if (btn.$props.round) {
-      btn.style
-        ..padding = btn.$style?.padding ??
-            const EdgeInsets.symmetric(vertical: 12, horizontal: 23)
-        ..radius = const Radius.circular(20);
-    }
-  };
-
-  cfgGlobal.button.large = (WButton btn) {};
-
-  cfgGlobal.button.isRound = (WButton btn) {
-    if (!btn.$props.round) return;
-    btn.style
-      ..radius = btn.$style?.radius ?? const Radius.circular(20)
-      ..padding = btn.$style?.padding ??
-          const EdgeInsets.symmetric(vertical: 12, horizontal: 23);
-  };
-
-  cfgGlobal.button.isCircle = (WButton btn) {
-    if (cfgGlobal.button.padding == null &&
-        btn.$style?.padding == null &&
-        btn.$props.circle) {
-      btn.$style?.padding = EdgeInsets.all(btn.style.padding!.left);
-    }
-  };
-
-  cfgGlobal.button.isDisabled = (WButton btn) {
-    if (btn.$props.disabled) {
-      MaterialColor color = CfgGlobal.color(btn.$props.type);
-      btn.style
-        ..cursor = btn.$style?.cursor ?? SystemMouseCursors.forbidden
-        ..color = btn.$style?.color ?? color.shade50
-        ..backgroundColor = btn.$style?.backgroundColor ?? color.shade500
-        ..borderColor = btn.$style?.borderColor ?? color.shade500
-        ..border =
-            Border.fromBorderSide(BorderSide(color: btn.style.borderColor!));
-    }
-  };
-  cfgGlobal.button.whenTextDisabled = (WButton btn) {
-    if (!btn.$props.typeIsText) return;
-    if (btn.$props.disabled) {
-      btn.style
-        ..cursor = btn.$style?.cursor ?? SystemMouseCursors.forbidden
-        ..color = btn.$style?.color ?? CfgGlobal.primaryColor.shade500
-        ..backgroundColor = btn.$style?.backgroundColor ?? Colors.white
-        ..borderColor = btn.$style?.borderColor ?? Colors.white
-        ..border =
-            Border.fromBorderSide(BorderSide(color: btn.style.borderColor!));
-    }
-  };
-
-  cfgGlobal.button.isPlain = (WButton btn) {
-    if (!btn.$props.plain) return;
-    MaterialColor color = CfgGlobal.color(btn.$props.type);
-    btn.style
-      ..color = btn.$style?.color ?? color.shade800
-      ..backgroundColor = btn.$style?.backgroundColor ?? color.shade50
-      ..borderColor = color.shade300
-      ..border =
-          Border.fromBorderSide(BorderSide(color: btn.style.borderColor!));
-  };
-
-  cfgGlobal.button.hover = (WButton btn) {
-    if (!btn.isHover || btn.focus || btn.$props.disabled) return;
-    MaterialColor color = CfgGlobal.color(btn.$props.type);
-    btn.style
-      ..color = btn.$style?.color ?? const Color(0xFFFFFFFF)
-      ..backgroundColor = btn.$style?.backgroundColor ?? color.shade700
-      ..borderColor = color.shade700
-      ..border =
-          Border.fromBorderSide(BorderSide(color: btn.style.borderColor!));
-  };
-
-  cfgGlobal.button.active = (WButton btn) {
-    if (btn.active) {
-      MaterialColor color = CfgGlobal.color(btn.$props.type);
-      btn.style
-        ..borderColor = color.shade700
-        ..border =
-            Border.fromBorderSide(BorderSide(color: btn.style.borderColor!));
-    }
   };
 }

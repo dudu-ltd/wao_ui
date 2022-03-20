@@ -12,7 +12,9 @@ var buttonBasic = Demo(
           Wrap(
             spacing: 8,
             children: [
-              WButton()..$slots.$ = '默认按钮',
+              WButton()
+                ..$slots.$ = '默认按钮'
+                ..$on.click = () => print('ttttttttttt'),
               WButton()
                 ..$props.type = 'primary'
                 ..$slots.$ = '主要按钮',
