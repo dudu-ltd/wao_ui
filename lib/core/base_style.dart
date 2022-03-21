@@ -65,6 +65,10 @@ class BaseStyle {
   }
 
   EdgeInsets? get padding {
+    if (paddingLeft == null &&
+        paddingTop == null &&
+        paddingRight == null &&
+        paddingBottom == null) return null;
     return EdgeInsets.fromLTRB(
       paddingLeft ?? 0,
       paddingTop ?? 0,
@@ -75,10 +79,10 @@ class BaseStyle {
 
   set margin(EdgeInsets? margin) {
     if (margin == null) return;
-    paddingLeft = margin.left;
-    paddingTop = margin.top;
-    paddingRight = margin.right;
-    paddingBottom = margin.bottom;
+    marginLeft = margin.left;
+    marginTop = margin.top;
+    marginRight = margin.right;
+    marginBottom = margin.bottom;
   }
 
   EdgeInsets? get margin {
@@ -129,10 +133,14 @@ class BaseStyle {
   @override
   String toString() {
     return '''{
-      borderTopLeftRadius: $borderTopLeftRadius,
-      borderBottomLeftRadius: $borderBottomLeftRadius,
-      borderTopRightRadius: $borderTopRightRadius,
-      borderBottomRightRadius,: $borderBottomRightRadius,
+      marginLeft: $marginLeft,
+      marginRight: $marginRight,
+      marginTop: $marginTop,
+      marginBottom: $marginBottom,
+      paddingLeft: $paddingLeft,
+      paddingRight: $paddingRight,
+      paddingTop: $paddingTop,
+      paddingBottom: $paddingBottom,
     }''';
   }
 
@@ -145,7 +153,6 @@ class BaseStyle {
     minHeight = pickStyle(minHeight, source.minHeight, force: force);
     maxWidth = pickStyle(maxWidth, source.maxWidth, force: force);
     maxHeight = pickStyle(maxHeight, source.maxHeight, force: force);
-    margin = pickStyle(margin, source.margin, force: force);
     border = pickStyle(border, source.border, force: force);
     backgroundColor =
         pickStyle(backgroundColor, source.backgroundColor, force: force);
@@ -195,19 +202,6 @@ class BaseStyle {
       }
     }
     return target ?? source;
-  }
-
-  T? mergeValue<T>(T? target, T? source, {bool force = false}) {
-    if (target == null) return source;
-    if (target is BorderRadius && source is BorderRadius) {
-      return target.copyWith(
-        topLeft: source.topLeft,
-        topRight: source.topRight,
-        bottomLeft: source.bottomLeft,
-        bottomRight: source.bottomRight,
-      ) as T;
-    }
-    return target;
   }
 
   wrap<W extends BaseMixins>(List<StyleWrap<W>?> wraps, W w) {
