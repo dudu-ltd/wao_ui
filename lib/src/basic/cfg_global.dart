@@ -250,6 +250,7 @@ class CfgGlobal {
   WSubmenuStyle submenu = WSubmenuStyle();
   WMenuItemStyle menuItem = WMenuItemStyle();
   WMenuItemGroupStyle menuItemGroup = WMenuItemGroupStyle();
+  WScrollSnapStyle scrollSnap = WScrollSnapStyle();
 
   CfgGlobal._privateConstrucor();
 
@@ -418,8 +419,6 @@ class WBreadcrumbStyle extends BaseStyle {
 class WDescriptionsStyle extends BaseStyle {
   double labelWidth = 80;
   Color labelColor = Colors.grey.shade100;
-
-  double borderWidth = 1.0;
 
   WDescriptionsStyle({
     EdgeInsets? padding,
@@ -1415,3 +1414,8 @@ class PlainTreeStyle extends BaseStyle {
 }
 
 class WContainerStyle extends BaseStyle {}
+
+class WScrollSnapStyle extends BaseStyle {
+  double snapWidth;
+  WScrollSnapStyle({this.snapWidth = 150.0});
+}

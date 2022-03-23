@@ -210,6 +210,7 @@ element() {
       ..fontWeight = FontWeight.w500
       ..padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 20)
       ..fontSize = 14
+      ..borderWidth = 1
       ..borderRadius = CfgGlobal.circularBorderRadius.small,
     [
       [_button, isRound]
@@ -765,9 +766,5 @@ element() {
     for (var style in styles) {
       btn.style.merge(style, force: true);
     }
-    btn.style.border = Border.fromBorderSide(BorderSide(
-      color: btn.style.borderColor ?? Colors.white,
-      width: btn.style.borderWidth,
-    ));
   };
 }

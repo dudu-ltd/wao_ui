@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:example/main.dart';
 import 'package:example/package/basic/api_container_layout.dart';
@@ -161,6 +163,19 @@ class _IndexPageState extends State<IndexPage> {
     );
   }
 
+  to(String name, String id) {
+    if (currentName == id) return;
+    currentName = id;
+    if (isPc) (appWindow.title = name);
+    if (navContext != null) {
+      Timer(Duration(milliseconds: 150), () {
+        // Navigator.maybePop(navContext!);
+        Navigator.pushNamed(navContext!, id);
+      });
+      guideSetState?.call(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Navigator nav = createNav();
@@ -174,140 +189,247 @@ class _IndexPageState extends State<IndexPage> {
       print('$key $keyPath');
     };
     return WFrame()
-      ..$slots.main = WContainerLayout(
-        slots: WContainerLayoutSlot(
-          nav,
-          footer: ColoredBox(
-              color: Colors.grey.shade50,
-              child: const Center(
-                  child: Text('Copyright © 2021-present, Weicheng Ye'))),
-          asideLeft: SingleChildScrollView(
-            child: PlainTree(
-              on: PlainTreeOn(
-                nodeClick: (ctx, node) {
-                  return () {
-                    if (isPc) (appWindow.title = node.text);
-                    if (navContext != null) {
-                      Navigator.maybePop(navContext!);
-                      Navigator.pushNamed(navContext!, node.id);
-                    }
-                  };
-                },
+      ..$slots.header = Text('WaoUI')
+      ..$slots.main = Scaffold(
+        appBar: AppBar(
+          title: Text(currentName ?? ''),
+        ),
+        body: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1360),
+            child: WContainerLayout(
+              slots: WContainerLayoutSlot(
+                nav,
+                footer: ColoredBox(
+                    color: Colors.grey.shade50,
+                    child: const Center(
+                        child: Text('Copyright © 2021-present, Weicheng Ye'))),
+                asideLeft: SingleChildScrollView(
+                  child: guide,
+                ),
               ),
-              props: PlainTreeProp(
-                data: [
-                  {
-                    "id": "basic",
-                    "text": "basic",
-                    "children": [
-                      {"id": "WButton", "text": "WButton", "finish": true},
-                      {
-                        "id": "WContainerLayout",
-                        "text": "WContainerLayout",
-                        "finish": true
-                      },
-                      {"id": "WContainer", "text": "WContainer", "finish": true}
-                    ]
-                  },
-                  {
-                    "id": "data",
-                    "text": "data",
-                    "children": [
-                      {"id": "WAvatar", "text": "WAvatar"},
-                      {"id": "WBadge", "text": "WBadge"},
-                      {"id": "WDescriptions", "text": "WDescriptions"},
-                      {"id": "WEmpty", "text": "WEmpty"},
-                      {"id": "WPagination", "text": "WPagination"},
-                      {"id": "WProgress", "text": "WProgress"},
-                      {"id": "WResult", "text": "WResult"},
-                      {"id": "WSkeleton", "text": "WSkeleton"},
-                      {"id": "WTable", "text": "WTable"},
-                      {"id": "WTag", "text": "WTag"},
-                      {"id": "WTree", "text": "WTree"}
-                    ]
-                  },
-                  {
-                    "id": "form",
-                    "text": "form",
-                    "children": [
-                      {"id": "WCascader", "text": "WCascader"},
-                      {"id": "WCheckbox", "text": "WCheckbox"},
-                      {"id": "WColorPicker", "text": "WColorPicker"},
-                      {"id": "WDatePicker", "text": "WDatePicker"},
-                      {"id": "WDateTimePicker", "text": "WDateTimePicker"},
-                      {"id": "WInputNumber", "text": "WInputNumber"},
-                      {"id": "WInput", "text": "WInput"},
-                      {"id": "WRadio", "text": "WRadio"},
-                      {"id": "WRate", "text": "WRate"},
-                      {"id": "WSelect", "text": "WSelect"},
-                      {"id": "WSlider", "text": "WSlider"},
-                      {"id": "WSwitch", "text": "WSwitch"},
-                      {"id": "WTimePicker", "text": "WTimePicker"},
-                      {"id": "WTransfer", "text": "WTransfer"},
-                      {"id": "WUpload", "text": "WUpload"}
-                    ]
-                  },
-                  {
-                    "id": "navigation",
-                    "text": "navigation",
-                    "children": [
-                      {"id": "WBreadcrumb", "text": "WBreadcrumb"},
-                      {"id": "WDropdown", "text": "WDropdown"},
-                      {"id": "WMenu", "text": "WMenu"},
-                      {"id": "WPageHeader", "text": "WPageHeader"},
-                      {"id": "WSteps", "text": "WSteps"},
-                      {"id": "WTabs", "text": "WTabs"}
-                    ]
-                  },
-                  {
-                    "id": "notice",
-                    "text": "notice",
-                    "children": [
-                      {"id": "WAlert", "text": "WAlert"},
-                      {"id": "WLoading", "text": "WLoading"},
-                      {"id": "WMessage", "text": "WMessage"},
-                      {"id": "WMessageBox", "text": "WMessageBox"},
-                      {"id": "WNotification", "text": "WNotification"}
-                    ]
-                  },
-                  {
-                    "id": "opengl",
-                    "text": "opengl",
-                    "children": [
-                      {"id": "ApiGl", "text": "ApiGl"},
-                    ]
-                  },
-                  {
-                    "id": "others",
-                    "text": "others",
-                    "children": [
-                      {"id": "WBacktop", "text": "WBacktop"},
-                      {"id": "WCalendar", "text": "WCalendar"},
-                      {"id": "WCard", "text": "WCard"},
-                      {"id": "WCarousel", "text": "WCarousel"},
-                      {"id": "WCollapse", "text": "WCollapse"},
-                      {"id": "WDialog", "text": "WDialog"},
-                      {"id": "WDivider", "text": "WDivider"},
-                      {"id": "WDrawer", "text": "WDrawer"},
-                      {"id": "WImage", "text": "WImage"},
-                      {"id": "WInfiniteScroll", "text": "WInfiniteScroll"},
-                      {"id": "WPopconfirm", "text": "WPopconfirm"},
-                      {"id": "WPopover", "text": "WPopover"},
-                      {"id": "WTimeline", "text": "WTimeline"},
-                      {"id": "WTooltip", "text": "WTooltip"}
-                    ]
-                  }
-                ],
+              props: WContainerLayoutProp(
+                leftJudge: true,
+                asideLeftMinWidth: 200.0,
+                asideRightWidth: 46.0,
+                footerHeight: 30.0,
               ),
             ),
           ),
         ),
-        props: WContainerLayoutProp(
-          leftJudge: true,
-          asideLeftMinWidth: 200.0,
-          asideRightWidth: 46.0,
-          footerHeight: 30.0,
-        ),
       );
   }
+
+  Widget get guide {
+    return guideNew;
+  }
+
+  var guideContext;
+  var guideSetState;
+  var currentName = null;
+
+  Widget get guideNew {
+    var theme = Theme.of(context);
+    return StatefulBuilder(builder: (context, setState) {
+      guideContext = context;
+      guideSetState = setState;
+      var menu = guideData;
+      return Material(
+        color: Colors.white,
+        child: Column(children: [
+          logoZoom,
+          ...guideDataToWidget(guideData),
+        ]),
+      );
+    });
+    // return Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     Text('快速开始', style: theme.textTheme.headline6),
+    //     ...List.generate(buttons.length, (index) {
+    //       return WButton()
+    //         ..$props.round = true
+    //         ..$props.plain = true
+    //         ..$props.type = 'success'
+    //         ..style.borderWidth = 0
+    //         ..style.marginTop = 5
+    //         ..$slots.$ = buttons[index]
+    //         ..$on.click = () => to(buttons[index], buttons[index]);
+    //     })
+    //   ],
+    // );
+  }
+
+  List<Widget> guideDataToWidget(data, {level = 0}) {
+    var theme = Theme.of(context);
+    if (data == null) return List.empty();
+    var result = <Widget>[];
+    for (var i = 0; i < data.length; i++) {
+      var node = data[i];
+      if (level == 0) {
+        result.add(Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              node['text'],
+              style: theme.textTheme.titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ));
+      } else {
+        result.add(ListTile(
+          onTap: () => to(node['text'], node['id']),
+          title: Text(node['text']),
+          subtitle: Text(node['id']),
+          selected: currentName == node['id'],
+        ));
+      }
+      if (node['children'] is List) {
+        var children = guideDataToWidget(node['children'], level: level + 1);
+        result.addAll(children);
+      }
+    }
+    return result;
+  }
+
+  Widget get logoZoom {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SizedBox(
+        height: 50,
+        child: Row(
+          children: [
+            WImage()..$props.src = 'assets:logo.png',
+            Text(
+              '   WaoUI',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: CfgGlobal.primaryColor,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<Map<String, dynamic>> get guideData {
+    return [
+      {
+        "id": "About",
+        "text": "关于",
+        "children": [
+          {"id": "about/conscience", "text": "本心"},
+          {"id": "about/plan", "text": "开源计划"},
+          {"id": "about/thinking", "text": "设计思路"}
+        ]
+      },
+      {
+        "id": "basic",
+        "text": "常用组件",
+        "children": [
+          {"id": "WButton", "text": "按钮"},
+          {"id": "WContainer", "text": "布局"}
+        ]
+      },
+      {
+        "id": "data",
+        "text": "数据",
+        "children": [
+          {"id": "WAvatar", "text": "头像"},
+          {"id": "WBadge", "text": "角标"},
+          {"id": "WDescriptions", "text": "对象描述"},
+          {"id": "WEmpty", "text": "空提醒"},
+          {"id": "WPagination", "text": "分页"},
+          {"id": "WProgress", "text": "进度条"},
+          {"id": "WResult", "text": "结果"},
+          {"id": "WSkeleton", "text": "页面骨架"},
+          {"id": "WTable", "text": "表格"},
+          {"id": "WTag", "text": "标签"},
+          {"id": "WTree", "text": "树"}
+        ]
+      },
+      {
+        "id": "form",
+        "text": "表单",
+        "children": [
+          {"id": "WCascader", "text": "级联选择器"},
+          {"id": "WCheckbox", "text": "复选"},
+          {"id": "WColorPicker", "text": "颜色选择器"},
+          {"id": "WDatePicker", "text": "日期选择器"},
+          {"id": "WDateTimePicker", "text": "日期时间选择器"},
+          {"id": "WInputNumber", "text": "数字输入框"},
+          {"id": "WInput", "text": "输入框"},
+          {"id": "WRadio", "text": "单选"},
+          {"id": "WRate", "text": "评分"},
+          {"id": "WSelect", "text": "下拉框"},
+          {"id": "WSlider", "text": "滑动设值"},
+          {"id": "WSwitch", "text": "开关"},
+          {"id": "WTimePicker", "text": "时间选择器"},
+          {"id": "WTransfer", "text": "穿梭框"},
+          {"id": "WUpload", "text": "文件上传"}
+        ]
+      },
+      {
+        "id": "navigation",
+        "text": "导航",
+        "children": [
+          {"id": "WBreadcrumb", "text": "面包屑"},
+          {"id": "WDropdown", "text": "下拉菜单"},
+          {"id": "WMenu", "text": "菜单"},
+          {"id": "WPageHeader", "text": "表头"},
+          {"id": "WSteps", "text": "步骤"},
+          {"id": "WTabs", "text": "Tab 页"}
+        ]
+      },
+      {
+        "id": "notice",
+        "text": "通知/消息",
+        "children": [
+          {"id": "WAlert", "text": "WAlert"},
+          {"id": "WLoading", "text": "WLoading"},
+          {"id": "WMessage", "text": "WMessage"},
+          {"id": "WMessageBox", "text": "WMessageBox"},
+          {"id": "WNotification", "text": "WNotification"}
+        ]
+      },
+      {
+        "id": "others",
+        "text": "其他",
+        "children": [
+          {"id": "WBacktop", "text": "WBacktop"},
+          {"id": "WCalendar", "text": "WCalendar"},
+          {"id": "WCard", "text": "WCard"},
+          {"id": "WCarousel", "text": "WCarousel"},
+          {"id": "WCollapse", "text": "WCollapse"},
+          {"id": "WDialog", "text": "WDialog"},
+          {"id": "WDivider", "text": "WDivider"},
+          {"id": "WDrawer", "text": "WDrawer"},
+          {"id": "WImage", "text": "WImage"},
+          {"id": "WInfiniteScroll", "text": "WInfiniteScroll"},
+          {"id": "WPopconfirm", "text": "WPopconfirm"},
+          {"id": "WPopover", "text": "WPopover"},
+          {"id": "WTimeline", "text": "WTimeline"},
+          {"id": "WTooltip", "text": "WTooltip"}
+        ]
+      }
+    ];
+  }
+
+  // Widget get guideOld {
+  //   return PlainTree(
+  //     on: PlainTreeOn(
+  //       nodeClick: (ctx, node) {
+  //         return () {
+  //           to(node.text, node.id);
+  //         };
+  //       },
+  //     ),
+  //     props: PlainTreeProp(
+  //       data: guideData,
+  //     ),
+  //   );
+  // }
 }
