@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:example/demo/button/_index.dart' as button;
 import 'package:example/demo/container/_index.dart' as container;
+import 'package:example/demo/drawer/_index.dart' as drawer;
 import 'package:example/demo/demos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +27,7 @@ class _ApiDetailState extends State<ApiDetail> {
   _registerDemo() {
     button.regist();
     container.regist();
+    drawer.regist();
   }
 
   @override
@@ -41,11 +43,14 @@ class _ApiDetailState extends State<ApiDetail> {
         setState(() {
           content = ColoredBox(
             color: Colors.white,
-            child: Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                width: 870,
-                child: MdRoot(content: text),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: 870,
+                  child: MdRoot(content: text),
+                ),
               ),
             ),
           );
@@ -73,7 +78,7 @@ class _ApiDetailState extends State<ApiDetail> {
                   ),
                   Border.fromBorderSide(
                       BorderSide(color: Colors.grey.shade300)),
-                  true,
+                  false,
                 ),
                 code(demo.code),
               ],
@@ -106,6 +111,10 @@ class _ApiDetailState extends State<ApiDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return WScrollSnap(key: lastKey)..$slots.content = content;
+    return WScrollSnap(key: lastKey)
+      ..$slots.content = Padding(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        child: shadowWrapper(content),
+      );
   }
 }

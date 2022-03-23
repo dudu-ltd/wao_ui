@@ -10,7 +10,6 @@ import 'package:wao_ui/core/utils/is_enum.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 
 var borderSide = BorderSide(
-  width: cfgGlobal.descriptions.borderWidth,
   color: cfgGlobal.descriptions.borderColor!,
 );
 

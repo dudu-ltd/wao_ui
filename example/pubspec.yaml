@@ -71,9 +71,11 @@ flutter:
   assets:
     - logo.png
     - assets/dart_syntax.json
+    - assets/md/about/conscience.md
     - assets/md/WTabs.md
     - assets/md/WButton.md
     - assets/md/WContainer.md
+    - assets/md/WDrawer.md
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

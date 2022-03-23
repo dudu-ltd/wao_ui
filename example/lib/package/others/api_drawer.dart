@@ -11,10 +11,10 @@ class ApiDrawer extends StatelessWidget {
   );
 
   Widget get basic {
-    var direction = ValueNotifier('ltr');
-    var drawer = ValueNotifier(false);
     return StatefulBuilder(
       builder: (context, setState) {
+        var direction = ValueNotifier('ltr');
+        var drawer = ValueNotifier(false);
         direction.addListener(() => setState(() {}));
         return Row(
           children: [

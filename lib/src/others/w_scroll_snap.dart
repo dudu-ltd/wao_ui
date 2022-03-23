@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'dart:ui' as ui;
-import 'package:flutter/services.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
@@ -13,7 +10,6 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/layout_util.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_container_layout.dart';
-import '../../core/base_style.dart';
 
 class _WScrollSnapState extends State<WScrollSnap>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
@@ -31,8 +27,34 @@ class _WScrollSnapState extends State<WScrollSnap>
 
   updateView() => setState(() {});
 
+  updateMask() {
+    topHeight = scrollCtrl.offset * scrollHeightToSnapHeight();
+    bottomHeight =
+        getPosition(context).size.height - topHeight - snapViewport();
+    bottomHeight = bottomHeight < 0 ? 0 : bottomHeight;
+    topHeight = topHeight < 0 ? 0 : topHeight;
+    middleHeight = snapViewport();
+    mask = Column(
+      children: [
+        ColoredBox(
+            color: CfgGlobal.basicColor.shade700.withOpacity(0),
+            child: Container(height: topHeight)),
+        ColoredBox(
+          color: CfgGlobal.basicColor.shade700.withOpacity(.2),
+          child: Container(height: middleHeight),
+        ),
+        ColoredBox(
+            color: CfgGlobal.basicColor.shade700.withOpacity(0),
+            child: Container(height: bottomHeight)),
+      ],
+    );
+    snapSetState(() {});
+  }
+
   _updateSnap() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollCtrl.addListener(updateMask);
+      // updateMask();
       Timer(Duration(seconds: 1), () {});
     });
   }
@@ -64,93 +86,64 @@ class _WScrollSnapState extends State<WScrollSnap>
       ..$slots.asideRight = snapBuilder;
   }
 
-  Widget get snapBuilder {
-    var mask = null;
-    double topHeight = 0;
-    double bottomHeight = 500;
-    GlobalKey? snapKey = null;
+  var mask = Column();
+  double topHeight = 0;
+  double bottomHeight = 500;
+  double middleHeight = 0;
+  GlobalKey? snapKey = null;
 
-    viewport() {
-      // b
-      return scrollCtrl.position.viewportDimension;
-    }
+  viewport() {
+    // b
+    return scrollCtrl.position.viewportDimension;
+  }
 
-    contentHeight() {
-      // a
-      return scrollCtrl.position.maxScrollExtent + viewport();
-    }
+  contentHeight() {
+    // a
+    return scrollCtrl.position.maxScrollExtent + viewport();
+  }
 
-    scrollHeightToSnapHeight() {
-      var viewportHeight = viewport();
-      var scrollHeight = contentHeight();
-      return viewportHeight / scrollHeight;
-    }
+  scrollHeightToSnapHeight() {
+    var viewportHeight = viewport();
+    var scrollHeight = contentHeight();
+    return viewportHeight / scrollHeight;
+  }
 
-    snapViewport() {
-      // b * b / ( a + b )
-      var b = viewport();
-      return b * b / contentHeight();
-    }
+  snapViewport() {
+    // b * b / ( a + b )
+    var b = viewport();
+    return b * b / contentHeight();
+  }
 
-    updateMask() {
-      topHeight = scrollCtrl.offset * scrollHeightToSnapHeight();
-      bottomHeight =
-          getPosition(context).size.height - topHeight - snapViewport();
-      bottomHeight = bottomHeight < 0 ? 0 : bottomHeight;
-      topHeight = topHeight < 0 ? 0 : topHeight;
-      mask = Column(
-        children: [
-          ColoredBox(
-              color: CfgGlobal.basicColor.shade500.withOpacity(.1),
-              child: Container(height: topHeight)),
-          ColoredBox(
-            color: CfgGlobal.basicColor.shade500.withOpacity(.5),
-            child: Container(height: snapViewport()),
-          ),
-          ColoredBox(
-              color: CfgGlobal.basicColor.shade500.withOpacity(.1),
-              child: Container(height: bottomHeight)),
-        ],
+  scrollTo(offset, duration) {
+    var newOffset = (offset - snapViewport() / 2) / scrollHeightToSnapHeight();
+    newOffset = newOffset < 0 ? 0.0 : newOffset;
+    newOffset = newOffset > scrollCtrl.position.maxScrollExtent
+        ? scrollCtrl.position.maxScrollExtent
+        : newOffset;
+
+    if (duration == Duration.zero) {
+      scrollCtrl.jumpTo(newOffset);
+    } else {
+      scrollCtrl.animateTo(
+        newOffset,
+        duration: duration,
+        curve: Curves.ease,
       );
-      snapSetState(() {});
     }
+  }
 
-    Timer(const Duration(seconds: 1), () {
-      updateMask();
-    });
+  scrollByPoint(details, Duration duration) {
+    scrollTo(details.localPosition.dy, duration);
+  }
 
-    scrollTo(offset, duration) {
-      var newOffset =
-          (offset - snapViewport() / 2) / scrollHeightToSnapHeight();
-      newOffset = newOffset < 0 ? 0.0 : newOffset;
-      newOffset = newOffset > scrollCtrl.position.maxScrollExtent
-          ? scrollCtrl.position.maxScrollExtent
-          : newOffset;
+  scrollByWheel(e) {
+    // 不可用
+    var offset =
+        scrollCtrl.offset * scrollHeightToSnapHeight() + e.scrollDelta.dy;
+    scrollTo(offset, Duration.zero);
+  }
 
-      if (duration == Duration.zero) {
-        scrollCtrl.jumpTo(newOffset);
-      } else {
-        scrollCtrl.animateTo(
-          newOffset,
-          duration: duration,
-          curve: Curves.easeInOut,
-        );
-      }
-    }
-
-    scrollByPoint(details, Duration duration) {
-      scrollTo(details.localPosition.dy, duration);
-    }
-
-    scrollByWheel(e) {
-      // 不可用
-      var offset =
-          scrollCtrl.offset * scrollHeightToSnapHeight() + e.scrollDelta.dy;
-      scrollTo(offset, Duration.zero);
-    }
-
-    scrollCtrl.addListener(updateMask);
-
+  Widget get snapBuilder {
     return Listener(
       behavior: HitTestBehavior.opaque,
       onPointerSignal: (e) {
@@ -158,39 +151,50 @@ class _WScrollSnapState extends State<WScrollSnap>
           //  TODO 将 鼠标滚轮与点击事件触发的滚动，用一个方法来实现。scrollByWheel(e);
           var distance = e.scrollDelta.dy / scrollHeightToSnapHeight();
           var newOffset = scrollCtrl.offset + distance;
-          if (newOffset >= 0 &&
-              newOffset <= scrollCtrl.position.maxScrollExtent) {
-            scrollCtrl.jumpTo(newOffset);
-          }
+          newOffset = newOffset < 0 ? 0.0 : newOffset;
+          newOffset = newOffset > scrollCtrl.position.maxScrollExtent
+              ? scrollCtrl.position.maxScrollExtent
+              : newOffset;
+          scrollCtrl.jumpTo(newOffset);
         }
       },
       child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onVerticalDragDown: (details) =>
-            scrollByPoint(details, CfgGlobal.duration),
-        onVerticalDragUpdate: (details) =>
-            scrollByPoint(details, Duration.zero),
-        child: StatefulBuilder(builder: (context, setState) {
-          snapKey = GlobalKey();
-          snapContext = context;
-          snapSetState = setState;
-          snap = Stack(
-            key: snapKey,
-            children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: widget.$slots.content,
+          behavior: HitTestBehavior.opaque,
+          onVerticalDragDown: (details) =>
+              scrollByPoint(details, Duration.zero),
+          onVerticalDragUpdate: (details) =>
+              scrollByPoint(details, Duration.zero),
+          child: snap = Padding(
+            padding: padding,
+            child: Stack(
+              key: snapKey,
+              children: [
+                ColoredBox(
+                  color: CfgGlobal.basicColor.shade50,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: widget.$slots.content,
+                    ),
+                  ),
                 ),
-              ),
-              if (mask != null) mask,
-            ],
-          );
-          return snap;
-        }),
-      ),
+                StatefulBuilder(builder: (context, setState) {
+                  snapKey = GlobalKey();
+                  snapContext = context;
+                  snapSetState = setState;
+                  return mask;
+                })
+              ],
+            ),
+          )),
     );
+  }
+
+  EdgeInsets get padding {
+    return widget.$style?.padding ??
+        cfgGlobal.scrollSnap.padding ??
+        EdgeInsets.zero;
   }
 }
 
@@ -222,9 +226,4 @@ class WScrollSnapProp extends BaseProp {}
 class WScrollSnapSlot extends BaseSlot {
   Widget? content;
   WScrollSnapSlot(defaultSlotBefore, {this.content}) : super(defaultSlotBefore);
-}
-
-class WScrollSnapStyle extends BaseStyle {
-  double snapWidth;
-  WScrollSnapStyle({this.snapWidth = 150.0});
 }
