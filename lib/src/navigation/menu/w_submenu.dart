@@ -16,9 +16,9 @@ class WSubmenu extends StatefulWidget
   late AnimationController itemsPanelController;
   late Animation<double> itemsPanelHeight;
 
-  GlobalKey childrenKey = GlobalKey();
+  late GlobalKey childrenKey;
 
-  GlobalKey submenuKey = GlobalKey();
+  late GlobalKey submenuKey;
 
   @override
   get $childrenKey {
@@ -119,11 +119,22 @@ class _WSubmenuState extends State<WSubmenu>
     widget.itemsPanelController.dispose();
     // panelController.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    print('---------------------- w_submenu dispose ------------------');
     super.dispose();
   }
 
   @override
+  void deactivate() {
+    // TODO: implement deactivate
+    print('---------------------- w_submenu deactivate ------------------');
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    widget.childrenKey = GlobalKey();
+    widget.submenuKey = GlobalKey();
+
     return Column(
       key: widget.submenuKey,
       mainAxisAlignment: MainAxisAlignment.center,

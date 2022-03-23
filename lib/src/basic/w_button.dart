@@ -106,8 +106,7 @@ class _WButtonState extends State<WButton> {
   @override
   void initState() {
     super.initState();
-    focusNode = widget.focusNode ?? FocusNode();
-    widget.focusNode = focusNode;
+    focusNode = widget.focusNode = FocusNode();
     focusNode.addListener(() {
       setState(() {});
     });
@@ -128,7 +127,7 @@ class _WButtonState extends State<WButton> {
       // constraints: BoxConstraints(minWidth: buttonMinWidth),
       padding: widget.style.padding,
       decoration: BoxDecoration(
-        // color: widget.style.backgroundColor,
+        color: widget.style.backgroundColor,
         borderRadius: widget.style.borderRadius,
         // borderRadius: BorderRadius.circular(30),
         border: widget.style.border,

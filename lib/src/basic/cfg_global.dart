@@ -1413,3 +1413,5 @@ class PlainTreeStyle extends BaseStyle {
           width: width,
         );
 }
+
+class WContainerStyle extends BaseStyle {}

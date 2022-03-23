@@ -4,6 +4,7 @@ export 'core/byte_file.dart';
 export 'src/basic/cfg_global.dart';
 export 'src/basic/w_button.dart';
 export 'src/basic/w_container_layout.dart';
+export 'src/basic/w_container.dart';
 export 'src/basic/w_frame.dart';
 export 'src/data/w_avatar.dart';
 export 'src/data/w_badge.dart';
@@ -58,6 +59,7 @@ export 'src/others/w_popconfirm.dart';
 export 'src/others/w_popover.dart';
 export 'src/others/w_timeline.dart';
 export 'src/others/w_tooltip.dart';
+export 'src/others/w_scroll_snap.dart';
 export 'src/nested_route.dart';
 
 export 'src/tree/tree.dart';

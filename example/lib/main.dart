@@ -13,8 +13,10 @@ import 'package:wao_ui/wao_ui.dart';
 import 'package:wao_ui/wao_ui_origin.dart';
 
 import 'routes.dart';
+import 'third_party/syntax_highlight.dart';
 
-void main() {
+void main() async {
+  await SyntaxHighlighter.initialize();
   element();
   runApp(const Api());
   // CfgGlobal.primaryColor = Colors.orange;

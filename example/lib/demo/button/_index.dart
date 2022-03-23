@@ -7,7 +7,11 @@ import 'package:example/demo/button/size.dart';
 import 'package:example/demo/button/text.dart';
 
 regist() {
-  buttonBasic;
+  buttonByType;
+  buttonPlain;
+  buttonRound;
+  buttonIconOnly;
+
   buttonDisabled;
   buttonGroup;
   buttonIcon;
