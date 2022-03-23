@@ -73,6 +73,7 @@ class IndexPage extends StatefulWidget {
 
 class _IndexPageState extends State<IndexPage> {
   BuildContext? navContext;
+  Map<String, RoutePageBuilder> cache = {};
 
   static final Map<String, Widget> _route = {
     'WButton': ApiButton(),
@@ -132,12 +133,14 @@ class _IndexPageState extends State<IndexPage> {
   };
 
   RoutePageBuilder getNext(String routeName) {
-    return (BuildContext nContext, Animation<double> animation,
-        Animation<double> secondaryAnimation) {
-      navContext = nContext;
-      return ApiDetail(name: routeName);
-      // return _route[routeName] ?? const Index();
-    };
+    return cache.putIfAbsent(
+        routeName,
+        () => (BuildContext nContext, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              navContext = nContext;
+
+              return ApiDetail(name: routeName);
+            });
   }
 
   Navigator createNav() {
@@ -171,180 +174,23 @@ class _IndexPageState extends State<IndexPage> {
       print('$key $keyPath');
     };
     return WFrame()
-      // ..$slots.header = SizedBox(
-      //   width: 600,
-      //   child: Row(
-      //     mainAxisSize: MainAxisSize.min,
-      //     children: [
-      //       Padding(
-      //         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      //         child: Icon(
-      //           Icons.flutter_dash,
-      //           color: Colors.white,
-      //         ),
-      //       ),
-      //       // SizedBox(
-      //       //   height: 40,
-      //       //   child: WImage()
-      //       //     ..$props.src = 'assets:logo.png'
-      //       //     ..$props.fit = BoxFit.fitHeight,
-      //       // ),
-      //       Expanded(
-      //         child: WMenu(
-      //           style: WMenuStyle(
-      //               stepPadding: 5,
-      //               // backgroundColor: CfgGlobal.primaryColor.shade50,
-      //               backgroundColor: Colors.white,
-      //               hoverBackgroundColor: Colors.grey.shade200,
-      //               prefixColor: Colors.grey.shade600,
-      //               color: Colors.grey.shade600,
-      //               activeColor: Colors.grey.shade600,
-      //               submenu: WSubmenuStyle(
-      //                   menuItem: WMenuItemStyle(height: 28, fontSize: 12))),
-      //           props: WMenuProp(
-      //             defaultActive: activeIndex,
-      //             mode: 'horizontal',
-      //             menuTrigger: 'click',
-      //           ),
-      //           // on: WMenuOn(select: handleSelect),
-      //           slots: WMenuSlot(
-      //             [
-      //               WMenuItem(
-      //                 props: WMenuItemProp(index: '1'),
-      //                 slots: WMenuItemSlot('组件'),
-      //               ),
-      //               WSubmenu(
-      //                 props: WSubmenuProp(index: '2'),
-      //                 slots: WSubmenuSlot(
-      //                   [
-      //                     WMenuItem(
-      //                       props: WMenuItemProp(index: '2-2'),
-      //                       slots: WMenuItemSlot('选项2'),
-      //                     ),
-      //                     WMenuItem(
-      //                       props: WMenuItemProp(index: '2-2'),
-      //                       slots: WMenuItemSlot('选项2'),
-      //                     ),
-      //                     WMenuItem(
-      //                       props: WMenuItemProp(index: '2-1'),
-      //                       slots: WMenuItemSlot('选项1'),
-      //                     ),
-      //                     WMenuItem(
-      //                       props: WMenuItemProp(index: '2-2'),
-      //                       slots: WMenuItemSlot('选项2'),
-      //                     ),
-      //                     WMenuItem(
-      //                       props: WMenuItemProp(index: '2-3'),
-      //                       slots: WMenuItemSlot('选项3'),
-      //                     ),
-      //                     WSubmenu(
-      //                       props: WSubmenuProp(index: '2-4'),
-      //                       slots: WSubmenuSlot(
-      //                         [
-      //                           WMenuItem(
-      //                             props: WMenuItemProp(index: '2-4-1'),
-      //                             slots: WMenuItemSlot('选项1'),
-      //                           ),
-      //                           WMenuItem(
-      //                             props: WMenuItemProp(index: '2-4-2'),
-      //                             slots: WMenuItemSlot('选项2'),
-      //                           ),
-      //                           WMenuItem(
-      //                             props: WMenuItemProp(index: '2-4-3'),
-      //                             slots: WMenuItemSlot('选项3'),
-      //                           ),
-      //                         ],
-      //                         title: WMenuItem(
-      //                           slots: WMenuItemSlot('选项4'),
-      //                         ),
-      //                       ),
-      //                     ),
-      //                   ],
-      //                   title: WMenuItem(
-      //                     slots: WMenuItemSlot(null, title: '我的工作台'),
-      //                   ),
-      //                 ),
-      //               ),
-      //               WMenuItem(
-      //                 props: WMenuItemProp(index: '3', disabled: true),
-      //                 slots: WMenuItemSlot('消息中心'),
-      //               ),
-      //             ],
-      //           ),
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // )
       ..$slots.main = WContainerLayout(
         slots: WContainerLayoutSlot(
           nav,
-          // asideRight: FractionallySizedBox(
-          //   heightFactor: 1,
-          //   child: WMenu(
-          //     props: WMenuProp(
-          //       defaultActive: '1-4-1',
-          //       collapse: true,
-          //     ),
-          //     slots: WMenuSlot([
-          //       WSubmenu(
-          //         props: WSubmenuProp(
-          //           index: '1',
-          //         ),
-          //         slots: WSubmenuSlot(
-          //           null,
-          //           title: WMenuItem(
-          //             slots: WMenuItemSlot(
-          //               Icons.location_on,
-          //               title: '导航一',
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       WMenuItem(
-          //         props: WMenuItemProp(index: '2'),
-          //         slots: WMenuItemSlot(
-          //           Icons.menu,
-          //           title: '导航二',
-          //         ),
-          //       ),
-          //       WMenuItem(
-          //         props: WMenuItemProp(index: '3', disabled: true),
-          //         slots: WMenuItemSlot(
-          //           Icons.document_scanner,
-          //           title: '导航三',
-          //         ),
-          //       ),
-          //       WMenuItem(
-          //         props: WMenuItemProp(index: '4'),
-          //         slots: WMenuItemSlot(
-          //           Icons.settings,
-          //           title: '导航四',
-          //         ),
-          //       ),
-          //     ]),
-          //     style: WMenuStyle(
-          //       backgroundColor: Colors.white,
-          //       hoverBackgroundColor: Colors.grey.shade200,
-          //       prefixColor: Colors.grey.shade600,
-          //       color: Colors.grey.shade600,
-          //       activeColor: Colors.grey.shade600,
-          //       stepPadding: 12,
-          //       width: 200,
-          //       minHeight: 400,
-          //     ),
-          //   ),
-          // ),
           footer: ColoredBox(
-              color: Colors.blueAccent, child: Center(child: Text('状态栏'))),
+              color: Colors.grey.shade50,
+              child: const Center(
+                  child: Text('Copyright © 2021-present, Weicheng Ye'))),
           asideLeft: SingleChildScrollView(
             child: PlainTree(
               on: PlainTreeOn(
                 nodeClick: (ctx, node) {
                   return () {
                     if (isPc) (appWindow.title = node.text);
-                    if (navContext != null)
+                    if (navContext != null) {
+                      Navigator.maybePop(navContext!);
                       Navigator.pushNamed(navContext!, node.id);
+                    }
                   };
                 },
               ),
@@ -359,7 +205,8 @@ class _IndexPageState extends State<IndexPage> {
                         "id": "WContainerLayout",
                         "text": "WContainerLayout",
                         "finish": true
-                      }
+                      },
+                      {"id": "WContainer", "text": "WContainer", "finish": true}
                     ]
                   },
                   {
@@ -459,6 +306,7 @@ class _IndexPageState extends State<IndexPage> {
           leftJudge: true,
           asideLeftMinWidth: 200.0,
           asideRightWidth: 46.0,
+          footerHeight: 30.0,
         ),
       );
   }

@@ -68,10 +68,6 @@ class _WContainerLayoutState extends State<WContainerLayout> {
   _changeLeftWidth(double newX) {
     setState(() {
       var change = newX - _lastX;
-      // if ($props.asideLeftWidth <= $props.asideLeftMinWidth && change < 0) {
-      //   return;
-      // }
-
       $props.asideLeftWidth = $props.asideLeftWidth + change;
       _lastX = newX;
     });
@@ -84,39 +80,6 @@ class _WContainerLayoutState extends State<WContainerLayout> {
     });
   }
 
-  // Widget _getHorizontalSlot(slot, height, minHeight) {
-  //   if (height < minHeight) {
-  //     return SingleChildScrollView(
-  //       scrollDirection: Axis.vertical,
-  //       child: ConstrainedBox(
-  //         constraints: BoxConstraints(
-  //           minHeight: minHeight,
-  //         ),
-  //         child: slot,
-  //       ),
-  //     );
-  //   }
-  //   return slot;
-  // }
-
-  // Widget _getVertialSlot(slot, width, minWidth) {
-  //   if (width < minWidth) {
-  //     return SingleChildScrollView(
-  //       scrollDirection: Axis.horizontal,
-  //       child: ConstrainedBox(
-  //         constraints: BoxConstraints(
-  //           minWidth: minWidth,
-  //         ),
-  //         child: Align(
-  //           child: slot,
-  //           alignment: Alignment.centerLeft,
-  //         ),
-  //       ),
-  //     );
-  //   }
-  //   return slot;
-  // }
-
   @override
   Widget build(BuildContext context) {
     var col = Column(
@@ -125,11 +88,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
     );
     if (widget.$slots.header != null) {
       addHorizontal(
-        // _getHorizontalSlot(
         widget.$slots.header!,
-        //   widget.$props.headerHeight,
-        //   widget.$props.headerMinHeight,
-        // ),
         $props.headerHeight,
         _changeHeaderHeight,
         col,
@@ -146,11 +105,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
     col.children.add(Expanded(child: middle));
     if (widget.$slots.footer != null) {
       addHorizontal(
-        // _getHorizontalSlot(
         widget.$slots.footer!,
-        //   widget.$props.footerHeight,
-        //   widget.$props.footerMinHeight,
-        // ),
         $props.footerHeight,
         _changeFooterHeight,
         col,
@@ -163,11 +118,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
   void addLeftAndRight(Row middle) {
     if (widget.$slots.asideLeft != null) {
       addVertial(
-        // _getVertialSlot(
         widget.$slots.asideLeft!,
-        //   widget.$props.asideLeftWidth,
-        //   widget.$props.asideLeftMinWidth,
-        // ),
         $props.asideLeftWidth,
         _changeLeftWidth,
         middle,
@@ -185,11 +136,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
     ));
     if (widget.$slots.asideRight != null) {
       addVertial(
-        // _getVertialSlot(
         widget.$slots.asideRight!,
-        //   widget.$props.asideRightWidth,
-        //   widget.$props.asideRightMinWidth,
-        // ),
         $props.asideRightWidth,
         _changeRightWidth,
         middle,
@@ -355,13 +302,13 @@ class WContainerLayoutProp extends BaseProp {
     footerJudge,
   }) {
     this.barSize = barSize ?? 3.0;
-    this.headerHeight = headerHeight ?? 30;
-    this.footerHeight = footerHeight ?? 30;
+    this.headerHeight = headerHeight ?? 60;
+    this.footerHeight = footerHeight ?? 60;
     this.asideLeftWidth = asideLeftWidth ?? 200;
-    this.asideLeftMinWidth = asideLeftMinWidth ?? 400;
-    this.asideRightMinWidth = asideRightMinWidth ?? 400;
-    this.headerMinHeight = headerMinHeight ?? 30;
-    this.footerMinHeight = footerMinHeight ?? 30;
+    this.asideLeftMinWidth = asideLeftMinWidth ?? 200;
+    this.asideRightMinWidth = asideRightMinWidth ?? 200;
+    this.headerMinHeight = headerMinHeight ?? 60;
+    this.footerMinHeight = footerMinHeight ?? 60;
     this.asideRightWidth = asideRightWidth ?? 200;
     this.headerJudge = headerJudge ?? false;
     this.leftJudge = leftJudge ?? false;

@@ -761,11 +761,10 @@ element() {
 
     List<BaseStyle?> styles =
         findByListKey<BaseStyle?>(CfgGlobal.css, selector);
-    print(styles);
+
     for (var style in styles) {
       btn.style.merge(style, force: true);
     }
-    print(btn.style);
     btn.style.border = Border.fromBorderSide(BorderSide(
       color: btn.style.borderColor ?? Colors.white,
       width: btn.style.borderWidth,

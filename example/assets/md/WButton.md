@@ -4,17 +4,33 @@
 ## 基本用法
 基本的按钮用法
 
-
+### 不同 `type` 
 ```ref
-buttonBasic
+buttonByType
 ```
 
-## 禁用状态
+### 朴素按钮  `plain` = `true`
+```ref
+buttonPlain
+```
+
+### 椭圆按钮  `round` = `true`
+```ref
+buttonRound
+```
+
+### 圆形按钮 `circle` = `true`
+```ref
+buttonIconOnly
+```
+
+
+### 禁用状态 `disabled` = `true`
 按钮不可用状态。
 ```ref
 buttonDisabled
 ```
-## 文字按钮
+## 文字按钮 `type` = `text`
 没有边框和背景色的按钮。
 ```ref
 buttonText
