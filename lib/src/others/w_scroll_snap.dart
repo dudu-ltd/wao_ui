@@ -11,6 +11,7 @@ import 'package:wao_ui/core/utils/layout_util.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_container_layout.dart';
 
+/// TODO 插槽二次渲染导致事件重复绑定的问题
 class _WScrollSnapState extends State<WScrollSnap>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late ScrollController scrollCtrl;

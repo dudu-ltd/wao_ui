@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:example/main.dart';
@@ -148,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'WButton',
+      initialRoute: 'basic/WButton',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -260,7 +261,7 @@ class _IndexPageState extends State<IndexPage> {
     // );
   }
 
-  List<Widget> guideDataToWidget(data, {level = 0}) {
+  List<Widget> guideDataToWidget(data, {level = 0, preId = ''}) {
     var theme = Theme.of(context);
     if (data == null) return List.empty();
     var result = <Widget>[];
@@ -279,19 +280,46 @@ class _IndexPageState extends State<IndexPage> {
           ),
         ));
       } else {
+        // createMd(preId, node['id']).then((e) {});
         result.add(ListTile(
-          onTap: () => to(node['text'], node['id']),
+          onTap: () => to(node['text'], fileId(preId, node['id'])),
           title: Text(node['text']),
           subtitle: Text(node['id']),
-          selected: currentName == node['id'],
+          trailing: (node['finish'] is bool && node['finish'])
+              ? Icon(Icons.check, color: CfgGlobal.successColor)
+              : null,
+          selected: currentName == fileId(preId, node['id']),
         ));
       }
       if (node['children'] is List) {
-        var children = guideDataToWidget(node['children'], level: level + 1);
+        var children = guideDataToWidget(node['children'],
+            level: level + 1, preId: '$preId${node['id']}');
         result.addAll(children);
       }
     }
     return result;
+  }
+
+  String fileId(String folderName, String fileName) {
+    return fileName.startsWith(folderName) ? fileName : '$folderName/$fileName';
+  }
+
+  createMd(String folderName, String fileName) async {
+    var basePath = 'D:/work/meta_number/wao_ui/example/assets/md';
+    var dirPath = '$basePath/$folderName';
+    var dir = Directory(dirPath);
+    bool exists = await dir.exists();
+    if (!exists) {
+      await dir.create();
+    }
+    var filePath = '${fileId(folderName, fileName)}.md';
+    var file = File('$basePath/$filePath');
+    var fileExists = file.existsSync();
+    if (!fileExists) {
+      // file.create();
+    }
+    print('    - assets/md/$filePath');
+    // print('$folderName  file: $filePath exists $fileExists');
   }
 
   Widget get logoZoom {
@@ -318,7 +346,7 @@ class _IndexPageState extends State<IndexPage> {
   List<Map<String, dynamic>> get guideData {
     return [
       {
-        "id": "About",
+        "id": "about",
         "text": "关于",
         "children": [
           {"id": "about/conscience", "text": "本心"},
@@ -330,8 +358,8 @@ class _IndexPageState extends State<IndexPage> {
         "id": "basic",
         "text": "常用组件",
         "children": [
-          {"id": "WButton", "text": "按钮"},
-          {"id": "WContainer", "text": "布局"}
+          {"id": "WButton", "text": "按钮", "finish": true},
+          {"id": "WContainer", "text": "布局", "finish": true}
         ]
       },
       {

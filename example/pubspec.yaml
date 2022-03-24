@@ -72,10 +72,61 @@ flutter:
     - logo.png
     - assets/dart_syntax.json
     - assets/md/about/conscience.md
-    - assets/md/WTabs.md
-    - assets/md/WButton.md
-    - assets/md/WContainer.md
-    - assets/md/WDrawer.md
+    - assets/md/about/plan.md
+    - assets/md/about/thinking.md
+    - assets/md/basic/WButton.md
+    - assets/md/basic/WContainer.md
+    - assets/md/data/WAvatar.md
+    - assets/md/data/WBadge.md
+    - assets/md/data/WDescriptions.md
+    - assets/md/data/WEmpty.md
+    - assets/md/data/WPagination.md
+    - assets/md/data/WProgress.md
+    - assets/md/data/WResult.md
+    - assets/md/data/WTable.md
+    - assets/md/data/WSkeleton.md
+    - assets/md/data/WTag.md
+    - assets/md/data/WTree.md
+    - assets/md/form/WCheckbox.md
+    - assets/md/form/WCascader.md
+    - assets/md/form/WDatePicker.md
+    - assets/md/form/WColorPicker.md
+    - assets/md/form/WDateTimePicker.md
+    - assets/md/form/WRadio.md
+    - assets/md/form/WSlider.md
+    - assets/md/navigation/WBreadcrumb.md
+    - assets/md/form/WInputNumber.md
+    - assets/md/form/WInput.md
+    - assets/md/notice/WLoading.md
+    - assets/md/notice/WMessageBox.md
+    - assets/md/navigation/WDropdown.md
+    - assets/md/form/WSelect.md
+    - assets/md/notice/WNotification.md
+    - assets/md/navigation/WTabs.md
+    - assets/md/others/WCalendar.md
+    - assets/md/notice/WAlert.md
+    - assets/md/others/WCard.md
+    - assets/md/navigation/WMenu.md
+    - assets/md/others/WDivider.md
+    - assets/md/form/WSwitch.md
+    - assets/md/form/WTimePicker.md
+    - assets/md/form/WUpload.md
+    - assets/md/others/WCarousel.md
+    - assets/md/notice/WMessage.md
+    - assets/md/others/WTimeline.md
+    - assets/md/others/WTooltip.md
+    - assets/md/others/WDialog.md
+    - assets/md/others/WCollapse.md
+    - assets/md/form/WTransfer.md
+    - assets/md/others/WImage.md
+    - assets/md/others/WBacktop.md
+    - assets/md/others/WInfiniteScroll.md
+    - assets/md/others/WPopconfirm.md
+    - assets/md/others/WPopover.md
+    - assets/md/form/WRate.md
+    - assets/md/navigation/WSteps.md
+    - assets/md/others/WDrawer.md
+    - assets/md/navigation/WPageHeader.md
     
 
   # An image asset can refer to one or more resolution-specific "variants", see
