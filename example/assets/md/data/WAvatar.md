@@ -4,6 +4,6 @@
 avatarCircle
 ```
 ## 圆角头像
-```
+```ref
 avatarSquare
 ```

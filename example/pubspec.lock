@@ -238,10 +238,12 @@ packages:
   markdown:
     dependency: transitive
     description:
-      path: "../../../codes/gitee/markdown"
-      relative: true
-    source: path
-    version: "4.0.1-dev"
+      path: "."
+      ref: HEAD
+      resolved-ref: a9e942a1b010f90a1d762119fe66d8fddb09a113
+      url: "https://github.com/CorvusYe/markdown"
+    source: git
+    version: "5.0.0-dev"
   matcher:
     dependency: transitive
     description:
