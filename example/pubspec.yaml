@@ -29,7 +29,7 @@ dependencies:
   flutter:
     sdk: flutter
   wao_ui: 
-    path:  ../../wao_ui/
+    path:  ../
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,7 +41,7 @@ dependencies:
       path: bitsdojo_window
 
   flutter_md: 
-    path: D:\work\codes\gitee\flutter_md
+    path: D:/work/codes/gitee/flutter_md
   highlight: ^0.7.0
     
 

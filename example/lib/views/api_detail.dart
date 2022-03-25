@@ -113,7 +113,7 @@ class _ApiDetailState extends State<ApiDetail> {
   Widget build(BuildContext context) {
     return WScrollSnap(key: lastKey)
       ..$slots.content = Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: shadowWrapper(content),
       );
   }
