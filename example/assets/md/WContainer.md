@@ -15,38 +15,38 @@
 
 ## 常见页面布局
 ### 吕字布局
-```ref
+```widget
 containerBasic1
 ```
 ### 头尾布局
-```ref
+```widget
 containerBasic2
 ```
 ### 水平布局
-```ref
+```widget
 containerBasic3
 ```
-```ref
+```widget
 containerBasic4
 ```
 ### 主头部带侧边布局（嵌套）
-```ref
+```widget
 containerBasic5
 ```
 ### 主侧边带头部布局（嵌套）
-```ref
+```widget
 containerBasic6
 ```
 ### 主侧边带头尾布局（嵌套）
-```ref
+```widget
 containerBasic7
 ```
-```ref
+```widget
 containerBase
 ```
 
 ## 实例
-```ref
+```widget
 container.instance
 ```
 
