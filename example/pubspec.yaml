@@ -41,8 +41,7 @@ dependencies:
       path: bitsdojo_window
 
   flutter_md: 
-    path: D:/work/codes/gitee/flutter_md
-  highlight: ^0.7.0
+    path: ../../flutter_md
     
 
 dev_dependencies:

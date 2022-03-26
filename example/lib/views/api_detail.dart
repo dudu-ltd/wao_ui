@@ -49,7 +49,7 @@ class _ApiDetailState extends State<ApiDetail> {
                 alignment: Alignment.center,
                 child: SizedBox(
                   width: 870,
-                  child: MdRoot(content: text),
+                  child: Md.toWidget(text, mdTheme),
                 ),
               ),
             ),
@@ -60,34 +60,41 @@ class _ApiDetailState extends State<ApiDetail> {
     super.initState();
   }
 
+  MdTheme get mdTheme {
+    return MdTheme();
+  }
+
   _setRefBuild() {
-    MarkdownBuilder.$refBuild = (name) {
-      var demo = demos[name];
-      if (demo != null) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: shadowWrapper(
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                borderWrapper(
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: demo.widget,
+    Md.namedHandles.putIfAbsent(
+      'widget',
+      () => (name) {
+        var demo = demos[name];
+        if (demo != null) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: shadowWrapper(
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  borderWrapper(
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: demo.widget,
+                    ),
+                    Border.fromBorderSide(
+                        BorderSide(color: Colors.grey.shade300)),
+                    false,
                   ),
-                  Border.fromBorderSide(
-                      BorderSide(color: Colors.grey.shade300)),
-                  false,
-                ),
-                code(demo.code),
-              ],
+                  code(demo.code),
+                ],
+              ),
             ),
-          ),
-        );
-      }
-      return Container();
-    };
+          );
+        }
+        return Container();
+      },
+    );
   }
 
   Widget code(String source) {

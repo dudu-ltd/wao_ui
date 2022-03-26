@@ -1,9 +1,9 @@
 # 头像
 ## 圆形头像
-```ref
+```widget
 avatarCircle
 ```
 ## 圆角头像
-```ref
+```widget
 avatarSquare
 ```
