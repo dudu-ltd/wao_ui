@@ -149,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'basic/WButton',
+      initialRoute: 'data/WAvatar',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -350,8 +350,9 @@ class _IndexPageState extends State<IndexPage> {
         "text": "关于",
         "children": [
           {"id": "about/conscience", "text": "本心"},
+          {"id": "about/thinking", "text": "设计思路"},
           {"id": "about/plan", "text": "开源计划"},
-          {"id": "about/thinking", "text": "设计思路"}
+          {"id": "about/introduce", "text": "项目介绍"},
         ]
       },
       {
@@ -366,7 +367,7 @@ class _IndexPageState extends State<IndexPage> {
         "id": "data",
         "text": "数据",
         "children": [
-          {"id": "WAvatar", "text": "头像"},
+          {"id": "WAvatar", "text": "头像", "finish": true},
           {"id": "WBadge", "text": "角标"},
           {"id": "WDescriptions", "text": "对象描述"},
           {"id": "WEmpty", "text": "空提醒"},
