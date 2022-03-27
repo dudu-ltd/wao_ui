@@ -56,7 +56,7 @@ class ApiAvatar extends StatelessWidget {
               size: '100', shape: 'square', src: imgSrc, fit: 'cover')),
       WAvatar(
           props: WAvatarProp(
-              size: '100', shape: 'cirsquarecle', src: imgSrc, fit: 'none')),
+              size: '100', shape: 'square', src: imgSrc, fit: 'none')),
       WAvatar(
           props: WAvatarProp(
               size: '100', shape: 'square', src: imgSrc, fit: 'scaleDown')),

@@ -99,7 +99,7 @@ class _WScrollSnapState extends State<WScrollSnap>
   }
 
   contentHeight() {
-    // a
+    // ( a + b )
     return scrollCtrl.position.maxScrollExtent + viewport();
   }
 
@@ -111,7 +111,8 @@ class _WScrollSnapState extends State<WScrollSnap>
 
   snapViewport() {
     // b * b / ( a + b )
-    var b = viewport();
+    var b =
+        (snapKey?.currentContext?.findRenderObject() as RenderBox).size.height;
     return b * b / contentHeight();
   }
 
@@ -145,6 +146,7 @@ class _WScrollSnapState extends State<WScrollSnap>
   }
 
   Widget get snapBuilder {
+    snapKey = GlobalKey();
     return Listener(
       behavior: HitTestBehavior.opaque,
       onPointerSignal: (e) {
@@ -168,20 +170,19 @@ class _WScrollSnapState extends State<WScrollSnap>
           child: snap = Padding(
             padding: padding,
             child: Stack(
-              key: snapKey,
               children: [
                 ColoredBox(
                   color: CfgGlobal.basicColor.shade50,
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: FittedBox(
+                      key: snapKey,
                       fit: BoxFit.fitWidth,
                       child: widget.$slots.content,
                     ),
                   ),
                 ),
                 StatefulBuilder(builder: (context, setState) {
-                  snapKey = GlobalKey();
                   snapContext = context;
                   snapSetState = setState;
                   return mask;

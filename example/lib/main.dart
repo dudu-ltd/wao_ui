@@ -1,18 +1,13 @@
 import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:example/package/basic/api_container_layout.dart';
 import 'package:example/package/navigation/api_tabs.dart';
-import 'package:example/views/home.dart';
 import 'package:example/views/index.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/env.dart';
 import 'package:wao_ui/core/theme_element.dart';
 import 'package:wao_ui/wao_ui.dart';
-import 'package:wao_ui/wao_ui_origin.dart';
 
-import 'routes.dart';
 import 'third_party/syntax_highlight.dart';
 
 void main() async {

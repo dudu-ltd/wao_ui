@@ -4,6 +4,7 @@ import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
+import 'package:wao_ui/src/others/w_image.dart';
 
 class WAvatar extends StatelessWidget
     with BaseMixins<WAvatarOn, WAvatarProp, WAvatarSlot, WAvatarStyle> {
@@ -23,20 +24,20 @@ class WAvatar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // decoration: BoxDecoration(
-      //   borderRadius: BorderRadius.all(
-      //     Radius.circular(
-      //       $props.isCircle
-      //           ? cfgGlobal.borderRadius.circle
-      //           : cfgGlobal.borderRadius.val($props.size),
-      //     ),
-      //   ),
-      // ),
-      width: $props.isCustomSize
-          ? double.parse($props.size)
-          : cfgGlobal.avatarSize.val($props.size),
-      child: $props.isCircle ? ClipOval(child: sizedBox) : sizedBox,
+    var width = $props.isCustomSize
+        ? double.parse($props.size)
+        : cfgGlobal.avatarSize.val($props.size);
+    var content = Container(
+      decoration: BoxDecoration(
+        color: style.backgroundColor ?? CfgGlobal.basicColor.shade50,
+      ),
+      width: width,
+      constraints: BoxConstraints(maxWidth: width),
+      child: sizedBox,
+    );
+    return Padding(
+      padding: style.padding ?? EdgeInsets.zero,
+      child: $props.isCircle ? ClipOval(child: content) : content,
     );
   }
 
@@ -50,13 +51,18 @@ class WAvatar extends StatelessWidget
   Widget get avatar {
     Widget img;
     if ($props.src != null) {
-      img = Image.network(
-        $props.src!,
-        fit: BoxFit.values.firstWhere((element) => element.name == $props.fit),
+      img = WImage(
+        props: WImageProp(
+          src: $props.src,
+          fit: BoxFit.values.firstWhere(
+            (element) => element.name == $props.fit,
+          ),
+        ),
       );
     } else {
       img = Icon(
         $props.icon!.icon,
+        color: style.color ?? CfgGlobal.primaryColor,
         size: cfgGlobal.avatarSize.val($props.size) * .6,
       );
     }
@@ -97,7 +103,10 @@ class WAvatarProp extends BaseProp {
     this.size = size ?? 'large';
     this.shape = shape ?? 'circle';
     this.fit = fit ?? 'cover';
-    if (src == null && icon == null) icon = const Icon(Icons.person);
+    if (src == null && icon == null)
+      icon = const Icon(
+        Icons.person,
+      );
   }
 }
 

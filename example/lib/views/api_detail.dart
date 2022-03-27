@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:example/demo/button/_index.dart' as button;
 import 'package:example/demo/container/_index.dart' as container;
 import 'package:example/demo/drawer/_index.dart' as drawer;
+import 'package:example/demo/avatar/_index.dart' as avatar;
 import 'package:example/demo/demos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,7 @@ class _ApiDetailState extends State<ApiDetail> {
     button.regist();
     container.regist();
     drawer.regist();
+    avatar.regist();
   }
 
   @override
@@ -52,7 +54,10 @@ class _ApiDetailState extends State<ApiDetail> {
                   child: md.MarkdownBody(
                     data: text,
                     styleSheet: getMdStyle(),
-                    namedCodeBlockBuilder: {'widget': nameCodeBlockBuild},
+                    namedCodeBlockBuilder: {
+                      'widget': widgetCodeBlockBuilder,
+                      'widgets': widgetsCodeBlockBuilder,
+                    },
                   ),
                 ),
               ),
@@ -67,6 +72,12 @@ class _ApiDetailState extends State<ApiDetail> {
   getMdStyle() {
     return md.MarkdownStyleSheet(
       h1Align: WrapAlignment.end,
+      h1: const TextStyle(fontSize: 26, height: 1.8),
+      h2: const TextStyle(fontSize: 24, height: 1.7),
+      h3: const TextStyle(fontSize: 22, height: 1.6),
+      h4: const TextStyle(fontSize: 20, height: 1.5),
+      h5: const TextStyle(fontSize: 18, height: 1.4),
+      h6: const TextStyle(fontSize: 16, height: 1.3),
       textAlign: WrapAlignment.start,
       code: const TextStyle(
           color: Colors.blue,
@@ -74,8 +85,7 @@ class _ApiDetailState extends State<ApiDetail> {
           wordSpacing: 8,
           height: 1,
           textBaseline: TextBaseline.ideographic),
-      blockquotePadding:
-          const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+      blockquotePadding: const EdgeInsets.fromLTRB(20, 8, 24, 8),
       blockquoteDecoration: BoxDecoration(
         border:
             Border(left: BorderSide(width: 4, color: CfgGlobal.primaryColor)),
@@ -87,7 +97,22 @@ class _ApiDetailState extends State<ApiDetail> {
   // MdTheme get mdTheme {
   //   return MdTheme();
   // }
-  nameCodeBlockBuild(name) {
+  widgetsCodeBlockBuilder(name) {
+    var names = name.toString().split(',');
+    return Wrap(
+      direction: Axis.horizontal,
+      alignment: WrapAlignment.start,
+      runAlignment: WrapAlignment.start,
+      children: List.generate(
+          names.length,
+          (index) => FractionallySizedBox(
+                widthFactor: .5,
+                child: widgetCodeBlockBuilder(names[index]),
+              )),
+    );
+  }
+
+  widgetCodeBlockBuilder(name) {
     var demo = demos[name];
     if (demo != null) {
       return Padding(
