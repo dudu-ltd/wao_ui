@@ -40,9 +40,12 @@ dependencies:
       url: https://github.com/CorvusYe/bitsdojo_window
       path: bitsdojo_window
 
-  flutter_md: 
-    path: ../../flutter_md
-    
+  # flutter_md: 
+  #   path: ../../flutter_md
+  flutter_markdown: 
+    git:
+      url: https://github.com/CorvusYe/flutter_markdown
+    # path: D:/work/codes/gitee/flutter_markdown
 
 dev_dependencies:
   flutter_test:

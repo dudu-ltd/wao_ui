@@ -6,7 +6,7 @@ import 'package:example/demo/drawer/_index.dart' as drawer;
 import 'package:example/demo/demos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_md/flutter_md.dart';
+import 'package:flutter_markdown/flutter_markdown.dart' as md;
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 import '../third_party/syntax_highlight.dart';
@@ -33,7 +33,7 @@ class _ApiDetailState extends State<ApiDetail> {
   @override
   void initState() {
     scrollCtrl = ScrollController();
-    _setRefBuild();
+    // _setRefBuild();
     _registerDemo();
     rootBundle.load("assets/md/${widget.name}.md").then(
       (bytes) {
@@ -49,7 +49,11 @@ class _ApiDetailState extends State<ApiDetail> {
                 alignment: Alignment.center,
                 child: SizedBox(
                   width: 870,
-                  child: Md.toWidget(text, mdTheme),
+                  child: md.MarkdownBody(
+                    data: text,
+                    styleSheet: getMdStyle(),
+                    namedCodeBlockBuilder: {'widget': nameCodeBlockBuild},
+                  ),
                 ),
               ),
             ),
@@ -60,42 +64,61 @@ class _ApiDetailState extends State<ApiDetail> {
     super.initState();
   }
 
-  MdTheme get mdTheme {
-    return MdTheme();
-  }
-
-  _setRefBuild() {
-    Md.namedHandles.putIfAbsent(
-      'widget',
-      () => (name) {
-        var demo = demos[name];
-        if (demo != null) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: shadowWrapper(
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  borderWrapper(
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: demo.widget,
-                    ),
-                    Border.fromBorderSide(
-                        BorderSide(color: Colors.grey.shade300)),
-                    false,
-                  ),
-                  code(demo.code),
-                ],
-              ),
-            ),
-          );
-        }
-        return Container();
-      },
+  getMdStyle() {
+    return md.MarkdownStyleSheet(
+      h1Align: WrapAlignment.end,
+      textAlign: WrapAlignment.start,
+      code: const TextStyle(
+          color: Colors.blue,
+          backgroundColor: Colors.transparent,
+          wordSpacing: 8,
+          height: 1,
+          textBaseline: TextBaseline.ideographic),
+      blockquotePadding:
+          const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+      blockquoteDecoration: BoxDecoration(
+        border:
+            Border(left: BorderSide(width: 4, color: CfgGlobal.primaryColor)),
+        color: CfgGlobal.primaryColor.shade50,
+      ),
     );
   }
+
+  // MdTheme get mdTheme {
+  //   return MdTheme();
+  // }
+  nameCodeBlockBuild(name) {
+    var demo = demos[name];
+    if (demo != null) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: shadowWrapper(
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              borderWrapper(
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: demo.widget,
+                ),
+                Border.fromBorderSide(BorderSide(color: Colors.grey.shade300)),
+                false,
+              ),
+              code(demo.code),
+            ],
+          ),
+        ),
+      );
+    }
+    return Container();
+  }
+  // _setRefBuild() {
+  //   Md.namedHandles.putIfAbsent(
+  //     'widget',
+  //     () => nameCodeBlockBuild,
+  //   );
+  // }
 
   Widget code(String source) {
     TextSpan result = SyntaxHighlighter(source: source).highlight(context);
