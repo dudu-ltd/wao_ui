@@ -173,6 +173,8 @@ class CfgGlobal {
 
   WBadgeFont badgeFont = WBadgeFont();
 
+  WBadgeStyle badge = WBadgeStyle();
+
   WBreadcrumbStyle breadcrumb = WBreadcrumbStyle(
     padding: const EdgeInsets.fromLTRB(8, 2, 8, 2),
   );

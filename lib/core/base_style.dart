@@ -202,6 +202,10 @@ class BaseStyle {
   }
 
   EdgeInsets? get margin {
+    if (marginLeft == null &&
+        marginTop == null &&
+        marginRight == null &&
+        marginBottom == null) return null;
     return EdgeInsets.fromLTRB(
       marginLeft ?? 0,
       marginTop ?? 0,

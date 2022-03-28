@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -11,8 +13,7 @@ class WBadge extends StatefulWidget
   @override
   _WBadgeState createState() => _WBadgeState();
 
-  WBadge(
-    Widget? defaultSlot, {
+  WBadge({
     Key? key,
     WBadgeOn? on,
     WBadgeProp? props,
@@ -21,7 +22,7 @@ class WBadge extends StatefulWidget
   }) : super(key: key) {
     $on = on ?? WBadgeOn();
     $props = props ?? WBadgeProp();
-    $slots = slots ?? WBadgeSlot(defaultSlot);
+    $slots = slots ?? WBadgeSlot(null);
     $style = style ?? WBadgeStyle();
     init();
   }
@@ -31,20 +32,25 @@ class _WBadgeState extends State<WBadge> {
   @override
   Widget build(BuildContext context) {
     widget.$props._state = this;
+    print('build');
+    print(widget.$props.value);
     return Container(
-      margin: EdgeInsets.only(right: widget.$props.isDot ? 3 : rightOffset + 3),
+      margin: margin,
       child: Stack(
         children: [
           child,
-          if ((widget.$props.isDot &&
-                  (widget.$props.value is! String &&
-                      widget.$props.value > 0)) ||
-              !widget.$props.isDot)
-            widget.$props.isDot ? dotBadge : badge,
+          if (show) widget.$props.isDot ? dotBadge : badge,
         ],
         clipBehavior: Clip.none,
       ),
     );
+  }
+
+  bool get show {
+    return !widget.$props.hidden &&
+        ((widget.$props.isDot &&
+                (widget.$props.value is! String && widget.$props.value > 0)) ||
+            !widget.$props.isDot);
   }
 
   Widget get dotBadge {
@@ -96,13 +102,20 @@ class _WBadgeState extends State<WBadge> {
     return cfgGlobal.badgeFont.size;
   }
 
+  EdgeInsets get margin {
+    return widget.style.margin ??
+        cfgGlobal.badge.margin ??
+        EdgeInsets.only(right: widget.$props.isDot ? 3 : rightOffset + 3);
+  }
+
   Widget get badgeWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(50),
       child: Container(
         color: CfgGlobal.color(widget.$props.type),
         padding: EdgeInsets.fromLTRB(paddingH, paddingV, paddingH, paddingV),
-        child: Text(badgeNum, style: const TextStyle(color: Colors.white)),
+        child: Text(badgeNum,
+            style: TextStyle(color: Colors.white, fontSize: fontSize)),
       ),
     );
   }
@@ -121,7 +134,13 @@ class _WBadgeState extends State<WBadge> {
     return widget.$slots.$;
   }
 
+  double get fontSize {
+    return widget.style.fontSize ?? cfgGlobal.badge.fontSize ?? 12;
+  }
+
   update(e) {
+    print('change');
+    print(widget.$props.value);
     setState(() {});
   }
 }
