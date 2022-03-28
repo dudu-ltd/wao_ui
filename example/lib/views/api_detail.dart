@@ -4,6 +4,7 @@ import 'package:example/demo/button/_index.dart' as button;
 import 'package:example/demo/container/_index.dart' as container;
 import 'package:example/demo/drawer/_index.dart' as drawer;
 import 'package:example/demo/avatar/_index.dart' as avatar;
+import 'package:example/demo/badge/_index.dart' as badge;
 import 'package:example/demo/demos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,6 +31,7 @@ class _ApiDetailState extends State<ApiDetail> {
     container.regist();
     drawer.regist();
     avatar.regist();
+    badge.regist();
   }
 
   @override
@@ -57,6 +59,7 @@ class _ApiDetailState extends State<ApiDetail> {
                     namedCodeBlockBuilder: {
                       'widget': widgetCodeBlockBuilder,
                       'widgets': widgetsCodeBlockBuilder,
+                      'widgetsRow': widgetsRowCodeBlockBuilder,
                     },
                   ),
                 ),
@@ -112,7 +115,17 @@ class _ApiDetailState extends State<ApiDetail> {
     );
   }
 
-  widgetCodeBlockBuilder(name) {
+  widgetsRowCodeBlockBuilder(name) {
+    var names = name.toString().split(',');
+    return Row(
+      children: List.generate(names.length, (index) {
+        var widgetCodeBlockBuilder2 = widgetCodeBlockBuilder(names[index]);
+        return Expanded(child: widgetCodeBlockBuilder2);
+      }),
+    );
+  }
+
+  Widget widgetCodeBlockBuilder(name) {
     var demo = demos[name];
     if (demo != null) {
       return Padding(
@@ -125,7 +138,7 @@ class _ApiDetailState extends State<ApiDetail> {
               borderWrapper(
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: demo.widget,
+                  child: SizedBox(child: demo.widget),
                 ),
                 Border.fromBorderSide(BorderSide(color: Colors.grey.shade300)),
                 false,

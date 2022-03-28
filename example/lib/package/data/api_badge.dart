@@ -10,38 +10,37 @@ class ApiBadge extends StatelessWidget {
     var num = WBadgeProp(value: 7, max: 12);
     var basicGroup = [
       WBadge(
-        WButton(
+        props: num,
+      )..$slots.$ = WButton(
           slots: WButtonSlot('评论'),
           props: WButtonProp(type: 'info'),
           on: WButtonOn(click: () {
             num.value++;
           }),
         ),
-        props: num,
-      ),
       WBadge(
-        WButton(slots: WButtonSlot('回复'), props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 3, max: 10),
-      ),
+      )..$slots.$ =
+          WButton(slots: WButtonSlot('回复'), props: WButtonProp(type: 'info')),
       WBadge(
-        WButton(slots: WButtonSlot('评论'), props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 1, max: 10, type: 'primary'),
-      ),
+      )..$slots.$ =
+          WButton(slots: WButtonSlot('评论'), props: WButtonProp(type: 'info')),
       WBadge(
-        WButton(slots: WButtonSlot('回复'), props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 2, max: 10, type: 'warning'),
-      ),
+      )..$slots.$ =
+          WButton(slots: WButtonSlot('回复'), props: WButtonProp(type: 'info')),
       WBadge(
-        WButton(slots: WButtonSlot('红点'), props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 1, max: 10, type: 'warning', isDot: true),
-      ),
+      )..$slots.$ =
+          WButton(slots: WButtonSlot('红点'), props: WButtonProp(type: 'info')),
     ];
 
     var customGroup = [
       WBadge(
-        WButton(slots: WButtonSlot('红点'), props: WButtonProp(type: 'info')),
         props: WBadgeProp(value: 'new', max: 10, type: 'danger'),
-      ),
+      )..$slots.$ =
+          WButton(slots: WButtonSlot('红点'), props: WButtonProp(type: 'info')),
     ];
 
     return ListView(children: [
