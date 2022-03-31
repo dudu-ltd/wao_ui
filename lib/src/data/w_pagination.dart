@@ -7,6 +7,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
+import 'package:wao_ui/src/form/w_input.dart';
+import 'package:wao_ui/src/form/w_select.dart';
 
 class WPagination extends StatefulWidget
     with
@@ -34,15 +36,21 @@ class _WPaginationState extends State<WPagination> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.$props.showTotal) total,
         if (widget.$props.showSizes) sizes,
         if (widget.$props.showPrev) prev,
-        ...pager,
+        if (widget.$props.showPager) ...pager,
+        if (widget.$props.showSimple) simplePager,
         if (widget.$props.showNext) next,
         if (widget.$props.showJumper) jumper,
       ],
     );
+  }
+
+  Widget get simplePager {
+    return Text('${widget.$props.currentPage}/${widget.$props.totalPage}');
   }
 
   Widget buttonWrapper(
@@ -55,7 +63,7 @@ class _WPaginationState extends State<WPagination> {
     return WButton(
       slots: WButtonSlot(btn),
       props: WButtonProp(
-        size: 'mini',
+        size: widget.$props.small ? 'mini' : 'small',
         type: widget.$props.background ? 'primary' : 'text',
         disabled: disabled,
         loading: loading,
@@ -81,7 +89,7 @@ class _WPaginationState extends State<WPagination> {
   prevPage() => jumpPage(--widget.$props.currentPage);
 
   Widget currentPage(btnPage) {
-    MaterialColor pkc = CfgGlobal.color('primary');
+    MaterialColor pkc = CfgGlobal.primaryColor;
     return Text(
       '${btnPage}',
       style: TextStyle(
@@ -114,7 +122,7 @@ class _WPaginationState extends State<WPagination> {
         btnPage is Widget ? btnPage : '${btnPage}',
         () => jumpPage(toPage),
         disabled: disabled,
-        loading: disabled,
+        // loading: loading,
         active: disabled && widget.$props.background,
       ),
     );
@@ -129,7 +137,25 @@ class _WPaginationState extends State<WPagination> {
 
   // TODO 等表单组件可以测试时，补充实现
   Widget get sizes {
-    return Text('${widget.$props.pageSize}条/页');
+    print('${widget.$props.pageSize}===========');
+    return WSelect()
+      ..$props.placeholder = '请选择'
+      ..$props.value = '${widget.$props.pageSize}'
+      ..$props.size = 'mini'
+      ..$slots.$ = List.generate(
+        widget.$props.pageSizes.length,
+        (index) => WOption(
+          props: WOptionProp(
+            label: '${widget.$props.pageSizes[index]}条/页',
+            value: '${widget.$props.pageSizes[index]}',
+          ),
+        ),
+      )
+      ..$on.change = ((p0) {
+        widget.$props.pageSize = int.parse(p0);
+        setState(() {});
+      })
+      ..style.width = 120;
   }
 
   Widget get prev {
@@ -138,8 +164,8 @@ class _WPaginationState extends State<WPagination> {
         Icons.arrow_back_ios_rounded,
         size: 19,
         color: widget.$props.background
-            ? CfgGlobal.color('primary')
-            : CfgGlobal.color('info'),
+            ? CfgGlobal.primaryColor
+            : CfgGlobal.infoColor,
       ),
       prevPage,
     );
@@ -183,8 +209,8 @@ class _WPaginationState extends State<WPagination> {
         Icons.arrow_forward_ios_rounded,
         size: 19,
         color: widget.$props.background
-            ? CfgGlobal.color('primary')
-            : CfgGlobal.color('info'),
+            ? CfgGlobal.primaryColor
+            : CfgGlobal.infoColor,
       ),
       nextPage,
     );
@@ -192,7 +218,22 @@ class _WPaginationState extends State<WPagination> {
 
   // TODO 等表单组件可以测试时，补充实现
   Widget get jumper {
-    return const Text('前往');
+    var input;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text('前往'),
+        input = WInput()
+          ..$props.value = widget.$props.currentPage
+          ..$props.size = 'mini'
+          ..$on.blur = (() {
+            widget.$props.currentPage = int.parse(input.$props.value);
+            setState(() {});
+          })
+          ..style.width = 60,
+        Text('页'),
+      ],
+    );
   }
 }
 
@@ -283,6 +324,10 @@ class WPaginationProp extends BaseProp {
 
   bool get showTotal {
     return layout.contains('total');
+  }
+
+  bool get showSimple {
+    return layout.contains('simplePage');
   }
 
   List<String> get layoutArr {
