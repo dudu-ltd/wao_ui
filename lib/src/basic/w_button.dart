@@ -10,8 +10,8 @@ import 'package:wao_ui/src/others/w_spin.dart';
 import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
-class WButton extends StatefulWidget
-    with BaseMixins<WButtonOn, WButtonProp, WButtonSlot, WButtonStyle> {
+class WButton
+    extends WStatefulWidget<WButtonOn, WButtonProp, WButtonSlot, WButtonStyle> {
   WButton({
     Key? key,
     WButtonOn? on,
@@ -33,28 +33,6 @@ class WButton extends StatefulWidget
 
   bool get focus {
     return focusNode?.hasFocus ?? false;
-  }
-
-  void styleWrap() {
-    style.merge(cfgGlobal.button);
-    style.wrap(
-      [
-        $style?.type ?? cfgGlobal.button.type,
-        // $style?.mini ?? cfgGlobal.button.mini,
-        // $style?.small ?? cfgGlobal.button.small,
-        // $style?.medium ?? cfgGlobal.button.medium,
-        // $style?.isRound ?? cfgGlobal.button.isRound,
-        // $style?.isCircle ?? cfgGlobal.button.isCircle,
-        // $style?.isDisabled ?? cfgGlobal.button.isDisabled,
-        // $style?.isPlain ?? cfgGlobal.button.isPlain,
-        // $style?.hover ?? cfgGlobal.button.hover,
-        // $style?.active ?? cfgGlobal.button.active,
-        // $style?.whenText ?? cfgGlobal.button.whenText,
-        // $style?.whenTextHover ?? cfgGlobal.button.whenTextHover,
-        // $style?.whenTextDisabled ?? cfgGlobal.button.whenTextDisabled,
-      ],
-      this,
-    );
   }
 
   @override
@@ -100,7 +78,7 @@ class WButton extends StatefulWidget
   }
 }
 
-class _WButtonState extends State<WButton> {
+class _WButtonState extends WState<WButton> {
   late final FocusNode focusNode;
 
   @override
@@ -119,9 +97,33 @@ class _WButtonState extends State<WButton> {
     focusNode.dispose();
   }
 
+  Widget get content {
+    Widget box = const SizedBox(
+      width: 5,
+    );
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      runAlignment: WrapAlignment.spaceBetween,
+      spacing: 5,
+      children: [
+        if (widget.$props.loading)
+          WSpin(
+            child: widget.iconCenter(Icons.rotate_right_rounded),
+          ),
+        if (widget.$props.icon != null) widget.iconCenter(widget.$props.icon!),
+        widget.defaultSlot.first,
+        if (widget.$props.iconRight != null)
+          widget.iconCenter(widget.$props.iconRight!)
+      ],
+    );
+  }
+
+  double get buttonMinWidth {
+    return widget.$style?.minWidth ?? cfgGlobal.button.minWidth ?? 30;
+  }
+
   @override
-  Widget build(BuildContext context) {
-    widget.styleWrap();
+  Widget wbuild(BuildContext context) {
     var btn = Container(
       alignment: widget.style.textAlign,
       // constraints: BoxConstraints(minWidth: buttonMinWidth),
@@ -165,31 +167,6 @@ class _WButtonState extends State<WButton> {
               ),
       ),
     );
-  }
-
-  Widget get content {
-    Widget box = const SizedBox(
-      width: 5,
-    );
-    return Wrap(
-      alignment: WrapAlignment.spaceBetween,
-      runAlignment: WrapAlignment.spaceBetween,
-      spacing: 5,
-      children: [
-        if (widget.$props.loading)
-          WSpin(
-            child: widget.iconCenter(Icons.rotate_right_rounded),
-          ),
-        if (widget.$props.icon != null) widget.iconCenter(widget.$props.icon!),
-        widget.defaultSlot.first,
-        if (widget.$props.iconRight != null)
-          widget.iconCenter(widget.$props.iconRight!)
-      ],
-    );
-  }
-
-  double get buttonMinWidth {
-    return widget.$style?.minWidth ?? cfgGlobal.button.minWidth ?? 30;
   }
 }
 
@@ -261,6 +238,25 @@ class WButtonProp extends BaseProp {
     this.iconRight = iconRight;
     this.autofocus = autofocus ?? false;
     this.active = active ?? false;
+  }
+
+  @override
+  String toString() {
+    return '''
+      size = $size,
+      type = $type,
+      plain = $plain,
+      round = $round,
+      circle = $circle,
+      loading = $loading,
+      disabled = $disabled,
+      icon = $icon,
+      iconRight = $iconRight,
+      autofocus = $autofocus,
+      active = $active,
+      isFirst = $isFirst,
+      isLast = $isLast,
+    ''';
   }
 
   bool get typeIsText {

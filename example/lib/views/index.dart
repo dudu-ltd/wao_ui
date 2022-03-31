@@ -149,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'data/WBadge',
+      initialRoute: 'data/WPagination',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -365,11 +365,11 @@ class _IndexPageState extends State<IndexPage> {
       },
       {
         "id": "data",
-        "text": "数据",
+        "text": "展示",
         "children": [
           {"id": "WAvatar", "text": "头像", "finish": true},
           {"id": "WBadge", "text": "角标", "finish": true},
-          {"id": "WDescriptions", "text": "对象描述"},
+          // {"id": "WDescriptions", "text": "对象描述"},
           {"id": "WEmpty", "text": "空提醒"},
           {"id": "WPagination", "text": "分页"},
           {"id": "WProgress", "text": "进度条"},

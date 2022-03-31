@@ -1,6 +1,7 @@
 // ignore_for_file: overridden_fields
 
 import 'package:flutter/material.dart';
+import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/core/swatch/size_swatch.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
@@ -12,6 +13,8 @@ CfgGlobal cfgGlobal = CfgGlobal();
 typedef StyleWrap<W> = void Function(W);
 
 class CfgGlobal {
+  static Map<String, List<String> Function(BaseMixins)> selectors = {};
+
   static double fontRate = .72;
 
   static double goldRate = 0.618;
@@ -170,6 +173,8 @@ class CfgGlobal {
   WBorderStyle borderStyle = WBorderStyle();
 
   WAvatarSize avatarSize = WAvatarSize();
+
+  WAvatarStyle avatar = WAvatarStyle();
 
   WBadgeFont badgeFont = WBadgeFont();
 
@@ -422,6 +427,10 @@ class WDescriptionsStyle extends BaseStyle {
   double labelWidth = 80;
   Color labelColor = Colors.grey.shade100;
 
+  BaseStyle? header;
+  BaseStyle? title;
+  BaseStyle? body;
+
   WDescriptionsStyle({
     EdgeInsets? padding,
     Color? borderColor,
@@ -456,25 +465,8 @@ class WPaginationStyle extends BaseStyle {
   }
 }
 
-class WButtonStyle extends BaseStyle {
+class WButtonStyle extends BaseStyle<WButton> {
   double? minWidth = 30;
-  void Function(WButton)? type;
-  void Function(WButton)? whenText;
-  void Function(WButton)? whenTextHover;
-  void Function(WButton)? whenTextDisabled;
-
-  void Function(WButton)? mini;
-  void Function(WButton)? small;
-  void Function(WButton)? medium;
-  void Function(WButton)? large;
-
-  void Function(WButton)? isRound;
-  void Function(WButton)? isCircle;
-  void Function(WButton)? isDisabled;
-  void Function(WButton)? isPlain;
-
-  void Function(WButton)? hover;
-  void Function(WButton)? active;
 
   WButtonStyle({
     double? width,

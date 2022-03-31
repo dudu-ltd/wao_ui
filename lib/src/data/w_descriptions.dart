@@ -9,15 +9,9 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/core/utils/is_enum.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 
-var borderSide = BorderSide(
-  color: cfgGlobal.descriptions.borderColor!,
-);
-
 ///
-class WDescriptions extends StatefulWidget
-    with
-        BaseMixins<WDescriptionsOn, WDescriptionsProp, WDescriptionsSlot,
-            WDescriptionsStyle> {
+class WDescriptions extends WStatelessWidget<WDescriptionsOn, WDescriptionsProp,
+    WDescriptionsSlot, WDescriptionsStyle> {
   WDescriptions({
     Key? key,
     WDescriptionsOn? on,
@@ -32,9 +26,10 @@ class WDescriptions extends StatefulWidget
   }
 
   @override
-  _WDescriptionsState createState() => _WDescriptionsState();
+  WDescriptionsStyle style = WDescriptionsStyle();
 
-  List<Widget> get defaultSlots {
+  @override
+  List<Widget> get defaultSlot {
     if ($slots.$ is String) {
       var w = slotToWidget($slots.$, 0);
       return [if (w != null) w];
@@ -63,6 +58,7 @@ class WDescriptions extends StatefulWidget
     if (defaultSlot is Map) {
       addFromMap(result);
     }
+    print(result);
     return result;
   }
 
@@ -107,18 +103,6 @@ class WDescriptions extends StatefulWidget
     }
   }
 
-  @override
-  List<SlotTranslator> get slotTranslatorsCustom {
-    return [
-      SlotTranslator(
-        Map,
-        (a, b, c, d) {
-          return Container();
-        },
-      )
-    ];
-  }
-
   /// 根据描述项的位次，及每行的列数，获取该元素所应该有的边距
   Border getBorder(i, len) {
     Border border = Border.fromBorderSide(
@@ -154,40 +138,42 @@ class WDescriptions extends StatefulWidget
         data.value,
         label: data.label is Widget ? data.label : null,
       ),
-    );
-  }
-}
-
-///
-class _WDescriptionsState extends State<WDescriptions> {
-  @override
-  Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 1,
-      child: Column(
-        children: [header, ...widget.defaultSlot],
-      ),
-    );
+    )..descriptions = this;
   }
 
   Widget get header {
     return Row(
       children: [
         if (title != null) Align(child: title, alignment: Alignment.centerLeft),
-        const Expanded(child: Text('')),
+        Expanded(child: Container()),
         if (extra != null) Align(child: extra, alignment: Alignment.centerLeft),
       ],
     );
   }
 
   Widget? get title {
-    return widget.$slots.title ??
-        (widget.$props.title != null ? Text(widget.$props.title!) : null);
+    return $slots.title ?? ($props.title != null ? Text($props.title!) : null);
   }
 
   Widget? get extra {
-    return widget.$slots.extra ??
-        (widget.$props.extra != null ? Text(widget.$props.extra!) : null);
+    return $slots.extra ?? ($props.extra != null ? Text($props.extra!) : null);
+  }
+
+  @override
+  Widget wbuild(BuildContext context) {
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: Column(
+        children: [header, ...defaultSlot],
+      ),
+    );
+  }
+
+  BorderSide get borderSide {
+    return BorderSide(
+      color: style.borderColor ?? CfgGlobal.basicColor.shade50,
+      width: style.borderLeftWidth ?? 1,
+    );
   }
 }
 
@@ -241,10 +227,8 @@ class WDescriptionsSlot extends BaseSlot {
 }
 
 ///
-class WDescriptionsItem extends StatelessWidget
-    with
-        BaseMixins<WDescriptionsItemOn, WDescriptionsItemProp,
-            WDescriptionsItemSlot, WDescriptionsItemStyle> {
+class WDescriptionsItem extends WStatelessWidget<WDescriptionsItemOn,
+    WDescriptionsItemProp, WDescriptionsItemSlot, WDescriptionsItemStyle> {
   WDescriptionsItem({
     Key? key,
     WDescriptionsItemOn? on,
@@ -259,8 +243,10 @@ class WDescriptionsItem extends StatelessWidget
     init();
   }
 
+  late WDescriptions? descriptions;
+
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var child;
     var children = [
       _colorWrapper(
@@ -294,7 +280,7 @@ class WDescriptionsItem extends StatelessWidget
     if (isVertical($props.direction)) {
       child = borderWrapper(
         FractionallySizedBox(widthFactor: 1, child: label),
-        Border(bottom: borderSide),
+        Border(bottom: descriptions?.borderSide ?? BorderSide.none),
         $props.border,
       );
     } else {
@@ -303,7 +289,7 @@ class WDescriptionsItem extends StatelessWidget
           child: label,
           width: cfgGlobal.descriptions.labelWidth,
         ),
-        Border(right: borderSide),
+        Border(right: descriptions?.borderSide ?? BorderSide.none),
         $props.border,
       );
     }
@@ -314,6 +300,18 @@ class WDescriptionsItem extends StatelessWidget
     Color color = cfgGlobal.descriptions.labelColor;
     return colorWrapper(widget, color, true);
   }
+
+  @override
+  List<SlotTranslator> get slotTranslatorsDefault => [
+        SlotTranslator(String, (s, i, c, l) {
+          return FractionallySizedBox(
+            child: Text(
+              s,
+              style: const TextStyle(overflow: TextOverflow.fade),
+            ),
+          );
+        })
+      ];
 
   Widget get label {
     return $slots.label ?? Text($props.label);
@@ -355,12 +353,4 @@ class WDescriptionsItemSlot extends BaseSlot {
   Widget? label;
   WDescriptionsItemSlot(defaultSlotBefore, {this.label})
       : super(defaultSlotBefore);
-  @override
-  List<Type> allowSlotTypes = [
-    List<Widget>,
-    Map,
-    Widget,
-    List<WDescriptionsData>,
-    WDescriptionsData
-  ];
 }

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
-class BaseStyle {
+class BaseStyle<W> {
+  Alignment? alignItems;
   Color? color;
   double? width;
+  double? widthFactor;
   double? height;
   double? minWidth;
   double? minHeight;
@@ -34,10 +36,15 @@ class BaseStyle {
   Radius? borderTopRightRadius;
   Radius? borderBottomRightRadius;
 
+  TextStyle? font;
+
   // borderTop
   Color? borderTopColor;
   double? borderTopWidth;
   BorderStyle? borderTopStyle;
+
+  List<String> Function(W)? selector;
+
   set borderTop(BorderSide? borderSide) {
     if (borderSide == null) return;
     borderTopColor = pickStyle(borderTopColor, borderSide.color, force: true);
@@ -215,6 +222,7 @@ class BaseStyle {
   }
 
   BaseStyle({
+    this.alignItems,
     this.color,
     this.width,
     this.height,
@@ -330,4 +338,38 @@ class BaseStyle {
       wrap?.call(w);
     }
   }
+
+  Map<List<String>, BaseStyle> clazz = {};
+}
+
+class Clazz {
+  static String focus = ':focus';
+  static String hover = ':hover';
+  static String active = ':active';
+
+  static String firstChild = ':first-child';
+  static String lastChild = ':last-child';
+
+  static String isPlain = '.is-plain';
+  static String isDisabled = '.is-disabled';
+  static String isActive = '.is-active';
+  static String isRound = '.is-round';
+  static String isCircle = '.is-circle';
+  static String isLoading = '.is-loading';
+
+  static String primarySuf = '--primary';
+  static String successSuf = '--success';
+  static String infoSuf = '--info';
+  static String warningSuf = '--warning';
+  static String dangerSuf = '--danger';
+  static String textSuf = '--text';
+
+  static String miniSuf = '--mini';
+  static String smallSuf = '--small';
+  static String mediumSuf = '--medium';
+
+  static String button = '.button';
+  static String buttonGroup = '.button-group';
+
+  static String decriptions = '.decriptions';
 }
