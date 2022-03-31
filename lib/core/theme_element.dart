@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/utils/collect_util.dart';
+import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
 import '../wao_ui.dart';
@@ -12,33 +13,33 @@ not(String str) {
 }
 
 element() {
-  var focus = ':focus';
-  var hover = ':hover';
-  var active = ':active';
+  var focus = Clazz.focus;
+  var hover = Clazz.hover;
+  var active = Clazz.active;
 
-  var firstChild = ':first-child';
-  var lastChild = ':last-child';
+  var firstChild = Clazz.firstChild;
+  var lastChild = Clazz.lastChild;
 
-  var isPlain = '.is-plain';
-  var isDisabled = '.is-disabled';
-  var isActive = '.is-active';
-  var isRound = '.is-round';
-  var isCircle = '.is-circle';
-  var isLoading = '.is-loading';
+  var isPlain = Clazz.isPlain;
+  var isDisabled = Clazz.isDisabled;
+  var isActive = Clazz.isActive;
+  var isRound = Clazz.isRound;
+  var isCircle = Clazz.isCircle;
+  var isLoading = Clazz.isLoading;
 
-  var primarySuf = '--primary';
-  var successSuf = '--success';
-  var infoSuf = '--info';
-  var warningSuf = '--warning';
-  var dangerSuf = '--danger';
-  var textSuf = '--text';
+  var primarySuf = Clazz.primarySuf;
+  var successSuf = Clazz.successSuf;
+  var infoSuf = Clazz.infoSuf;
+  var warningSuf = Clazz.warningSuf;
+  var dangerSuf = Clazz.dangerSuf;
+  var textSuf = Clazz.textSuf;
 
-  var miniSuf = '--mini';
-  var smallSuf = '--small';
-  var mediumSuf = '--medium';
+  var miniSuf = Clazz.miniSuf;
+  var smallSuf = Clazz.smallSuf;
+  var mediumSuf = Clazz.mediumSuf;
 
-  var _button = '.el-button';
-  var _buttonGroup = '.el-button-group';
+  var _button = Clazz.button = '.el-button';
+  var _buttonGroup = Clazz.button = '.el-button-group';
 
   CfgGlobal.primaryColor = const MaterialColor(
     0xFF409eff,
@@ -734,37 +735,49 @@ element() {
       [_buttonGroup, _button, '${not(firstChild)}${not(lastChild)}']
     ]: BaseStyle(
       borderRadius: BorderRadius.zero,
-    )
+    ),
+    // descriptions
+    [
+      [Clazz.decriptions]
+    ]: WDescriptionsStyle()
+      ..fontSize = 14
+      ..color = ColorUtil.hexToColor('#303133')
+      ..header = (BaseStyle()
+        ..alignItems = Alignment.center
+        ..marginBottom = 20)
+      ..title = (BaseStyle()
+        ..fontSize = 16
+        ..fontWeight = FontWeight.w700)
+      ..body = (BaseStyle()
+        ..color = ColorUtil.hexToColor('#606266')
+        ..backgroundColor = Colors.white
+        ..widthFactor = 1),
   };
 
   // .el-button
   cfgGlobal.button = WButtonStyle();
 
-  cfgGlobal.button.type = (WButton btn) {
-    var selector = [
-      if (btn.$props.inGroup) _buttonGroup,
-      _button,
-      if (btn.$props.type != null) '$_button--${btn.$props.type}',
-      '$_button--${btn.$props.size}',
-      if (btn.$props.plain) isPlain,
-      if (btn.active) ...[isActive, active],
-      if (btn.focus) focus,
-      if (btn.isHover) hover,
-      if (btn.$props.loading) isLoading,
-      if (btn.$props.circle) isCircle,
-      if (btn.$props.round) isRound,
-      if (btn.$props.disabled) isDisabled,
-      if (btn.$props.isFirst) firstChild,
-      if (btn.$props.isLast) lastChild,
-      if (btn.$props.inGroup && (!btn.$props.isFirst && !btn.$props.isLast))
-        '${not(firstChild)}${not(lastChild)}',
-    ];
-
-    List<BaseStyle?> styles =
-        findByListKey<BaseStyle?>(CfgGlobal.css, selector);
-
-    for (var style in styles) {
-      btn.style.merge(style, force: true);
+  CfgGlobal.selectors = {
+    'WButton': (btn) {
+      btn as WButton;
+      return [
+        if (btn.$props.inGroup) _buttonGroup,
+        _button,
+        if (btn.$props.type != null) '$_button--${btn.$props.type}',
+        '$_button--${btn.$props.size}',
+        if (btn.$props.plain) isPlain,
+        if (btn.active) ...[isActive, active],
+        if (btn.focus) focus,
+        if (btn.isHover) hover,
+        if (btn.$props.loading) isLoading,
+        if (btn.$props.circle) isCircle,
+        if (btn.$props.round) isRound,
+        if (btn.$props.disabled) isDisabled,
+        if (btn.$props.isFirst) firstChild,
+        if (btn.$props.isLast) lastChild,
+        if (btn.$props.inGroup && (!btn.$props.isFirst && !btn.$props.isLast))
+          '${not(firstChild)}${not(lastChild)}',
+      ];
     }
   };
 }

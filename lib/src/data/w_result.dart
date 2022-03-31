@@ -5,6 +5,7 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
+import 'package:wao_ui/core/extension/theme_data_extension.dart';
 
 class WResult extends StatelessWidget
     with BaseMixins<WResultOn, WResultProp, WResultSlot, WResultStyle> {

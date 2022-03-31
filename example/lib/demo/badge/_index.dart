@@ -112,10 +112,16 @@ var badgeDot = Demo(
       ..$props.isDot = true
       ..style.marginRight = 0
       ..$props.type = 'danger'
-      ..$slots.$ = const Icon(
-        Icons.book,
+      ..$slots.$ = const ColoredBox(
         color: Colors.blue,
-        size: 40,
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.library_books_rounded,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
       ),
     title: const Text('订阅号'),
     subtitle: const Text('WaoUI: Flutter组件库发布新版本'),
@@ -128,9 +134,16 @@ var badgeDot = Demo(
       ..$props.isDot = true
       ..style.marginRight = 0
       ..$props.type = 'danger'
-      ..$slots.$ = const Icon(
-        Icons.book,
+      ..$slots.$ = const ColoredBox(
         color: Colors.blue,
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.library_books_rounded,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
       ),
     title: const Text('订阅号'),
     subtitle: const Text('WaoUI: Flutter组件库发布新版本'),

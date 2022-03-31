@@ -5,6 +5,7 @@ import 'package:example/demo/container/_index.dart' as container;
 import 'package:example/demo/drawer/_index.dart' as drawer;
 import 'package:example/demo/avatar/_index.dart' as avatar;
 import 'package:example/demo/badge/_index.dart' as badge;
+import 'package:example/demo/descriptions/_index.dart' as descriptions;
 import 'package:example/demo/demos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +33,7 @@ class _ApiDetailState extends State<ApiDetail> {
     drawer.regist();
     avatar.regist();
     badge.regist();
+    descriptions.regist();
   }
 
   @override

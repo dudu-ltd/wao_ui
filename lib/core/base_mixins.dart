@@ -3,8 +3,52 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_style.dart';
+import 'package:wao_ui/src/basic/cfg_global.dart';
+
+import 'extension/theme_data_extension.dart';
+import 'utils/collect_util.dart';
 
 class BaseWidget {}
+
+abstract class WStatelessWidget<
+    O extends BaseOn,
+    P extends BaseProp,
+    S extends BaseSlot,
+    T extends BaseStyle> extends StatelessWidget with BaseMixins<O, P, S, T> {
+  WStatelessWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    readStyle();
+    beforeBuild(); // 部件生命周期埋点。
+    Widget wWidget = wbuild(context);
+    // Widget el = ;
+    afterBuild(wWidget, context);
+    return wWidget;
+  }
+
+  Widget wbuild(BuildContext context);
+}
+
+abstract class WStatefulWidget<
+    O extends BaseOn,
+    P extends BaseProp,
+    S extends BaseSlot,
+    T extends BaseStyle> extends StatefulWidget with BaseMixins<O, P, S, T> {
+  WStatefulWidget({Key? key}) : super(key: key);
+}
+
+abstract class WState<T extends WStatefulWidget> extends State<T> {
+  @override
+  Widget build(BuildContext context) {
+    widget.readStyle();
+    widget.beforeBuild(); // 部件生命周期埋点。
+    Widget self = wbuild(context);
+    return widget.afterBuild(self, context);
+  }
+
+  Widget wbuild(BuildContext context);
+}
 
 mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     T extends BaseStyle> on Widget implements BaseWidget {
@@ -13,14 +57,39 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   late final S $slots;
   late final T? $style;
 
-  late final BaseStyle style = BaseStyle();
+  @protected
+  late final BaseStyle style = BaseStyle<BaseMixins>();
 
   List<Widget>? $defaultSlot;
+
+  readStyle() {
+    var selector =
+        CfgGlobal.selectors[runtimeType.toString().trim()]?.call(this) ?? [];
+
+    List<BaseStyle?> styles =
+        findByListKey<BaseStyle?>(CfgGlobal.css, selector);
+
+    Map<List<List<String>>, BaseStyle> customStyle = {};
+    for (var element in style.clazz.entries) {
+      customStyle[[element.key]] = element.value;
+    }
+
+    List<BaseStyle?> customStyles = findByListKey(customStyle, selector);
+    styles.addAll(customStyles);
+    for (var style in styles) {
+      this.style.merge(style, force: true);
+    }
+  }
+
+  beforeBuild() {}
+
+  afterBuild(Widget willBeWrap, BuildContext context) {
+    return willBeWrap;
+  }
 
   init() {}
 
   Widget wrap<E extends BaseStyle>(Widget content, E style) {
-    print('build --');
     return Container(
       child: content,
     );
@@ -81,7 +150,10 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
       SlotTranslator(
         String,
         (slot, i, component, len) {
-          return Text(slot);
+          return Text(
+            slot,
+            overflow: TextOverflow.ellipsis,
+          );
         },
       ),
     ];
@@ -90,16 +162,6 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   List<SlotTranslator> get slotTranslatorsCustom {
     return <SlotTranslator>[];
   }
-
-  ///
-  // checkSlotType(slot) {
-  //   var t = slot.runtimeType;
-  //   if ($slots.allowSlotTypes.isNotEmpty &&
-  //       !$slots.allowSlotTypes.contains(t)) {
-  //     throw Exception(
-  //         '\n$t 类型不被支持，当前仅支持 ${$slots.allowSlotTypes} 做为插槽内容。（$slot）\n(Slot `$t` is not be support in current version. Allow ${$slots.allowSlotTypes} being slot only.)');
-  //   }
-  // }
 
   Widget get $first {
     return defaultSlot.isNotEmpty ? defaultSlot[0] : Container();
