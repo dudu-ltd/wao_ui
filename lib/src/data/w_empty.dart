@@ -6,6 +6,7 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
+import 'package:wao_ui/src/others/w_image.dart';
 
 class WEmpty extends StatelessWidget
     with BaseMixins<WEmptyOn, WEmptyProp, WEmptySlot, WEmptyStyle> {
@@ -52,15 +53,16 @@ class WEmpty extends StatelessWidget
 
   Widget get image {
     return $slots.image ??
-        ($props.image == null
-            ? SizedBox(
-                width: $props.imageSize,
-                child: AspectRatio(
-                  aspectRatio: .9,
-                  child: SvgPicture.string(cfgGlobal.empty.imgSvg),
-                ),
-              )
-            : Image.network($props.image!));
+        (SizedBox(
+            width: $props.imageSize,
+            child: $props.image == null
+                ? AspectRatio(
+                    aspectRatio: .9,
+                    child: SvgPicture.string(cfgGlobal.empty.imgSvg),
+                  )
+                : (WImage()
+                  ..$props.src = $props.image
+                  ..$props.fit = BoxFit.cover)));
   }
 }
 

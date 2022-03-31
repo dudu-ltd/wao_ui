@@ -7,6 +7,7 @@ import 'package:example/demo/avatar/_index.dart' as avatar;
 import 'package:example/demo/badge/_index.dart' as badge;
 import 'package:example/demo/descriptions/_index.dart' as descriptions;
 import 'package:example/demo/pagination/_index.dart' as pagination;
+import 'package:example/demo/empty/_index.dart' as empty;
 import 'package:example/demo/demos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,6 +37,7 @@ class _ApiDetailState extends State<ApiDetail> {
     badge.regist();
     descriptions.regist();
     pagination.regist();
+    empty.regist();
   }
 
   @override
