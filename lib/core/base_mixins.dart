@@ -44,6 +44,7 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
     widget.readStyle();
     widget.beforeBuild(); // 部件生命周期埋点。
     Widget self = wbuild(context);
+
     return widget.afterBuild(self, context);
   }
 
@@ -84,7 +85,12 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   beforeBuild() {}
 
   afterBuild(Widget willBeWrap, BuildContext context) {
-    return willBeWrap;
+    return SizedBox(
+      width: style.width,
+      height: style.height,
+      child: willBeWrap,
+    );
+    // return willBeWrap;
   }
 
   init() {}

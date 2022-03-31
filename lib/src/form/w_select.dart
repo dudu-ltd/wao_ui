@@ -17,8 +17,8 @@ import 'package:wao_ui/src/form/w_input.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
 // TODO option disable 状态下，如果当前值刚好是禁用项，需要清掉
-class WSelect extends StatefulWidget
-    with BaseMixins<WSelectOn, WSelectProp, WSelectSlot, WSelectStyle> {
+class WSelect
+    extends WStatefulWidget<WSelectOn, WSelectProp, WSelectSlot, WSelectStyle> {
   late Widget Function(WSelect, _WSelectState)? panelInsideBuilder;
 
   late List<dynamic> Function()? valueLabelsGetter;
@@ -52,7 +52,7 @@ class WSelect extends StatefulWidget
    */
 }
 
-class _WSelectState extends State<WSelect>
+class _WSelectState extends WState<WSelect>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController iconSpinController;
   late Animation<double> spin;
@@ -89,7 +89,7 @@ class _WSelectState extends State<WSelect>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var select = WInput(
       key: selectKey,
       props: widget.$props,
@@ -355,7 +355,7 @@ class _WSelectState extends State<WSelect>
     } else {
       widget.$props.$valueListener.value = null;
     }
-    // widget.$props.$valueListener.notifyListeners();
+    widget.$props.$valueListener.notifyListeners();
     setState(() {});
   }
 
@@ -390,6 +390,7 @@ class _WSelectState extends State<WSelect>
       widget.$props.value = option.value;
     }
     setState(() {});
+    widget.$on.change?.call(widget.$props.value);
   }
 
   _updatePanel(BuildContext panelContext, panelSetState) {
@@ -436,54 +437,6 @@ class _WSelectState extends State<WSelect>
         cfgGlobal.select.panelMinWidth ??
         180;
   }
-
-  // 为浮窗添加小箭头角标
-  // Widget angleWrapper(child) {
-  //   var yOffset = (sqrt(12 * 12 * 2) / 2 - 2);
-  //   return Stack(
-  //     clipBehavior: Clip.none,
-  //     children: [
-  //       child,
-  //       Positioned(
-  //         left: 35,
-  //         top: -yOffset,
-  //         child: Transform.rotate(
-  //           angle: pi / 4,
-  //           child: shadowWrapper(
-  //             borderWrapper(
-  //               const ColoredBox(
-  //                 color: Color.fromARGB(0, 255, 255, 255),
-  //                 child: SizedBox(
-  //                   height: 12,
-  //                   width: 12,
-  //                   child: Text(''),
-  //                 ),
-  //               ),
-  //               Border(
-  //                 top: BorderSide(
-  //                   color: Colors.grey.shade300,
-  //                 ),
-  //                 left: BorderSide(
-  //                   color: Colors.grey.shade300,
-  //                 ),
-  //               ),
-  //               true,
-  //               borderRadius: BorderRadius.circular(8.0),
-  //             ),
-  //             shadow: [
-  //               const BoxShadow(
-  //                 color: Color.fromARGB(25, 0, 0, 0),
-  //                 offset: Offset(-3.0, -3.0),
-  //                 blurRadius: 6.0,
-  //                 spreadRadius: 0.0,
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   double get panelBorder {
     return widget.$style?.panelBorder ?? cfgGlobal.select.panelBorder ?? 1;

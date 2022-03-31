@@ -8,8 +8,8 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 
 import '../../core/utils/collect_util.dart';
 
-class WInput extends StatefulWidget
-    with BaseMixins<WInputOn, WInputProp, WInputSlot, WInputStyle> {
+class WInput
+    extends WStatefulWidget<WInputOn, WInputProp, WInputSlot, WInputStyle> {
   WInput({
     Key? key,
     WInputOn? on,
@@ -40,7 +40,7 @@ class WInput extends StatefulWidget
    */
 }
 
-class WInputState extends State<WInput> {
+class WInputState extends WState<WInput> {
   bool visiblePassword = false;
   bool isHover = false;
   bool isFocus = false;
@@ -53,12 +53,13 @@ class WInputState extends State<WInput> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var textFormField = TextFormField(
       onTap: widget.$on.click,
       onChanged: (v) {
+        print('-----------$v');
         widget.$on.change?.call(v);
-        setState(() {});
+        // setState(() {});
       },
       textInputAction: widget.$props.isTextarea
           ? TextInputAction.newline
