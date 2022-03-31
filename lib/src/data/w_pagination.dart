@@ -40,10 +40,7 @@ class _WPaginationState extends State<WPagination> {
       children: [
         if (widget.$props.showTotal) total,
         if (widget.$props.showSizes) sizes,
-        if (widget.$props.showPrev) prev,
-        if (widget.$props.showPager) ...pager,
-        if (widget.$props.showSimple) simplePager,
-        if (widget.$props.showNext) next,
+        if (buttonGroup != null) buttonGroup!,
         if (widget.$props.showJumper) jumper,
       ],
     );
@@ -158,15 +155,25 @@ class _WPaginationState extends State<WPagination> {
       ..style.width = 120;
   }
 
+  Widget? get buttonGroup {
+    if (widget.$props.showPrev ||
+        widget.$props.showPager ||
+        widget.$props.showSimple ||
+        widget.$props.showNext) {
+      return WButtonGroup()
+        ..$slots.$ = [
+          if (widget.$props.showPrev) prev,
+          if (widget.$props.showPager) ...pager,
+          if (widget.$props.showSimple) WButton()..$slots.$ = simplePager,
+          if (widget.$props.showNext) next,
+        ];
+    }
+    return null;
+  }
+
   Widget get prev {
     return buttonWrapper(
-      Icon(
-        Icons.arrow_back_ios_rounded,
-        size: 19,
-        color: widget.$props.background
-            ? CfgGlobal.primaryColor
-            : CfgGlobal.infoColor,
-      ),
+      Icons.arrow_back_ios_rounded,
       prevPage,
     );
   }
@@ -205,13 +212,7 @@ class _WPaginationState extends State<WPagination> {
 
   Widget get next {
     return buttonWrapper(
-      Icon(
-        Icons.arrow_forward_ios_rounded,
-        size: 19,
-        color: widget.$props.background
-            ? CfgGlobal.primaryColor
-            : CfgGlobal.infoColor,
-      ),
+      Icons.arrow_forward_ios_rounded,
       nextPage,
     );
   }
