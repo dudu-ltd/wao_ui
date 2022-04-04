@@ -149,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'data/WResult',
+      initialRoute: 'data/WTable',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -396,7 +396,7 @@ regist() {}''');
           // {"id": "WEmpty", "text": "空提醒"},
           // {"id": "WPagination", "text": "分页"},
           // {"id": "WProgress", "text": "进度条"},
-          {"id": "WResult", "text": "结果"},
+          // {"id": "WResult", "text": "结果"},
           {"id": "WSkeleton", "text": "页面骨架"},
           {"id": "WTable", "text": "表格"},
           {"id": "WTag", "text": "标签"},
