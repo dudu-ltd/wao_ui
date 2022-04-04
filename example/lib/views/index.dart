@@ -149,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'form/WCascader',
+      initialRoute: 'form/WCheckbox',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -407,7 +407,7 @@ regist() {}''');
         "id": "form",
         "text": "表单",
         "children": [
-          {"id": "WCascader", "text": "级联选择器"},
+          // {"id": "WCascader", "text": "级联选择器", 'finish': true},
           {"id": "WCheckbox", "text": "复选"},
           {"id": "WColorPicker", "text": "颜色选择器"},
           {"id": "WDatePicker", "text": "日期选择器"},

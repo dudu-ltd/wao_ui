@@ -62,7 +62,7 @@ element() {
     <int, Color>{
       50: Color(0xFFf0f9eb),
       100: Color(0xFFe1f3d8),
-      200: Color(0xFFc6e2ff),
+      200: Color(0xFFd0eac4),
       300: Color(0xFFc2e7b0),
       400: Color(0xFFb3e19d),
       500: Color(0xFFa4da89),
@@ -94,7 +94,7 @@ element() {
     <int, Color>{
       50: Color(0xFFfef0f0),
       100: Color(0xFFfde2e2),
-      // 200: Color(0xFFfab6b6),
+      200: Color(0xFFfab6b6),
       300: Color(0xFFfbc4c4),
       400: Color(0xFFfab6b6),
       500: Color(0xFFf9a7a7),
@@ -110,7 +110,7 @@ element() {
     <int, Color>{
       50: Color(0xFFf4f4f5),
       100: Color(0xFFe9e9eb),
-      // 200: Color(0xFFd3d4d6),
+      200: Color(0xFFd3d4d6),
       300: Color(0xFFd3d4d6),
       400: Color(0xFFc8c9cc),
       500: Color(0xFFbcbec2),
@@ -126,7 +126,7 @@ element() {
     <int, Color>{
       50: Color(0xFFf4f4f5),
       100: Color(0xFFe9e9eb),
-      // 200: Color(0xFFd3d4d6),
+      200: Color(0xFFd3d4d6),
       300: Color(0xFFd3d4d6),
       400: Color(0xFFc8c9cc),
       500: Color(0xFFbcbec2),
@@ -141,7 +141,7 @@ element() {
     <int, Color>{
       50: Color(0xFFFFFFFF),
       100: Color(0xFFF2F6FC),
-      200: Color(0xFFEBEEF5),
+      200: Color(0xFFEFEDF0),
       300: Color(0xFFE4E7ED),
       400: Color(0xFFDCDFE6),
       500: Color(0xFFC0C4CC),

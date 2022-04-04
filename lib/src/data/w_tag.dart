@@ -6,9 +6,9 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
+import 'package:wao_ui/wao_ui.dart';
 
-class WTag extends StatelessWidget
-    with BaseMixins<WTagOn, WTagProp, WTagSlot, WTagStyle> {
+class WTag extends WStatelessWidget<WTagOn, WTagProp, WTagSlot, WTagStyle> {
   WTag({
     Key? key,
     WTagOn? on,
@@ -24,13 +24,13 @@ class WTag extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container(
       decoration: decoration,
-      padding: style.padding,
+      padding: CfgGlobal.roundPadding[$props.size]! * .3,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [...tagMain, ...closeButton],
+        children: [$first, ...closeButton],
       ),
     );
   }
@@ -68,14 +68,13 @@ class WTag extends StatelessWidget
     );
   }
 
-  List<Widget> get tagMain {
-    if (defaultSlot != null) {
-      return defaultSlot;
-    } else {
-      if ($slots.$ is String) {
-        var text = $slots.$ as String;
-        return [
-          Tooltip(
+  List<SlotTranslator> get slotTranslatorsDefault {
+    return [
+      SlotTranslator(
+        String,
+        (s, i, l, c) {
+          var text = $slots.$ as String;
+          return Tooltip(
             message: text,
             showDuration: const Duration(seconds: 1),
             child: Text(
@@ -86,11 +85,10 @@ class WTag extends StatelessWidget
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-          ),
-        ];
-      }
-    }
-    return [];
+          );
+        },
+      )
+    ];
   }
 
   BoxDecoration get decoration {
@@ -139,7 +137,7 @@ class WTagProp extends BaseProp {
   late bool disableTransitions;
   late bool hit;
   Color? color;
-  String? size;
+  late String size;
   String? effect;
 
   WTagProp({
@@ -155,7 +153,7 @@ class WTagProp extends BaseProp {
     this.closable = closable ?? false;
     this.disableTransitions = disableTransitions ?? false;
     this.hit = hit ?? false;
-    this.size = size ?? 'small';
+    this.size = size ?? 'large';
   }
 
   bool get isDark {
