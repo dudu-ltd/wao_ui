@@ -149,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'data/WTag',
+      initialRoute: 'form/WCascader',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -386,23 +386,23 @@ regist() {}''');
       //     {"id": "WContainer", "text": "布局", "finish": true}
       //   ]
       // },
-      {
-        "id": "data",
-        "text": "展示",
-        "children": [
-          // {"id": "WAvatar", "text": "头像", "finish": true},
-          // {"id": "WBadge", "text": "角标", "finish": true},
-          // {"id": "WDescriptions", "text": "对象描述"},
-          // {"id": "WEmpty", "text": "空提醒", "finish": true},
-          // {"id": "WPagination", "text": "分页", "finish": true},
-          // {"id": "WProgress", "text": "进度条", "finish": true},
-          // {"id": "WResult", "text": "结果", "finish": true},
-          // {"id": "WSkeleton", "text": "页面骨架"},
-          // {"id": "WTable", "text": "表格"},
-          {"id": "WTag", "text": "标签"},
-          {"id": "WTree", "text": "树"}
-        ]
-      },
+      // {
+      //   "id": "data",
+      //   "text": "展示",
+      //   "children": [
+      //     // {"id": "WAvatar", "text": "头像", "finish": true},
+      //     // {"id": "WBadge", "text": "角标", "finish": true},
+      //     // {"id": "WDescriptions", "text": "对象描述"},
+      //     // {"id": "WEmpty", "text": "空提醒", "finish": true},
+      //     // {"id": "WPagination", "text": "分页", "finish": true},
+      //     // {"id": "WProgress", "text": "进度条", "finish": true},
+      //     // {"id": "WResult", "text": "结果", "finish": true},
+      //     // {"id": "WSkeleton", "text": "页面骨架"},
+      //     // {"id": "WTable", "text": "表格"},
+      //     // {"id": "WTag", "text": "标签", "finish": true},
+      //     // {"id": "WTree", "text": "树"}
+      //   ]
+      // },
       {
         "id": "form",
         "text": "表单",
