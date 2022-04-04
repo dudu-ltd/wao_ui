@@ -228,10 +228,8 @@ class WCheckboxSlot extends BaseSlot {
   WCheckboxSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WCheckboxGroup extends StatelessWidget
-    with
-        BaseMixins<WCheckboxGroupOn, WCheckboxGroupProp, WCheckboxGroupSlot,
-            WCheckboxGroupStyle> {
+class WCheckboxGroup extends WStatelessWidget<WCheckboxGroupOn,
+    WCheckboxGroupProp, WCheckboxGroupSlot, WCheckboxGroupStyle> {
   WCheckboxGroup({
     Key? key,
     WCheckboxGroupOn? on,
@@ -244,30 +242,6 @@ class WCheckboxGroup extends StatelessWidget
     $slots = slots ?? WCheckboxGroupSlot(null);
     $style = style ?? WCheckboxGroupStyle();
     init();
-    $props.value.addListener(() {
-      $on.change?.call($props.value.value);
-      sizeLimit();
-    });
-    if (defaultSlot != null) {
-      var len = defaultSlot.length;
-      for (var i = 0; i < len; i++) {
-        var child = defaultSlot[i];
-        if (child is WCheckbox) {
-          child.$props.value = $props.value;
-          child.$props.disabled |= $props.disabled;
-          child.$props._disabled = child.$props.disabled;
-          child.$props.size = $props.size;
-        } else if (child is WCheckboxButton) {
-          child.$props._value = $props.value;
-          child.$props.disabled |= $props.disabled;
-          child.$props._disabled = child.$props.disabled;
-          child.$props._size = $props.size;
-          child.$props.isFirst = i == 0;
-          child.$props.isLast = i == len - 1;
-        }
-      }
-    }
-    sizeLimit();
   }
 
   void sizeLimit() {
@@ -328,7 +302,45 @@ class WCheckboxGroup extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  List<SlotTranslator> get slotTranslatorsCustom {
+    return [
+      SlotTranslator(
+        WCheckbox,
+        (child, i, c, l) {
+          child.$props.value = $props.value;
+          child.$props.disabled |= $props.disabled;
+          child.$props._disabled = child.$props.disabled;
+          child.$props.size = $props.size;
+          return child;
+        },
+      ),
+      SlotTranslator(
+        WCheckboxButton,
+        (child, i, c, len) {
+          child.$props._value = $props.value;
+          child.$props.disabled |= $props.disabled;
+          child.$props._disabled = child.$props.disabled;
+          child.$props._size = $props.size;
+          child.$props.isFirst = i == 0;
+          child.$props.isLast = i == len - 1;
+          return child;
+        },
+      )
+    ];
+  }
+
+  @override
+  beforeBuild() {
+    $props.value.addListener(() {
+      $on.change?.call($props.value.value);
+      sizeLimit();
+    });
+    sizeLimit();
+    return super.beforeBuild();
+  }
+
+  @override
+  Widget wbuild(BuildContext context) {
     var children = <Widget>[];
     int len = defaultSlot.length;
     for (var i = 0; i < len; i++) {
@@ -441,7 +453,7 @@ class _WCheckboxButtonState extends State<WCheckboxButton> {
       child: MouseStateBuilder(
         builder: (context, state) {
           return Container(
-            padding: widget.style.padding,
+            padding: CfgGlobal.roundPadding[widget.$props._size ?? 'large'],
             decoration: BoxDecoration(
               color: backgroudColor,
               borderRadius: borderRadius,
