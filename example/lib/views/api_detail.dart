@@ -122,6 +122,7 @@ class _ApiDetailState extends State<ApiDetail> {
     tooltip.regist();
     carousel.regist();
     image.regist();
+    loading.regist();
     rate.regist();
     divider.regist();
   }

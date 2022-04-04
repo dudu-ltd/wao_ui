@@ -335,7 +335,11 @@ class _IndexPageState extends State<IndexPage> {
       await dir.create();
       var file = File('$dirPath/_index.dart');
       await file.create();
-      file.writeAsString(r'''regist() {}''');
+      file.writeAsString(r'''import 'package:wao_ui/wao_ui.dart';
+
+import '../demos.dart';
+
+regist() {}''');
       print('import \'package:example/demo/$a/_index.dart\' as $a;');
       print('$a.regist();');
     }
