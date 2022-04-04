@@ -211,6 +211,7 @@ class _ApiDetailState extends State<ApiDetail> {
   widgetsRowCodeBlockBuilder(name) {
     var names = name.toString().split(',');
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(names.length, (index) {
         var widgetCodeBlockBuilder2 = widgetCodeBlockBuilder(names[index]);
         return Expanded(child: widgetCodeBlockBuilder2);
