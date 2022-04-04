@@ -281,6 +281,7 @@ class _IndexPageState extends State<IndexPage> {
         ));
       } else {
         // createMd(preId, node['id']).then((e) {});
+        createDemo(preId, node['id']).then((e) {});
         result.add(ListTile(
           onTap: () => to(node['text'], fileId(preId, node['id'])),
           title: Text(node['text']),
@@ -320,6 +321,24 @@ class _IndexPageState extends State<IndexPage> {
     }
     print('    - assets/md/$filePath');
     // print('$folderName  file: $filePath exists $fileExists');
+  }
+
+  createDemo(String folderName, String dirName) async {
+    var basePath = 'D:/work/meta_number/wao_ui/example/lib/demo';
+    var a = dirName.substring(1).substring(0, 1).toLowerCase() +
+        dirName.substring(2);
+    a = a == 'switch' ? 'swatch' : a;
+    var dirPath = 'D:/work/meta_number/wao_ui/example/lib/demo/$a';
+    var dir = Directory(dirPath);
+    bool exists = await dir.exists();
+    if (!exists) {
+      await dir.create();
+      var file = File('$dirPath/_index.dart');
+      await file.create();
+      file.writeAsString(r'''regist() {}''');
+      print('import \'package:example/demo/$a/_index.dart\' as $a;');
+      print('$a.regist();');
+    }
   }
 
   Widget get logoZoom {
@@ -370,7 +389,7 @@ class _IndexPageState extends State<IndexPage> {
           // {"id": "WAvatar", "text": "头像", "finish": true},
           // {"id": "WBadge", "text": "角标", "finish": true},
           // {"id": "WDescriptions", "text": "对象描述"},
-          {"id": "WEmpty", "text": "空提醒"},
+          // {"id": "WEmpty", "text": "空提醒"},
           // {"id": "WPagination", "text": "分页"},
           {"id": "WProgress", "text": "进度条"},
           {"id": "WResult", "text": "结果"},
