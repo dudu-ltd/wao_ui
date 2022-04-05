@@ -149,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'form/WInputNumber',
+      initialRoute: 'form/WInput',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -412,7 +412,7 @@ regist() {}''');
           // {"id": "WColorPicker", "text": "颜色选择器"},
           // {"id": "WDatePicker", "text": "日期选择器"},
           // {"id": "WDateTimePicker", "text": "日期时间选择器"},
-          {"id": "WInputNumber", "text": "数字输入框"},
+          // {"id": "WInputNumber", "text": "数字输入框", 'finish': true},
           {"id": "WInput", "text": "输入框"},
           {"id": "WRadio", "text": "单选"},
           {"id": "WRate", "text": "评分"},
