@@ -329,7 +329,7 @@ class _WRadioButtonState extends State<WRadioButton> {
   }
 
   double get paddingV {
-    return widget.style.padding?.left ?? 0;
+    return CfgGlobal.padding[widget.$props._size ?? 'large']?.left ?? 0;
   }
 
   double get paddingH {
