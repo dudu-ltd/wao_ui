@@ -61,6 +61,9 @@ class WInputState extends WState<WInput> {
         widget.$on.change?.call(v);
         // setState(() {});
       },
+      keyboardType: widget.$props.isTextarea
+          ? TextInputType.multiline
+          : widget.$props.$keyboardType,
       textInputAction: widget.$props.isTextarea
           ? TextInputAction.newline
           : TextInputAction.next,
@@ -78,8 +81,6 @@ class WInputState extends WState<WInput> {
       maxLengthEnforcement: MaxLengthEnforcement.none,
 
       textAlignVertical: TextAlignVertical.center,
-
-      keyboardType: widget.$props.$keyboardType,
       textAlign: widget.$props.$textAlign,
     );
 
@@ -502,6 +503,22 @@ class WInputSlot extends BaseSlot {
     addSlot(prefix, this.prefix);
     addSlot(suffix, this.suffix);
     addSlot(prepend, this.prepend);
+    addSlot(append, this.append);
+  }
+
+  addPrefix(dynamic prefix) {
+    addSlot(prefix, this.prefix);
+  }
+
+  addSuffix(dynamic suffix) {
+    addSlot(suffix, this.suffix);
+  }
+
+  addPrepend(dynamic prepend) {
+    addSlot(prepend, this.prepend);
+  }
+
+  addAppend(dynamic append) {
     addSlot(append, this.append);
   }
 }
