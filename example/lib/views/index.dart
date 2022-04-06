@@ -149,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'form/WSelect',
+      initialRoute: 'form/WSlider',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -415,9 +415,12 @@ regist() {}''');
           // {"id": "WInputNumber", "text": "数字输入框", 'finish': true},
           // {"id": "WInput", "text": "输入框", 'finish': true},
           // {"id": "WRadio", "text": "单选", 'finish': true},
-          {"id": "WRate", "text": "评分"},
-          {"id": "WSelect", "text": "下拉框"},
-          {"id": "WSlider", "text": "滑动设值"},
+          // {"id": "WRate", "text": "评分"},
+          // {"id": "WSelect", "text": "下拉框", 'finish': true},
+          {
+            "id": "WSlider",
+            "text": "滑动设值",
+          },
           {"id": "WSwitch", "text": "开关"},
           {"id": "WTimePicker", "text": "时间选择器"},
           {"id": "WTransfer", "text": "穿梭框"},
