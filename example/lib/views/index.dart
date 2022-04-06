@@ -141,7 +141,7 @@ class _IndexPageState extends State<IndexPage> {
         () => (BuildContext nContext, Animation<double> animation,
                 Animation<double> secondaryAnimation) {
               navContext = nContext;
-
+              // return _route[routeName.split('/')[1]]!;
               return ApiDetail(name: routeName);
             });
   }
@@ -149,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'form/WSlider',
+      initialRoute: 'others/WCollapse',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -403,71 +403,68 @@ regist() {}''');
       //     // {"id": "WTree", "text": "树"}
       //   ]
       // },
-      {
-        "id": "form",
-        "text": "表单",
-        "children": [
-          // {"id": "WCascader", "text": "级联选择器", 'finish': true},
-          // {"id": "WCheckbox", "text": "复选", 'finish': true},
-          // {"id": "WColorPicker", "text": "颜色选择器"},
-          // {"id": "WDatePicker", "text": "日期选择器"},
-          // {"id": "WDateTimePicker", "text": "日期时间选择器"},
-          // {"id": "WInputNumber", "text": "数字输入框", 'finish': true},
-          // {"id": "WInput", "text": "输入框", 'finish': true},
-          // {"id": "WRadio", "text": "单选", 'finish': true},
-          // {"id": "WRate", "text": "评分"},
-          // {"id": "WSelect", "text": "下拉框", 'finish': true},
-          {
-            "id": "WSlider",
-            "text": "滑动设值",
-          },
-          {"id": "WSwitch", "text": "开关"},
-          {"id": "WTimePicker", "text": "时间选择器"},
-          {"id": "WTransfer", "text": "穿梭框"},
-          {"id": "WUpload", "text": "文件上传"}
-        ]
-      },
-      {
-        "id": "navigation",
-        "text": "导航",
-        "children": [
-          {"id": "WBreadcrumb", "text": "面包屑"},
-          {"id": "WDropdown", "text": "下拉菜单"},
-          {"id": "WMenu", "text": "菜单"},
-          {"id": "WPageHeader", "text": "表头"},
-          {"id": "WSteps", "text": "步骤"},
-          {"id": "WTabs", "text": "Tab 页"}
-        ]
-      },
-      {
-        "id": "notice",
-        "text": "通知/消息",
-        "children": [
-          {"id": "WAlert", "text": "WAlert"},
-          {"id": "WLoading", "text": "WLoading"},
-          {"id": "WMessage", "text": "WMessage"},
-          {"id": "WMessageBox", "text": "WMessageBox"},
-          {"id": "WNotification", "text": "WNotification"}
-        ]
-      },
+      // {
+      //   "id": "form",
+      //   "text": "表单",
+      //   "children": [
+      //     // {"id": "WCascader", "text": "级联选择器", 'finish': true},
+      //     // {"id": "WCheckbox", "text": "复选", 'finish': true},
+      //     // {"id": "WColorPicker", "text": "颜色选择器"},
+      //     // {"id": "WDatePicker", "text": "日期选择器"},
+      //     // {"id": "WDateTimePicker", "text": "日期时间选择器"},
+      //     // {"id": "WInputNumber", "text": "数字输入框", 'finish': true},
+      //     // {"id": "WInput", "text": "输入框", 'finish': true},
+      //     // {"id": "WRadio", "text": "单选", 'finish': true},
+      //     // {"id": "WRate", "text": "评分"},
+      //     // {"id": "WSelect", "text": "下拉框", 'finish': true},
+      //     // {"id": "WSlider", "text": "滑动设值", "finish": true},
+      //     // {"id": "WSwitch", "text": "开关", "finish": true},
+      //     // {"id": "WTimePicker", "text": "时间选择器"},
+      //     // {"id": "WTransfer", "text": "穿梭框"},
+      //     // {"id": "WUpload", "text": "文件上传"}
+      //   ]
+      // },
+      // {
+      //   "id": "navigation",
+      //   "text": "导航",
+      //   "children": [
+      //     {"id": "WBreadcrumb", "text": "面包屑"},
+      //     {"id": "WDropdown", "text": "下拉菜单"},
+      //     {"id": "WMenu", "text": "菜单"},
+      //     {"id": "WPageHeader", "text": "表头"},
+      //     {"id": "WSteps", "text": "步骤"},
+      //     {"id": "WTabs", "text": "Tab 页"}
+      //   ]
+      // },
+      // {
+      //   "id": "notice",
+      //   "text": "通知/消息",
+      //   "children": [
+      //     {"id": "WAlert", "text": "对话框"},
+      //     {"id": "WLoading", "text": "加载中"},
+      //     {"id": "WMessage", "text": "提醒"},
+      //     {"id": "WMessageBox", "text": "消息窗"},
+      //     {"id": "WNotification", "text": "消息提醒"}
+      //   ]
+      // },
       {
         "id": "others",
         "text": "其他",
         "children": [
-          {"id": "WBacktop", "text": "WBacktop"},
-          {"id": "WCalendar", "text": "WCalendar"},
-          {"id": "WCard", "text": "WCard"},
-          {"id": "WCarousel", "text": "WCarousel"},
-          {"id": "WCollapse", "text": "WCollapse"},
-          {"id": "WDialog", "text": "WDialog"},
-          {"id": "WDivider", "text": "WDivider"},
-          {"id": "WDrawer", "text": "WDrawer"},
-          {"id": "WImage", "text": "WImage"},
-          {"id": "WInfiniteScroll", "text": "WInfiniteScroll"},
-          {"id": "WPopconfirm", "text": "WPopconfirm"},
+          {"id": "WBacktop", "text": "回到顶部"},
+          {"id": "WCalendar", "text": "日历"},
+          // {"id": "WCard", "text": "卡片", 'finish': true},
+          // {"id": "WCarousel", "text": "走马灯", 'finish': true},
+          {"id": "WCollapse", "text": "折叠面板"},
+          {"id": "WDialog", "text": "弹窗"},
+          {"id": "WDivider", "text": "分隔线"},
+          {"id": "WDrawer", "text": "抽屉"},
+          {"id": "WImage", "text": "图片"},
+          {"id": "WInfiniteScroll", "text": "无限下拉"},
+          {"id": "WPopconfirm", "text": "确认框"},
           {"id": "WPopover", "text": "WPopover"},
-          {"id": "WTimeline", "text": "WTimeline"},
-          {"id": "WTooltip", "text": "WTooltip"}
+          {"id": "WTimeline", "text": "时间轴"},
+          {"id": "WTooltip", "text": "提示"}
         ]
       }
     ];
