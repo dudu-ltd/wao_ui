@@ -67,6 +67,7 @@ class _WDropdownState extends State<WDropdown>
     PopupMenuButton popup;
     GlobalKey popupKey = GlobalKey();
     Widget btn = Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         widget.$first,
         if (widget.$props.splitButton)

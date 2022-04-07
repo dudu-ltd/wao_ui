@@ -149,7 +149,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'others/WCollapse',
+      initialRoute: 'navigation/WDropdown',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -281,7 +281,7 @@ class _IndexPageState extends State<IndexPage> {
         ));
       } else {
         // createMd(preId, node['id']).then((e) {});
-        createDemo(preId, node['id']).then((e) {});
+        // createDemo(preId, node['id']).then((e) {});
         result.add(ListTile(
           onTap: () => to(node['text'], fileId(preId, node['id'])),
           title: Text(node['text']),
@@ -378,83 +378,83 @@ regist() {}''');
       //     {"id": "about/introduce", "text": "项目介绍"},
       //   ]
       // },
-      // {
-      //   "id": "basic",
-      //   "text": "常用组件",
-      //   "children": [
-      //     {"id": "WButton", "text": "按钮", "finish": true},
-      //     {"id": "WContainer", "text": "布局", "finish": true}
-      //   ]
-      // },
-      // {
-      //   "id": "data",
-      //   "text": "展示",
-      //   "children": [
-      //     // {"id": "WAvatar", "text": "头像", "finish": true},
-      //     // {"id": "WBadge", "text": "角标", "finish": true},
-      //     // {"id": "WDescriptions", "text": "对象描述"},
-      //     // {"id": "WEmpty", "text": "空提醒", "finish": true},
-      //     // {"id": "WPagination", "text": "分页", "finish": true},
-      //     // {"id": "WProgress", "text": "进度条", "finish": true},
-      //     // {"id": "WResult", "text": "结果", "finish": true},
-      //     // {"id": "WSkeleton", "text": "页面骨架"},
-      //     // {"id": "WTable", "text": "表格"},
-      //     // {"id": "WTag", "text": "标签", "finish": true},
-      //     // {"id": "WTree", "text": "树"}
-      //   ]
-      // },
-      // {
-      //   "id": "form",
-      //   "text": "表单",
-      //   "children": [
-      //     // {"id": "WCascader", "text": "级联选择器", 'finish': true},
-      //     // {"id": "WCheckbox", "text": "复选", 'finish': true},
-      //     // {"id": "WColorPicker", "text": "颜色选择器"},
-      //     // {"id": "WDatePicker", "text": "日期选择器"},
-      //     // {"id": "WDateTimePicker", "text": "日期时间选择器"},
-      //     // {"id": "WInputNumber", "text": "数字输入框", 'finish': true},
-      //     // {"id": "WInput", "text": "输入框", 'finish': true},
-      //     // {"id": "WRadio", "text": "单选", 'finish': true},
-      //     // {"id": "WRate", "text": "评分"},
-      //     // {"id": "WSelect", "text": "下拉框", 'finish': true},
-      //     // {"id": "WSlider", "text": "滑动设值", "finish": true},
-      //     // {"id": "WSwitch", "text": "开关", "finish": true},
-      //     // {"id": "WTimePicker", "text": "时间选择器"},
-      //     // {"id": "WTransfer", "text": "穿梭框"},
-      //     // {"id": "WUpload", "text": "文件上传"}
-      //   ]
-      // },
-      // {
-      //   "id": "navigation",
-      //   "text": "导航",
-      //   "children": [
-      //     {"id": "WBreadcrumb", "text": "面包屑"},
-      //     {"id": "WDropdown", "text": "下拉菜单"},
-      //     {"id": "WMenu", "text": "菜单"},
-      //     {"id": "WPageHeader", "text": "表头"},
-      //     {"id": "WSteps", "text": "步骤"},
-      //     {"id": "WTabs", "text": "Tab 页"}
-      //   ]
-      // },
-      // {
-      //   "id": "notice",
-      //   "text": "通知/消息",
-      //   "children": [
-      //     {"id": "WAlert", "text": "对话框"},
-      //     {"id": "WLoading", "text": "加载中"},
-      //     {"id": "WMessage", "text": "提醒"},
-      //     {"id": "WMessageBox", "text": "消息窗"},
-      //     {"id": "WNotification", "text": "消息提醒"}
-      //   ]
-      // },
+      {
+        "id": "basic",
+        "text": "常用组件",
+        "children": [
+          {"id": "WButton", "text": "按钮", "finish": true},
+          {"id": "WContainer", "text": "布局", "finish": true}
+        ]
+      },
+      {
+        "id": "data",
+        "text": "展示",
+        "children": [
+          {"id": "WAvatar", "text": "头像", "finish": true},
+          {"id": "WBadge", "text": "角标", "finish": true},
+          {"id": "WDescriptions", "text": "对象描述"},
+          {"id": "WEmpty", "text": "空提醒", "finish": true},
+          {"id": "WPagination", "text": "分页", "finish": true},
+          {"id": "WProgress", "text": "进度条", "finish": true},
+          {"id": "WResult", "text": "结果", "finish": true},
+          {"id": "WSkeleton", "text": "页面骨架"},
+          {"id": "WTable", "text": "表格", 'finish': true},
+          {"id": "WTag", "text": "标签", "finish": true},
+          {"id": "WTree", "text": "树"}
+        ]
+      },
+      {
+        "id": "form",
+        "text": "表单",
+        "children": [
+          {"id": "WCascader", "text": "级联选择器", 'finish': true},
+          {"id": "WCheckbox", "text": "复选", 'finish': true},
+          {"id": "WColorPicker", "text": "颜色选择器"},
+          {"id": "WDatePicker", "text": "日期选择器"},
+          {"id": "WDateTimePicker", "text": "日期时间选择器"},
+          {"id": "WInputNumber", "text": "数字输入框", 'finish': true},
+          {"id": "WInput", "text": "输入框", 'finish': true},
+          {"id": "WRadio", "text": "单选", 'finish': true},
+          {"id": "WRate", "text": "评分"},
+          {"id": "WSelect", "text": "下拉框", 'finish': true},
+          {"id": "WSlider", "text": "滑动设值", "finish": true},
+          {"id": "WSwitch", "text": "开关", "finish": true},
+          {"id": "WTimePicker", "text": "时间选择器"},
+          {"id": "WTransfer", "text": "穿梭框"},
+          {"id": "WUpload", "text": "文件上传"}
+        ]
+      },
+      {
+        "id": "navigation",
+        "text": "导航",
+        "children": [
+          {"id": "WBreadcrumb", "text": "面包屑"},
+          {"id": "WDropdown", "text": "下拉菜单", "finish": true},
+          {"id": "WMenu", "text": "菜单"},
+          {"id": "WPageHeader", "text": "表头"},
+          {"id": "WSteps", "text": "步骤"},
+          {"id": "WTabs", "text": "Tab 页"}
+        ]
+      },
+      {
+        "id": "notice",
+        "text": "通知/消息",
+        "children": [
+          {"id": "WAlert", "text": "对话框"},
+          {"id": "WLoading", "text": "加载中"},
+          {"id": "WMessage", "text": "提醒"},
+          {"id": "WMessageBox", "text": "消息窗"},
+          {"id": "WNotification", "text": "消息提醒"}
+        ]
+      },
       {
         "id": "others",
         "text": "其他",
         "children": [
           {"id": "WBacktop", "text": "回到顶部"},
           {"id": "WCalendar", "text": "日历"},
-          // {"id": "WCard", "text": "卡片", 'finish': true},
-          // {"id": "WCarousel", "text": "走马灯", 'finish': true},
+          {"id": "WCard", "text": "卡片", 'finish': true},
+          {"id": "WCarousel", "text": "走马灯", 'finish': true},
           {"id": "WCollapse", "text": "折叠面板"},
           {"id": "WDialog", "text": "弹窗"},
           {"id": "WDivider", "text": "分隔线"},
