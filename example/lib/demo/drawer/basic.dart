@@ -7,11 +7,11 @@ var direction = ValueNotifier('ltr');
 var drawer = ValueNotifier(false);
 var drawerBasic = Demo(
   'drawerBasic',
-  Row(
-    children: [
-      StatefulBuilder(builder: (context, setState) {
-        direction.addListener(() => setState(() {}));
-        return WRadioGroup(
+  StatefulBuilder(builder: (context, setState) {
+    direction.addListener(() => setState(() {}));
+    return Row(
+      children: [
+        WRadioGroup(
           props: WRadioGroupProp(value: direction),
           slots: WRadioGroupSlot([
             WRadio(
@@ -31,26 +31,26 @@ var drawerBasic = Demo(
               slots: WRadioSlot('从下往上开'),
             ),
           ]),
-        );
-      }),
-      WButton(
-        props: WButtonProp(type: 'primary'),
-        slots: WButtonSlot('点我打开'),
-        on: WButtonOn(click: () => drawer.value = true),
-      ),
-      WDrawer(
-        props: WDrawerProp(
-          title: '我是标题',
-          direction: direction.value,
-          beforeClose: (done) {
-            done?.call();
-          },
-          visible: drawer,
         ),
-        slots: WDrawerSlot(Text('我来啦！')),
-      ),
-    ],
-  ),
+        WButton(
+          props: WButtonProp(type: 'primary'),
+          slots: WButtonSlot('点我打开'),
+          on: WButtonOn(click: () => drawer.value = true),
+        ),
+        WDrawer(
+          props: WDrawerProp(
+            title: '我是标题',
+            direction: direction.value,
+            beforeClose: (done) {
+              done?.call();
+            },
+            visible: drawer,
+          ),
+          slots: WDrawerSlot(Text('我来啦！')),
+        ),
+      ],
+    );
+  }),
   r'''
 StatefulBuilder(
       builder: (context, setState) {
