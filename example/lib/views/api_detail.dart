@@ -36,6 +36,7 @@ import 'package:example/demo/messageBox/_index.dart' as message_box;
 import 'package:example/demo/breadcrumb/_index.dart' as breadcrumb;
 import 'package:example/demo/steps/_index.dart' as steps;
 import 'package:example/demo/dropdown/_index.dart' as dropdown;
+import 'package:example/demo/menu/_index.dart' as menu;
 import 'package:example/demo/popconfirm/_index.dart' as popconfirm;
 import 'package:example/demo/alert/_index.dart' as alert;
 import 'package:example/demo/tooltip/_index.dart' as tooltip;
@@ -118,6 +119,7 @@ class _ApiDetailState extends State<ApiDetail> {
     breadcrumb.regist();
     steps.regist();
     dropdown.regist();
+    menu.regist();
     popconfirm.regist();
     alert.regist();
     tooltip.regist();

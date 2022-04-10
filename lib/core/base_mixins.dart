@@ -219,7 +219,8 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
 
   instanceof(t, type) {
     return type == Map &&
-        t.toString().startsWith('_InternalImmutableLinkedHashMap');
+            t.toString().startsWith('_InternalImmutableLinkedHashMap') ||
+        t.toString().startsWith('_InternalLinkedHashMap');
   }
 
   int get $defaultSlotBeforeLength {

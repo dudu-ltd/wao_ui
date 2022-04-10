@@ -94,7 +94,7 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
   }
 
   double get panelMinWidth {
-    return 180;
+    return 280;
   }
 
   GlobalKey get triggerWidgetKey {
