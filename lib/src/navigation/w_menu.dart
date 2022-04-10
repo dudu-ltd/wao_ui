@@ -73,9 +73,47 @@ class WMenu extends StatefulWidget
     return slot as Widget;
   }
 
+  Function(Map) childrenGetter = (menu) => menu['children'];
+  Function(Map) valueGetter = (menu) => menu['value'];
+  Function(Map) textGetter = (menu) => menu['text'];
+
+  Widget mapDataToWidget(Map menu) {
+    var children = childrenGetter.call(menu);
+    if (children != null) {
+      children as List;
+      return WSubmenu()
+        ..$props.index = valueGetter.call(menu).toString()
+        ..$slots.title =
+            (WMenuItem()..$slots.$ = textGetter.call(menu).toString())
+        ..$slots.$ = List.generate(
+          children.length,
+          (index) {
+            var child = children[index];
+            if (child is List) {
+              return WMenuItemGroup()
+                ..$slots.$ = List.generate(child.length, (index) {
+                  var m = child[index];
+                  return mapDataToWidget(m);
+                });
+            } else {
+              return mapDataToWidget(child);
+            }
+          },
+        );
+    } else {
+      return WMenuItem()
+        ..$props.index = valueGetter.call(menu).toString()
+        ..$slots.$ = textGetter.call(menu).toString();
+    }
+  }
+
   @override
   List<SlotTranslator> get slotTranslatorsCustom {
     return [
+      SlotTranslator(Map, (menu, i, c, l) {
+        var s = mapDataToWidget(menu);
+        return injectRootMenu(s, i, c, l);
+      }),
       SlotTranslator(WMenuItem, injectRootMenu),
       SlotTranslator(WSubmenu, injectRootMenu),
       SlotTranslator(WMenuItemGroup, injectRootMenu),

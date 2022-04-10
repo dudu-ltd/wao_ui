@@ -12,13 +12,6 @@ class WMenuItem extends StatefulWidget
     with
         HasRootMenu,
         BaseMixins<WMenuItemOn, WMenuItemProp, WMenuItemSlot, WMenuItemStyle> {
-  late AnimationController expandController;
-  late AnimationController bgController;
-  late Animation<double> iconAngle;
-  late Animation<Color?> bgColor;
-  late ValueNotifier isHover = ValueNotifier(false);
-  late ValueNotifier isExpand = ValueNotifier(false);
-
   WSubmenu? belongTo;
 
   WMenuItem({
@@ -98,22 +91,28 @@ class WMenuItem extends StatefulWidget
 }
 
 class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
+  late AnimationController expandController;
+  late AnimationController bgController;
+  late Animation<double> iconAngle;
+  late Animation<Color?> bgColor;
+  late ValueNotifier isHover = ValueNotifier(false);
+  late ValueNotifier isExpand = ValueNotifier(false);
+  FocusNode focusNode = FocusNode();
   @override
   void initState() {
     // 设置展开动画
-    widget.expandController =
+    expandController =
         AnimationController(vsync: this, duration: CfgGlobal.duration);
-    widget.iconAngle = Tween(begin: 0.0, end: pi)
-        .animate(widget.expandController)
+    iconAngle = Tween(begin: 0.0, end: pi).animate(expandController)
       ..addListener(updateView);
 
     // 设置鼠标浮入动画
-    widget.bgController =
+    bgController =
         AnimationController(vsync: this, duration: CfgGlobal.duration);
-    widget.bgColor = ColorTween(
-            begin: widget.rootMenu?.$style?.backgroundColor,
+    bgColor = ColorTween(
+            begin: Colors.white,
             end: widget.rootMenu?.$style?.hoverBackgroundColor)
-        .animate(widget.bgController)
+        .animate(bgController)
       ..addListener(updateView);
 
     valueChangeBind();
@@ -124,39 +123,47 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
     widget.rootMenu?.collapse.addListener(updateView);
     widget.rootMenu?.value.addListener(updateView);
     // 触发展开动画
-    widget.isExpand.addListener(() {
-      if (widget.isExpand.value) {
-        Timer(
-          Duration(milliseconds: showTime),
-          () {
-            widget.expandController.forward();
-            widget.belongTo?.showSubmenu.value = true;
-          },
-        );
+    isExpand.addListener(() {
+      if (widget.rootMenu?.$props.triggerIsClick == true) {
+        widget.belongTo?.state?.showSubmenu.value = isExpand.value;
+        if (isExpand.value)
+          expandController.forward();
+        else
+          expandController.reverse();
       } else {
-        Timer(
-          Duration(milliseconds: hideTime),
-          () {
-            widget.expandController.reverse();
-            widget.belongTo?.showSubmenu.value = false;
-          },
-        );
+        if (isExpand.value) {
+          Timer(
+            Duration(milliseconds: showTime),
+            () {
+              expandController.forward();
+              widget.belongTo?.state?.showSubmenu.value = true;
+            },
+          );
+        } else {
+          Timer(
+            Duration(milliseconds: hideTime),
+            () {
+              expandController.reverse();
+              widget.belongTo?.state?.showSubmenu.value = false;
+            },
+          );
+        }
       }
     });
 
     // 触发鼠标浮入动画
-    widget.isHover.addListener(() {
-      if (widget.isHover.value) {
-        widget.bgController.forward();
+    isHover.addListener(() {
+      if (isHover.value) {
+        bgController.forward();
       } else {
-        widget.bgController.reverse();
+        bgController.reverse();
       }
     });
 
     bool isOpen = widget.rootMenu?.openeds.value
             .contains(widget.belongTo?.$props.index) ??
         false;
-    widget.isExpand.value = isOpen;
+    isExpand.value = isOpen;
   }
 
   int get showTime {
@@ -172,20 +179,20 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
   }
 
   pointEnter(e) {
-    if (expandByHover) widget.isExpand.value = true;
-    widget.bgController.forward();
+    if (expandByHover) isExpand.value = true;
+    bgController.forward();
     widget.$on.enter?.call(e);
   }
 
   pointExit(e) {
-    if (expandByHover) widget.isExpand.value = false;
-    widget.bgController.reverse();
+    if (expandByHover) isExpand.value = false;
+    bgController.reverse();
     widget.$on.exit?.call(e);
   }
 
   pointClick() {
     if (!expandByHover) {
-      widget.isExpand.value = !widget.isExpand.value;
+      isExpand.value = !isExpand.value;
       widget.$on.click?.call();
       widget.rootMenu?.value.value = widget.$props.index;
     }
@@ -194,10 +201,10 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
   @override
   void dispose() {
     widget.rootMenu?.collapse.removeListener(updateView);
-    widget.expandController.dispose();
-    widget.bgController.dispose();
-    widget.isExpand.dispose();
-    widget.isHover.dispose();
+    expandController.dispose();
+    bgController.dispose();
+    isExpand.dispose();
+    isHover.dispose();
     super.dispose();
   }
 
@@ -213,14 +220,14 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
       ],
     );
     var box = boxWrapper(itemBody);
-    return eventWrapper(box);
+    return Focus(focusNode: focusNode, child: eventWrapper(box));
   }
 
   Widget eventWrapper(Widget child) {
     return MouseRegion(
       onEnter: pointEnter,
       onExit: pointExit,
-      child: InkWell(
+      child: GestureDetector(
         child: child,
         onTap: pointClick,
       ),
@@ -242,7 +249,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
                 : Colors.transparent,
           ),
         ),
-        color: widget.bgColor.value ??
+        color: bgColor.value ??
             widget.rootMenu?.$style?.backgroundColor ??
             Colors.transparent,
       ),
@@ -286,7 +293,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Transform.rotate(
-            angle: widget.iconAngle.value,
+            angle: iconAngle.value,
             child: Icon(
               widget.$slots.suffix,
               size: 12,

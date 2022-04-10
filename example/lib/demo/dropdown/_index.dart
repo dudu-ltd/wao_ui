@@ -8,7 +8,16 @@ regist() {
     'dropdownBasic',
     WDropdown()
       ..$props.type = 'primary'
-      ..$slots.$ = WAvatar()
+      ..$slots.$ = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          WAvatar(),
+          Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: CfgGlobal.primaryColor,
+          )
+        ],
+      )
       ..$slots.dropdown = (WDropdownMenu()
         ..$slots.$ = [
           WDropdownItem()..$slots.$ = '个人主页',
@@ -19,12 +28,16 @@ regist() {
         ]),
     r'''
     WDropdown()
-      ..$slots.$ = '发送'
+      ..$props.type = 'primary'
+      ..$slots.$ = WAvatar()
       ..$slots.dropdown = (WDropdownMenu()
         ..$slots.$ = [
-          WDropdownItem()..$slots.$ = '按Enter键发送消息',
-          WDropdownItem()..$slots.$ = '按Ctrl+Enter键发送消息',
-        ])
+          WDropdownItem()..$slots.$ = '个人主页',
+          WDropdownItem()..$slots.$ = '我的星集库',
+          WDropdownItem()..$slots.$ = '设置',
+          WDropdownItem()..$slots.$ = '帮助',
+          WDropdownItem()..$slots.$ = '退出',
+        ]),
     ''',
   );
 
@@ -103,9 +116,8 @@ regist() {
     'dropdownTriggerHover',
     WDropdown()
       ..$props.splitButton = true
-      ..$slots.$ = (WButton()
-        ..$props.type = 'primary'
-        ..$slots.$ = '发送')
+      ..$props.type = 'primary'
+      ..$slots.$ = '发送'
       ..$slots.dropdown = (WDropdownMenu()
         ..$slots.$ = [
           WDropdownItem()..$slots.$ = '按Enter键发送消息',

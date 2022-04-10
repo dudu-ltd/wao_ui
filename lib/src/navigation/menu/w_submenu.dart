@@ -11,14 +11,11 @@ class WSubmenu extends StatefulWidget
     with
         HasRootMenu,
         BaseMixins<WSubmenuOn, WSubmenuProp, WSubmenuSlot, WSubmenuStyle> {
-  // late AnimationController expandController;
-  late ValueNotifier<bool> showSubmenu = ValueNotifier(false);
-  late AnimationController itemsPanelController;
-  late Animation<double> itemsPanelHeight;
-
   late GlobalKey childrenKey;
 
   late GlobalKey submenuKey;
+
+  _WSubmenuState? state;
 
   @override
   get $childrenKey {
@@ -60,6 +57,11 @@ class WSubmenu extends StatefulWidget
 
 class _WSubmenuState extends State<WSubmenu>
     with TickerProviderStateMixin, HasOverlayMixin, WidgetsBindingObserver {
+  // late AnimationController expandController;
+  late ValueNotifier<bool> showSubmenu = ValueNotifier(false);
+  late AnimationController itemsPanelController;
+  late Animation<double> itemsPanelHeight;
+
   @override
   GlobalKey get triggerWidgetKey {
     return widget.submenuKey;
@@ -67,32 +69,33 @@ class _WSubmenuState extends State<WSubmenu>
 
   @override
   void initState() {
-    widget.showSubmenu.addListener(() {
+    widget.state = this;
+    showSubmenu.addListener(() {
       if (widget.useOverlay) {
-        if (widget.showSubmenu.value) {
+        if (showSubmenu.value) {
           showPanelAction();
         } else {
           hidePanelAction();
         }
       } else {
-        if (widget.showSubmenu.value) {
-          widget.itemsPanelController.forward();
+        if (showSubmenu.value) {
+          itemsPanelController.forward();
         } else {
-          widget.itemsPanelController.reverse();
+          itemsPanelController.reverse();
         }
       }
     });
-    widget.itemsPanelController =
+    itemsPanelController =
         AnimationController(vsync: this, duration: CfgGlobal.duration);
-    widget.itemsPanelHeight = Tween(end: 0.0, begin: 700.0)
-        .animate(widget.itemsPanelController)
+    itemsPanelHeight = Tween(end: 0.0, begin: 700.0)
+        .animate(itemsPanelController)
       ..addListener(updateView);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        widget.itemsPanelHeight = Tween(
+        itemsPanelHeight = Tween(
           begin: 0.0,
           end: (widget.childrenKey.currentContext)?.size?.height ?? 700.0,
-        ).animate(widget.itemsPanelController)
+        ).animate(itemsPanelController)
           ..addListener(updateView);
       });
 
@@ -106,7 +109,7 @@ class _WSubmenuState extends State<WSubmenu>
     bool isOpen =
         widget.rootMenu?.openeds.value.contains(widget.$props.index) ?? false;
     if (isOpen) {
-      widget.itemsPanelController.forward();
+      itemsPanelController.forward();
     }
   }
 
@@ -116,18 +119,10 @@ class _WSubmenuState extends State<WSubmenu>
   void dispose() {
     Navigator.of(context).pop();
     panelOverlay?.dispose();
-    widget.itemsPanelController.dispose();
-    // panelController.dispose();
+    itemsPanelController.dispose();
+    panelController.dispose();
     WidgetsBinding.instance.removeObserver(this);
-    print('---------------------- w_submenu dispose ------------------');
     super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    // TODO: implement deactivate
-    print('---------------------- w_submenu deactivate ------------------');
-    super.deactivate();
   }
 
   @override
@@ -142,8 +137,7 @@ class _WSubmenuState extends State<WSubmenu>
         if (title != null) title!,
         if (!widget.useOverlay)
           ConstrainedBox(
-            constraints:
-                BoxConstraints(maxHeight: widget.itemsPanelHeight.value),
+            constraints: BoxConstraints(maxHeight: itemsPanelHeight.value),
             child: SingleChildScrollView(
               child: FractionallySizedBox(
                 widthFactor: 1,
@@ -185,18 +179,17 @@ class _WSubmenuState extends State<WSubmenu>
       if (widget.rootMenu!.$props.triggerIsClick) {
         return Listener(
           child: SingleChildScrollView(child: widget.$col),
-          onPointerUp: (e) =>
-              widget.showSubmenu.value = !widget.showSubmenu.value,
+          onPointerUp: (e) => showSubmenu.value = !showSubmenu.value,
         );
       } else {
         return SizedBox(
           child: MouseRegion(
             onEnter: (e) {
               if (widget.rootMenu!.$props.triggerIsHover) {
-                widget.showSubmenu.value = true;
+                showSubmenu.value = true;
               }
             },
-            onExit: (e) => widget.showSubmenu.value = false,
+            onExit: (e) => showSubmenu.value = false,
             child: SingleChildScrollView(child: widget.$col),
           ),
         );

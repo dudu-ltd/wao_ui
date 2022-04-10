@@ -28,19 +28,31 @@ class WMenuItemGroup extends StatelessWidget
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: lineHeight,
-          child: Align(
-            child: Padding(
-              padding: $style?.padding ?? EdgeInsets.only(left: paddingVal),
-              child: title,
+        if (hasTitle)
+          SizedBox(
+            height: lineHeight,
+            child: Align(
+              child: Padding(
+                padding: $style?.padding ?? EdgeInsets.only(left: paddingVal),
+                child: title,
+              ),
+              alignment: Alignment.centerLeft,
             ),
-            alignment: Alignment.centerLeft,
           ),
-        ),
+        if (!hasTitle)
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Divider(
+              height: 8,
+            ),
+          ),
         $col,
       ],
     );
+  }
+
+  bool get hasTitle {
+    return $slots.title != null || $props.title != null;
   }
 
   @override
