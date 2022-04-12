@@ -133,6 +133,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     var newWidget = null;
     var t = slot.runtimeType;
     for (var translator in translators) {
+      print('slot: $slot，type: $t，Type: ${translator.type}');
       if (t == translator.type || instanceof(t, translator.type)) {
         newWidget =
             translator.fn.call(slot, index, this, $defaultSlotBeforeLength);
@@ -218,6 +219,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   }
 
   instanceof(t, type) {
+    print(type);
     return type == Map &&
             t.toString().startsWith('_InternalImmutableLinkedHashMap') ||
         t.toString().startsWith('_InternalLinkedHashMap');

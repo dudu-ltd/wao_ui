@@ -5,12 +5,9 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
-class WBreadcrumb extends StatelessWidget
-    with
-        BaseMixins<WBreadcrumbOn, WBreadcrumbProp, WBreadcrumbSlot,
-            WBreadcrumbStyle> {
-  WBreadcrumb(
-    dynamic defaultSlot, {
+class WBreadcrumb extends WStatelessWidget<WBreadcrumbOn, WBreadcrumbProp,
+    WBreadcrumbSlot, WBreadcrumbStyle> {
+  WBreadcrumb({
     Key? key,
     WBreadcrumbOn? on,
     WBreadcrumbProp? props,
@@ -19,21 +16,21 @@ class WBreadcrumb extends StatelessWidget
   }) : super(key: key) {
     $on = on ?? WBreadcrumbOn();
     $props = props ?? WBreadcrumbProp();
-    $slots = slots ?? WBreadcrumbSlot(defaultSlot);
     $style = style ?? WBreadcrumbStyle();
-    $slots.$ = defaultSlot;
+    $slots = slots ?? WBreadcrumbSlot(null);
     init();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     // FIXME : 待解决超出宽度时水平滚动问题
     return Row(
       children: slotJoinSep,
     );
   }
 
-  List<SlotTranslator> get slotTranslatorCustom {
+  @override
+  List<SlotTranslator> get slotTranslatorsCustom {
     return [
       SlotTranslator(
         WBreadcrumbData,
@@ -76,6 +73,8 @@ class WBreadcrumb extends StatelessWidget
   }
 
   Widget get sep {
+    if ($props.separatorIcon != null)
+      return Icon($props.separatorIcon, size: 14, color: Colors.grey);
     return Text($props.separator);
   }
 }
@@ -105,8 +104,9 @@ class WBreadcrumbProp extends BaseProp {
   late String itemIconField;
   late String itemTypeField;
 
-  @Deprecated("Unuseful for current version")
+  @Deprecated("Unuseful for current version. Please use separatorIcon instead")
   String? separatorClass;
+  IconData? separatorIcon;
 
   WBreadcrumbProp(
       {separator,
@@ -155,7 +155,8 @@ class WBreadcrumbItem extends StatelessWidget
         padding: padding,
         child: Row(
           children: [
-            if ($props.data.icon != null) Icon($props.data.icon),
+            if ($props.data.icon != null)
+              Icon($props.data.icon, size: 14, color: Colors.grey),
             Text($props.data.text)
           ],
         ),

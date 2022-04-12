@@ -14,7 +14,8 @@ class ApiBreadcrumb extends StatelessWidget {
   List<Widget> get basicGroup {
     return [
       WBreadcrumb(
-        const [
+        props: WBreadcrumbProp(separator: '>'),
+        slots: WBreadcrumbSlot(const [
           {'text': 'tttt1', 'icon': Icons.edit},
           {'text': 'tttt2', 'icon': Icons.flutter_dash},
           {'text': 'tttt3', 'icon': Icons.edit},
@@ -22,8 +23,7 @@ class ApiBreadcrumb extends StatelessWidget {
           {'text': 'tttt5', 'icon': Icons.edit},
           {'text': 'tttt6', 'icon': Icons.edit},
           {'text': 'tttt7', 'icon': Icons.edit},
-        ],
-        props: WBreadcrumbProp(separator: '>'),
+        ]),
       )
     ];
   }

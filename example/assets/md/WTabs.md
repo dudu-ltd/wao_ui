@@ -1,5 +1,5 @@
-# Tabs
-```
-graph LR
-11
+# Tabs导航
+
+```widget
+tabsBasic
 ```
