@@ -40,7 +40,7 @@ class Api extends StatelessWidget {
             fontFamily: 'PingFang',
             primarySwatch: CfgGlobal.primaryColor,
             textTheme: TextTheme(bodyText2: TextStyle(height: 1.3))),
-        themeMode: ThemeMode.dark,
+        themeMode: ThemeMode.light,
         onGenerateRoute: buildNestedRoutes(
           {
             '/': NestedRoute(
