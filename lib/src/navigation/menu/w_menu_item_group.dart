@@ -5,11 +5,11 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WMenuItemGroup extends StatelessWidget
-    with
-        HasRootMenu,
-        BaseMixins<WMenuItemGroupOn, WMenuItemGroupProp, WMenuItemGroupSlot,
-            WMenuItemGroupStyle> {
+class WMenuItemGroup extends WStatelessWidget<
+    WMenuItemGroupOn,
+    WMenuItemGroupProp,
+    WMenuItemGroupSlot,
+    WMenuItemGroupStyle> with HasRootMenu {
   WMenuItemGroup({
     Key? key,
     WMenuItemGroupOn? on,
@@ -25,7 +25,7 @@ class WMenuItemGroup extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Column(
       children: [
         if (hasTitle)

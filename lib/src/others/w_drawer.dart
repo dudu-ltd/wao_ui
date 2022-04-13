@@ -7,7 +7,7 @@ import 'package:wao_ui/core/utils/string_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class _WDrawerState extends State<WDrawer> {
+class _WDrawerState extends WState<WDrawer> {
   late OverlayEntry panelOverlay;
 
   showPanelAction() {
@@ -38,7 +38,7 @@ class _WDrawerState extends State<WDrawer> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return const SizedBox(
       width: 0,
       height: 0,
@@ -165,7 +165,7 @@ class WDrawerView
   State<WDrawerView> createState() => _WDrawerViewState();
 }
 
-class _WDrawerViewState extends State<WDrawerView>
+class _WDrawerViewState extends WState<WDrawerView>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController panelController;
   late Animation<Color?> panelBackgroundColor;
@@ -203,7 +203,7 @@ class _WDrawerViewState extends State<WDrawerView>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(0),
       body: Stack(

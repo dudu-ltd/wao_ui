@@ -7,10 +7,8 @@ import 'package:wao_ui/core/utils/layout_util.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
 
-class WHoverHandle extends StatefulWidget
-    with
-        BaseMixins<WHoverHandleOn, WHoverHandleProp, WHoverHandleSlot,
-            WHoverHandleStyle> {
+class WHoverHandle extends WStatefulWidget<WHoverHandleOn, WHoverHandleProp,
+    WHoverHandleSlot, WHoverHandleStyle> {
   @override
   State<WHoverHandle> createState() => _WHoverHandleState();
   WHoverHandle({
@@ -30,9 +28,9 @@ class WHoverHandle extends StatefulWidget
   bool isHover = false;
 }
 
-class _WHoverHandleState extends State<WHoverHandle> {
+class _WHoverHandleState extends WState<WHoverHandle> {
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return MouseRegion(
       onEnter: (event) {
         print('onEnter');

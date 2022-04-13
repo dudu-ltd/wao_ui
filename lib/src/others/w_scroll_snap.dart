@@ -12,7 +12,7 @@ import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_container_layout.dart';
 
 /// TODO 插槽二次渲染导致事件重复绑定的问题
-class _WScrollSnapState extends State<WScrollSnap>
+class _WScrollSnapState extends WState<WScrollSnap>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late ScrollController scrollCtrl;
   Widget snap = Container();
@@ -76,7 +76,7 @@ class _WScrollSnapState extends State<WScrollSnap>
 
   GlobalKey scrollKey = GlobalKey();
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return WContainerLayout()
       ..$slots.$ = SingleChildScrollView(
         key: scrollKey,
@@ -201,10 +201,8 @@ class _WScrollSnapState extends State<WScrollSnap>
   }
 }
 
-class WScrollSnap extends StatefulWidget
-    with
-        BaseMixins<WScrollSnapOn, WScrollSnapProp, WScrollSnapSlot,
-            WScrollSnapStyle> {
+class WScrollSnap extends WStatefulWidget<WScrollSnapOn, WScrollSnapProp,
+    WScrollSnapSlot, WScrollSnapStyle> {
   WScrollSnap({
     Key? key,
     WScrollSnapOn? on,

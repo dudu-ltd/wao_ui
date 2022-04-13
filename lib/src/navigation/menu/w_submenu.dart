@@ -7,10 +7,8 @@ import 'package:wao_ui/wao_ui.dart';
 
 import '../../mixins/has_overlay_mixin.dart';
 
-class WSubmenu extends StatefulWidget
-    with
-        HasRootMenu,
-        BaseMixins<WSubmenuOn, WSubmenuProp, WSubmenuSlot, WSubmenuStyle> {
+class WSubmenu extends WStatefulWidget<WSubmenuOn, WSubmenuProp, WSubmenuSlot,
+    WSubmenuStyle> with HasRootMenu {
   late GlobalKey childrenKey;
 
   late GlobalKey submenuKey;
@@ -55,7 +53,7 @@ class WSubmenu extends StatefulWidget
   }
 }
 
-class _WSubmenuState extends State<WSubmenu>
+class _WSubmenuState extends WState<WSubmenu>
     with TickerProviderStateMixin, HasOverlayMixin, WidgetsBindingObserver {
   // late AnimationController expandController;
   late ValueNotifier<bool> showSubmenu = ValueNotifier(false);
@@ -126,7 +124,7 @@ class _WSubmenuState extends State<WSubmenu>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     widget.childrenKey = GlobalKey();
     widget.submenuKey = GlobalKey();
 
