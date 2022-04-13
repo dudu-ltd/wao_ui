@@ -5,10 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WMessageBox extends StatelessWidget
-    with
-        BaseMixins<WMessageBoxOn, WMessageBoxProp, WMessageBoxSlot,
-            WMessageBoxStyle> {
+class WMessageBox extends WStatelessWidget<WMessageBoxOn, WMessageBoxProp,
+    WMessageBoxSlot, WMessageBoxStyle> {
   WMessageBox({
     Key? key,
     WMessageBoxOn? on,
@@ -24,7 +22,7 @@ class WMessageBox extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

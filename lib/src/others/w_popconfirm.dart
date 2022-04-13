@@ -6,10 +6,8 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WPopconfirm extends StatelessWidget
-    with
-        BaseMixins<WPopconfirmOn, WPopconfirmProp, WPopconfirmSlot,
-            WPopconfirmStyle> {
+class WPopconfirm extends WStatelessWidget<WPopconfirmOn, WPopconfirmProp,
+    WPopconfirmSlot, WPopconfirmStyle> {
   WPopconfirm({
     Key? key,
     WPopconfirmOn? on,
@@ -25,7 +23,7 @@ class WPopconfirm extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

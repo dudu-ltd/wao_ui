@@ -5,10 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WTimePicker extends StatelessWidget
-    with
-        BaseMixins<WTimePickerOn, WTimePickerProp, WTimePickerSlot,
-            WTimePickerStyle> {
+class WTimePicker extends WStatelessWidget<WTimePickerOn, WTimePickerProp,
+    WTimePickerSlot, WTimePickerStyle> {
   WTimePicker({
     Key? key,
     WTimePickerOn? on,
@@ -23,7 +21,7 @@ class WTimePicker extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 

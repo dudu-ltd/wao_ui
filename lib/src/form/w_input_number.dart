@@ -9,10 +9,8 @@ import 'package:wao_ui/wao_ui.dart';
 import 'w_input.dart';
 
 // TODO 添加对键盘上下键的监听
-class WInputNumber extends StatelessWidget
-    with
-        BaseMixins<WInputNumberOn, WInputNumberProp, WInputNumberSlot,
-            WInputNumberStyle> {
+class WInputNumber extends WStatelessWidget<WInputNumberOn, WInputNumberProp,
+    WInputNumberSlot, WInputNumberStyle> {
   WInputNumber({
     Key? key,
     WInputNumberOn? on,
@@ -28,7 +26,7 @@ class WInputNumber extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return WInput(
       props: $props,
       slots: WInputSlot(

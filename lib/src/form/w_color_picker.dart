@@ -5,10 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WColorPicker extends StatelessWidget
-    with
-        BaseMixins<WColorPickerOn, WColorPickerProp, WColorPickerSlot,
-            WColorPickerStyle> {
+class WColorPicker extends WStatelessWidget<WColorPickerOn, WColorPickerProp,
+    WColorPickerSlot, WColorPickerStyle> {
   WColorPicker({
     Key? key,
     WColorPickerOn? on,
@@ -24,7 +22,7 @@ class WColorPicker extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

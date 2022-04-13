@@ -5,10 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WNotification extends StatelessWidget
-    with
-        BaseMixins<WNotificationOn, WNotificationProp, WNotificationSlot,
-            WNotificationStyle> {
+class WNotification extends WStatelessWidget<WNotificationOn, WNotificationProp,
+    WNotificationSlot, WNotificationStyle> {
   WNotification({
     Key? key,
     WNotificationOn? on,
@@ -24,7 +22,7 @@ class WNotification extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

@@ -41,10 +41,8 @@ class WTimelineSlot extends BaseSlot {
   WTimelineSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WTimelineItem extends StatelessWidget
-    with
-        BaseMixins<WTimelineItemOn, WTimelineItemProp, WTimelineItemSlot,
-            WTimelineItemStyle> {
+class WTimelineItem extends WStatelessWidget<WTimelineItemOn, WTimelineItemProp,
+    WTimelineItemSlot, WTimelineItemStyle> {
   WTimelineItem({
     Key? key,
     WTimelineItemOn? on,
@@ -60,7 +58,7 @@ class WTimelineItem extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

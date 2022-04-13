@@ -280,10 +280,8 @@ class WButtonSlot extends BaseSlot {
   WButtonSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WButtonGroup extends StatelessWidget
-    with
-        BaseMixins<WButtonGroupOn, WButtonGroupProp, WButtonGroupSlot,
-            WButtonGroupStyle> {
+class WButtonGroup extends WStatelessWidget<WButtonGroupOn, WButtonGroupProp,
+    WButtonGroupSlot, WButtonGroupStyle> {
   WButtonGroup({
     Key? key,
     WButtonGroupOn? on,
@@ -315,7 +313,7 @@ class WButtonGroup extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return $row;
   }
 }

@@ -130,10 +130,8 @@ class WBreadcrumbSlot extends BaseSlot {
 ///
 ///
 ///
-class WBreadcrumbItem extends StatelessWidget
-    with
-        BaseMixins<WBreadcrumbItemOn, WBreadcrumbItemProp, WBreadcrumbItemSlot,
-            WBreadcrumbItemStyle> {
+class WBreadcrumbItem extends WStatelessWidget<WBreadcrumbItemOn,
+    WBreadcrumbItemProp, WBreadcrumbItemSlot, WBreadcrumbItemStyle> {
   WBreadcrumbItem({
     Key? key,
     WBreadcrumbItemOn? on,
@@ -149,7 +147,7 @@ class WBreadcrumbItem extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return InkWell(
       child: Padding(
         padding: padding,
