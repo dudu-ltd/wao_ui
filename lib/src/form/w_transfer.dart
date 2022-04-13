@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WTransfer extends StatelessWidget
-    with BaseMixins<WTransferOn, WTransferProp, WTransferSlot, WTransferStyle> {
+class WTransfer extends WStatelessWidget<WTransferOn, WTransferProp,
+    WTransferSlot, WTransferStyle> {
   WTransfer({
     Key? key,
     WTransferOn? on,
@@ -22,7 +22,7 @@ class WTransfer extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

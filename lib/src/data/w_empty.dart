@@ -8,8 +8,8 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/others/w_image.dart';
 
-class WEmpty extends StatelessWidget
-    with BaseMixins<WEmptyOn, WEmptyProp, WEmptySlot, WEmptyStyle> {
+class WEmpty
+    extends WStatelessWidget<WEmptyOn, WEmptyProp, WEmptySlot, WEmptyStyle> {
   WEmpty({
     Key? key,
     WEmptyOn? on,
@@ -25,7 +25,7 @@ class WEmpty extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

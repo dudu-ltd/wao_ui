@@ -11,8 +11,8 @@ import 'package:wao_ui/wao_ui.dart';
 
 import '../../core/env.dart';
 
-class WFrame extends StatelessWidget
-    with BaseMixins<WFrameOn, WFrameProp, WFrameSlot, WFrameStyle> {
+class WFrame
+    extends WStatelessWidget<WFrameOn, WFrameProp, WFrameSlot, WFrameStyle> {
   WFrame({
     Key? key,
     WFrameOn? on,
@@ -28,7 +28,7 @@ class WFrame extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     Widget? title = isPc
         ? WindowTitleBarBox(
             child: Row(

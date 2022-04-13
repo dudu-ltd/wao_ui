@@ -7,8 +7,8 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/core/extension/theme_data_extension.dart';
 
-class WResult extends StatelessWidget
-    with BaseMixins<WResultOn, WResultProp, WResultSlot, WResultStyle> {
+class WResult extends WStatelessWidget<WResultOn, WResultProp, WResultSlot,
+    WResultStyle> {
   WResult({
     Key? key,
     WResultOn? on,
@@ -24,7 +24,7 @@ class WResult extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Padding(
       padding: cfgGlobal.result.outPadding,
       child: Column(

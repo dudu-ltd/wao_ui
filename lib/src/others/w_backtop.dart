@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WBacktop extends StatelessWidget
-    with BaseMixins<WBacktopOn, WBacktopProp, WBacktopSlot, WBacktopStyle> {
+class WBacktop extends WStatelessWidget<WBacktopOn, WBacktopProp, WBacktopSlot,
+    WBacktopStyle> {
   WBacktop({
     Key? key,
     WBacktopOn? on,
@@ -22,7 +22,7 @@ class WBacktop extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

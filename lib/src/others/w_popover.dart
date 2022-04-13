@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WPopover extends StatelessWidget
-    with BaseMixins<WPopoverOn, WPopoverProp, WPopoverSlot, WPopoverStyle> {
+class WPopover extends WStatelessWidget<WPopoverOn, WPopoverProp, WPopoverSlot,
+    WPopoverStyle> {
   WPopover({
     Key? key,
     WPopoverOn? on,
@@ -22,7 +22,7 @@ class WPopover extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

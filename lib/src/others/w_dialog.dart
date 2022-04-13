@@ -6,8 +6,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WDialog extends StatelessWidget
-    with BaseMixins<WDialogOn, WDialogProp, WDialogSlot, WDialogStyle> {
+class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
+    WDialogStyle> {
   WDialog({
     Key? key,
     WDialogOn? on,
@@ -117,7 +117,7 @@ class WDialog extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     setShow(context);
     $props.visible = false;
     return $slots.btn != null

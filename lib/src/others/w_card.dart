@@ -7,8 +7,8 @@ import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WCard extends StatelessWidget
-    with BaseMixins<WCardOn, WCardProp, WCardSlot, WCardStyle> {
+class WCard
+    extends WStatelessWidget<WCardOn, WCardProp, WCardSlot, WCardStyle> {
   WCard({
     Key? key,
     WCardOn? on,
@@ -26,7 +26,7 @@ class WCard extends StatelessWidget
   bool isHover = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
       return MouseRegion(
         onEnter: (event) {

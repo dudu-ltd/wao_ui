@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WTimeline extends StatelessWidget
-    with BaseMixins<WTimelineOn, WTimelineProp, WTimelineSlot, WTimelineStyle> {
+class WTimeline extends WStatelessWidget<WTimelineOn, WTimelineProp,
+    WTimelineSlot, WTimelineStyle> {
   WTimeline({
     Key? key,
     WTimelineOn? on,
@@ -22,7 +22,7 @@ class WTimeline extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

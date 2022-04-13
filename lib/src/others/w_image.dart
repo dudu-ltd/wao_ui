@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WImage extends StatelessWidget
-    with BaseMixins<WImageOn, WImageProp, WImageSlot, WImageStyle> {
+class WImage
+    extends WStatelessWidget<WImageOn, WImageProp, WImageSlot, WImageStyle> {
   WImage({
     Key? key,
     WImageOn? on,
@@ -22,7 +22,7 @@ class WImage extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     errorBuilder(context, object, track) {
       return $slots.error ?? Icon(Icons.error);
     }
