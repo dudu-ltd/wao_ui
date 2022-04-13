@@ -8,8 +8,8 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
-class WRadio extends StatefulWidget
-    with BaseMixins<WRadioOn, WRadioProp, WRadioSlot, WRadioStyle> {
+class WRadio
+    extends WStatefulWidget<WRadioOn, WRadioProp, WRadioSlot, WRadioStyle> {
   WRadio({
     Key? key,
     WRadioOn? on,
@@ -28,7 +28,7 @@ class WRadio extends StatefulWidget
   _WRadioState createState() => _WRadioState();
 }
 
-class _WRadioState extends State<WRadio> {
+class _WRadioState extends WState<WRadio> {
   @override
   void initState() {
     super.initState();
@@ -36,7 +36,7 @@ class _WRadioState extends State<WRadio> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return InkWell(
       hoverColor:
           widget.$props.isSelected ? CfgGlobal.primaryColor.shade50 : null,
@@ -319,7 +319,7 @@ class WRadioGroupSlot extends BaseSlot {
   WRadioGroupSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class _WRadioButtonState extends State<WRadioButton> {
+class _WRadioButtonState extends WState<WRadioButton> {
   @override
   void initState() {
     super.initState();
@@ -337,7 +337,7 @@ class _WRadioButtonState extends State<WRadioButton> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Listener(
       onPointerUp: widget.$props.disabled
           ? (e) {}
@@ -427,10 +427,8 @@ class _WRadioButtonState extends State<WRadioButton> {
   }
 }
 
-class WRadioButton extends StatefulWidget
-    with
-        BaseMixins<WRadioButtonOn, WRadioButtonProp, WRadioButtonSlot,
-            WRadioButtonStyle> {
+class WRadioButton extends WStatefulWidget<WRadioButtonOn, WRadioButtonProp,
+    WRadioButtonSlot, WRadioButtonStyle> {
   WRadioButton({
     Key? key,
     WRadioButtonOn? on,

@@ -9,8 +9,7 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WCollapse extends StatefulWidget
-    with BaseMixins<WCollapseOn, WCollapseProp, WCollapseSlot, WCollapseStyle> {
+class WCollapse extends WStatefulWidget<WCollapseOn, WCollapseProp, WCollapseSlot, WCollapseStyle> {
   WCollapse({
     Key? key,
     WCollapseOn? on,

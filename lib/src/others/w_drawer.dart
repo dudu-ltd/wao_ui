@@ -50,8 +50,8 @@ class _WDrawerState extends State<WDrawer> {
   }
 }
 
-class WDrawer extends StatefulWidget
-    with BaseMixins<WDrawerOn, WDrawerProp, WDrawerSlot, WDrawerStyle> {
+class WDrawer
+    extends WStatefulWidget<WDrawerOn, WDrawerProp, WDrawerSlot, WDrawerStyle> {
   WDrawer({
     Key? key,
     WDrawerOn? on,
@@ -145,8 +145,8 @@ class WDrawerSlot extends BaseSlot {
   WDrawerSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WDrawerView extends StatefulWidget
-    with BaseMixins<WDrawerOn, WDrawerProp, WDrawerSlot, WDrawerStyle> {
+class WDrawerView
+    extends WStatefulWidget<WDrawerOn, WDrawerProp, WDrawerSlot, WDrawerStyle> {
   WDrawerView({
     Key? key,
     WDrawerOn? on,

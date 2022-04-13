@@ -10,7 +10,7 @@ import 'package:wao_ui/src/basic/w_button.dart';
 // ignore: implementation_imports
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
-class _WDropdownState extends State<WDropdown>
+class _WDropdownState extends WState<WDropdown>
     with SingleTickerProviderStateMixin {
   late Animation<double> animation;
   late AnimationController controller;
@@ -63,7 +63,7 @@ class _WDropdownState extends State<WDropdown>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     PopupMenuButton popup;
     GlobalKey popupKey = GlobalKey();
     Widget btn = Row(
@@ -119,8 +119,8 @@ class _WDropdownState extends State<WDropdown>
   }
 }
 
-class WDropdown extends StatefulWidget
-    with BaseMixins<WDropdownOn, WDropdownProp, WDropdownSlot, WDropdownStyle> {
+class WDropdown extends WStatefulWidget<WDropdownOn, WDropdownProp,
+    WDropdownSlot, WDropdownStyle> {
   WDropdown({
     Key? key,
     WDropdownOn? on,
@@ -205,10 +205,8 @@ class WDropdownSlot extends BaseSlot {
   WDropdownSlot(defaultSlotBefore, {this.dropdown}) : super(defaultSlotBefore);
 }
 
-class WDropdownMenu extends StatelessWidget
-    with
-        BaseMixins<WDropdownMenuOn, WDropdownMenuProp, WDropdownMenuSlot,
-            WDropdownMenuStyle> {
+class WDropdownMenu extends WStatelessWidget<WDropdownMenuOn, WDropdownMenuProp,
+    WDropdownMenuSlot, WDropdownMenuStyle> {
   WDropdownMenu({
     Key? key,
     WDropdownMenuOn? on,
@@ -224,7 +222,7 @@ class WDropdownMenu extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: defaultSlot,
@@ -241,10 +239,8 @@ class WDropdownMenuSlot extends BaseSlot {
   WDropdownMenuSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WDropdownItem extends StatelessWidget
-    with
-        BaseMixins<WDropdownItemOn, WDropdownItemProp, WDropdownItemSlot,
-            WDropdownItemStyle> {
+class WDropdownItem extends WStatelessWidget<WDropdownItemOn, WDropdownItemProp,
+    WDropdownItemSlot, WDropdownItemStyle> {
   WDropdownItem({
     Key? key,
     WDropdownItemOn? on,
@@ -260,7 +256,7 @@ class WDropdownItem extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return $first;
   }
 }
