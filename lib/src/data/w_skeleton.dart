@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WSkeleton extends StatelessWidget
-    with BaseMixins<WSkeletonOn, WSkeletonProp, WSkeletonSlot, WSkeletonStyle> {
+class WSkeleton extends WStatelessWidget<WSkeletonOn, WSkeletonProp,
+    WSkeletonSlot, WSkeletonStyle> {
   WSkeleton({
     Key? key,
     WSkeletonOn? on,
@@ -22,7 +22,7 @@ class WSkeleton extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

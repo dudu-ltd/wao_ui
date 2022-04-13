@@ -7,8 +7,8 @@ import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WTabs extends StatelessWidget
-    with BaseMixins<WTabsOn, WTabsProp, WTabsSlot, WTabsStyle> {
+class WTabs
+    extends WStatelessWidget<WTabsOn, WTabsProp, WTabsSlot, WTabsStyle> {
   WTabs({
     Key? key,
     WTabsOn? on,
@@ -24,7 +24,7 @@ class WTabs extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var children = defaultSlot;
     var content = <Widget>[
       _items(children),
@@ -313,8 +313,8 @@ class WTabsSlot extends BaseSlot {
 ///
 ///
 ///
-class WTabPane extends StatelessWidget
-    with BaseMixins<WTabPaneOn, WTabPaneProp, WTabPaneSlot, WTabPaneStyle> {
+class WTabPane extends WStatelessWidget<WTabPaneOn, WTabPaneProp, WTabPaneSlot,
+    WTabPaneStyle> {
   WTabPane({
     Key? key,
     WTabPaneOn? on,
@@ -329,7 +329,7 @@ class WTabPane extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

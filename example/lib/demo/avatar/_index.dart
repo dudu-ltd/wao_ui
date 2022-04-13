@@ -43,19 +43,19 @@ var avatarIcon1c = Demo(
     WAvatar()
       ..$props.icon = const Icon(Icons.person_add)
       ..$props.size = 'medium'
-      ..$style.padding = const EdgeInsets.symmetric(
+      ..$style.margin = const EdgeInsets.symmetric(
         horizontal: 45,
       ),
     WAvatar()
       ..$props.icon = const Icon(Icons.face)
       ..$props.size = 'medium'
-      ..$style.padding = const EdgeInsets.symmetric(
+      ..$style.margin = const EdgeInsets.symmetric(
         horizontal: 45,
       ),
     WAvatar()
       ..$props.icon = const Icon(Icons.star)
       ..$props.size = 'medium'
-      ..$style.padding = const EdgeInsets.symmetric(
+      ..$style.margin = const EdgeInsets.symmetric(
         horizontal: 45,
       ),
   ]),
@@ -88,21 +88,21 @@ var avatarIcon2 = Demo(
   Row(children: [
     WAvatar()
       ..$props.size = 'large'
-      ..$style.padding = const EdgeInsets.symmetric(
+      ..$style.margin = const EdgeInsets.symmetric(
         horizontal: 40,
       )
       ..$style.color = Colors.white
       ..$style.backgroundColor = Colors.blue,
     WAvatar()
       ..$props.size = 'large'
-      ..$style.padding = const EdgeInsets.symmetric(
+      ..$style.margin = const EdgeInsets.symmetric(
         horizontal: 40,
       )
       ..$style.color = Colors.white
       ..$style.backgroundColor = CfgGlobal.successColor,
     WAvatar()
       ..$props.size = 'large'
-      ..$style.padding = const EdgeInsets.symmetric(
+      ..$style.margin = const EdgeInsets.symmetric(
         horizontal: 40,
       )
       ..$style.color = Colors.white
@@ -140,7 +140,7 @@ var avatarIcon2q = Demo(
     WAvatar()
       ..$props.size = 'large'
       ..$props.shape = 'square'
-      ..$style.padding = const EdgeInsets.symmetric(
+      ..$style.margin = const EdgeInsets.symmetric(
         horizontal: 40,
       )
       ..$style.color = Colors.white
@@ -148,7 +148,7 @@ var avatarIcon2q = Demo(
     WAvatar()
       ..$props.size = 'large'
       ..$props.shape = 'square'
-      ..$style.padding = const EdgeInsets.symmetric(
+      ..$style.margin = const EdgeInsets.symmetric(
         horizontal: 40,
       )
       ..$style.color = Colors.white
@@ -156,7 +156,7 @@ var avatarIcon2q = Demo(
     WAvatar()
       ..$props.size = 'large'
       ..$props.shape = 'square'
-      ..$style.padding = const EdgeInsets.symmetric(
+      ..$style.margin = const EdgeInsets.symmetric(
         horizontal: 40,
       )
       ..$style.color = Colors.white

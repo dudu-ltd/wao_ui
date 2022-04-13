@@ -18,8 +18,8 @@ abstract class WStatelessWidget<
 
   @override
   Widget build(BuildContext context) {
-    readStyle();
     beforeBuild(); // 部件生命周期埋点。
+    readStyle();
     Widget wWidget = wbuild(context);
     return useBox ? boxWrapper(wWidget, context) : wWidget;
   }
@@ -38,9 +38,9 @@ abstract class WStatefulWidget<
 abstract class WState<T extends WStatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) {
+    widget.beforeBuild(); // 部件生命周期埋点。
     widget.readStyle();
     // print(widget.style);
-    widget.beforeBuild(); // 部件生命周期埋点。
     Widget self = wbuild(context);
     return widget.useBox ? widget.boxWrapper(self, context) : self;
   }
@@ -77,10 +77,10 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     stateStyles.addAll(customStyles);
     for (var stateStyle in stateStyles) {
       style.merge(stateStyle, force: true);
-      print(
-          'style.backgroundColor: ${style.backgroundColor}，stateStyle: ${stateStyle?.backgroundColor}');
+      // print(
+      //     'style.backgroundColor: ${style.backgroundColor}，stateStyle: ${stateStyle?.backgroundColor}');
     }
-
+    // print($style);
     style.merge($style, force: true);
   }
 

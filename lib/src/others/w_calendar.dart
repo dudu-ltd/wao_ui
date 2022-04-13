@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WCalendar extends StatelessWidget
-    with BaseMixins<WCalendarOn, WCalendarProp, WCalendarSlot, WCalendarStyle> {
+class WCalendar extends WStatelessWidget<WCalendarOn, WCalendarProp,
+    WCalendarSlot, WCalendarStyle> {
   WCalendar({
     Key? key,
     WCalendarOn? on,
@@ -22,7 +22,7 @@ class WCalendar extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

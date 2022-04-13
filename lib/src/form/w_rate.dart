@@ -6,8 +6,8 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WRate extends StatelessWidget
-    with BaseMixins<WRateOn, WRateProp, WRateSlot, WRateStyle> {
+class WRate
+    extends WStatelessWidget<WRateOn, WRateProp, WRateSlot, WRateStyle> {
   WRate({
     Key? key,
     WRateOn? on,
@@ -23,7 +23,7 @@ class WRate extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

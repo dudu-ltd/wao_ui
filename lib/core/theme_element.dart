@@ -847,7 +847,7 @@ element() {
       ..fontSize = 14,
     [
       [Clazz.avatar, '${Clazz.avatar}${Clazz.circleSuf}']
-    ]: BaseStyle()..borderRadius = CfgGlobal.circularBorderRadius.large,
+    ]: BaseStyle()..borderRadius = BorderRadius.circular(1024),
     [
       [Clazz.avatar, '${Clazz.avatar}${Clazz.squareSuf}']
     ]: BaseStyle()..borderRadius = CfgGlobal.circularBorderRadius.medium,

@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WLoading extends StatelessWidget
-    with BaseMixins<WLoadingOn, WLoadingProp, WLoadingSlot, WLoadingStyle> {
+class WLoading extends WStatelessWidget<WLoadingOn, WLoadingProp, WLoadingSlot,
+    WLoadingStyle> {
   WLoading({
     Key? key,
     WLoadingOn? on,
@@ -22,7 +22,7 @@ class WLoading extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

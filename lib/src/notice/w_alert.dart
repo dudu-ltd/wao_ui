@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WAlert extends StatelessWidget
-    with BaseMixins<WAlertOn, WAlertProp, WAlertSlot, WAlertStyle> {
+class WAlert
+    extends WStatelessWidget<WAlertOn, WAlertProp, WAlertSlot, WAlertStyle> {
   WAlert({
     Key? key,
     WAlertOn? on,
@@ -22,7 +22,7 @@ class WAlert extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

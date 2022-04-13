@@ -427,15 +427,11 @@ class _WSelectState extends WState<WSelect>
   }
 
   double get panelWidth {
-    return widget.$style.panelMaxWidth ??
-        cfgGlobal.select.panelMaxWidth ??
-        240;
+    return widget.$style.panelMaxWidth ?? cfgGlobal.select.panelMaxWidth ?? 240;
   }
 
   double get panelMinWidth {
-    return widget.$style.panelMinWidth ??
-        cfgGlobal.select.panelMinWidth ??
-        180;
+    return widget.$style.panelMinWidth ?? cfgGlobal.select.panelMinWidth ?? 180;
   }
 
   double get panelBorder {
@@ -589,10 +585,8 @@ class WSelectSlot extends BaseSlot {
   WSelectSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WOptionGroup extends StatelessWidget
-    with
-        BaseMixins<WOptionGroupOn, WOptionGroupProp, WOptionGroupSlot,
-            WOptionGroupStyle> {
+class WOptionGroup extends WStatelessWidget<WOptionGroupOn, WOptionGroupProp,
+    WOptionGroupSlot, WOptionGroupStyle> {
   WOptionGroup({
     Key? key,
     WOptionGroupOn? on,
@@ -608,7 +602,7 @@ class WOptionGroup extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -644,8 +638,8 @@ class WOptionGroupSlot extends BaseSlot {
   WOptionGroupSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WOption extends StatelessWidget
-    with BaseMixins<WOptionOn, WOptionProp, WOptionSlot, WOptionStyle> {
+class WOption extends WStatelessWidget<WOptionOn, WOptionProp, WOptionSlot,
+    WOptionStyle> {
   WOption({
     Key? key,
     WOptionOn? on,
@@ -661,7 +655,7 @@ class WOption extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return MouseStateBuilder(
       builder: (context, state) {
         return InkWell(

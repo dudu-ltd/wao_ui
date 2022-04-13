@@ -6,8 +6,8 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:simple_observable/simple_observable.dart';
 
-class WBadge extends StatefulWidget
-    with BaseMixins<WBadgeOn, WBadgeProp, WBadgeSlot, WBadgeStyle> {
+class WBadge
+    extends WStatefulWidget<WBadgeOn, WBadgeProp, WBadgeSlot, WBadgeStyle> {
   @override
   _WBadgeState createState() => _WBadgeState();
 
@@ -26,9 +26,9 @@ class WBadge extends StatefulWidget
   }
 }
 
-class _WBadgeState extends State<WBadge> {
+class _WBadgeState extends WState<WBadge> {
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     widget.$props._state = this;
     print('build');
     print(widget.$props.value);

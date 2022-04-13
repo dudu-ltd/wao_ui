@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WTooltip extends StatelessWidget
-    with BaseMixins<WTooltipOn, WTooltipProp, WTooltipSlot, WTooltipStyle> {
+class WTooltip extends WStatelessWidget<WTooltipOn, WTooltipProp, WTooltipSlot,
+    WTooltipStyle> {
   WTooltip({
     Key? key,
     WTooltipOn? on,
@@ -22,7 +22,7 @@ class WTooltip extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

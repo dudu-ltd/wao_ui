@@ -5,8 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WSteps extends StatelessWidget
-    with BaseMixins<WStepsOn, WStepsProp, WStepsSlot, WStepsStyle> {
+class WSteps
+    extends WStatelessWidget<WStepsOn, WStepsProp, WStepsSlot, WStepsStyle> {
   WSteps({
     Key? key,
     WStepsOn? on,
@@ -21,7 +21,7 @@ class WSteps extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }
@@ -60,8 +60,8 @@ class WStepsSlot extends BaseSlot {
 ///
 ///
 
-class WStep extends StatelessWidget
-    with BaseMixins<WStepOn, WStepProp, WStepSlot, WStepStyle> {
+class WStep
+    extends WStatelessWidget<WStepOn, WStepProp, WStepSlot, WStepStyle> {
   WStep({
     Key? key,
     WStepOn? on,
@@ -77,7 +77,7 @@ class WStep extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

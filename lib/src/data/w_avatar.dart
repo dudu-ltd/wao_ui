@@ -23,22 +23,18 @@ class WAvatar extends WStatelessWidget<WAvatarOn, WAvatarProp, WAvatarSlot,
   }
 
   @override
-  Widget wbuild(BuildContext context) {
+  beforeBuild() {
     var width = $props.isCustomSize
         ? double.parse($props.size)
         : cfgGlobal.avatarSize.val($props.size);
-    var content = Container(
-      decoration: BoxDecoration(
-        color: style.backgroundColor ?? CfgGlobal.basicColor.shade50,
-      ),
-      width: width,
-      constraints: BoxConstraints(maxWidth: width),
-      child: sizedBox,
-    );
-    return Padding(
-      padding: style.padding ?? EdgeInsets.zero,
-      child: $props.isCircle ? ClipOval(child: content) : content,
-    );
+    style.width = width;
+    return super.beforeBuild();
+  }
+
+  @override
+  Widget wbuild(BuildContext context) {
+    print('\$props.isCircle  = ${$props.isCircle}');
+    return $props.isCircle ? ClipOval(child: sizedBox) : sizedBox;
   }
 
   Widget get sizedBox {
