@@ -26,8 +26,8 @@ import '../../core/utils/color_util.dart';
 ///
 ///
 ///
-class WCascader extends StatefulWidget
-    with BaseMixins<WCascaderOn, WCascaderProp, WCascaderSlot, WCascaderStyle> {
+class WCascader extends WStatefulWidget<WCascaderOn, WCascaderProp,
+    WCascaderSlot, WCascaderStyle> {
   WCascader({
     Key? key,
     WCascaderOn? on,
@@ -46,14 +46,14 @@ class WCascader extends StatefulWidget
   _WCascaderState createState() => _WCascaderState();
 }
 
-class _WCascaderState extends State<WCascader> {
+class _WCascaderState extends WState<WCascader> {
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return WSelect(
       panelInsideBuilder: (parent, state) {
         return WCascaderPanel(
@@ -214,10 +214,8 @@ class WCascaderSlot extends BaseSlot {
 ///
 ///
 ///
-class WCascaderPanel extends StatefulWidget
-    with
-        BaseMixins<WCascaderPanelOn, WCascaderPanelProp, WCascaderPanelSlot,
-            WCascaderPanelStyle> {
+class WCascaderPanel extends WStatefulWidget<WCascaderPanelOn,
+    WCascaderPanelProp, WCascaderPanelSlot, WCascaderPanelStyle> {
   WCascaderPanel({
     Key? key,
     WCascaderPanelOn? on,
@@ -236,7 +234,7 @@ class WCascaderPanel extends StatefulWidget
   _WCascaderPanelState createState() => _WCascaderPanelState();
 }
 
-class _WCascaderPanelState extends State<WCascaderPanel> {
+class _WCascaderPanelState extends WState<WCascaderPanel> {
   List menus = [];
   List panelPicked = [];
 
@@ -257,7 +255,7 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

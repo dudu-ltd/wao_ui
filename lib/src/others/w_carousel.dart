@@ -9,8 +9,7 @@ import 'package:wao_ui/wao_ui.dart';
 
 import '../../core/utils/color_util.dart';
 
-class WCarousel extends StatefulWidget
-    with BaseMixins<WCarouselOn, WCarouselProp, WCarouselSlot, WCarouselStyle> {
+class WCarousel extends WStatefulWidget<WCarouselOn, WCarouselProp, WCarouselSlot, WCarouselStyle> {
   WCarousel({
     Key? key,
     WCarouselOn? on,

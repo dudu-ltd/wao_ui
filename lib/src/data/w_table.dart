@@ -9,8 +9,8 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/data/w_empty.dart';
 
-class WTable extends StatefulWidget
-    with BaseMixins<WTableOn, WTableProp, WTableSlot, WTableStyle> {
+class WTable
+    extends WStatefulWidget<WTableOn, WTableProp, WTableSlot, WTableStyle> {
   WTable({
     Key? key,
     WTableOn? on,
@@ -65,7 +65,7 @@ class WTable extends StatefulWidget
   }
 }
 
-class _WTableState extends State<WTable> {
+class _WTableState extends WState<WTable> {
   @override
   void initState() {
     super.initState();
@@ -93,7 +93,7 @@ class _WTableState extends State<WTable> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return borderWrapper(
       constWrapper(
         Column(

@@ -8,8 +8,8 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 
-class WCheckbox extends StatefulWidget
-    with BaseMixins<WCheckboxOn, WCheckboxProp, WCheckboxSlot, WCheckboxStyle> {
+class WCheckbox extends WStatefulWidget<WCheckboxOn, WCheckboxProp,
+    WCheckboxSlot, WCheckboxStyle> {
   WCheckbox({
     Key? key,
     WCheckboxOn? on,
@@ -28,7 +28,7 @@ class WCheckbox extends StatefulWidget
   _WCheckboxState createState() => _WCheckboxState();
 }
 
-class _WCheckboxState extends State<WCheckbox> {
+class _WCheckboxState extends WState<WCheckbox> {
   late ValueNotifier<bool> indeterminate = ValueNotifier(false);
 
   @override
@@ -39,7 +39,7 @@ class _WCheckboxState extends State<WCheckbox> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     indeterminate.value = widget.$props.indeterminate;
     return MouseStateBuilder(
       builder: (context, state) {
@@ -402,10 +402,8 @@ class WCheckboxGroupSlot extends BaseSlot {
   WCheckboxGroupSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WCheckboxButton extends StatefulWidget
-    with
-        BaseMixins<WCheckboxButtonOn, WCheckboxButtonProp, WCheckboxButtonSlot,
-            WCheckboxButtonStyle> {
+class WCheckboxButton extends WStatefulWidget<WCheckboxButtonOn,
+    WCheckboxButtonProp, WCheckboxButtonSlot, WCheckboxButtonStyle> {
   WCheckboxButton({
     Key? key,
     WCheckboxButtonOn? on,
@@ -424,7 +422,7 @@ class WCheckboxButton extends StatefulWidget
   _WCheckboxButtonState createState() => _WCheckboxButtonState();
 }
 
-class _WCheckboxButtonState extends State<WCheckboxButton> {
+class _WCheckboxButtonState extends WState<WCheckboxButton> {
   @override
   void initState() {
     super.initState();
@@ -434,7 +432,7 @@ class _WCheckboxButtonState extends State<WCheckboxButton> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Listener(
       onPointerUp: widget.$props.disabled
           ? null

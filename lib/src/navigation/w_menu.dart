@@ -47,8 +47,8 @@ mixin HasRootMenu on Widget {
   }
 }
 
-class WMenu extends StatefulWidget
-    with BaseMixins<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>, HasRootMenu {
+class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
+    with HasRootMenu {
   WMenu({
     Key? key,
     WMenuOn? on,

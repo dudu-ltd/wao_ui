@@ -10,8 +10,8 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
 // TODO 修复 stroke-width 值太大时体现出来的百分比偏差，circle
-class WProgress extends StatefulWidget
-    with BaseMixins<WProgressOn, WProgressProp, WProgressSlot, WProgressStyle> {
+class WProgress extends WStatefulWidget<WProgressOn, WProgressProp,
+    WProgressSlot, WProgressStyle> {
   WProgress({
     Key? key,
     WProgressOn? on,
@@ -30,9 +30,9 @@ class WProgress extends StatefulWidget
   _WProgressState createState() => _WProgressState();
 }
 
-class _WProgressState extends State<WProgress> {
+class _WProgressState extends WState<WProgress> {
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     widget.$props._state = this;
     return renderByType;
   }

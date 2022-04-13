@@ -11,8 +11,8 @@ import 'package:wao_ui/wao_ui.dart';
 import '../../core/base_form_prop.dart';
 import '../../core/utils/layout_util.dart';
 
-class WSlider extends StatefulWidget
-    with BaseMixins<WSliderOn, WSliderProp, WSliderSlot, WSliderStyle> {
+class WSlider
+    extends WStatefulWidget<WSliderOn, WSliderProp, WSliderSlot, WSliderStyle> {
   WSlider({
     Key? key,
     WSliderOn? on,
@@ -31,7 +31,7 @@ class WSlider extends StatefulWidget
   State<WSlider> createState() => _WSliderState();
 }
 
-class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
+class _WSliderState extends WState<WSlider> with TickerProviderStateMixin {
   late AnimationController minController;
   late AnimationController maxController;
   late Animation<double>? minValueRadius = null;
@@ -69,7 +69,7 @@ class _WSliderState extends State<WSlider> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(valueRadiusOuter, 0, valueRadiusOuter,
           widget.$props.marks.isNotEmpty ? valueRadiusOuter : 0),

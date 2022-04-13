@@ -10,8 +10,8 @@ import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 // TODO 补充组件焦点切换事件的调用
-class WSwitch extends StatefulWidget
-    with BaseMixins<WSwitchOn, WSwitchProp, WSwitchSlot, WSwitchStyle> {
+class WSwitch
+    extends WStatefulWidget<WSwitchOn, WSwitchProp, WSwitchSlot, WSwitchStyle> {
   bool flutterStyle;
 
   WSwitch({
@@ -36,7 +36,8 @@ class WSwitch extends StatefulWidget
    */
 }
 
-class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
+class _WSwitchState extends WState<WSwitch>
+    with SingleTickerProviderStateMixin {
   late AnimationController switchAnimation;
   late Animation<double> animationX;
   late Animation<Color?> animationColor;
@@ -66,7 +67,7 @@ class _WSwitchState extends State<WSwitch> with SingleTickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var _activeContent = activeContent;
     var _inactiveContent = inactiveContent;
     return Wrap(

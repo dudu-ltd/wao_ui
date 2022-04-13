@@ -39,8 +39,7 @@ class PlainTreeProp extends BaseProp {
   }
 }
 
-class PlainTree extends StatefulWidget
-    with BaseMixins<PlainTreeOn, PlainTreeProp, PlainTreeSlot, PlainTreeStyle> {
+class PlainTree extends WStatefulWidget<PlainTreeOn, PlainTreeProp, PlainTreeSlot, PlainTreeStyle> {
   PlainTree({Key? key, on, props}) : super(key: key) {
     $on = on ?? PlainTreeOn();
     $props = props ?? PlainTreeProp(data: []);
