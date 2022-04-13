@@ -208,10 +208,8 @@ class WRadioSlot extends BaseSlot {
   WRadioSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WRadioGroup extends StatelessWidget
-    with
-        BaseMixins<WRadioGroupOn, WRadioGroupProp, WRadioGroupSlot,
-            WRadioGroupStyle> {
+class WRadioGroup extends WStatelessWidget<WRadioGroupOn, WRadioGroupProp,
+    WRadioGroupSlot, WRadioGroupStyle> {
   WRadioGroup({
     Key? key,
     WRadioGroupOn? on,
@@ -274,7 +272,7 @@ class WRadioGroup extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var children = <Widget>[];
     int len = defaultSlot.length;
     for (var i = 0; i < len; i++) {

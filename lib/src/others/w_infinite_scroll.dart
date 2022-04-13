@@ -5,10 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WInfiniteScroll extends StatelessWidget
-    with
-        BaseMixins<WInfiniteScrollOn, WInfiniteScrollProp, WInfiniteScrollSlot,
-            WInfiniteScrollStyle> {
+class WInfiniteScroll extends WStatelessWidget<WInfiniteScrollOn,
+    WInfiniteScrollProp, WInfiniteScrollSlot, WInfiniteScrollStyle> {
   WInfiniteScroll({
     Key? key,
     WInfiniteScrollOn? on,
@@ -24,7 +22,7 @@ class WInfiniteScroll extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

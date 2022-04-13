@@ -5,10 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WDateTimePicker extends StatelessWidget
-    with
-        BaseMixins<WDateTimePickerOn, WDateTimePickerProp, WDateTimePickerSlot,
-            WDateTimePickerStyle> {
+class WDateTimePicker extends WStatelessWidget<WDateTimePickerOn,
+    WDateTimePickerProp, WDateTimePickerSlot, WDateTimePickerStyle> {
   WDateTimePicker({
     Key? key,
     WDateTimePickerOn? on,
@@ -24,7 +22,7 @@ class WDateTimePicker extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
   /**

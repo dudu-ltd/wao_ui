@@ -486,10 +486,8 @@ class PanelPropDetail {
 ///
 ///
 ///
-class WCascaderMenu extends StatelessWidget
-    with
-        BaseMixins<WCascaderMenuOn, WCascaderMenuProp, WCascaderMenuSlot,
-            WCascaderMenuStyle> {
+class WCascaderMenu extends WStatelessWidget<WCascaderMenuOn, WCascaderMenuProp,
+    WCascaderMenuSlot, WCascaderMenuStyle> {
   WCascaderMenu({
     Key? key,
     WCascaderMenuOn? on,
@@ -505,7 +503,7 @@ class WCascaderMenu extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return borderWrapper(
       Container(
         constraints: BoxConstraints(
@@ -599,10 +597,8 @@ class WCascaderMenuSlot extends BaseSlot {
 ///
 ///
 ///
-class WCascaderNode extends StatelessWidget
-    with
-        BaseMixins<WCascaderNodeOn, WCascaderNodeProp, WCascaderNodeSlot,
-            WCascaderNodeStyle> {
+class WCascaderNode extends WStatelessWidget<WCascaderNodeOn, WCascaderNodeProp,
+    WCascaderNodeSlot, WCascaderNodeStyle> {
   bool get _isSelected {
     // print(
     //     '${$props.pickedValue} \n contains \n ${$props.option} \n is ${$props.pickedValue.contains($props.option)}');
@@ -625,7 +621,7 @@ class WCascaderNode extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return MouseStateBuilder(
       builder: (context, state) {
         var disabled = $props.props.isDisabled($props.option);

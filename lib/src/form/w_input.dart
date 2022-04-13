@@ -523,10 +523,8 @@ class WInputSlot extends BaseSlot {
   }
 }
 
-class WAutocomplete extends StatelessWidget
-    with
-        BaseMixins<WAutocompleteOn, WAutocompleteProp, WAutocompleteSlot,
-            WAutocompleteStyle> {
+class WAutocomplete extends WStatelessWidget<WAutocompleteOn, WAutocompleteProp,
+    WAutocompleteSlot, WAutocompleteStyle> {
   WAutocomplete({
     Key? key,
     WAutocompleteOn? on,
@@ -542,7 +540,7 @@ class WAutocomplete extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }

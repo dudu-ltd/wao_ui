@@ -444,10 +444,8 @@ class WTableSlot extends BaseSlot {
   }
 }
 
-class WTableColumn extends StatelessWidget
-    with
-        BaseMixins<WTableColumnOn, WTableColumnProp, WTableColumnSlot,
-            WTableColumnStyle> {
+class WTableColumn extends WStatelessWidget<WTableColumnOn, WTableColumnProp,
+    WTableColumnSlot, WTableColumnStyle> {
   WTableColumn({
     Key? key,
     WTableColumnOn? on,
@@ -462,7 +460,7 @@ class WTableColumn extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Container();
   }
 }
