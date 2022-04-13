@@ -168,7 +168,7 @@ class WBreadcrumbItem extends StatelessWidget
   }
 
   EdgeInsets get padding {
-    return $style?.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
+    return $style.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
   }
 }
 

@@ -8,10 +8,8 @@ import '../../core/base_mixins.dart';
 import '../../core/base_style.dart';
 import 'cfg_global.dart';
 
-class WContainer extends StatelessWidget
-    with
-        BaseMixins<WContainerOn, WContainerProp, WContainerSlot,
-            WContainerStyle> {
+class WContainer extends WStatelessWidget<WContainerOn, WContainerProp,
+    WContainerSlot, WContainerStyle> {
   WContainer({
     Key? key,
     WContainerOn? on,
@@ -72,7 +70,7 @@ class WContainer extends StatelessWidget
       ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     defaultSlot;
     return WContainerLayout()
       ..$slots.header = _header is List ? Column(children: _header) : _header
@@ -99,8 +97,8 @@ class WContainerSlot extends BaseSlot {
 ///
 /// @date: 2022-03-21
 ///
-class WHeader extends StatelessWidget
-    with BaseMixins<WHeaderOn, WHeaderProp, WHeaderSlot, WHeaderStyle> {
+class WHeader extends WStatelessWidget<WHeaderOn, WHeaderProp, WHeaderSlot,
+    WHeaderStyle> {
   WHeader({
     Key? key,
     WHeaderOn? on,
@@ -114,7 +112,8 @@ class WHeader extends StatelessWidget
     $style = style ?? WHeaderStyle();
   }
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
+    print('wheader background : ${style.backgroundColor}');
     return $col;
   }
 }
@@ -136,8 +135,8 @@ class WHeaderStyle extends BaseStyle {}
 ///
 /// @date: 2022-03-21
 ///
-class WAside extends StatelessWidget
-    with BaseMixins<WAsideOn, WAsideProp, WAsideSlot, WAsideStyle> {
+class WAside
+    extends WStatelessWidget<WAsideOn, WAsideProp, WAsideSlot, WAsideStyle> {
   WAside({
     Key? key,
     WAsideOn? on,
@@ -151,7 +150,7 @@ class WAside extends StatelessWidget
     $style = style ?? WAsideStyle();
   }
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return $col;
   }
 }
@@ -173,8 +172,8 @@ class WAsideStyle extends BaseStyle {}
 ///
 /// @date: 2022-03-21
 ///
-class WMain extends StatelessWidget
-    with BaseMixins<WMainOn, WMainProp, WMainSlot, WMainStyle> {
+class WMain
+    extends WStatelessWidget<WMainOn, WMainProp, WMainSlot, WMainStyle> {
   WMain({
     Key? key,
     WMainOn? on,
@@ -188,7 +187,7 @@ class WMain extends StatelessWidget
     $style = style ?? WMainStyle();
   }
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return $col;
   }
 }
@@ -210,8 +209,8 @@ class WMainStyle extends BaseStyle {}
 ///
 /// @date: 2022-03-21
 ///
-class WFooter extends StatelessWidget
-    with BaseMixins<WFooterOn, WFooterProp, WFooterSlot, WFooterStyle> {
+class WFooter extends WStatelessWidget<WFooterOn, WFooterProp, WFooterSlot,
+    WFooterStyle> {
   WFooter({
     Key? key,
     WFooterOn? on,
@@ -225,7 +224,7 @@ class WFooter extends StatelessWidget
     $style = style ?? WFooterStyle();
   }
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return $col;
   }
 }

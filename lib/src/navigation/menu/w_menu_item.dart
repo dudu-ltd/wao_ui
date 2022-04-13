@@ -70,21 +70,21 @@ class WMenuItem extends StatefulWidget
   }
 
   double get lineHeight {
-    return $style?.height ??
-        rootMenu?.$style?.submenu?.menuItem?.height ??
+    return $style.height ??
+        rootMenu?.$style.submenu?.menuItem?.height ??
         cfgGlobal.menuItem.height ??
         50;
   }
 
   double get fontSize {
-    return $style?.fontSize ??
-        rootMenu?.$style?.submenu?.menuItem?.fontSize ??
+    return $style.fontSize ??
+        rootMenu?.$style.submenu?.menuItem?.fontSize ??
         cfgGlobal.menuItem.fontSize ??
         14;
   }
 
   EdgeInsets get padding {
-    return $style?.padding ??
+    return $style.padding ??
         cfgGlobal.menuItem.padding ??
         EdgeInsets.fromLTRB(paddingVal, 0.0, stepPadding, 0.0);
   }
@@ -111,7 +111,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
         AnimationController(vsync: this, duration: CfgGlobal.duration);
     bgColor = ColorTween(
             begin: Colors.white,
-            end: widget.rootMenu?.$style?.hoverBackgroundColor)
+            end: widget.rootMenu?.$style.hoverBackgroundColor)
         .animate(bgController)
       ..addListener(updateView);
 
@@ -245,12 +245,12 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
             width: 2,
             color: widget.$props.index == widget.rootMenu?.value.value &&
                     (widget.rootMenu?.$props.modeIsHorizontal ?? false)
-                ? widget.rootMenu?.$style?.activeColor ?? Colors.transparent
+                ? widget.rootMenu?.$style.activeColor ?? Colors.transparent
                 : Colors.transparent,
           ),
         ),
         color: bgColor.value ??
-            widget.rootMenu?.$style?.backgroundColor ??
+            widget.rootMenu?.$style.backgroundColor ??
             Colors.transparent,
       ),
     );
@@ -297,7 +297,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
             child: Icon(
               widget.$slots.suffix,
               size: 12,
-              color: widget.rootMenu?.$style?.suffixColor,
+              color: widget.rootMenu?.$style.suffixColor,
             ),
           ),
         ),

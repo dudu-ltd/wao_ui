@@ -296,11 +296,11 @@ class WInputState extends WState<WInput> {
   }
 
   double get maxWidth {
-    return widget.$style?.maxWidth ?? cfgGlobal.input.maxWidth ?? 500;
+    return widget.$style.maxWidth ?? cfgGlobal.input.maxWidth ?? 500;
   }
 
   double get minWidth {
-    return widget.$style?.minWidth ?? cfgGlobal.input.minWidth ?? 300;
+    return widget.$style.minWidth ?? cfgGlobal.input.minWidth ?? 300;
   }
 
   double get minHeight {

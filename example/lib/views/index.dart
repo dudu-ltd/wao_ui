@@ -2,16 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:example/main.dart';
 import 'package:example/package/basic/api_container_layout.dart';
-import 'package:example/package/Index.dart';
-import 'package:example/views/header.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/env.dart';
-import 'package:wao_ui/core/utils/color_util.dart';
-import 'package:wao_ui/src/basic/w_container_layout.dart';
-import 'package:wao_ui/src/tree/tree.dart';
 import 'package:example/package/basic/api_button.dart';
 import 'package:example/package/data/api_avatar.dart';
 import 'package:example/package/data/api_badge.dart';
@@ -149,7 +142,7 @@ class _IndexPageState extends State<IndexPage> {
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'navigation/WTabs',
+      initialRoute: 'basic/WContainer',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(

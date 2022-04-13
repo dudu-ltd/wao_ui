@@ -61,7 +61,7 @@ regist() {
   var cardSimple = Demo(
     'cardSimple',
     WCard()
-      ..$style?.width = 480
+      ..$style.width = 480
       ..$slots.$ = List.generate(
         4,
         (index) => Text('列表内容${index + 1}'),
@@ -78,9 +78,9 @@ regist() {
   var cardImage = Demo(
     'cardImage',
     WCard()
-      // ..$style?.width = 480
-      ..$style?.padding = EdgeInsets.zero
-      ..$style?.spacing = 0
+      // ..$style.width = 480
+      ..$style.padding = EdgeInsets.zero
+      ..$style.spacing = 0
       ..$slots.$ = [
         WImage()
           ..$props.src = 'assets:logo.png'
@@ -116,9 +116,9 @@ regist() {
       ],
     r'''
     WCard()
-      // ..$style?.width = 480
-      ..$style?.padding = EdgeInsets.zero
-      ..$style?.spacing = 0
+      // ..$style.width = 480
+      ..$style.padding = EdgeInsets.zero
+      ..$style.spacing = 0
       ..$slots.$ = [
         WImage()
           ..$props.src = 'assets:logo.png'

@@ -271,7 +271,7 @@ class _WCascaderPanelState extends State<WCascaderPanel> {
             level: index,
             props: widget.$props.props,
           ),
-          style: widget.$style?.cascaderMenu,
+          style: widget.$style.cascaderMenu,
           on: WCascaderMenuOn(
             expand: trigger,
             click: click,
@@ -541,21 +541,21 @@ class WCascaderMenu extends StatelessWidget
   }
 
   double get menuMaxWidth {
-    return $style?.maxWidth ?? cfgGlobal.cascaderMenu.maxWidth ?? 275.0;
+    return $style.maxWidth ?? cfgGlobal.cascaderMenu.maxWidth ?? 275.0;
   }
 
   double get menuMaxHeight {
-    return $style?.maxHeight ?? cfgGlobal.cascaderMenu.maxHeight ?? 275.0;
+    return $style.maxHeight ?? cfgGlobal.cascaderMenu.maxHeight ?? 275.0;
   }
 
   Color get menuBorderColor {
-    return $style?.borderColor ??
+    return $style.borderColor ??
         cfgGlobal.cascaderMenu.borderColor ??
         Colors.grey.shade200;
   }
 
   double get menuMinWidth {
-    return $style?.minWidth ?? cfgGlobal.cascaderMenu.minWidth ?? 180.0;
+    return $style.minWidth ?? cfgGlobal.cascaderMenu.minWidth ?? 180.0;
   }
 }
 
@@ -706,7 +706,7 @@ class WCascaderNode extends StatelessWidget
   }
 
   Color get disableColor {
-    return $style?.disabledColor ??
+    return $style.disabledColor ??
         cfgGlobal.option.disabledColor ??
         Colors.grey.shade400;
   }

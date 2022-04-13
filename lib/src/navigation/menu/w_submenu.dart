@@ -48,7 +48,7 @@ class WSubmenu extends StatefulWidget
       SlotTranslator(String, (slot, i, component, len) {
         return Text(
           slot,
-          style: TextStyle(color: rootMenu?.$style?.color),
+          style: TextStyle(color: rootMenu?.$style.color),
         );
       }),
     ];
@@ -151,7 +151,7 @@ class _WSubmenuState extends State<WSubmenu>
 
   @override
   double get panelBorder {
-    return widget.$style?.panelBorder ?? cfgGlobal.submenu.panelBorder ?? 1;
+    return widget.$style.panelBorder ?? cfgGlobal.submenu.panelBorder ?? 1;
   }
 
   Widget? get title {
@@ -161,7 +161,7 @@ class _WSubmenuState extends State<WSubmenu>
         WMenuItem _title = widget.$slots.title!;
         // var
         _title
-          ..$style?.padding = EdgeInsets.fromLTRB(
+          ..$style.padding = EdgeInsets.fromLTRB(
               widget.paddingVal, 0.0, widget.stepPadding, 0.0)
           ..$slots.suffix = _title.$slots.suffix ?? Icons.expand_more
           ..rootMenu = widget.rootMenu

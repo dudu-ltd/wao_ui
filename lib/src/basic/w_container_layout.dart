@@ -5,10 +5,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WContainerLayout extends StatefulWidget
-    with
-        BaseMixins<WContainerLayoutOn, WContainerLayoutProp,
-            WContainerLayoutSlot, WContainerLayoutStyle> {
+class WContainerLayout extends WStatefulWidget<WContainerLayoutOn,
+    WContainerLayoutProp, WContainerLayoutSlot, WContainerLayoutStyle> {
   WContainerLayout({
     Key? key,
     WContainerLayoutOn? on,
@@ -35,7 +33,7 @@ class WContainerLayout extends StatefulWidget
   }
 }
 
-class _WContainerLayoutState extends State<WContainerLayout> {
+class _WContainerLayoutState extends WState<WContainerLayout> {
   WContainerLayoutProp $props;
   double _lastX = 0;
   double _lastY = 0;
@@ -81,7 +79,7 @@ class _WContainerLayoutState extends State<WContainerLayout> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var col = Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [],

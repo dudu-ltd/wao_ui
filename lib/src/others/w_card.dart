@@ -79,13 +79,13 @@ class WCard extends StatelessWidget
   }
 
   Color get borderColor {
-    return $style?.borderColor ??
+    return $style.borderColor ??
         cfgGlobal.card.borderColor ??
         ColorUtil.hexToColor('#ebeef5');
   }
 
   Color get backgroundColor {
-    return $style?.backgroundColor ??
+    return $style.backgroundColor ??
         cfgGlobal.card.backgroundColor ??
         Colors.white;
   }
@@ -95,15 +95,15 @@ class WCard extends StatelessWidget
   }
 
   double get spacing {
-    return $style?.spacing ?? cfgGlobal.card.spacing ?? 8;
+    return $style.spacing ?? cfgGlobal.card.spacing ?? 8;
   }
 
   double? get width {
-    return $style?.width ?? cfgGlobal.card.width;
+    return $style.width ?? cfgGlobal.card.width;
   }
 
   EdgeInsets? get padding {
-    return $style?.padding ?? cfgGlobal.card.padding;
+    return $style.padding ?? cfgGlobal.card.padding;
   }
 }
 

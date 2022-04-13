@@ -13,7 +13,13 @@ var containerInstance = Demo(
           WAside()..$slots.$ = v,
           WMain()..$slots.$ = tableBasicInner
         ]),
-  '''
-
+  r'''
+  SizedBox(
+      height: 300,
+      child: WContainer()
+        ..$slots.$ = [
+          WAside()..$slots.$ = v,
+          WMain()..$slots.$ = tableBasicInner
+        ]),
   ''',
 );
