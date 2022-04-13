@@ -33,7 +33,7 @@ mixin HasRootMenu on Widget {
   }
 
   double get stepPadding {
-    return rootMenu?.$style?.stepPadding ?? cfgGlobal.menu.stepPadding ?? 20.0;
+    return rootMenu?.$style.stepPadding ?? cfgGlobal.menu.stepPadding ?? 20.0;
   }
 
   double get paddingVal {
@@ -238,17 +238,17 @@ class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
   }
 
   double? get width {
-    return widget.$style?.width ?? cfgGlobal.menu.width;
+    return widget.$style.width ?? cfgGlobal.menu.width;
   }
 
   double get minHeight {
     return widget.collapse.value
         ? 0
-        : widget.$style?.minHeight ?? cfgGlobal.menu.minHeight ?? 0.0;
+        : widget.$style.minHeight ?? cfgGlobal.menu.minHeight ?? 0.0;
   }
 
   Color get background {
-    return widget.$style?.backgroundColor ??
+    return widget.$style.backgroundColor ??
         cfgGlobal.menu.backgroundColor ??
         Colors.white;
   }

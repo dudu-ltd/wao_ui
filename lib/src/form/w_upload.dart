@@ -441,7 +441,7 @@ class _WUploadState extends State<WUpload> {
   }
 
   double get pictureSize {
-    return widget.$style?.pictureSize ?? cfgGlobal.upload.pictureSize ?? 60;
+    return widget.$style.pictureSize ?? cfgGlobal.upload.pictureSize ?? 60;
   }
 
   double get fileListPaddingTop {

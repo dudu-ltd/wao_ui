@@ -36,6 +36,8 @@ class WButton
   }
 
   @override
+  bool get useBox => false;
+  @override
   State<WButton> createState() => _WButtonState();
 
   Widget iconCenter(IconData icon) {
@@ -98,9 +100,6 @@ class _WButtonState extends WState<WButton> {
   }
 
   Widget get content {
-    Widget box = const SizedBox(
-      width: 5,
-    );
     return Wrap(
       alignment: WrapAlignment.spaceBetween,
       runAlignment: WrapAlignment.spaceBetween,
@@ -119,23 +118,12 @@ class _WButtonState extends WState<WButton> {
   }
 
   double get buttonMinWidth {
-    return widget.$style?.minWidth ?? cfgGlobal.button.minWidth ?? 30;
+    return widget.$style.minWidth ?? cfgGlobal.button.minWidth ?? 30;
   }
 
   @override
   Widget wbuild(BuildContext context) {
-    var btn = Container(
-      alignment: widget.style.textAlign,
-      // constraints: BoxConstraints(minWidth: buttonMinWidth),
-      padding: widget.style.padding,
-      decoration: BoxDecoration(
-        color: widget.style.backgroundColor,
-        borderRadius: widget.style.borderRadius,
-        // borderRadius: BorderRadius.circular(30),
-        border: widget.style.border,
-      ),
-      child: content,
-    );
+    var btn = widget.boxWrapper(content, context);
 
     return MouseRegion(
       opaque: false,
@@ -147,24 +135,12 @@ class _WButtonState extends WState<WButton> {
         widget.isHover = false;
         setState(() {});
       },
-      cursor: widget.style.cursor!,
-      child: Material(
-        type: MaterialType.button,
-        color: widget.style.backgroundColor,
-        borderRadius: widget.style.borderRadius,
-        // borderRadius: BorderRadius.circular(30),
-        child: widget.$props.disabled
-            ? btn
-            : InkWell(
-                focusNode: widget.focusNode,
-                hoverColor: widget.style.borderColor,
-                borderRadius: widget.style.borderRadius,
-                // borderRadius: BorderRadius.circular(30),
-                onTap: widget.$on.click,
-                onTapDown: (e) => setState(() => widget.active = true),
-                onTapUp: (e) => setState(() => widget.active = false),
-                child: btn,
-              ),
+      cursor: widget.style.cursor ?? SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: widget.$on.click,
+        onTapDown: (e) => setState(() => widget.active = true),
+        onTapUp: (e) => setState(() => widget.active = false),
+        child: btn,
       ),
     );
   }
@@ -227,7 +203,7 @@ class WButtonProp extends BaseProp {
     this.isFirst = false,
     this.isLast = false,
   }) {
-    this.size = size;
+    this.size = size ?? 'large';
     this.type = buttonTypes.contains(type) ? type : null;
     this.plain = plain ?? false;
     this.round = round ?? false;

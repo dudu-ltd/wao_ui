@@ -9,7 +9,7 @@ regist() {
     'carouselBasicHover',
     WCarousel()
       ..$props.trigger = 'hover'
-      ..$style?.height = 250
+      ..$style.height = 250
       ..$slots.$ = List.generate(
         4,
         (index) => WCarouselItem()
@@ -31,7 +31,7 @@ regist() {
     r'''
     WCarousel()
       ..$props.trigger = 'hover'
-      ..$style?.height = 250
+      ..$style.height = 250
       ..$slots.$ = List.generate(
         4,
         (index) => WCarouselItem()
@@ -56,7 +56,7 @@ regist() {
     'carouselBasicClick',
     WCarousel()
       ..$props.trigger = 'click'
-      ..$style?.height = 250
+      ..$style.height = 250
       ..$slots.$ = List.generate(
         4,
         (index) => WCarouselItem()
@@ -78,7 +78,7 @@ regist() {
     r'''
     WCarousel()
       ..$props.trigger = 'click'
-      ..$style?.height = 250
+      ..$style.height = 250
       ..$slots.$ = List.generate(
         4,
         (index) => WCarouselItem()
@@ -102,7 +102,7 @@ regist() {
   var carouselGuide = Demo(
     'carouselGuide',
     WCarousel()
-      ..$style?.height = 250
+      ..$style.height = 250
       ..$props.indicatorPosition = 'outside'
       ..$slots.$ = List.generate(
         4,
@@ -124,7 +124,7 @@ regist() {
       ),
     r'''
     WCarousel()
-      ..$style?.height = 250
+      ..$style.height = 250
       ..$props.indicatorPosition = 'outside'
       ..$slots.$ = List.generate(
         4,
@@ -160,7 +160,7 @@ regist() {
   var carouselImg = Demo(
     'carouselImg',
     WCarousel()
-      ..$style?.height = 300
+      ..$style.height = 300
       ..$props.type = 'card'
       ..$props.interval = 4000
       ..$props.trigger = 'hover'
@@ -184,7 +184,7 @@ regist() {
     ];
 
     WCarousel()
-      ..$style?.height = 600
+      ..$style.height = 600
       ..$props.type = 'card'
       ..$props.interval = 4000
       ..$props.trigger = 'hover'
@@ -200,7 +200,7 @@ regist() {
   var carouselArrow = Demo(
     'carouselArrow',
     WCarousel()
-      ..$style?.height = 250
+      ..$style.height = 250
       ..$props.arrow = 'always'
       ..$props.interval = 5000
       ..$slots.$ = List.generate(
@@ -220,7 +220,7 @@ regist() {
   var carouselCard = Demo(
     'carouselCard',
     WCarousel()
-      ..$style?.height = 300
+      ..$style.height = 300
       ..$props.type = 'card'
       ..$props.interval = 4000
       ..$slots.$ = List.generate(
@@ -248,7 +248,7 @@ regist() {
       ),
     r'''
     WCarousel()
-      ..$style?.height = 500
+      ..$style.height = 500
       ..$props.type = 'card'
       ..$props.interval = 4000
       ..$slots.$ = List.generate(
@@ -279,7 +279,7 @@ regist() {
   var carouselDirection = Demo(
     'carouselDirection',
     WCarousel()
-      ..$style?.height = 250
+      ..$style.height = 250
       ..$props.direction = Axis.vertical
       ..$props.autoplay = false
       ..$slots.$ = List.generate(
@@ -303,7 +303,7 @@ regist() {
       ),
     r'''
     WCarousel()
-      ..$style?.height = 250
+      ..$style.height = 250
       ..$props.direction = Axis.vertical
       ..$props.autoplay = false
       ..$slots.$ = List.generate(

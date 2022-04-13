@@ -43,7 +43,14 @@ class BaseStyle<W> {
   double? borderTopWidth;
   BorderStyle? borderTopStyle;
 
+  List<BoxShadow>? boxShadow;
+  Gradient? gradient;
+  DecorationImage? backgroundImage;
+  BlendMode? backgroundBlendMode;
+
   List<String> Function(W)? selector;
+
+  double? lineHeight;
 
   set borderTop(BorderSide? borderSide) {
     if (borderSide == null) return;
@@ -255,11 +262,17 @@ class BaseStyle<W> {
     BorderRadius? borderRadius,
     EdgeInsets? padding,
     EdgeInsets? margin,
+    this.boxShadow,
+    this.gradient,
+    this.backgroundImage,
+    this.backgroundBlendMode,
+    double? lineHeight,
   }) {
     this.padding = padding;
     this.borderRadius = borderRadius;
     this.border = border;
     this.margin = margin;
+    if (lineHeight != null) this.lineHeight = lineHeight / (fontSize ?? 14);
   }
   @override
   String toString() {
@@ -268,6 +281,18 @@ class BaseStyle<W> {
       borderBottomWidth: $borderBottomWidth,
       borderRightWidth: $borderRightWidth,
       borderLeftWidth: $borderLeftWidth,
+      paddingLeft: $paddingLeft, 
+      paddingRight: $paddingRight, 
+      paddingTop: $paddingTop, 
+      paddingBottom: $paddingBottom, 
+      backgroundColor: $backgroundColor
+      width: $width
+      widthFactor: $widthFactor
+      height: $height
+      minWidth: $minWidth
+      minHeight: $minHeight
+      maxWidth: $maxWidth
+      maxHeight: $maxHeight
     }''';
   }
 
@@ -320,6 +345,14 @@ class BaseStyle<W> {
       force: force,
     );
 
+    boxShadow = pickStyle(boxShadow, source.boxShadow, force: force);
+    gradient = pickStyle(gradient, source.gradient, force: force);
+    backgroundBlendMode = pickStyle(
+        backgroundBlendMode, source.backgroundBlendMode,
+        force: force);
+    backgroundImage =
+        pickStyle(backgroundImage, source.backgroundImage, force: force);
+
     return this;
   }
 
@@ -343,6 +376,10 @@ class BaseStyle<W> {
 }
 
 class Clazz {
+  static String iconSuf = '--icon';
+  static String squareSuf = '--square';
+  static String circleSuf = '--circle';
+
   static String focus = ':focus';
   static String hover = ':hover';
   static String active = ':active';
@@ -367,9 +404,72 @@ class Clazz {
   static String miniSuf = '--mini';
   static String smallSuf = '--small';
   static String mediumSuf = '--medium';
+  static String largeSuf = '--large';
 
   static String button = '.button';
   static String buttonGroup = '.button-group';
 
+  static String container = '.container';
+  static String main = '.main';
+  static String aside = '.aside';
+  static String header = '.header';
+  static String footer = '.footer';
+
+  static String containerLayout = '.container-layout';
+
+  static String avatar = '.avatar';
+
+  static String badge = '.badge';
+
   static String decriptions = '.decriptions';
+
+  static String empty = '.empty';
+  static String pagination = '.pagination';
+  static String progress = '.progress';
+  static String result = '.result';
+  static String skeleton = '.skeleton';
+  static String table = '.table';
+  static String tag = '.tag';
+  static String tree = '.tree';
+  static String cascader = '.cascader';
+  static String checkbox = '.checkbox';
+  static String colorPicker = '.color-picker';
+  static String datePicker = '.date-picker';
+  static String dateTimePicker = '.date-time-picker';
+  static String inputNumber = '.input-number';
+  static String input = '.input';
+  static String radio = '.radio';
+  static String rate = '.rate';
+  static String select = '.select';
+  static String slider = '.slider';
+  static String swatch = '.swatch';
+  static String timePicker = '.time-picker';
+  static String transfer = '.transfer';
+  static String upload = '.upload';
+  static String breadcrumb = '.breadcrumb';
+  static String dropdown = '.dropdown';
+  static String menu = '.menu';
+  static String pageHeader = '.page-header';
+  static String steps = '.steps';
+  static String tabs = '.tabs';
+  static String alert = '.alert';
+  static String loading = '.loading';
+  static String message = '.message';
+  static String messageBox = '.message-box';
+  static String notification = '.notification';
+  static String backtop = '.backtop';
+  static String calendar = '.calendar';
+  static String card = '.card';
+  static String carousel = '.carousel';
+  static String collapse = '.collapse';
+  static String dialog = '.dialog';
+  static String divider = '.divider';
+  static String drawer = '.drawer';
+  static String image = '.image';
+  static String infiniteScroll = '.infinite-scroll';
+  static String popconfirm = '.popconfirm';
+  static String popover = '.popover';
+  static String timeline = '.timeline';
+  static String tooltip = '.tooltip';
+  static String form = '.form';
 }

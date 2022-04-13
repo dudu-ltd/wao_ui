@@ -51,7 +51,7 @@ class WTabs extends StatelessWidget
   }
 
   double get height {
-    return $style?.height ?? cfgGlobal.tabs.height ?? 200;
+    return $style.height ?? cfgGlobal.tabs.height ?? 200;
   }
 
   @override
@@ -213,23 +213,23 @@ class WTabs extends StatelessWidget
   }
 
   EdgeInsets get itemPadding {
-    return $style?.item?.padding ??
+    return $style.item?.padding ??
         cfgGlobal.tabs.item?.padding ??
         const EdgeInsets.symmetric(horizontal: 20);
   }
 
   double get itemHeight {
-    return $style?.item?.height ?? cfgGlobal.tabs.item?.height ?? 40;
+    return $style.item?.height ?? cfgGlobal.tabs.item?.height ?? 40;
   }
 
   Color? get textColor {
-    return $style?.item?.color ??
+    return $style.item?.color ??
         cfgGlobal.tabs.item?.color ??
         ColorUtil.hexToColor('#303133');
   }
 
   double? get textSize {
-    return $style?.item?.fontSize ?? cfgGlobal.tabs.item?.fontSize;
+    return $style.item?.fontSize ?? cfgGlobal.tabs.item?.fontSize;
   }
 }
 

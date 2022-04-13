@@ -6,8 +6,8 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/others/w_image.dart';
 
-class WAvatar extends StatelessWidget
-    with BaseMixins<WAvatarOn, WAvatarProp, WAvatarSlot, WAvatarStyle> {
+class WAvatar extends WStatelessWidget<WAvatarOn, WAvatarProp, WAvatarSlot,
+    WAvatarStyle> {
   WAvatar({
     Key? key,
     WAvatarOn? on,
@@ -23,7 +23,7 @@ class WAvatar extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var width = $props.isCustomSize
         ? double.parse($props.size)
         : cfgGlobal.avatarSize.val($props.size);
@@ -63,7 +63,7 @@ class WAvatar extends StatelessWidget
       img = Icon(
         $props.icon!.icon,
         color: style.color ?? CfgGlobal.primaryColor,
-        size: cfgGlobal.avatarSize.val($props.size) * .6,
+        size: style.fontSize,
       );
     }
     return img;
@@ -91,6 +91,10 @@ class WAvatarProp extends BaseProp {
     return shape == 'circle';
   }
 
+  bool get isSquare {
+    return shape == 'square';
+  }
+
   WAvatarProp({
     this.icon,
     size,
@@ -103,10 +107,11 @@ class WAvatarProp extends BaseProp {
     this.size = size ?? 'large';
     this.shape = shape ?? 'circle';
     this.fit = fit ?? 'cover';
-    if (src == null && icon == null)
+    if (src == null && icon == null) {
       icon = const Icon(
         Icons.person,
       );
+    }
   }
 }
 

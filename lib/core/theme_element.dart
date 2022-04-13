@@ -1,8 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:wao_ui/core/utils/collect_util.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
-import 'package:wao_ui/src/basic/cfg_global.dart';
 
 import '../wao_ui.dart';
 import 'base_style.dart';
@@ -40,6 +37,64 @@ element() {
 
   var _button = Clazz.button = '.el-button';
   var _buttonGroup = Clazz.button = '.el-button-group';
+
+  Clazz.avatar = '.el-avatar';
+  Clazz.decriptions = '.el-decriptions';
+  Clazz.empty = '.el-empty';
+  Clazz.pagination = '.el-pagination';
+  Clazz.progress = '.el-progress';
+  Clazz.result = '.el-result';
+  Clazz.skeleton = '.el-skeleton';
+  Clazz.table = '.el-table';
+  Clazz.tag = '.el-tag';
+  Clazz.tree = '.el-tree';
+  Clazz.cascader = '.el-cascader';
+  Clazz.checkbox = '.el-checkbox';
+  Clazz.colorPicker = '.el-color-picker';
+  Clazz.datePicker = '.el-date-picker';
+  Clazz.dateTimePicker = '.el-date-time-picker';
+  Clazz.inputNumber = '.el-input-number';
+  Clazz.input = '.el-input';
+  Clazz.radio = '.el-radio';
+  Clazz.rate = '.el-rate';
+  Clazz.select = '.el-select';
+  Clazz.slider = '.el-slider';
+  Clazz.swatch = '.el-swatch';
+  Clazz.timePicker = '.el-time-picker';
+  Clazz.transfer = '.el-transfer';
+  Clazz.upload = '.el-upload';
+  Clazz.breadcrumb = '.el-breadcrumb';
+  Clazz.dropdown = '.el-dropdown';
+  Clazz.menu = '.el-menu';
+  Clazz.pageHeader = '.el-page-header';
+  Clazz.steps = '.el-steps';
+  Clazz.tabs = '.el-tabs';
+  Clazz.alert = '.el-alert';
+  Clazz.loading = '.el-loading';
+  Clazz.message = '.el-message';
+  Clazz.messageBox = '.el-message-box';
+  Clazz.notification = '.el-notification';
+  Clazz.backtop = '.el-backtop';
+  Clazz.calendar = '.el-calendar';
+  Clazz.card = '.el-card';
+  Clazz.carousel = '.el-carousel';
+  Clazz.collapse = '.el-collapse';
+  Clazz.dialog = '.el-dialog';
+  Clazz.divider = '.el-divider';
+  Clazz.drawer = '.el-drawer';
+  Clazz.image = '.el-image';
+  Clazz.infiniteScroll = '.el-infinite-scroll';
+  Clazz.popconfirm = '.el-popconfirm';
+  Clazz.popover = '.el-popover';
+  Clazz.timeline = '.el-timeline';
+  Clazz.tooltip = '.el-tooltip';
+  Clazz.form = '.el-form';
+
+  Clazz.container = '.el-container';
+  Clazz.main = '.el-main';
+  Clazz.aside = '.el-aside';
+  Clazz.header = '.el-header';
+  Clazz.footer = '.el-footer';
 
   CfgGlobal.primaryColor = const MaterialColor(
     0xFF409eff,
@@ -169,7 +224,7 @@ element() {
       'zero': 12,
       'mini': 13,
       'small': 14,
-      'medium': 16,
+      'medium': 40,
       'large': 20,
     },
   );
@@ -199,6 +254,22 @@ element() {
   );
 
   CfgGlobal.css = {
+    [
+      [Clazz.pagination]
+    ]: BaseStyle()
+      ..padding = const EdgeInsets.symmetric(vertical: 5, horizontal: 2)
+      ..color = CfgGlobal.textColor
+      ..fontWeight = FontWeight.w700,
+
+    [
+      [Clazz.pagination, Clazz.select, Clazz.input]
+    ]: BaseStyle()
+      ..width = 100
+      ..margin = const EdgeInsets.symmetric(
+        vertical: 0,
+        horizontal: 5,
+      ),
+
     [
       [_button]
     ]: BaseStyle()
@@ -667,7 +738,7 @@ element() {
       [_button, '$_button$mediumSuf', isCircle]
     ]: BaseStyle(
       padding: CfgGlobal.circlePadding.medium,
-    ),
+    )..borderRadius = CfgGlobal.circularBorderRadius.large,
     [
       [_button, '$_button$smallSuf']
     ]: BaseStyle(
@@ -741,7 +812,7 @@ element() {
       [Clazz.decriptions]
     ]: WDescriptionsStyle()
       ..fontSize = 14
-      ..color = ColorUtil.hexToColor('#303133')
+      ..color = CfgGlobal.textColor
       ..header = (BaseStyle()
         ..alignItems = Alignment.center
         ..marginBottom = 20)
@@ -752,6 +823,76 @@ element() {
         ..color = ColorUtil.hexToColor('#606266')
         ..backgroundColor = Colors.white
         ..widthFactor = 1),
+    [
+      [Clazz.container]
+    ]: BaseStyle(),
+    [
+      [Clazz.main]
+    ]: BaseStyle()..padding = const EdgeInsets.all(20.0),
+    [
+      [Clazz.footer],
+      [Clazz.header]
+    ]: BaseStyle()
+      ..padding = const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+
+    [
+      [Clazz.avatar]
+    ]: BaseStyle()
+      ..textAlign = Alignment.center
+      ..color = CfgGlobal.basicColor.shade50
+      ..backgroundColor = CfgGlobal.basicColor.shade500
+      ..width = 40
+      ..height = 40
+      ..maxWidth = 40
+      ..fontSize = 14,
+    [
+      [Clazz.avatar, '${Clazz.avatar}${Clazz.circleSuf}']
+    ]: BaseStyle()..borderRadius = CfgGlobal.circularBorderRadius.large,
+    [
+      [Clazz.avatar, '${Clazz.avatar}${Clazz.squareSuf}']
+    ]: BaseStyle()..borderRadius = CfgGlobal.circularBorderRadius.medium,
+    [
+      [Clazz.avatar, '${Clazz.avatar}${Clazz.iconSuf}']
+    ]: BaseStyle()..fontSize = 18,
+    [
+      [
+        Clazz.avatar,
+        '${Clazz.avatar}${Clazz.iconSuf}',
+        '${Clazz.avatar}${Clazz.smallSuf}'
+      ]
+    ]: BaseStyle()..fontSize = 20,
+    [
+      [
+        Clazz.avatar,
+        '${Clazz.avatar}${Clazz.iconSuf}',
+        '${Clazz.avatar}${Clazz.mediumSuf}'
+      ]
+    ]: BaseStyle()..fontSize = 24,
+    [
+      [
+        Clazz.avatar,
+        '${Clazz.avatar}${Clazz.iconSuf}',
+        '${Clazz.avatar}${Clazz.largeSuf}'
+      ]
+    ]: BaseStyle()..fontSize = 28,
+    [
+      [Clazz.avatar, '${Clazz.avatar}${Clazz.largeSuf}']
+    ]: BaseStyle()
+      ..width = 40
+      ..height = 40
+      ..lineHeight = 40,
+    [
+      [Clazz.avatar, '${Clazz.avatar}${Clazz.mediumSuf}']
+    ]: BaseStyle()
+      ..width = 36
+      ..height = 36
+      ..lineHeight = 36,
+    [
+      [Clazz.avatar, '${Clazz.avatar}${Clazz.smallSuf}']
+    ]: BaseStyle()
+      ..width = 28
+      ..height = 28
+      ..lineHeight = 28,
   };
 
   // .el-button
@@ -778,6 +919,244 @@ element() {
         if (btn.$props.inGroup && (!btn.$props.isFirst && !btn.$props.isLast))
           '${not(firstChild)}${not(lastChild)}',
       ];
-    }
+    },
+    'WContainerLayout': (cpn) {
+      cpn as WContainerLayout;
+      return [Clazz.containerLayout];
+    },
+    'WContainer': (cpn) {
+      cpn as WContainer;
+      return [Clazz.container];
+    },
+    'WMain': (cpn) {
+      cpn as WMain;
+      return [Clazz.main];
+    },
+    'WAside': (cpn) {
+      cpn as WAside;
+      return [Clazz.aside];
+    },
+    'WHeader': (cpn) {
+      cpn as WHeader;
+      return [Clazz.header];
+    },
+    'WFooter': (cpn) {
+      cpn as WFooter;
+      return [Clazz.footer];
+    },
+    'WAvatar': (cpn) {
+      cpn as WAvatar;
+      return [
+        Clazz.avatar,
+        if (cpn.$props.isCircle) '${Clazz.avatar}${Clazz.circleSuf}',
+        if (cpn.$props.isSquare) '${Clazz.avatar}${Clazz.squareSuf}',
+        if (cpn.$props.icon != null) '${Clazz.avatar}${Clazz.iconSuf}',
+        '${Clazz.avatar}--${cpn.$props.size}',
+      ];
+    },
+    'WBadge': (cpn) {
+      cpn as WBadge;
+      return [Clazz.badge];
+    },
+    'WDescriptions': (cpn) {
+      cpn as WDescriptions;
+      return [Clazz.decriptions];
+    },
+    'WEmpty': (cpn) {
+      cpn as WEmpty;
+      return [Clazz.empty];
+    },
+    'WPagination': (cpn) {
+      cpn as WPagination;
+      return [Clazz.pagination];
+    },
+    'WProgress': (cpn) {
+      cpn as WProgress;
+      return [Clazz.progress];
+    },
+    'WResult': (cpn) {
+      cpn as WResult;
+      return [Clazz.result];
+    },
+    'WSkeleton': (cpn) {
+      cpn as WSkeleton;
+      return [Clazz.skeleton];
+    },
+    'WTable': (cpn) {
+      cpn as WTable;
+      return [Clazz.table];
+    },
+    'WTag': (cpn) {
+      cpn as WTag;
+      return [Clazz.tag];
+    },
+    'WTree': (cpn) {
+      cpn as WTree;
+      return [Clazz.tree];
+    },
+    'WCascader': (cpn) {
+      cpn as WCascader;
+      return [Clazz.cascader];
+    },
+    'WCheckbox': (cpn) {
+      cpn as WCheckbox;
+      return [Clazz.checkbox];
+    },
+    'WColorPicker': (cpn) {
+      cpn as WColorPicker;
+      return [Clazz.colorPicker];
+    },
+    'WDatePicker': (cpn) {
+      cpn as WDatePicker;
+      return [Clazz.datePicker];
+    },
+    'WDateTimePicker': (cpn) {
+      cpn as WDateTimePicker;
+      return [Clazz.dateTimePicker];
+    },
+    'WInputNumber': (cpn) {
+      cpn as WInputNumber;
+      return [Clazz.inputNumber];
+    },
+    'WInput': (cpn) {
+      cpn as WInput;
+      return [Clazz.input];
+    },
+    'WRadio': (cpn) {
+      cpn as WRadio;
+      return [Clazz.radio];
+    },
+    'WRate': (cpn) {
+      cpn as WRate;
+      return [Clazz.rate];
+    },
+    'WSelect': (cpn) {
+      cpn as WSelect;
+      return [Clazz.select];
+    },
+    'WSlider': (cpn) {
+      cpn as WSlider;
+      return [Clazz.slider];
+    },
+    'WSwitch': (cpn) {
+      cpn as WSwitch;
+      return [Clazz.swatch];
+    },
+    'WTimePicker': (cpn) {
+      cpn as WTimePicker;
+      return [Clazz.timePicker];
+    },
+    'WTransfer': (cpn) {
+      cpn as WTransfer;
+      return [Clazz.transfer];
+    },
+    'WUpload': (cpn) {
+      cpn as WUpload;
+      return [Clazz.upload];
+    },
+    'WBreadcrumb': (cpn) {
+      cpn as WBreadcrumb;
+      return [Clazz.breadcrumb];
+    },
+    'WDropdown': (cpn) {
+      cpn as WDropdown;
+      return [Clazz.dropdown];
+    },
+    'WMenu': (cpn) {
+      cpn as WMenu;
+      return [Clazz.menu];
+    },
+    'WPageHeader': (cpn) {
+      cpn as WPageHeader;
+      return [Clazz.pageHeader];
+    },
+    'WSteps': (cpn) {
+      cpn as WSteps;
+      return [Clazz.steps];
+    },
+    'WTabs': (cpn) {
+      cpn as WTabs;
+      return [Clazz.tabs];
+    },
+    'WAlert': (cpn) {
+      cpn as WAlert;
+      return [Clazz.alert];
+    },
+    'WLoading': (cpn) {
+      cpn as WLoading;
+      return [Clazz.loading];
+    },
+    'WMessage': (cpn) {
+      cpn as WMessage;
+      return [Clazz.message];
+    },
+    'WMessageBox': (cpn) {
+      cpn as WMessageBox;
+      return [Clazz.messageBox];
+    },
+    'WNotification': (cpn) {
+      cpn as WNotification;
+      return [Clazz.notification];
+    },
+    'WBacktop': (cpn) {
+      cpn as WBacktop;
+      return [Clazz.backtop];
+    },
+    'WCalendar': (cpn) {
+      cpn as WCalendar;
+      return [Clazz.cascader];
+    },
+    'WCard': (cpn) {
+      cpn as WCard;
+      return [Clazz.card];
+    },
+    'WCarousel': (cpn) {
+      cpn as WCarousel;
+      return [Clazz.carousel];
+    },
+    'WCollapse': (cpn) {
+      cpn as WCollapse;
+      return [Clazz.collapse];
+    },
+    'WDialog': (cpn) {
+      cpn as WDialog;
+      return [Clazz.dialog];
+    },
+    'WDivider': (cpn) {
+      cpn as WDivider;
+      return [Clazz.divider];
+    },
+    'WDrawer': (cpn) {
+      cpn as WDrawer;
+      return [Clazz.drawer];
+    },
+    'WImage': (cpn) {
+      cpn as WImage;
+      return [Clazz.image];
+    },
+    'WInfiniteScroll': (cpn) {
+      cpn as WInfiniteScroll;
+      return [Clazz.infiniteScroll];
+    },
+    'WPopconfirm': (cpn) {
+      cpn as WPopconfirm;
+      return [Clazz.popconfirm];
+    },
+    'WPopover': (cpn) {
+      cpn as WPopover;
+      return [Clazz.popover];
+    },
+    'WTimeline': (cpn) {
+      cpn as WTimeline;
+      return [Clazz.timeline];
+    },
+    'WTooltip': (cpn) {
+      cpn as WTooltip;
+      return [Clazz.tooltip];
+    },
+    'WForm': (cpn) {
+      cpn as WForm;
+      return [Clazz.form];
+    },
   };
 }

@@ -40,7 +40,7 @@ class WTag extends WStatelessWidget<WTagOn, WTagProp, WTagSlot, WTagStyle> {
         ? [
             marginWrapper(
               closeButtonMain,
-              EdgeInsets.only(left: $style?.padding?.left ?? 0),
+              EdgeInsets.only(left: $style.padding?.left ?? 0),
             )
           ]
         : [];

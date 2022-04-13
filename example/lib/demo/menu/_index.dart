@@ -181,12 +181,12 @@ var menus = [
         ..$props.defaultActive = activeIndex
         ..$on.select = ((p0, p1) {})
         ..$slots.$ = menus
-        ..$style?.height = 200
-        ..$style?.minHeight = 400
-        ..$style?.backgroundColor = Color(0xFF545c64)
-        ..$style?.hoverBackgroundColor = Color.fromRGBO(67, 74, 80, 1)
-        ..$style?.color = Colors.white
-        ..$style?.activeColor = Color(0xffffd04b),
+        ..$style.height = 200
+        ..$style.minHeight = 400
+        ..$style.backgroundColor = Color(0xFF545c64)
+        ..$style.hoverBackgroundColor = Color.fromRGBO(67, 74, 80, 1)
+        ..$style.color = Colors.white
+        ..$style.activeColor = Color(0xffffd04b),
     ),
     r'''
     SizedBox(
@@ -195,12 +195,12 @@ var menus = [
         ..$props.defaultActive = activeIndex
         ..$on.select = ((p0, p1) {})
         ..$slots.$ = menus
-        ..$style?.height = 200
-        ..$style?.minHeight = 400
-        ..$style?.backgroundColor = Color(0xFF545c64)
-        ..$style?.hoverBackgroundColor = Color.fromRGBO(67, 74, 80, 1)
-        ..$style?.color = Colors.white
-        ..$style?.activeColor = Color(0xffffd04b),
+        ..$style.height = 200
+        ..$style.minHeight = 400
+        ..$style.backgroundColor = Color(0xFF545c64)
+        ..$style.hoverBackgroundColor = Color.fromRGBO(67, 74, 80, 1)
+        ..$style.color = Colors.white
+        ..$style.activeColor = Color(0xffffd04b),
     )
     ''',
   );

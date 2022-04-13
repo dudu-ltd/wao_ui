@@ -318,7 +318,7 @@ class WDescriptionsItem extends WStatelessWidget<WDescriptionsItemOn,
   }
 
   EdgeInsets get padding {
-    return $style?.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
+    return $style.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
   }
 }
 

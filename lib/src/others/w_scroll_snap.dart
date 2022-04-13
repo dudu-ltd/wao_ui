@@ -85,7 +85,7 @@ class _WScrollSnapState extends State<WScrollSnap>
       )
       ..$slots.asideRight = snapBuilder
       ..$props.rightJudge = true
-      ..$props.asideRightWidth = widget.$style!.snapWidth;
+      ..$props.asideRightWidth = widget.$style.snapWidth;
   }
 
   var mask = Column();
@@ -195,7 +195,7 @@ class _WScrollSnapState extends State<WScrollSnap>
   }
 
   EdgeInsets get padding {
-    return widget.$style?.padding ??
+    return widget.$style.padding ??
         cfgGlobal.scrollSnap.padding ??
         EdgeInsets.zero;
   }

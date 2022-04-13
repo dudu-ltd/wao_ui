@@ -385,7 +385,7 @@ class _WCarouselState extends State<WCarousel>
   }
 
   double? get height {
-    return widget.$style?.height ?? cfgGlobal.carousel.height;
+    return widget.$style.height ?? cfgGlobal.carousel.height;
   }
 }
 

@@ -5,7 +5,6 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 
-import 'extension/theme_data_extension.dart';
 import 'utils/collect_util.dart';
 
 class BaseWidget {}
@@ -22,9 +21,7 @@ abstract class WStatelessWidget<
     readStyle();
     beforeBuild(); // 部件生命周期埋点。
     Widget wWidget = wbuild(context);
-    // Widget el = ;
-    afterBuild(wWidget, context);
-    return wWidget;
+    return useBox ? boxWrapper(wWidget, context) : wWidget;
   }
 
   Widget wbuild(BuildContext context);
@@ -42,10 +39,10 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) {
     widget.readStyle();
+    // print(widget.style);
     widget.beforeBuild(); // 部件生命周期埋点。
     Widget self = wbuild(context);
-
-    return widget.afterBuild(self, context);
+    return widget.useBox ? widget.boxWrapper(self, context) : self;
   }
 
   Widget wbuild(BuildContext context);
@@ -56,9 +53,8 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   late final O $on;
   late final P $props;
   late final S $slots;
-  late final T? $style;
+  late final T $style;
 
-  @protected
   late final BaseStyle style = BaseStyle<BaseMixins>();
 
   List<Widget>? $defaultSlot;
@@ -67,31 +63,57 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     var selector =
         CfgGlobal.selectors[runtimeType.toString().trim()]?.call(this) ?? [];
 
-    List<BaseStyle?> styles =
+    List<BaseStyle?> stateStyles =
         findByListKey<BaseStyle?>(CfgGlobal.css, selector);
 
+    // print(selector);
     Map<List<List<String>>, BaseStyle> customStyle = {};
-    for (var element in style.clazz.entries) {
+    for (var element in $style.clazz.entries) {
       customStyle[[element.key]] = element.value;
     }
 
     List<BaseStyle?> customStyles = findByListKey(customStyle, selector);
-    styles.addAll(customStyles);
-    for (var style in styles) {
-      this.style.merge(style, force: true);
+    // print('customStyles: $customStyles');
+    stateStyles.addAll(customStyles);
+    for (var stateStyle in stateStyles) {
+      style.merge(stateStyle, force: true);
+      print(
+          'style.backgroundColor: ${style.backgroundColor}，stateStyle: ${stateStyle?.backgroundColor}');
     }
+
+    style.merge($style, force: true);
   }
 
   beforeBuild() {}
 
-  afterBuild(Widget willBeWrap, BuildContext context) {
-    return SizedBox(
+  boxWrapper(Widget willBeWrap, BuildContext context, [BaseStyle? style]) {
+    style = style ?? this.style;
+    // print(style);
+    return Container(
+      alignment: style.textAlign,
+      padding: style.padding,
+      margin: style.margin,
       width: style.width,
       height: style.height,
+      constraints: BoxConstraints(
+        maxHeight: style.maxHeight ?? double.infinity,
+        minHeight: style.minHeight ?? 0.0,
+        maxWidth: style.maxWidth ?? double.infinity,
+        minWidth: style.minWidth ?? 0.0,
+      ),
+      decoration: BoxDecoration(
+          color: style.backgroundColor,
+          borderRadius: style.borderRadius,
+          border: style.border,
+          image: style.backgroundImage,
+          boxShadow: style.boxShadow,
+          gradient: style.gradient,
+          backgroundBlendMode: style.backgroundBlendMode),
       child: willBeWrap,
     );
-    // return willBeWrap;
   }
+
+  bool get useBox => true;
 
   init() {}
 
@@ -133,7 +155,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     var newWidget = null;
     var t = slot.runtimeType;
     for (var translator in translators) {
-      print('slot: $slot，type: $t，Type: ${translator.type}');
+      // print('slot: $slot，type: $t，Type: ${translator.type}');
       if (t == translator.type || instanceof(t, translator.type)) {
         newWidget =
             translator.fn.call(slot, index, this, $defaultSlotBeforeLength);
@@ -163,6 +185,15 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
           );
         },
       ),
+      // SlotTranslator(
+      //   Icon,
+      //   (slot, i, component, len) {
+      //     return IconTheme(
+      //       data: IconThemeData(color: style.color, size: style.fontSize),
+      //       child: slot,
+      //     );
+      //   },
+      // ),
     ];
   }
 
@@ -219,7 +250,6 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   }
 
   instanceof(t, type) {
-    print(type);
     return type == Map &&
             t.toString().startsWith('_InternalImmutableLinkedHashMap') ||
         t.toString().startsWith('_InternalLinkedHashMap');

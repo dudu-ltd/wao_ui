@@ -43,19 +43,19 @@ var avatarIcon1c = Demo(
     WAvatar()
       ..$props.icon = const Icon(Icons.person_add)
       ..$props.size = 'medium'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 45,
       ),
     WAvatar()
       ..$props.icon = const Icon(Icons.face)
       ..$props.size = 'medium'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 45,
       ),
     WAvatar()
       ..$props.icon = const Icon(Icons.star)
       ..$props.size = 'medium'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 45,
       ),
   ]),
@@ -64,19 +64,19 @@ var avatarIcon1c = Demo(
     WAvatar()
       ..$props.icon = const Icon(Icons.person_add)
       ..$props.size = 'large'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 45,
       ),
     WAvatar()
       ..$props.icon = const Icon(Icons.person_add)
       ..$props.size = 'medium'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 45,
       ),
     WAvatar()
       ..$props.icon = const Icon(Icons.person_add)
       ..$props.size = 'small'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 45,
       ),
   ])
@@ -88,49 +88,49 @@ var avatarIcon2 = Demo(
   Row(children: [
     WAvatar()
       ..$props.size = 'large'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = Colors.blue,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = Colors.blue,
     WAvatar()
       ..$props.size = 'large'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = CfgGlobal.successColor,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = CfgGlobal.successColor,
     WAvatar()
       ..$props.size = 'large'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = Colors.purple,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = Colors.purple,
   ]),
   r'''
   Row(children: [
     WAvatar()
       ..$props.size = 'large'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = Colors.blue,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = Colors.blue,
     WAvatar()
       ..$props.size = 'large'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = CfgGlobal.successColor,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = CfgGlobal.successColor,
     WAvatar()
       ..$props.size = 'large'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = Colors.purple,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = Colors.purple,
   ])
   ''',
 );
@@ -140,54 +140,54 @@ var avatarIcon2q = Demo(
     WAvatar()
       ..$props.size = 'large'
       ..$props.shape = 'square'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = Colors.blue,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = Colors.blue,
     WAvatar()
       ..$props.size = 'large'
       ..$props.shape = 'square'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = CfgGlobal.successColor,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = CfgGlobal.successColor,
     WAvatar()
       ..$props.size = 'large'
       ..$props.shape = 'square'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = Colors.purple,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = Colors.purple,
   ]),
   r'''
   Row(children: [
     WAvatar()
       ..$props.size = 'large'
       ..$props.shape = 'square'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = Colors.blue,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = Colors.blue,
     WAvatar()
       ..$props.size = 'large'
       ..$props.shape = 'square'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = CfgGlobal.successColor,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = CfgGlobal.successColor,
     WAvatar()
       ..$props.size = 'large'
       ..$props.shape = 'square'
-      ..style.padding = const EdgeInsets.symmetric(
+      ..$style.padding = const EdgeInsets.symmetric(
         horizontal: 40,
       )
-      ..style.color = Colors.white
-      ..style.backgroundColor = Colors.purple,
+      ..$style.color = Colors.white
+      ..$style.backgroundColor = Colors.purple,
   ])
   ''',
 );
@@ -385,24 +385,36 @@ var avatarCircleWth = Demo(
       ..$props.shape = 'circle'
       ..$props.src = wthImg
       ..$props.fit = 'fill',
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'contain')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'cover')),
-    WAvatar(
-        props:
-            WAvatarProp(size: '80', shape: 'circle', src: wthImg, fit: 'none')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'scaleDown')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'fitWidth')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'fitHeight')),
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = wthImg
+      ..$props.fit = 'contain',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = wthImg
+      ..$props.fit = 'cover',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = wthImg
+      ..$props.fit = 'none',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = wthImg
+      ..$props.fit = 'scaleDown',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = wthImg
+      ..$props.fit = 'fitWidth',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = wthImg
+      ..$props.fit = 'fitHeight',
   ]),
   r'''
   var  imgSrc =
