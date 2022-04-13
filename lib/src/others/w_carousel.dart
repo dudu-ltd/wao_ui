@@ -9,7 +9,8 @@ import 'package:wao_ui/wao_ui.dart';
 
 import '../../core/utils/color_util.dart';
 
-class WCarousel extends WStatefulWidget<WCarouselOn, WCarouselProp, WCarouselSlot, WCarouselStyle> {
+class WCarousel extends WStatefulWidget<WCarouselOn, WCarouselProp,
+    WCarouselSlot, WCarouselStyle> {
   WCarousel({
     Key? key,
     WCarouselOn? on,
@@ -27,7 +28,7 @@ class WCarousel extends WStatefulWidget<WCarouselOn, WCarouselProp, WCarouselSlo
   State<WCarousel> createState() => _WCarouselState();
 }
 
-class _WCarouselState extends State<WCarousel>
+class _WCarouselState extends WState<WCarousel>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController arrowController;
   late Animation<double> arrowOffset;
@@ -223,7 +224,7 @@ class _WCarouselState extends State<WCarousel>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return MouseRegion(
       onEnter: (event) {
         isHover = true;
@@ -448,10 +449,8 @@ class WCarouselSlot extends BaseSlot {
   WCarouselSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WCarouselItem extends StatefulWidget
-    with
-        BaseMixins<WCarouselItemOn, WCarouselItemProp, WCarouselItemSlot,
-            WCarouselItemStyle> {
+class WCarouselItem extends WStatefulWidget<WCarouselItemOn, WCarouselItemProp,
+    WCarouselItemSlot, WCarouselItemStyle> {
   WCarouselItem({
     Key? key,
     WCarouselItemOn? on,
@@ -469,9 +468,9 @@ class WCarouselItem extends StatefulWidget
   State<WCarouselItem> createState() => _WCarouselItemState();
 }
 
-class _WCarouselItemState extends State<WCarouselItem> {
+class _WCarouselItemState extends WState<WCarouselItem> {
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return widget.defaultSlot.first;
   }
 }

@@ -9,7 +9,8 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WCollapse extends WStatefulWidget<WCollapseOn, WCollapseProp, WCollapseSlot, WCollapseStyle> {
+class WCollapse extends WStatefulWidget<WCollapseOn, WCollapseProp,
+    WCollapseSlot, WCollapseStyle> {
   WCollapse({
     Key? key,
     WCollapseOn? on,
@@ -46,7 +47,7 @@ class WCollapse extends WStatefulWidget<WCollapseOn, WCollapseProp, WCollapseSlo
   }
 }
 
-class _WCollapseState extends State<WCollapse> with WidgetsBindingObserver {
+class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -69,7 +70,7 @@ class _WCollapseState extends State<WCollapse> with WidgetsBindingObserver {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     BorderSide border =
         BorderSide(color: borderColor, width: borderWidth, style: borderStyle);
     return borderWrapper(
@@ -159,10 +160,8 @@ class WCollapseSlot extends BaseSlot {
 ///
 ///
 ///
-class WCollapseItem extends StatefulWidget
-    with
-        BaseMixins<WCollapseItemOn, WCollapseItemProp, WCollapseItemSlot,
-            WCollapseItemStyle> {
+class WCollapseItem extends WStatefulWidget<WCollapseItemOn, WCollapseItemProp,
+    WCollapseItemSlot, WCollapseItemStyle> {
   WCollapseItem({
     Key? key,
     WCollapseItemOn? on,
@@ -181,7 +180,7 @@ class WCollapseItem extends StatefulWidget
   State<WCollapseItem> createState() => _WCollapseItemState();
 }
 
-class _WCollapseItemState extends State<WCollapseItem>
+class _WCollapseItemState extends WState<WCollapseItem>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController expandController;
 
@@ -231,7 +230,7 @@ class _WCollapseItemState extends State<WCollapseItem>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Column(
       children: [
         title,

@@ -8,10 +8,8 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WMenuItem extends StatefulWidget
-    with
-        HasRootMenu,
-        BaseMixins<WMenuItemOn, WMenuItemProp, WMenuItemSlot, WMenuItemStyle> {
+class WMenuItem extends WStatefulWidget<WMenuItemOn, WMenuItemProp,
+    WMenuItemSlot, WMenuItemStyle> with HasRootMenu {
   WSubmenu? belongTo;
 
   WMenuItem({
@@ -90,7 +88,7 @@ class WMenuItem extends StatefulWidget
   }
 }
 
-class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
+class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
   late AnimationController expandController;
   late AnimationController bgController;
   late Animation<double> iconAngle;
@@ -211,7 +209,7 @@ class _WMenuItemState extends State<WMenuItem> with TickerProviderStateMixin {
   updateView() => setState(() {});
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var itemBody = Row(
       children: [
         ...defaultAsPrefix,

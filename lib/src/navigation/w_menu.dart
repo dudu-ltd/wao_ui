@@ -124,7 +124,7 @@ class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
   State<WMenu> createState() => _WMenuState();
 }
 
-class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
+class _WMenuState extends WState<WMenu> with SingleTickerProviderStateMixin {
   late AnimationController _widthControl;
   late Animation<dynamic> _width;
 
@@ -204,7 +204,7 @@ class _WMenuState extends State<WMenu> with SingleTickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var child;
     child = ColoredBox(
       color: background,

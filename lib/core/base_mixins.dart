@@ -90,7 +90,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     style = style ?? this.style;
     // print(style);
     return Container(
-      alignment: style.textAlign,
+      alignment: style.textAlign ?? Alignment.centerLeft,
       padding: style.padding,
       margin: style.margin,
       width: style.width,

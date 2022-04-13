@@ -10,10 +10,8 @@ import 'package:wao_ui/src/basic/w_button.dart';
 import 'package:wao_ui/src/form/w_input.dart';
 import 'package:wao_ui/src/form/w_select.dart';
 
-class WPagination extends StatefulWidget
-    with
-        BaseMixins<WPaginationOn, WPaginationProp, WPaginationSlot,
-            WPaginationStyle> {
+class WPagination extends WStatefulWidget<WPaginationOn, WPaginationProp,
+    WPaginationSlot, WPaginationStyle> {
   WPagination({
     Key? key,
     WPaginationOn? on,
@@ -32,9 +30,9 @@ class WPagination extends StatefulWidget
   _WPaginationState createState() => _WPaginationState();
 }
 
-class _WPaginationState extends State<WPagination> {
+class _WPaginationState extends WState<WPagination> {
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

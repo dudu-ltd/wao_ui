@@ -39,7 +39,8 @@ class PlainTreeProp extends BaseProp {
   }
 }
 
-class PlainTree extends WStatefulWidget<PlainTreeOn, PlainTreeProp, PlainTreeSlot, PlainTreeStyle> {
+class PlainTree extends WStatefulWidget<PlainTreeOn, PlainTreeProp,
+    PlainTreeSlot, PlainTreeStyle> {
   PlainTree({Key? key, on, props}) : super(key: key) {
     $on = on ?? PlainTreeOn();
     $props = props ?? PlainTreeProp(data: []);
@@ -64,7 +65,7 @@ class PlainTree extends WStatefulWidget<PlainTreeOn, PlainTreeProp, PlainTreeSlo
   }
 }
 
-class _TreeState extends State<PlainTree> {
+class _TreeState extends WState<PlainTree> {
   TreeData? currentNode;
 
   void addNode(Map<String, dynamic> child) {
@@ -120,7 +121,7 @@ class _TreeState extends State<PlainTree> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget wbuild(BuildContext context) {
     var cols = <Widget>[];
     widget.$props.treeData.forEach((TreeData node) {
       cols.add(
