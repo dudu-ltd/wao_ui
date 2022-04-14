@@ -29,7 +29,9 @@ class BaseStyle<W> {
   double? fontSize;
   FontWeight? fontWeight;
   MouseCursor? cursor;
+  double? opacity;
   Alignment? textAlign;
+  Alignment? verticalAlign;
 
   Radius? borderTopLeftRadius;
   Radius? borderBottomLeftRadius;
@@ -47,6 +49,8 @@ class BaseStyle<W> {
   Gradient? gradient;
   DecorationImage? backgroundImage;
   BlendMode? backgroundBlendMode;
+
+  bool? display = true;
 
   List<String> Function(W)? selector;
 
@@ -229,6 +233,10 @@ class BaseStyle<W> {
   }
 
   BaseStyle({
+    this.opacity,
+    this.textAlign,
+    this.verticalAlign,
+    this.display,
     this.alignItems,
     this.color,
     this.width,
@@ -314,6 +322,8 @@ class BaseStyle<W> {
     fontSize = pickStyle(fontSize, source.fontSize, force: force);
     cursor = pickStyle(cursor, source.cursor, force: force);
     textAlign = pickStyle(textAlign, source.textAlign, force: force);
+    verticalAlign =
+        pickStyle(verticalAlign, source.verticalAlign, force: force);
     paddingLeft = pickStyle(paddingLeft, source.paddingLeft, force: force);
     paddingRight = pickStyle(paddingRight, source.paddingRight, force: force);
     paddingTop = pickStyle(paddingTop, source.paddingTop, force: force);
@@ -353,6 +363,8 @@ class BaseStyle<W> {
     backgroundImage =
         pickStyle(backgroundImage, source.backgroundImage, force: force);
 
+    opacity = pickStyle(opacity, source.opacity, force: force);
+
     return this;
   }
 
@@ -380,6 +392,18 @@ class Clazz {
   static String squareSuf = '--square';
   static String circleSuf = '--circle';
 
+  // position
+  static String horizontalSuf = '--horizontal';
+  static String verticalSuf = '--vertical';
+
+  static String isCollapse = '--collapse';
+
+  // type
+  static String titleSuf = '__title';
+  static String contentSuf = '__content';
+  static String iconArrowSuf = '__icon-arrow';
+  static String popupSuf = '--popup';
+
   static String focus = ':focus';
   static String hover = ':hover';
   static String active = ':active';
@@ -393,6 +417,7 @@ class Clazz {
   static String isRound = '.is-round';
   static String isCircle = '.is-circle';
   static String isLoading = '.is-loading';
+  static String isOpened = '.is-opened';
 
   static String primarySuf = '--primary';
   static String successSuf = '--success';
@@ -449,6 +474,9 @@ class Clazz {
   static String breadcrumb = '.breadcrumb';
   static String dropdown = '.dropdown';
   static String menu = '.menu';
+  static String submenu = '.submenu';
+  static String menuItemGroup = '.menu-item-group';
+  static String menuItem = '.menu-item';
   static String pageHeader = '.page-header';
   static String steps = '.steps';
   static String tabs = '.tabs';

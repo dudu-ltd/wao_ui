@@ -205,52 +205,11 @@ class _WMenuState extends WState<WMenu> with SingleTickerProviderStateMixin {
 
   @override
   Widget wbuild(BuildContext context) {
-    var child;
-    child = ColoredBox(
-      color: background,
-      child: widget.$props.modeIsVertical ? widget.$col : widget.$row,
-    );
-    if (widget.$props.modeIsVertical) {
-      child = ConstrainedBox(
-        constraints: BoxConstraints(minHeight: minHeight),
-        child: SizedBox(
-          width: _width.value,
-          child: child,
-        ),
-      );
-    } else {
-      child = FractionallySizedBox(
-        widthFactor: 1,
-        child: child,
-      );
-    }
-    return borderWrapper(
-      child,
-      widget.$props.modeIsVertical
-          ? Border(
-              right:
-                  BorderSide(width: 1, color: ColorUtil.hexToColor('#e6e6e6')))
-          : Border(
-              bottom:
-                  BorderSide(width: 1, color: ColorUtil.hexToColor('#e6e6e6'))),
-      true,
-    );
+    return widget.$props.modeIsVertical ? widget.$col : widget.$row;
   }
 
   double? get width {
-    return widget.$style.width ?? cfgGlobal.menu.width;
-  }
-
-  double get minHeight {
-    return widget.collapse.value
-        ? 0
-        : widget.$style.minHeight ?? cfgGlobal.menu.minHeight ?? 0.0;
-  }
-
-  Color get background {
-    return widget.$style.backgroundColor ??
-        cfgGlobal.menu.backgroundColor ??
-        Colors.white;
+    return widget.style.width ?? cfgGlobal.menu.width;
   }
 }
 

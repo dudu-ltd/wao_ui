@@ -23,6 +23,7 @@ element() {
   var isRound = Clazz.isRound;
   var isCircle = Clazz.isCircle;
   var isLoading = Clazz.isLoading;
+  var isOpened = Clazz.isOpened;
 
   var primarySuf = Clazz.primarySuf;
   var successSuf = Clazz.successSuf;
@@ -34,67 +35,83 @@ element() {
   var miniSuf = Clazz.miniSuf;
   var smallSuf = Clazz.smallSuf;
   var mediumSuf = Clazz.mediumSuf;
+  var largeSuf = Clazz.largeSuf;
+
+  // position
+  var horizontalSuf = Clazz.horizontalSuf;
+  var verticalSuf = Clazz.verticalSuf;
+  var isCollapse = Clazz.isCollapse;
+  var titleSuf = Clazz.titleSuf;
+  var contentSuf = Clazz.contentSuf;
+  var iconArrowSuf = Clazz.iconArrowSuf;
+  var popupSuf = Clazz.popupSuf;
+
+  var iconSuf = Clazz.iconSuf;
+  var squareSuf = Clazz.squareSuf;
+  var circleSuf = Clazz.circleSuf;
 
   var _button = Clazz.button = '.el-button';
   var _buttonGroup = Clazz.button = '.el-button-group';
 
-  Clazz.avatar = '.el-avatar';
-  Clazz.decriptions = '.el-decriptions';
-  Clazz.empty = '.el-empty';
-  Clazz.pagination = '.el-pagination';
-  Clazz.progress = '.el-progress';
-  Clazz.result = '.el-result';
-  Clazz.skeleton = '.el-skeleton';
-  Clazz.table = '.el-table';
-  Clazz.tag = '.el-tag';
-  Clazz.tree = '.el-tree';
-  Clazz.cascader = '.el-cascader';
-  Clazz.checkbox = '.el-checkbox';
-  Clazz.colorPicker = '.el-color-picker';
-  Clazz.datePicker = '.el-date-picker';
-  Clazz.dateTimePicker = '.el-date-time-picker';
-  Clazz.inputNumber = '.el-input-number';
-  Clazz.input = '.el-input';
-  Clazz.radio = '.el-radio';
-  Clazz.rate = '.el-rate';
-  Clazz.select = '.el-select';
-  Clazz.slider = '.el-slider';
-  Clazz.swatch = '.el-swatch';
-  Clazz.timePicker = '.el-time-picker';
-  Clazz.transfer = '.el-transfer';
-  Clazz.upload = '.el-upload';
-  Clazz.breadcrumb = '.el-breadcrumb';
-  Clazz.dropdown = '.el-dropdown';
-  Clazz.menu = '.el-menu';
-  Clazz.pageHeader = '.el-page-header';
-  Clazz.steps = '.el-steps';
-  Clazz.tabs = '.el-tabs';
-  Clazz.alert = '.el-alert';
-  Clazz.loading = '.el-loading';
-  Clazz.message = '.el-message';
-  Clazz.messageBox = '.el-message-box';
-  Clazz.notification = '.el-notification';
-  Clazz.backtop = '.el-backtop';
-  Clazz.calendar = '.el-calendar';
-  Clazz.card = '.el-card';
-  Clazz.carousel = '.el-carousel';
-  Clazz.collapse = '.el-collapse';
-  Clazz.dialog = '.el-dialog';
-  Clazz.divider = '.el-divider';
-  Clazz.drawer = '.el-drawer';
-  Clazz.image = '.el-image';
-  Clazz.infiniteScroll = '.el-infinite-scroll';
-  Clazz.popconfirm = '.el-popconfirm';
-  Clazz.popover = '.el-popover';
-  Clazz.timeline = '.el-timeline';
-  Clazz.tooltip = '.el-tooltip';
-  Clazz.form = '.el-form';
-
-  Clazz.container = '.el-container';
-  Clazz.main = '.el-main';
-  Clazz.aside = '.el-aside';
-  Clazz.header = '.el-header';
-  Clazz.footer = '.el-footer';
+  var _avatar = Clazz.avatar = '.el-avatar';
+  var _decriptions = Clazz.decriptions = '.el-decriptions';
+  var _empty = Clazz.empty = '.el-empty';
+  var _pagination = Clazz.pagination = '.el-pagination';
+  var _progress = Clazz.progress = '.el-progress';
+  var _result = Clazz.result = '.el-result';
+  var _skeleton = Clazz.skeleton = '.el-skeleton';
+  var _table = Clazz.table = '.el-table';
+  var _tag = Clazz.tag = '.el-tag';
+  var _tree = Clazz.tree = '.el-tree';
+  var _cascader = Clazz.cascader = '.el-cascader';
+  var _checkbox = Clazz.checkbox = '.el-checkbox';
+  var _colorPicker = Clazz.colorPicker = '.el-color-picker';
+  var _datePicker = Clazz.datePicker = '.el-date-picker';
+  var _dateTimePicker = Clazz.dateTimePicker = '.el-date-time-picker';
+  var _inputNumber = Clazz.inputNumber = '.el-input-number';
+  var _input = Clazz.input = '.el-input';
+  var _radio = Clazz.radio = '.el-radio';
+  var _rate = Clazz.rate = '.el-rate';
+  var _select = Clazz.select = '.el-select';
+  var _slider = Clazz.slider = '.el-slider';
+  var _swatch = Clazz.swatch = '.el-swatch';
+  var _timePicker = Clazz.timePicker = '.el-time-picker';
+  var _transfer = Clazz.transfer = '.el-transfer';
+  var _upload = Clazz.upload = '.el-upload';
+  var _breadcrumb = Clazz.breadcrumb = '.el-breadcrumb';
+  var _dropdown = Clazz.dropdown = '.el-dropdown';
+  var _menu = Clazz.menu = '.el-menu';
+  var _submenu = Clazz.submenu = '.el-submenu';
+  var _menuItemGroup = Clazz.menuItemGroup = '.el-menu-item-group';
+  var _menuItem = Clazz.menuItem = '.el-menu-item';
+  var _pageHeader = Clazz.pageHeader = '.el-page-header';
+  var _steps = Clazz.steps = '.el-steps';
+  var _tabs = Clazz.tabs = '.el-tabs';
+  var _alert = Clazz.alert = '.el-alert';
+  var _loading = Clazz.loading = '.el-loading';
+  var _message = Clazz.message = '.el-message';
+  var _messageBox = Clazz.messageBox = '.el-message-box';
+  var _notification = Clazz.notification = '.el-notification';
+  var _backtop = Clazz.backtop = '.el-backtop';
+  var _calendar = Clazz.calendar = '.el-calendar';
+  var _card = Clazz.card = '.el-card';
+  var _carousel = Clazz.carousel = '.el-carousel';
+  var _collapse = Clazz.collapse = '.el-collapse';
+  var _dialog = Clazz.dialog = '.el-dialog';
+  var _divider = Clazz.divider = '.el-divider';
+  var _drawer = Clazz.drawer = '.el-drawer';
+  var _image = Clazz.image = '.el-image';
+  var _infiniteScroll = Clazz.infiniteScroll = '.el-infinite-scroll';
+  var _popconfirm = Clazz.popconfirm = '.el-popconfirm';
+  var _popover = Clazz.popover = '.el-popover';
+  var _timeline = Clazz.timeline = '.el-timeline';
+  var _tooltip = Clazz.tooltip = '.el-tooltip';
+  var _form = Clazz.form = '.el-form';
+  var _container = Clazz.container = '.el-container';
+  var _main = Clazz.main = '.el-main';
+  var _aside = Clazz.aside = '.el-aside';
+  var _header = Clazz.header = '.el-header';
+  var _footer = Clazz.footer = '.el-footer';
 
   CfgGlobal.primaryColor = const MaterialColor(
     0xFF409eff,
@@ -276,7 +293,7 @@ element() {
       ..cursor = SystemMouseCursors.click
       ..backgroundColor = Colors.white
       ..borderColor = CfgGlobal.textColor.shade400
-      ..color = const Color(0xFF606266)
+      ..color = CfgGlobal.textColor.shade700
       ..textAlign = Alignment.center
       ..margin = EdgeInsets.zero
       ..fontWeight = FontWeight.w500
@@ -809,7 +826,7 @@ element() {
     ),
     // descriptions
     [
-      [Clazz.decriptions]
+      [_decriptions]
     ]: WDescriptionsStyle()
       ..fontSize = 14
       ..color = CfgGlobal.textColor
@@ -824,19 +841,19 @@ element() {
         ..backgroundColor = Colors.white
         ..widthFactor = 1),
     [
-      [Clazz.container]
+      [_container]
     ]: BaseStyle(),
     [
-      [Clazz.main]
+      [_main]
     ]: BaseStyle()..padding = const EdgeInsets.all(20.0),
     [
-      [Clazz.footer],
-      [Clazz.header]
+      [_footer],
+      [_header]
     ]: BaseStyle()
       ..padding = const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
 
     [
-      [Clazz.avatar]
+      [_avatar]
     ]: BaseStyle()
       ..textAlign = Alignment.center
       ..color = CfgGlobal.basicColor.shade50
@@ -846,53 +863,299 @@ element() {
       ..maxWidth = 40
       ..fontSize = 14,
     [
-      [Clazz.avatar, '${Clazz.avatar}${Clazz.circleSuf}']
+      [_avatar, '$_avatar$circleSuf']
     ]: BaseStyle()..borderRadius = BorderRadius.circular(1024),
     [
-      [Clazz.avatar, '${Clazz.avatar}${Clazz.squareSuf}']
+      [_avatar, '$_avatar$squareSuf']
     ]: BaseStyle()..borderRadius = CfgGlobal.circularBorderRadius.medium,
     [
-      [Clazz.avatar, '${Clazz.avatar}${Clazz.iconSuf}']
+      [_avatar, '$_avatar$iconSuf']
     ]: BaseStyle()..fontSize = 18,
     [
-      [
-        Clazz.avatar,
-        '${Clazz.avatar}${Clazz.iconSuf}',
-        '${Clazz.avatar}${Clazz.smallSuf}'
-      ]
+      [_avatar, '$_avatar$iconSuf', '$_avatar$smallSuf']
     ]: BaseStyle()..fontSize = 20,
     [
-      [
-        Clazz.avatar,
-        '${Clazz.avatar}${Clazz.iconSuf}',
-        '${Clazz.avatar}${Clazz.mediumSuf}'
-      ]
+      [_avatar, '$_avatar$iconSuf', '$_avatar$mediumSuf']
     ]: BaseStyle()..fontSize = 24,
     [
-      [
-        Clazz.avatar,
-        '${Clazz.avatar}${Clazz.iconSuf}',
-        '${Clazz.avatar}${Clazz.largeSuf}'
-      ]
+      [_avatar, '$_avatar$iconSuf', '$_avatar$largeSuf']
     ]: BaseStyle()..fontSize = 28,
     [
-      [Clazz.avatar, '${Clazz.avatar}${Clazz.largeSuf}']
+      [_avatar, '$_avatar$largeSuf']
     ]: BaseStyle()
       ..width = 40
       ..height = 40
       ..lineHeight = 40,
     [
-      [Clazz.avatar, '${Clazz.avatar}${Clazz.mediumSuf}']
+      [_avatar, '$_avatar$mediumSuf']
     ]: BaseStyle()
       ..width = 36
       ..height = 36
       ..lineHeight = 36,
     [
-      [Clazz.avatar, '${Clazz.avatar}${Clazz.smallSuf}']
+      [_avatar, '$_avatar$smallSuf']
     ]: BaseStyle()
       ..width = 28
       ..height = 28
       ..lineHeight = 28,
+
+    // WMenu
+    [
+      [_menu]
+    ]: BaseStyle()
+      ..borderRightWidth = 1
+      ..borderRightColor = const Color(0xFFE6E6E6)
+      ..margin = EdgeInsets.zero
+      ..paddingLeft = 0.0
+      ..backgroundColor = Colors.white,
+    [
+      [_menu, horizontalSuf]
+    ]: BaseStyle()
+      ..borderRightWidth = 0
+      ..borderBottomWidth = 1
+      ..borderBottomColor = const Color(0xFFE6E6E6),
+
+    [
+      [_menu, horizontalSuf, _menuItem]
+    ]: BaseStyle()
+      ..height = 60
+      ..lineHeight = 60
+      ..margin = EdgeInsets.zero
+      ..borderBottomWidth = 2
+      ..borderBottomColor = Colors.transparent
+      ..color = CfgGlobal.textColor.shade600,
+
+    [
+      [_menu, horizontalSuf, _menuItem, not(isDisabled), focus],
+      [_menu, horizontalSuf, _menuItem, not(isDisabled), hover]
+    ]: BaseStyle()..backgroundColor = CfgGlobal.basicColor.shade50,
+
+    [
+      [horizontalSuf, _submenu]
+    ]: BaseStyle()
+      ..textAlign = Alignment.centerLeft
+      ..padding = EdgeInsets.zero,
+
+    [
+      [_menu, horizontalSuf, _submenu, focus, titleSuf],
+      [_menu, horizontalSuf, hover, titleSuf]
+    ]: BaseStyle()..color = CfgGlobal.textColor,
+
+    [
+      [_menu, horizontalSuf, _submenu, isActive, titleSuf],
+    ]: BaseStyle()
+      ..borderBottomWidth = 2
+      ..borderBottomColor = CfgGlobal.primaryColor
+      ..color = CfgGlobal.textColor,
+    [
+      [_menu, horizontalSuf, _submenu, titleSuf]
+    ]: BaseStyle()
+      ..height
+      ..lineHeight = 60
+      ..borderBottomWidth = 2
+      ..borderBottomColor = Colors.transparent
+      ..borderBottomColor = CfgGlobal.textColor.shade600,
+    [
+      [_menu, horizontalSuf, _submenu, titleSuf, hover]
+    ]: BaseStyle()..backgroundColor = CfgGlobal.basicColor.shade50,
+
+    [
+      [_menu, horizontalSuf, _submenu, iconArrowSuf]
+    ]: BaseStyle()
+      ..marginLeft = 8
+      ..textAlign = Alignment.center,
+
+    [
+      [_menu, horizontalSuf, _menu, _menuItem],
+      [_menu, horizontalSuf, _menu, _submenu, titleSuf]
+    ]: BaseStyle()
+      ..backgroundColor = CfgGlobal.basicColor.shade50
+      ..height = 36
+      ..lineHeight = 36
+      ..padding = const EdgeInsets.symmetric(vertical: 10, horizontal: 0)
+      ..color = CfgGlobal.basicColor.shade600,
+
+    [
+      [_menu, horizontalSuf, _menu, _menuItem, isActive],
+      [_menu, horizontalSuf, _menu, _submenu, isActive, titleSuf]
+    ]: BaseStyle()..color = CfgGlobal.textColor,
+
+    [
+      [_menu, horizontalSuf, _menuItem, not(isDisabled), focus],
+      [_menu, horizontalSuf, _menuItem, not(isDisabled), hover]
+    ]: BaseStyle()..color = CfgGlobal.textColor,
+
+    [
+      [_menu, horizontalSuf, _menuItem, isActive]
+    ]: BaseStyle()
+      ..borderBottomWidth = 2.0
+      ..borderBottomColor = CfgGlobal.primaryColor
+      ..color = CfgGlobal.textColor,
+
+    [
+      [_menu, isCollapse]
+    ]: BaseStyle()..width = 64,
+
+    [
+      [_menu, isCollapse, iconSuf],
+      [_menu, isCollapse, _submenu, titleSuf, iconSuf],
+    ]: BaseStyle()
+      ..margin = EdgeInsets.zero
+      ..verticalAlign = Alignment.center
+      ..width = 24
+      ..textAlign = Alignment.center,
+
+    [
+      [_menu, isCollapse, _menuItem, _submenu, iconArrowSuf],
+      [_menu, isCollapse, _submenu, titleSuf, iconArrowSuf],
+    ]: BaseStyle()..display = false,
+
+    [
+      [_menu, isCollapse, _submenu]
+    ]: BaseStyle()..minWidth = 200.0,
+
+    [
+      [_menu, isCollapse, _menu, _submenu]
+    ]: BaseStyle()
+      ..marginLeft = 5
+      ..borderWidth = 1
+      ..borderColor = const Color(0xFFe4e7ed),
+
+    [
+      [_menu, popupSuf]
+    ]: BaseStyle()
+      ..minWidth = 200
+      ..borderWidth = 0
+      ..padding = const EdgeInsets.symmetric(vertical: 5)
+      ..borderRadius = BorderRadius.circular(2)
+      ..boxShadow = [
+        const BoxShadow(
+          offset: Offset(0.0, 2.0),
+          blurRadius: 12.0,
+          spreadRadius: 0.0,
+          color: Colors.black,
+        )
+      ],
+
+    [
+      [_menuItem]
+    ]: BaseStyle()
+      ..height = 56
+      ..lineHeight = 56
+      ..fontSize = 14
+      ..color = CfgGlobal.textColor
+      ..padding = const EdgeInsets.symmetric(horizontal: 0, vertical: 20)
+      ..verticalAlign = Alignment.centerLeft,
+
+    [
+      [_menuItem, iconSuf]
+    ]: BaseStyle()..color = CfgGlobal.textColor.shade600,
+
+    [
+      [_menuItem, focus],
+      [_menuItem, hover]
+    ]: BaseStyle()..backgroundColor = CfgGlobal.primaryColor.shade50,
+
+    [
+      [_menuItem, isDisabled]
+    ]: BaseStyle()
+      ..opacity = .25
+      ..cursor = SystemMouseCursors.forbidden
+      ..backgroundColor = Colors.transparent,
+
+    [
+      [_menuItem, iconSuf]
+    ]: BaseStyle()
+      ..marginRight = 5
+      ..width = 24
+      ..textAlign = Alignment.center
+      ..fontSize = 18
+      ..verticalAlign = Alignment.center,
+
+    [
+      [_menuItem, isActive]
+    ]: BaseStyle()..color = CfgGlobal.primaryColor,
+
+    [
+      [_menuItem, isActive, iconSuf]
+    ]: BaseStyle()..color,
+
+    [
+      [_submenu]
+    ]: BaseStyle()
+      ..margin = EdgeInsets.zero
+      ..paddingLeft = 0,
+
+    [
+      [_submenu, titleSuf]
+    ]: BaseStyle()
+      ..height = 56
+      ..lineHeight = 56
+      ..fontSize = 14
+      ..color = CfgGlobal.textColor
+      ..padding = const EdgeInsets.symmetric(horizontal: 0, vertical: 20)
+      ..cursor = SystemMouseCursors.click,
+
+    [
+      [_submenu, iconSuf]
+    ]: BaseStyle()..color = CfgGlobal.textColor.shade600,
+
+    [
+      [_submenu, titleSuf, focus],
+      [_submenu, titleSuf, hover]
+    ]: BaseStyle()..backgroundColor = CfgGlobal.primaryColor.shade50,
+
+    [
+      [_submenu, titleSuf, isDisabled]
+    ]: BaseStyle()
+      ..opacity = .25
+      ..cursor = SystemMouseCursors.forbidden,
+
+    [
+      [_submenu, _menuItem]
+    ]: BaseStyle()
+      ..height = 50
+      ..lineHeight = 50
+      ..padding = const EdgeInsets.symmetric(horizontal: 0, vertical: 45)
+      ..minWidth = 200,
+
+    [
+      [_submenu, iconArrowSuf]
+    ]: BaseStyle()
+      ..padding = const EdgeInsets.only(right: 20)
+      ..fontSize = 12,
+
+    [
+      [_submenu, active, titleSuf]
+    ]: BaseStyle()..borderBottomColor = CfgGlobal.primaryColor,
+
+    [
+      [_submenu, isDisabled, _menuItem],
+      [_submenu, isDisabled, titleSuf]
+    ]: BaseStyle()
+      ..opacity = .25
+      ..cursor = SystemMouseCursors.forbidden
+      ..backgroundColor = Colors.transparent,
+
+    [
+      [_submenu, iconSuf]
+    ]: BaseStyle()
+      ..verticalAlign = Alignment.center
+      ..marginRight = 5
+      ..width = 24
+      ..textAlign = Alignment.center
+      ..fontSize = 18,
+
+    [
+      [_menuItemGroup]
+    ]: BaseStyle()..padding = EdgeInsets.zero,
+
+    [
+      [_menuItemGroup, titleSuf]
+    ]: BaseStyle()
+      ..padding = const EdgeInsets.fromLTRB(20, 7, 0, 7)
+      ..fontSize = 12
+      ..color = CfgGlobal.textColor.shade600
   };
 
   // .el-button
@@ -947,11 +1210,11 @@ element() {
     'WAvatar': (cpn) {
       cpn as WAvatar;
       return [
-        Clazz.avatar,
-        if (cpn.$props.isCircle) '${Clazz.avatar}${Clazz.circleSuf}',
-        if (cpn.$props.isSquare) '${Clazz.avatar}${Clazz.squareSuf}',
-        if (cpn.$props.icon != null) '${Clazz.avatar}${Clazz.iconSuf}',
-        '${Clazz.avatar}--${cpn.$props.size}',
+        _avatar,
+        if (cpn.$props.isCircle) '$_avatar${Clazz.circleSuf}',
+        if (cpn.$props.isSquare) '$_avatar$squareSuf',
+        if (cpn.$props.icon != null) '$_avatar$iconSuf',
+        '$_avatar--${cpn.$props.size}',
       ];
     },
     'WBadge': (cpn) {
@@ -1062,10 +1325,22 @@ element() {
       cpn as WDropdown;
       return [Clazz.dropdown];
     },
-    'WMenu': (cpn) {
-      cpn as WMenu;
-      return [Clazz.menu];
-    },
+    // 'WMenu': (cpn) {
+    //   cpn as WMenu;
+    //   return [
+    //     _menu,
+    //     if (cpn.$props.collapse) '$_menu$isCollapse',
+    //     if (cpn.$props.modeIsVertical) '$_menu$verticalSuf',
+    //     if (cpn.$props.modeIsHorizontal) horizontalSuf,
+    //   ];
+    // },
+    // 'WMenuItem': (cpn) {
+    //   cpn as WMenuItem;
+    //   return [
+    //     if (cpn.rootMenu != null) ...cpn.rootMenu!.selector,
+    //     _menuItem,
+    //   ];
+    // },
     'WPageHeader': (cpn) {
       cpn as WPageHeader;
       return [Clazz.pageHeader];

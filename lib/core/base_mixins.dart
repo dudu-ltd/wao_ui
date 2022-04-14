@@ -59,12 +59,14 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
 
   List<Widget>? $defaultSlot;
 
+  List<String> get selector =>
+      CfgGlobal.selectors[runtimeType.toString().trim()]?.call(this) ?? [];
+
   readStyle() {
-    var selector =
-        CfgGlobal.selectors[runtimeType.toString().trim()]?.call(this) ?? [];
+    var _selector = selector;
 
     List<BaseStyle?> stateStyles =
-        findByListKey<BaseStyle?>(CfgGlobal.css, selector);
+        findByListKey<BaseStyle?>(CfgGlobal.css, _selector);
 
     // print(selector);
     Map<List<List<String>>, BaseStyle> customStyle = {};
@@ -72,7 +74,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
       customStyle[[element.key]] = element.value;
     }
 
-    List<BaseStyle?> customStyles = findByListKey(customStyle, selector);
+    List<BaseStyle?> customStyles = findByListKey(customStyle, _selector);
     // print('customStyles: $customStyles');
     stateStyles.addAll(customStyles);
     for (var stateStyle in stateStyles) {
@@ -90,7 +92,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     style = style ?? this.style;
     // print(style);
     return Container(
-      alignment: style.textAlign ?? Alignment.centerLeft,
+      // alignment: style.textAlign ?? Alignment.centerLeft,
       padding: style.padding,
       margin: style.margin,
       width: style.width,

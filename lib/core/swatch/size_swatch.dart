@@ -1,5 +1,11 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:wao_ui/core/base_style.dart';
+import 'package:wao_ui/core/utils/collect_util.dart';
 
 mixin Swatch<K, V> {
   late final Map<K, V> _swatch;
@@ -77,5 +83,27 @@ class WFontSize with SizeSwatch<double>, Swatch<String, double> {
   WFontSize(double fontSize, Map<String, double> swatch) {
     _swatch = swatch;
     valid();
+  }
+}
+
+class WStateColor extends BaseStyle with Swatch<List<String>, BaseStyle> {
+  WStateColor(BaseStyle style, Map<List<String>, BaseStyle> swatch)
+      : super(
+          color: style.color,
+          borderColor: style.borderColor,
+          backgroundColor: style.backgroundColor,
+        ) {
+    _swatch = swatch;
+  }
+
+  @override
+  BaseStyle? operator [](List<String> index) {
+    var result = BaseStyle();
+    _swatch.forEach((key, value) {
+      if (index.toSet().containsAll(key)) {
+        result.merge(value);
+      }
+    });
+    return result;
   }
 }

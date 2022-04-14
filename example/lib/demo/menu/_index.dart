@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 import '../demos.dart';
@@ -183,10 +184,13 @@ var menus = [
         ..$slots.$ = menus
         ..$style.height = 200
         ..$style.minHeight = 400
-        ..$style.backgroundColor = Color(0xFF545c64)
+        // ..$style.backgroundColor = Color(0xFF545c64)
         ..$style.hoverBackgroundColor = Color.fromRGBO(67, 74, 80, 1)
-        ..$style.color = Colors.white
-        ..$style.activeColor = Color(0xffffd04b),
+        // ..$style.color = Colors.white
+        ..$style.activeColor = Color(0xffffd04b)
+        ..$style.clazz = {
+          [Clazz.menu]: BaseStyle()..backgroundColor = Color(0xFF545c64)
+        },
     ),
     r'''
     SizedBox(

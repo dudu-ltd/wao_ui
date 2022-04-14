@@ -159,8 +159,6 @@ class _WSubmenuState extends WState<WSubmenu>
         WMenuItem _title = widget.$slots.title!;
         // var
         _title
-          ..$style.padding = EdgeInsets.fromLTRB(
-              widget.paddingVal, 0.0, widget.stepPadding, 0.0)
           ..$slots.suffix = _title.$slots.suffix ?? Icons.expand_more
           ..rootMenu = widget.rootMenu
           ..belongTo = widget;

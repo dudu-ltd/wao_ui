@@ -217,8 +217,7 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
         ...suffix,
       ],
     );
-    var box = boxWrapper(itemBody);
-    return Focus(focusNode: focusNode, child: eventWrapper(box));
+    return Focus(focusNode: focusNode, child: eventWrapper(itemBody));
   }
 
   Widget eventWrapper(Widget child) {
@@ -228,28 +227,6 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
       child: GestureDetector(
         child: child,
         onTap: pointClick,
-      ),
-    );
-  }
-
-  Widget boxWrapper(Widget child) {
-    return Container(
-      child: child,
-      height: widget.lineHeight,
-      padding: widget.padding,
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            width: 2,
-            color: widget.$props.index == widget.rootMenu?.value.value &&
-                    (widget.rootMenu?.$props.modeIsHorizontal ?? false)
-                ? widget.rootMenu?.$style.activeColor ?? Colors.transparent
-                : Colors.transparent,
-          ),
-        ),
-        color: bgColor.value ??
-            widget.rootMenu?.$style.backgroundColor ??
-            Colors.transparent,
       ),
     );
   }
