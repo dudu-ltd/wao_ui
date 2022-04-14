@@ -5,6 +5,7 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/core/swatch/size_swatch.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
+import 'package:wao_ui/src/basic/w_container.dart';
 
 import 'w_button.dart';
 
@@ -190,6 +191,9 @@ class CfgGlobal {
 
   WEmptyStyle empty = WEmptyStyle();
 
+  WContainerStyle container = WContainerStyle();
+  WTagStyle tag = WTagStyle();
+
   WPaginationStyle pagination = WPaginationStyle();
 
   WButtonStyle button = WButtonStyle();
@@ -229,11 +233,13 @@ class CfgGlobal {
     ),
   );
 
-  WCascaderMenuStyle cascaderMenu = WCascaderMenuStyle();
+  WCascaderMenuStyle cascaderMenu = WCascaderMenuStyle()
+    ..maxWidth = 275
+    ..maxHeight = 275
+    ..minWidth = 180
+    ..borderColor = Colors.grey.shade200;
 
-  WOptionStyle option = WOptionStyle(
-    disabledColor: Colors.grey.shade400,
-  );
+  WOptionStyle option = WOptionStyle()..disabledColor = Colors.grey.shade400;
 
   WSliderStyle slider = WSliderStyle(
       // thumbColor: Color.fromARGB(100, 37, 211, 98),
@@ -242,12 +248,21 @@ class CfgGlobal {
       // valueRadiusInner: 32,
       );
 
-  WSwitchStyle wSwitch = WSwitchStyle();
+  WSwitchStyle swatch = WSwitchStyle();
 
   WUploadStyle upload = WUploadStyle();
 
+  WHeaderStyle header = WHeaderStyle();
+
+  WCascaderNodeStyle cascaderNode = WCascaderNodeStyle();
+  WBreadcrumbItemStyle breadcrumbItem = WBreadcrumbItemStyle()
+    ..padding = EdgeInsets.zero;
+
   WCardStyle card = WCardStyle(
     padding: const EdgeInsets.all(14),
+    spacing: 8,
+    borderColor: ColorUtil.hexToColor('#ebeef5'),
+    backgroundColor: Colors.white,
   );
 
   WCarouselStyle carousel = WCarouselStyle();

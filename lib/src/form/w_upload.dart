@@ -39,6 +39,11 @@ class WUpload
   clearFiles() {}
   abort() {}
   submit() {}
+
+  @override
+  WUploadStyle get style => WUploadStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.upload);
 }
 
 class _WUploadState extends WState<WUpload> {

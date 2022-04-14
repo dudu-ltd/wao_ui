@@ -34,6 +34,11 @@ class WSwitch
   /**
       focus	使 Switch 获取焦点	-
    */
+
+  @override
+  WSwitchStyle get style => WSwitchStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.swatch);
 }
 
 class _WSwitchState extends WState<WSwitch>
@@ -240,12 +245,12 @@ class _WSwitchState extends WState<WSwitch>
   }
 
   double get btnHeight {
-    return widget.$style.btnHeight ?? cfgGlobal.wSwitch.btnHeight ?? 20.0;
+    return widget.$style.btnHeight ?? cfgGlobal.swatch.btnHeight ?? 20.0;
   }
 
   double get btnInnerBorder {
     return widget.$style.btnInnerBorder ??
-        cfgGlobal.wSwitch.btnInnerBorder ??
+        cfgGlobal.swatch.btnInnerBorder ??
         2.0;
   }
 
@@ -258,7 +263,7 @@ class _WSwitchState extends WState<WSwitch>
   }
 
   int get switchTime {
-    return widget.$style.switchTime ?? cfgGlobal.wSwitch.switchTime ?? 200;
+    return widget.$style.switchTime ?? cfgGlobal.swatch.switchTime ?? 200;
   }
 }
 

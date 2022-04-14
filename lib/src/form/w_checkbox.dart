@@ -26,6 +26,11 @@ class WCheckbox extends WStatefulWidget<WCheckboxOn, WCheckboxProp,
 
   @override
   _WCheckboxState createState() => _WCheckboxState();
+
+  @override
+  WCheckboxStyle get style => WCheckboxStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.checkbox);
 }
 
 class _WCheckboxState extends WState<WCheckbox> {

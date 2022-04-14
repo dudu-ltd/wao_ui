@@ -42,7 +42,7 @@ var badgeWarning = Demo(
     ..$props.value = 3
     // * 关键属性在这
     ..$props.type = 'warning'
-    ..style.marginRight = 0
+    ..$style.marginRight = 0
     ..$slots.$ = (WButton()
       ..$slots.$ = '消息'
       ..$props.type = 'primary'
@@ -110,7 +110,7 @@ var badgeDot = Demo(
       ..$props.value = 3
       // * 关键属性在这
       ..$props.isDot = true
-      ..style.marginRight = 0
+      ..$style.marginRight = 0
       ..$props.type = 'danger'
       ..$slots.$ = const ColoredBox(
         color: Colors.blue,

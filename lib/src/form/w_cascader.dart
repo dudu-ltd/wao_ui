@@ -504,54 +504,24 @@ class WCascaderMenu extends WStatelessWidget<WCascaderMenuOn, WCascaderMenuProp,
 
   @override
   Widget wbuild(BuildContext context) {
-    return borderWrapper(
-      Container(
-        constraints: BoxConstraints(
-          maxWidth: menuMaxWidth,
-          // minWidth: menuMinWidth,
-          maxHeight: menuMaxHeight,
-        ),
-        width: menuMinWidth,
-        child: ListView(
-          children: List.generate(
-            $props.options.length,
-            (index) => WCascaderNode(
-              props: WCascaderNodeProp(
-                picked: $props.picked,
-                pickedValue: $props.pickedValue,
-                option: $props.options[index],
-                level: $props.level,
-                props: $props.props,
-              ),
-              on: WCascaderNodeOn(
-                expand: $on.expand,
-                click: $on.click,
-              ),
-            ),
+    return ListView(
+      children: List.generate(
+        $props.options.length,
+        (index) => WCascaderNode(
+          props: WCascaderNodeProp(
+            picked: $props.picked,
+            pickedValue: $props.pickedValue,
+            option: $props.options[index],
+            level: $props.level,
+            props: $props.props,
+          ),
+          on: WCascaderNodeOn(
+            expand: $on.expand,
+            click: $on.click,
           ),
         ),
       ),
-      Border(right: BorderSide(color: menuBorderColor)),
-      $props.level < $props.options.length,
     );
-  }
-
-  double get menuMaxWidth {
-    return $style.maxWidth ?? cfgGlobal.cascaderMenu.maxWidth ?? 275.0;
-  }
-
-  double get menuMaxHeight {
-    return $style.maxHeight ?? cfgGlobal.cascaderMenu.maxHeight ?? 275.0;
-  }
-
-  Color get menuBorderColor {
-    return $style.borderColor ??
-        cfgGlobal.cascaderMenu.borderColor ??
-        Colors.grey.shade200;
-  }
-
-  double get menuMinWidth {
-    return $style.minWidth ?? cfgGlobal.cascaderMenu.minWidth ?? 180.0;
   }
 }
 
@@ -691,18 +661,12 @@ class WCascaderNode extends WStatelessWidget<WCascaderNodeOn, WCascaderNodeProp,
         overflow: TextOverflow.ellipsis,
         fontSize: 14,
         color: $props.props.isDisabled($props.option)
-            ? disableColor
+            ? style.color
             : _isSelected
                 ? CfgGlobal.primaryColor
                 : ColorUtil.hexToColor('#606266'),
       ),
     );
-  }
-
-  Color get disableColor {
-    return $style.disabledColor ??
-        cfgGlobal.option.disabledColor ??
-        Colors.grey.shade400;
   }
 
   clickCbk(e) {
@@ -713,6 +677,11 @@ class WCascaderNode extends WStatelessWidget<WCascaderNodeOn, WCascaderNodeProp,
   hoverCbk(e) {
     if ($props.props.isExpandTriggerHover) $on.expand?.call(this);
   }
+
+  @override
+  WCascaderNodeStyle get style => WCascaderNodeStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.cascaderNode);
 }
 
 class WCascaderNodeOn extends BaseOn {

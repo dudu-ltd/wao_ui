@@ -95,7 +95,7 @@ class WTag extends WStatelessWidget<WTagOn, WTagProp, WTagSlot, WTagStyle> {
     BoxDecoration decoration = BoxDecoration(
       color: backgroundColor,
       border: WBorder.all($props.size, $props.type),
-      borderRadius: style.borderRadius,
+      borderRadius: $style.borderRadius,
     );
     return decoration;
   }
@@ -123,6 +123,11 @@ class WTag extends WStatelessWidget<WTagOn, WTagProp, WTagSlot, WTagStyle> {
   Color get closeButtonBackground {
     return $props.isDark ? color.shade200 : color;
   }
+
+  @override
+  WTagStyle get style => WTagStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.tag);
 }
 
 class WTagOn extends BaseOn {

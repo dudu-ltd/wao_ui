@@ -150,7 +150,7 @@ class WBreadcrumbItem extends WStatelessWidget<WBreadcrumbItemOn,
   Widget wbuild(BuildContext context) {
     return InkWell(
       child: Padding(
-        padding: padding,
+        padding: style.padding!,
         child: Row(
           children: [
             if ($props.data.icon != null)
@@ -165,9 +165,10 @@ class WBreadcrumbItem extends WStatelessWidget<WBreadcrumbItemOn,
     );
   }
 
-  EdgeInsets get padding {
-    return $style.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
-  }
+  @override
+  WBreadcrumbItemStyle get style => WBreadcrumbItemStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.breadcrumbItem);
 }
 
 class WBreadcrumbItemOn extends BaseOn {

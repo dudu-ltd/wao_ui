@@ -68,24 +68,29 @@ class WMenuItem extends WStatefulWidget<WMenuItemOn, WMenuItemProp,
   }
 
   double get lineHeight {
-    return $style.height ??
+    return style.height ??
         rootMenu?.$style.submenu?.menuItem?.height ??
         cfgGlobal.menuItem.height ??
         50;
   }
 
   double get fontSize {
-    return $style.fontSize ??
+    return style.fontSize ??
         rootMenu?.$style.submenu?.menuItem?.fontSize ??
         cfgGlobal.menuItem.fontSize ??
         14;
   }
 
   EdgeInsets get padding {
-    return $style.padding ??
+    return style.padding ??
         cfgGlobal.menuItem.padding ??
         EdgeInsets.fromLTRB(paddingVal, 0.0, stepPadding, 0.0);
   }
+
+  @override
+  WMenuItemStyle get style => WMenuItemStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.menuItem);
 }
 
 class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {

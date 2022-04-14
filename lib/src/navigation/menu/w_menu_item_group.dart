@@ -30,7 +30,7 @@ class WMenuItemGroup extends WStatelessWidget<
       children: [
         if (hasTitle)
           SizedBox(
-            height: lineHeight,
+            height: style.height,
             child: Align(
               child: Padding(
                 padding: $style.padding ?? EdgeInsets.only(left: paddingVal),
@@ -75,9 +75,10 @@ class WMenuItemGroup extends WStatelessWidget<
         );
   }
 
-  double? get lineHeight {
-    return $style.height ?? cfgGlobal.menuItemGroup.height ?? 60;
-  }
+  @override
+  WMenuItemGroupStyle get style => WMenuItemGroupStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.menuItemGroup);
 }
 
 class WMenuItemGroupOn extends BaseOn {}

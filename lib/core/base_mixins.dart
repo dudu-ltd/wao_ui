@@ -19,7 +19,6 @@ abstract class WStatelessWidget<
   @override
   Widget build(BuildContext context) {
     beforeBuild(); // 部件生命周期埋点。
-    readStyle();
     Widget wWidget = wbuild(context);
     return useBox ? boxWrapper(wWidget, context) : wWidget;
   }
@@ -39,7 +38,6 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) {
     widget.beforeBuild(); // 部件生命周期埋点。
-    widget.readStyle();
     // print(widget.style);
     Widget self = wbuild(context);
     return widget.useBox ? widget.boxWrapper(self, context) : self;
@@ -55,39 +53,15 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   late final S $slots;
   late final T $style;
 
-  late final BaseStyle style = BaseStyle<BaseMixins>();
+  // late final BaseStyle style = BaseStyle<BaseMixins>();
+  T get style => throw Exception('no implement');
 
   List<Widget>? $defaultSlot;
-
-  readStyle() {
-    var selector =
-        CfgGlobal.selectors[runtimeType.toString().trim()]?.call(this) ?? [];
-
-    List<BaseStyle?> stateStyles =
-        findByListKey<BaseStyle?>(CfgGlobal.css, selector);
-
-    // print(selector);
-    Map<List<List<String>>, BaseStyle> customStyle = {};
-    for (var element in $style.clazz.entries) {
-      customStyle[[element.key]] = element.value;
-    }
-
-    List<BaseStyle?> customStyles = findByListKey(customStyle, selector);
-    // print('customStyles: $customStyles');
-    stateStyles.addAll(customStyles);
-    for (var stateStyle in stateStyles) {
-      style.merge(stateStyle, force: true);
-      // print(
-      //     'style.backgroundColor: ${style.backgroundColor}，stateStyle: ${stateStyle?.backgroundColor}');
-    }
-    // print($style);
-    style.merge($style, force: true);
-  }
 
   beforeBuild() {}
 
   boxWrapper(Widget willBeWrap, BuildContext context, [BaseStyle? style]) {
-    style = style ?? this.style;
+    style = style ?? $style;
     // print(style);
     return Container(
       alignment: style.textAlign ?? Alignment.centerLeft,

@@ -26,6 +26,11 @@ class WRadio
 
   @override
   _WRadioState createState() => _WRadioState();
+
+  @override
+  WRadioStyle get style => WRadioStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.radio);
 }
 
 class _WRadioState extends WState<WRadio> {

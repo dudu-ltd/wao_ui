@@ -28,6 +28,11 @@ class WPagination extends WStatefulWidget<WPaginationOn, WPaginationProp,
 
   @override
   _WPaginationState createState() => _WPaginationState();
+
+  @override
+  WPaginationStyle get style => WPaginationStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.pagination);
 }
 
 class _WPaginationState extends WState<WPagination> {
@@ -150,7 +155,7 @@ class _WPaginationState extends WState<WPagination> {
         widget.$props.pageSize = int.parse(p0);
         setState(() {});
       })
-      ..style.width = 120;
+      ..$style.width = 120;
   }
 
   Widget? get buttonGroup {
@@ -229,7 +234,7 @@ class _WPaginationState extends WState<WPagination> {
             widget.$props.currentPage = int.parse(input.$props.value);
             setState(() {});
           })
-          ..style.width = 60,
+          ..$style.width = 60,
         Text('页'),
       ],
     );

@@ -78,6 +78,11 @@ class WButton
       ),
     ];
   }
+
+  @override
+  WButtonStyle get style => WButtonStyle()
+    ..merge($style)
+    ..merge(cfgGlobal.button);
 }
 
 class _WButtonState extends WState<WButton> {

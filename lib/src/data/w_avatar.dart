@@ -64,6 +64,11 @@ class WAvatar extends WStatelessWidget<WAvatarOn, WAvatarProp, WAvatarSlot,
     }
     return img;
   }
+
+  @override
+  WAvatarStyle get style => WAvatarStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.avatar);
 }
 
 class WAvatarOn extends BaseOn {}

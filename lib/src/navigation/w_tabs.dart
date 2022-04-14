@@ -35,7 +35,7 @@ class WTabs
     var tabs;
     if ($props.positionIsVertical) {
       tabs = SizedBox(
-        height: height,
+        height: style.height,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: content,
@@ -50,9 +50,10 @@ class WTabs
     return tabsWrapper(tabs);
   }
 
-  double get height {
-    return $style.height ?? cfgGlobal.tabs.height ?? 200;
-  }
+  @override
+  WTabsStyle get style => WTabsStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.tabs);
 
   @override
   List<SlotTranslator> get slotTranslatorsDefault {
@@ -73,7 +74,7 @@ class WTabs
     if ($props.positionIsHorizontal) {
       box = Container(height: 2);
     } else {
-      box = SizedBox(width: 2, height: height);
+      box = SizedBox(width: 2, height: style.height);
     }
     return ColoredBox(
       child: box,
@@ -213,23 +214,23 @@ class WTabs
   }
 
   EdgeInsets get itemPadding {
-    return $style.item?.padding ??
+    return style.item?.padding ??
         cfgGlobal.tabs.item?.padding ??
         const EdgeInsets.symmetric(horizontal: 20);
   }
 
   double get itemHeight {
-    return $style.item?.height ?? cfgGlobal.tabs.item?.height ?? 40;
+    return style.item?.height ?? cfgGlobal.tabs.item?.height ?? 40;
   }
 
   Color? get textColor {
-    return $style.item?.color ??
+    return style.item?.color ??
         cfgGlobal.tabs.item?.color ??
         ColorUtil.hexToColor('#303133');
   }
 
   double? get textSize {
-    return $style.item?.fontSize ?? cfgGlobal.tabs.item?.fontSize;
+    return style.item?.fontSize ?? cfgGlobal.tabs.item?.fontSize;
   }
 }
 

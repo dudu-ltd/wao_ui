@@ -712,7 +712,7 @@ class WOption extends WStatelessWidget<WOptionOn, WOptionProp, WOptionSlot,
           overflow: TextOverflow.ellipsis,
           fontSize: 14,
           color: $props.disabled
-              ? disableColor
+              ? style.color
               : $props.isSelected
                   ? CfgGlobal.primaryColor
                   : ColorUtil.hexToColor('#606266'),
@@ -721,11 +721,10 @@ class WOption extends WStatelessWidget<WOptionOn, WOptionProp, WOptionSlot,
     );
   }
 
-  Color get disableColor {
-    return $style.disabledColor ??
-        cfgGlobal.option.disabledColor ??
-        Colors.grey.shade400;
-  }
+  @override
+  WOptionStyle get style => WOptionStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.option);
 }
 
 class WOptionOn extends BaseOn {

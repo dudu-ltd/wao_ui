@@ -39,72 +39,53 @@ class WCard
         },
         child: borderWrapper(
           ColoredBox(
-            color: backgroundColor,
+            color: style.backgroundColor!,
             child: shadowWrapper(
               SizedBox(
-                width: width,
+                width: style.width,
                 child: ConstrainedBox(
                   constraints:
-                      BoxConstraints(maxWidth: width ?? double.maxFinite),
+                      BoxConstraints(maxWidth: style.width ?? double.maxFinite),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if ($slots.header != null) ...[
-                        paddingWrapper($slots.header!, padding: padding),
+                        paddingWrapper($slots.header!, padding: style.padding),
                         const Divider(height: 1),
                       ],
                       paddingWrapper(
                         Wrap(
-                          spacing: spacing,
+                          spacing: style.spacing!,
                           direction: Axis.vertical,
                           crossAxisAlignment: WrapCrossAlignment.start,
                           children: defaultSlot,
                         ),
-                        padding: padding,
+                        padding: style.padding,
                       ),
                     ],
                   ),
                 ),
               ),
               need: needShadow,
-              backgroundColor: backgroundColor,
-              color: borderColor,
+              backgroundColor: style.backgroundColor,
+              color: style.borderColor,
             ),
           ),
-          Border.all(color: borderColor),
+          Border.all(color: style.borderColor!),
           true,
         ),
       );
     });
   }
 
-  Color get borderColor {
-    return $style.borderColor ??
-        cfgGlobal.card.borderColor ??
-        ColorUtil.hexToColor('#ebeef5');
-  }
-
-  Color get backgroundColor {
-    return $style.backgroundColor ??
-        cfgGlobal.card.backgroundColor ??
-        Colors.white;
-  }
-
   bool get needShadow {
     return $props.shadow == 'always' || ($props.shadow == 'hover' && isHover);
   }
 
-  double get spacing {
-    return $style.spacing ?? cfgGlobal.card.spacing ?? 8;
-  }
-
-  double? get width {
-    return $style.width ?? cfgGlobal.card.width;
-  }
-
-  EdgeInsets? get padding {
-    return $style.padding ?? cfgGlobal.card.padding;
-  }
+  @override
+  WCardStyle get style => WCardStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.card);
 }
 
 class WCardOn extends BaseOn {}

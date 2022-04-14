@@ -116,6 +116,11 @@ class WHeader extends WStatelessWidget<WHeaderOn, WHeaderProp, WHeaderSlot,
     print('wheader background : ${style.backgroundColor}');
     return $col;
   }
+
+  @override
+  WHeaderStyle get style => WHeaderStyle()
+    ..merge($style)
+    ..merge(cfgGlobal.header);
 }
 
 class WHeaderOn extends BaseOn {}

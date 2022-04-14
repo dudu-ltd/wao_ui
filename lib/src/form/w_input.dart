@@ -38,6 +38,11 @@ class WInput
       blur	使 input 失去焦点	—
       select	选中 input 中的文字	—
    */
+
+  @override
+  WInputStyle get style => WInputStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.input);
 }
 
 class WInputState extends WState<WInput> {

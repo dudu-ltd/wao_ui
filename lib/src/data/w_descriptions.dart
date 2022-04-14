@@ -242,6 +242,10 @@ class WDescriptionsItem extends WStatelessWidget<WDescriptionsItemOn,
     $style = style ?? WDescriptionsItemStyle();
     init();
   }
+  @override
+  WDescriptionsItemStyle get style => WDescriptionsItemStyle()
+    ..merge($style, force: true)
+    ..merge(cfgGlobal.descriptions);
 
   late WDescriptions? descriptions;
 
@@ -270,7 +274,7 @@ class WDescriptionsItem extends WStatelessWidget<WDescriptionsItemOn,
   Widget _paddingWrapper(Widget widget) {
     return paddingWrapper(
       widget,
-      padding: padding,
+      padding: style.padding,
       need: true,
     );
   }
@@ -315,10 +319,6 @@ class WDescriptionsItem extends WStatelessWidget<WDescriptionsItemOn,
 
   Widget get label {
     return $slots.label ?? Text($props.label);
-  }
-
-  EdgeInsets get padding {
-    return $style.padding ?? cfgGlobal.descriptions.padding ?? EdgeInsets.zero;
   }
 }
 
