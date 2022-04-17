@@ -4,14 +4,14 @@ import 'package:wao_ui/wao_ui.dart';
 import '../demos.dart';
 
 regist() {
-  avatarCircleHtw;
-  avatarSquareHtw;
-  avatarCircleWth;
-  avatarSquareWth;
   avatarIcon1;
   avatarIcon1c;
   avatarIcon2;
   avatarIcon2q;
+  avatarCircleHtw;
+  avatarSquareHtw;
+  avatarCircleWth;
+  avatarSquareWth;
 }
 
 var avatarIcon1 = Demo(

@@ -43,7 +43,6 @@ class WImage
 
     if ($props.src != null) {
       if ($props.src!.startsWith('assets:')) {
-        print('use assets');
         return Image.asset(
           $props.src!.replaceFirst('assets:', ''),
           fit: $props.fit,

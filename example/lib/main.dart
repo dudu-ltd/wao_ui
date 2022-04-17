@@ -5,7 +5,7 @@ import 'package:example/package/navigation/api_tabs.dart';
 import 'package:example/views/index.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/env.dart';
-import 'package:wao_ui/core/theme_element.dart';
+import 'package:wao_ui/core/style_element.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 import 'third_party/syntax_highlight.dart';

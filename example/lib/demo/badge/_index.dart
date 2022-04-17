@@ -9,7 +9,7 @@ regist() {
   badgeSuccess;
   badgeWarning;
   badgeInfo;
-  badgeDot;
+  // badgeDot;
   badgeText;
   badgeMax;
 }
@@ -107,7 +107,6 @@ var badgeDot = Demo(
   'badgeDot',
   ListTile(
     leading: WBadge()
-      ..$props.value = 3
       // * 关键属性在这
       ..$props.isDot = true
       ..$style.marginRight = 0

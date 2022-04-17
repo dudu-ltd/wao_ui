@@ -131,8 +131,6 @@ class WHeaderSlot extends BaseSlot {
   WHeaderSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WHeaderStyle extends BaseStyle {}
-
 ///
 /// @description:
 ///
@@ -167,8 +165,6 @@ class WAsideProp extends BaseProp {}
 class WAsideSlot extends BaseSlot {
   WAsideSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
-
-class WAsideStyle extends BaseStyle {}
 
 ///
 /// @description:
@@ -205,8 +201,6 @@ class WMainSlot extends BaseSlot {
   WMainSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-class WMainStyle extends BaseStyle {}
-
 ///
 /// @description:
 ///
@@ -241,5 +235,3 @@ class WFooterProp extends BaseProp {}
 class WFooterSlot extends BaseSlot {
   WFooterSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
-
-class WFooterStyle extends BaseStyle {}

@@ -373,6 +373,10 @@ class BaseStyle<W> {
   }
 
   Map<List<String>, BaseStyle> clazz = {};
+
+  BaseStyle newInstance() {
+    return BaseStyle();
+  }
 }
 
 class Clazz {

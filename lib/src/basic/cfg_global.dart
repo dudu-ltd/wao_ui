@@ -10,10 +10,10 @@ import 'package:wao_ui/src/basic/w_container.dart';
 import 'w_button.dart';
 
 CfgGlobal cfgGlobal = CfgGlobal();
-
 typedef StyleWrap<W> = void Function(W);
 
 class CfgGlobal {
+  static Map<String, BaseStyle> cpnStyle = {'WAvatar': cfgGlobal.avatar};
   static Map<String, List<String> Function(BaseMixins)> selectors = {};
 
   static double fontRate = .72;
@@ -434,8 +434,40 @@ class WPadding {
   }
 }
 
+class WMainStyle extends BaseStyle {
+  @override
+  WMainStyle newInstance() {
+    return WMainStyle();
+  }
+}
+
+class WFooterStyle extends BaseStyle {
+  @override
+  WFooterStyle newInstance() {
+    return WFooterStyle();
+  }
+}
+
+class WAsideStyle extends BaseStyle {
+  @override
+  WAsideStyle newInstance() {
+    return WAsideStyle();
+  }
+}
+
+class WHeaderStyle extends BaseStyle {
+  @override
+  WHeaderStyle newInstance() {
+    return WHeaderStyle();
+  }
+}
+
 class WBreadcrumbStyle extends BaseStyle {
   WBreadcrumbStyle({EdgeInsets? padding}) : super(padding: padding);
+  @override
+  WBreadcrumbStyle newInstance() {
+    return WBreadcrumbStyle();
+  }
 }
 
 class WDescriptionsStyle extends BaseStyle {
@@ -453,6 +485,10 @@ class WDescriptionsStyle extends BaseStyle {
           padding: padding,
           borderColor: borderColor ?? Colors.grey.shade300,
         );
+  @override
+  WDescriptionsStyle newInstance() {
+    return WDescriptionsStyle();
+  }
 }
 
 class WEmptyStyle extends BaseStyle {
@@ -467,6 +503,10 @@ class WEmptyStyle extends BaseStyle {
   factory WEmptyStyle() {
     return _instance;
   }
+  @override
+  WEmptyStyle newInstance() {
+    return WEmptyStyle();
+  }
 }
 
 class WPaginationStyle extends BaseStyle {
@@ -477,6 +517,10 @@ class WPaginationStyle extends BaseStyle {
       WPaginationStyle._privateConstrucor();
   factory WPaginationStyle() {
     return _instance;
+  }
+  @override
+  WPaginationStyle newInstance() {
+    return WPaginationStyle();
   }
 }
 
@@ -499,9 +543,18 @@ class WButtonStyle extends BaseStyle<WButton> {
           maxHeight: maxHeight,
           maxWidth: maxWidth,
         );
+  @override
+  WButtonStyle newInstance() {
+    return WButtonStyle();
+  }
 }
 
-class WButtonGroupStyle extends BaseStyle {}
+class WButtonGroupStyle extends BaseStyle {
+  @override
+  WButtonGroupStyle newInstance() {
+    return WButtonGroupStyle();
+  }
+}
 
 class WProgressStyle extends BaseStyle {
   IconData successIcon = Icons.check_circle_outline_rounded;
@@ -524,6 +577,10 @@ class WProgressStyle extends BaseStyle {
   static final WProgressStyle _instance = WProgressStyle._privateConstrucor();
   factory WProgressStyle() {
     return _instance;
+  }
+  @override
+  WProgressStyle newInstance() {
+    return WProgressStyle();
   }
 }
 
@@ -559,6 +616,11 @@ class WResultStyle extends BaseStyle {
     }
     return null;
   }
+
+  @override
+  WResultStyle newInstance() {
+    return WResultStyle();
+  }
 }
 
 class WTableStyle extends BaseStyle {
@@ -567,6 +629,10 @@ class WTableStyle extends BaseStyle {
   BorderSide rowNoBorder = const BorderSide(width: 0);
   BorderSide rowBorder = BorderSide(width: .5, color: Colors.grey.shade300);
   EdgeInsets cellMargin = const EdgeInsets.fromLTRB(5, 2, 5, 2);
+  @override
+  WTableStyle newInstance() {
+    return WTableStyle();
+  }
 }
 
 class WRadioStyle extends BaseStyle {
@@ -589,6 +655,11 @@ class WRadioStyle extends BaseStyle {
   WRadioStyle({
     EdgeInsets? padding,
   }) : super(padding: padding);
+
+  @override
+  WRadioStyle newInstance() {
+    return WRadioStyle();
+  }
 }
 
 class WCheckboxStyle extends BaseStyle {
@@ -611,6 +682,11 @@ class WCheckboxStyle extends BaseStyle {
   WCheckboxStyle({
     EdgeInsets? padding,
   }) : super(padding: padding);
+
+  @override
+  WCheckboxStyle newInstance() {
+    return WCheckboxStyle();
+  }
 }
 
 class WInputStyle extends BaseStyle {
@@ -626,6 +702,11 @@ class WInputStyle extends BaseStyle {
     if (width == -1) {
       width = double.infinity;
     }
+  }
+
+  @override
+  WInputStyle newInstance() {
+    return WInputStyle();
   }
 }
 
@@ -652,9 +733,19 @@ class WSelectStyle extends BaseStyle {
     this.panelOffset,
     this.noDataTextColor,
   });
+
+  @override
+  WSelectStyle newInstance() {
+    return WSelectStyle();
+  }
 }
 
-class WOptionGroupStyle extends BaseStyle {}
+class WOptionGroupStyle extends BaseStyle {
+  @override
+  WOptionGroupStyle newInstance() {
+    return WOptionGroupStyle();
+  }
+}
 
 class WContainerLayoutStyle extends BaseStyle {
   WContainerLayoutStyle({
@@ -664,6 +755,11 @@ class WContainerLayoutStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WContainerLayoutStyle newInstance() {
+    return WContainerLayoutStyle();
+  }
 }
 
 class WFrameStyle extends BaseStyle {
@@ -674,6 +770,11 @@ class WFrameStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WFrameStyle newInstance() {
+    return WFrameStyle();
+  }
 }
 
 class WAvatarStyle extends BaseStyle {
@@ -684,6 +785,11 @@ class WAvatarStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WAvatarStyle newInstance() {
+    return WAvatarStyle();
+  }
 }
 
 class WBadgeStyle extends BaseStyle {
@@ -694,6 +800,11 @@ class WBadgeStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WBadgeStyle newInstance() {
+    return WBadgeStyle();
+  }
 }
 
 class WDescriptionsItemStyle extends BaseStyle {
@@ -704,6 +815,11 @@ class WDescriptionsItemStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WDescriptionsItemStyle newInstance() {
+    return WDescriptionsItemStyle();
+  }
 }
 
 class WSkeletonStyle extends BaseStyle {
@@ -714,6 +830,11 @@ class WSkeletonStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WSkeletonStyle newInstance() {
+    return WSkeletonStyle();
+  }
 }
 
 class WTableColumnStyle extends BaseStyle {
@@ -724,6 +845,11 @@ class WTableColumnStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTableColumnStyle newInstance() {
+    return WTableColumnStyle();
+  }
 }
 
 class WTagStyle extends BaseStyle {
@@ -734,6 +860,11 @@ class WTagStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTagStyle newInstance() {
+    return WTagStyle();
+  }
 }
 
 class WTreeStyle extends BaseStyle {
@@ -744,6 +875,11 @@ class WTreeStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTreeStyle newInstance() {
+    return WTreeStyle();
+  }
 }
 
 class WFormStyle extends BaseStyle {
@@ -754,6 +890,11 @@ class WFormStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WFormStyle newInstance() {
+    return WFormStyle();
+  }
 }
 
 class WCascaderStyle extends BaseStyle {
@@ -764,6 +905,11 @@ class WCascaderStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WCascaderStyle newInstance() {
+    return WCascaderStyle();
+  }
 }
 
 class WCascaderPanelStyle extends BaseStyle {
@@ -781,6 +927,11 @@ class WCascaderPanelStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WCascaderPanelStyle newInstance() {
+    return WCascaderPanelStyle();
+  }
 }
 
 class WCascaderMenuStyle extends BaseStyle {
@@ -795,6 +946,11 @@ class WCascaderMenuStyle extends BaseStyle {
           minWidth: minWidth,
           maxWidth: maxWidth,
         );
+
+  @override
+  WCascaderMenuStyle newInstance() {
+    return WCascaderMenuStyle();
+  }
 }
 
 class WCascaderNodeStyle extends BaseStyle {
@@ -809,6 +965,11 @@ class WCascaderNodeStyle extends BaseStyle {
         ) {
     this.disabledColor = disabledColor ?? CfgGlobal.disabledColor.shade300;
   }
+
+  @override
+  WCascaderNodeStyle newInstance() {
+    return WCascaderNodeStyle();
+  }
 }
 
 class WCheckboxGroupStyle extends BaseStyle {
@@ -819,6 +980,11 @@ class WCheckboxGroupStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WCheckboxGroupStyle newInstance() {
+    return WCheckboxGroupStyle();
+  }
 }
 
 class WCheckboxButtonStyle extends BaseStyle {
@@ -829,6 +995,11 @@ class WCheckboxButtonStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WCheckboxButtonStyle newInstance() {
+    return WCheckboxButtonStyle();
+  }
 }
 
 class WColorPickerStyle extends BaseStyle {
@@ -839,6 +1010,11 @@ class WColorPickerStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WColorPickerStyle newInstance() {
+    return WColorPickerStyle();
+  }
 }
 
 class WDatePickerStyle extends BaseStyle {
@@ -849,6 +1025,11 @@ class WDatePickerStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WDatePickerStyle newInstance() {
+    return WDatePickerStyle();
+  }
 }
 
 class WDateTimePickerStyle extends BaseStyle {
@@ -859,6 +1040,11 @@ class WDateTimePickerStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WDateTimePickerStyle newInstance() {
+    return WDateTimePickerStyle();
+  }
 }
 
 class WInputNumberStyle extends BaseStyle {
@@ -869,6 +1055,11 @@ class WInputNumberStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WInputNumberStyle newInstance() {
+    return WInputNumberStyle();
+  }
 }
 
 class WAutocompleteStyle extends BaseStyle {
@@ -879,6 +1070,11 @@ class WAutocompleteStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WAutocompleteStyle newInstance() {
+    return WAutocompleteStyle();
+  }
 }
 
 class WRadioGroupStyle extends BaseStyle {
@@ -889,6 +1085,11 @@ class WRadioGroupStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WRadioGroupStyle newInstance() {
+    return WRadioGroupStyle();
+  }
 }
 
 class WRadioButtonStyle extends BaseStyle {
@@ -899,6 +1100,11 @@ class WRadioButtonStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WRadioButtonStyle newInstance() {
+    return WRadioButtonStyle();
+  }
 }
 
 class WRateStyle extends BaseStyle {
@@ -909,6 +1115,11 @@ class WRateStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WRateStyle newInstance() {
+    return WRateStyle();
+  }
 }
 
 class WOptionStyle extends BaseStyle {
@@ -921,6 +1132,11 @@ class WOptionStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WOptionStyle newInstance() {
+    return WOptionStyle();
+  }
 }
 
 class WSliderStyle extends BaseStyle {
@@ -941,6 +1157,11 @@ class WSliderStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WSliderStyle newInstance() {
+    return WSliderStyle();
+  }
 }
 
 class WSwitchStyle extends BaseStyle {
@@ -957,6 +1178,11 @@ class WSwitchStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WSwitchStyle newInstance() {
+    return WSwitchStyle();
+  }
 }
 
 class WTimePickerStyle extends BaseStyle {
@@ -967,6 +1193,11 @@ class WTimePickerStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTimePickerStyle newInstance() {
+    return WTimePickerStyle();
+  }
 }
 
 class WTransferStyle extends BaseStyle {
@@ -977,6 +1208,11 @@ class WTransferStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTransferStyle newInstance() {
+    return WTransferStyle();
+  }
 }
 
 class WUploadStyle extends BaseStyle {
@@ -989,6 +1225,11 @@ class WUploadStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WUploadStyle newInstance() {
+    return WUploadStyle();
+  }
 }
 
 class WBreadcrumbItemStyle extends BaseStyle {
@@ -999,6 +1240,11 @@ class WBreadcrumbItemStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WBreadcrumbItemStyle newInstance() {
+    return WBreadcrumbItemStyle();
+  }
 }
 
 class WDropdownStyle extends BaseStyle {
@@ -1009,6 +1255,11 @@ class WDropdownStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WDropdownStyle newInstance() {
+    return WDropdownStyle();
+  }
 }
 
 class WDropdownMenuStyle extends BaseStyle {
@@ -1019,6 +1270,11 @@ class WDropdownMenuStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WDropdownMenuStyle newInstance() {
+    return WDropdownMenuStyle();
+  }
 }
 
 class WDropdownItemStyle extends BaseStyle {
@@ -1029,6 +1285,11 @@ class WDropdownItemStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WDropdownItemStyle newInstance() {
+    return WDropdownItemStyle();
+  }
 }
 
 class WMenuStyle extends BaseStyle {
@@ -1064,6 +1325,11 @@ class WMenuStyle extends BaseStyle {
         hoverBackgroundColor ?? ColorUtil.hexToColor('#ecf5ff');
     this.activeColor = activeColor ?? ColorUtil.hexToColor('#409EFF');
   }
+
+  @override
+  WMenuStyle newInstance() {
+    return WMenuStyle();
+  }
 }
 
 class WSubmenuStyle extends BaseStyle {
@@ -1078,6 +1344,11 @@ class WSubmenuStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WSubmenuStyle newInstance() {
+    return WSubmenuStyle();
+  }
 }
 
 class WMenuItemStyle extends BaseStyle {
@@ -1092,6 +1363,11 @@ class WMenuItemStyle extends BaseStyle {
           width: width,
           padding: padding,
         );
+
+  @override
+  WMenuItemStyle newInstance() {
+    return WMenuItemStyle();
+  }
 }
 
 class WMenuItemGroupStyle extends BaseStyle {
@@ -1102,6 +1378,11 @@ class WMenuItemGroupStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WMenuItemGroupStyle newInstance() {
+    return WMenuItemGroupStyle();
+  }
 }
 
 class WPageHeaderStyle extends BaseStyle {
@@ -1112,6 +1393,11 @@ class WPageHeaderStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WPageHeaderStyle newInstance() {
+    return WPageHeaderStyle();
+  }
 }
 
 class WStepsStyle extends BaseStyle {
@@ -1122,6 +1408,11 @@ class WStepsStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WStepsStyle newInstance() {
+    return WStepsStyle();
+  }
 }
 
 class WStepStyle extends BaseStyle {
@@ -1132,6 +1423,11 @@ class WStepStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WStepStyle newInstance() {
+    return WStepStyle();
+  }
 }
 
 class WTabsStyle extends BaseStyle {
@@ -1144,6 +1440,11 @@ class WTabsStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTabsStyle newInstance() {
+    return WTabsStyle();
+  }
 }
 
 class WTabItemStyle extends BaseStyle {
@@ -1154,6 +1455,11 @@ class WTabItemStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTabItemStyle newInstance() {
+    return WTabItemStyle();
+  }
 }
 
 class WTabPaneStyle extends BaseStyle {
@@ -1164,6 +1470,11 @@ class WTabPaneStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTabPaneStyle newInstance() {
+    return WTabPaneStyle();
+  }
 }
 
 class WAlertStyle extends BaseStyle {
@@ -1174,6 +1485,11 @@ class WAlertStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WAlertStyle newInstance() {
+    return WAlertStyle();
+  }
 }
 
 class WLoadingStyle extends BaseStyle {
@@ -1184,6 +1500,11 @@ class WLoadingStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WLoadingStyle newInstance() {
+    return WLoadingStyle();
+  }
 }
 
 class WMessageStyle extends BaseStyle {
@@ -1194,6 +1515,11 @@ class WMessageStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WMessageStyle newInstance() {
+    return WMessageStyle();
+  }
 }
 
 class WMessageBoxStyle extends BaseStyle {
@@ -1204,6 +1530,11 @@ class WMessageBoxStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WMessageBoxStyle newInstance() {
+    return WMessageBoxStyle();
+  }
 }
 
 class WNotificationStyle extends BaseStyle {
@@ -1214,6 +1545,11 @@ class WNotificationStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WNotificationStyle newInstance() {
+    return WNotificationStyle();
+  }
 }
 
 class WBacktopStyle extends BaseStyle {
@@ -1224,6 +1560,11 @@ class WBacktopStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WBacktopStyle newInstance() {
+    return WBacktopStyle();
+  }
 }
 
 class WCalendarStyle extends BaseStyle {
@@ -1234,6 +1575,11 @@ class WCalendarStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WCalendarStyle newInstance() {
+    return WCalendarStyle();
+  }
 }
 
 class WCardStyle extends BaseStyle {
@@ -1252,6 +1598,11 @@ class WCardStyle extends BaseStyle {
           backgroundColor: backgroundColor,
           borderColor: borderColor,
         );
+
+  @override
+  WCardStyle newInstance() {
+    return WCardStyle();
+  }
 }
 
 class WCarouselStyle extends BaseStyle {
@@ -1262,6 +1613,11 @@ class WCarouselStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WCarouselStyle newInstance() {
+    return WCarouselStyle();
+  }
 }
 
 class WCarouselItemStyle extends BaseStyle {
@@ -1272,6 +1628,11 @@ class WCarouselItemStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WCarouselItemStyle newInstance() {
+    return WCarouselItemStyle();
+  }
 }
 
 class WCollapseStyle extends BaseStyle {
@@ -1282,6 +1643,11 @@ class WCollapseStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WCollapseStyle newInstance() {
+    return WCollapseStyle();
+  }
 }
 
 class WCollapseItemStyle extends BaseStyle {
@@ -1292,6 +1658,11 @@ class WCollapseItemStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WCollapseItemStyle newInstance() {
+    return WCollapseItemStyle();
+  }
 }
 
 class WDialogStyle extends BaseStyle {
@@ -1302,6 +1673,11 @@ class WDialogStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WDialogStyle newInstance() {
+    return WDialogStyle();
+  }
 }
 
 class WDividerStyle extends BaseStyle {
@@ -1312,6 +1688,11 @@ class WDividerStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WDividerStyle newInstance() {
+    return WDividerStyle();
+  }
 }
 
 class WDrawerStyle extends BaseStyle {
@@ -1330,6 +1711,11 @@ class WDrawerStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WDrawerStyle newInstance() {
+    return WDrawerStyle();
+  }
 }
 
 class WHoverHandleStyle extends BaseStyle {
@@ -1340,6 +1726,10 @@ class WHoverHandleStyle extends BaseStyle {
           height: height,
           width: width,
         );
+  @override
+  WHoverHandleStyle newInstance() {
+    return WHoverHandleStyle();
+  }
 }
 
 class WImageStyle extends BaseStyle {
@@ -1350,6 +1740,11 @@ class WImageStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WImageStyle newInstance() {
+    return WImageStyle();
+  }
 }
 
 class WInfiniteScrollStyle extends BaseStyle {
@@ -1360,6 +1755,11 @@ class WInfiniteScrollStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WInfiniteScrollStyle newInstance() {
+    return WInfiniteScrollStyle();
+  }
 }
 
 class WPopconfirmStyle extends BaseStyle {
@@ -1370,6 +1770,11 @@ class WPopconfirmStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WPopconfirmStyle newInstance() {
+    return WPopconfirmStyle();
+  }
 }
 
 class WPopoverStyle extends BaseStyle {
@@ -1380,6 +1785,11 @@ class WPopoverStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WPopoverStyle newInstance() {
+    return WPopoverStyle();
+  }
 }
 
 class WTimelineStyle extends BaseStyle {
@@ -1390,6 +1800,11 @@ class WTimelineStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTimelineStyle newInstance() {
+    return WTimelineStyle();
+  }
 }
 
 class WTimelineItemStyle extends BaseStyle {
@@ -1400,6 +1815,11 @@ class WTimelineItemStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTimelineItemStyle newInstance() {
+    return WTimelineItemStyle();
+  }
 }
 
 class WTooltipStyle extends BaseStyle {
@@ -1410,6 +1830,11 @@ class WTooltipStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  WTooltipStyle newInstance() {
+    return WTooltipStyle();
+  }
 }
 
 class PlainTreeStyle extends BaseStyle {
@@ -1420,11 +1845,26 @@ class PlainTreeStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  PlainTreeStyle newInstance() {
+    return PlainTreeStyle();
+  }
 }
 
-class WContainerStyle extends BaseStyle {}
+class WContainerStyle extends BaseStyle {
+  @override
+  WContainerStyle newInstance() {
+    return WContainerStyle();
+  }
+}
 
 class WScrollSnapStyle extends BaseStyle {
   double snapWidth;
   WScrollSnapStyle({this.snapWidth = 150.0});
+
+  @override
+  WScrollSnapStyle newInstance() {
+    return WScrollSnapStyle();
+  }
 }

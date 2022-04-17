@@ -54,17 +54,22 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   late final T $style;
 
   // late final BaseStyle style = BaseStyle<BaseMixins>();
-  T get style => throw Exception('no implement');
+  T get style {
+    return $style
+        .newInstance()
+        .merge($style, force: true)
+        .merge(CfgGlobal.cpnStyle[runtimeType.toString()]) as T;
+  }
 
   List<Widget>? $defaultSlot;
 
   beforeBuild() {}
 
-  boxWrapper(Widget willBeWrap, BuildContext context, [BaseStyle? style]) {
-    style = style ?? $style;
+  boxWrapper(Widget willBeWrap, BuildContext context, [BaseStyle? _style]) {
+    var style = _style ?? this.style;
     // print(style);
     return Container(
-      alignment: style.textAlign ?? Alignment.centerLeft,
+      alignment: style.textAlign ?? Alignment.center,
       padding: style.padding,
       margin: style.margin,
       width: style.width,

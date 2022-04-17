@@ -27,13 +27,13 @@ class WAvatar extends WStatelessWidget<WAvatarOn, WAvatarProp, WAvatarSlot,
     var width = $props.isCustomSize
         ? double.parse($props.size)
         : cfgGlobal.avatarSize.val($props.size);
-    style.width = width;
+    $style.width = width;
     return super.beforeBuild();
   }
 
   @override
   Widget wbuild(BuildContext context) {
-    print('\$props.isCircle  = ${$props.isCircle}');
+    // print('\$props.isCircle  = ${$props.isCircle}');
     return $props.isCircle ? ClipOval(child: sizedBox) : sizedBox;
   }
 
@@ -64,11 +64,6 @@ class WAvatar extends WStatelessWidget<WAvatarOn, WAvatarProp, WAvatarSlot,
     }
     return img;
   }
-
-  @override
-  WAvatarStyle get style => WAvatarStyle()
-    ..merge($style, force: true)
-    ..merge(cfgGlobal.avatar);
 }
 
 class WAvatarOn extends BaseOn {}

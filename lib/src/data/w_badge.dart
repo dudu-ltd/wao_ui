@@ -24,29 +24,21 @@ class WBadge
     $style = style ?? WBadgeStyle();
     init();
   }
-
-  @override
-  WBadgeStyle get style => WBadgeStyle()
-    ..merge($style, force: true)
-    ..merge(cfgGlobal.badge);
 }
 
 class _WBadgeState extends WState<WBadge> {
   @override
   Widget wbuild(BuildContext context) {
-    widget.$props._state = this;
-    print('build');
-    print(widget.$props.value);
     return Container(
-        // margin: margin,
-        // child: Stack(
-        //   children: [
-        //     child,
-        //     if (show) widget.$props.isDot ? dotBadge : badge,
-        //   ],
-        //   clipBehavior: Clip.none,
-        // ),
-        );
+      margin: margin,
+      child: Stack(
+        children: [
+          child,
+          if (show) widget.$props.isDot ? dotBadge : badge,
+        ],
+        clipBehavior: Clip.none,
+      ),
+    );
   }
 
   bool get show {
