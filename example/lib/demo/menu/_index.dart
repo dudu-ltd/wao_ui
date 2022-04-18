@@ -187,10 +187,7 @@ var menus = [
         // ..$style.backgroundColor = Color(0xFF545c64)
         ..$style.hoverBackgroundColor = Color.fromRGBO(67, 74, 80, 1)
         // ..$style.color = Colors.white
-        ..$style.activeColor = Color(0xffffd04b)
-        ..$style.clazz = {
-          [Clazz.menu]: BaseStyle()..backgroundColor = Color(0xFF545c64)
-        },
+        ..$style.activeColor = Color(0xffffd04b),
     ),
     r'''
     SizedBox(

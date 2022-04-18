@@ -293,6 +293,7 @@ class WButtonGroup extends WStatelessWidget<WButtonGroupOn, WButtonGroupProp,
     $props = props ?? WButtonGroupProp();
     $slots = slots ?? WButtonGroupSlot(null);
     $style = style ?? WButtonGroupStyle();
+    init();
   }
 
   @override

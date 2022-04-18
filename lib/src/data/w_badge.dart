@@ -30,17 +30,12 @@ class _WBadgeState extends WState<WBadge> {
   @override
   Widget wbuild(BuildContext context) {
     widget.$props._state = this;
-    print('build');
-    print(widget.$props.value);
-    return Container(
-      margin: margin,
-      child: Stack(
-        children: [
-          child,
-          if (show) widget.$props.isDot ? dotBadge : badge,
-        ],
-        clipBehavior: Clip.none,
-      ),
+    return Stack(
+      children: [
+        child,
+        if (show) widget.$props.isDot ? dotBadge : badge,
+      ],
+      clipBehavior: Clip.none,
     );
   }
 

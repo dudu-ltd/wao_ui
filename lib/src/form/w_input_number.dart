@@ -74,7 +74,7 @@ class WInputNumber extends WStatelessWidget<WInputNumberOn, WInputNumberProp,
     ];
   }
 
-  Widget? _fitHeightWrapper(Widget? child, {aspectRatio = 1.5}) {
+  Widget? _fitHeightWrapper(Widget? child, {aspectRatio = 1.0}) {
     if (child == null) return null;
     return _marginWapper(
       colorWrapper(

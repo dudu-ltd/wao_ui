@@ -54,6 +54,7 @@ element() {
   var _buttonGroup = Clazz.button = '.el-button-group';
 
   var _avatar = Clazz.avatar = '.el-avatar';
+  var _badge = Clazz.badge = '.el-badge';
   var _decriptions = Clazz.decriptions = '.el-decriptions';
   var _empty = Clazz.empty = '.el-empty';
   var _pagination = Clazz.pagination = '.el-pagination';
@@ -64,13 +65,16 @@ element() {
   var _tag = Clazz.tag = '.el-tag';
   var _tree = Clazz.tree = '.el-tree';
   var _cascader = Clazz.cascader = '.el-cascader';
+  var _containerLayout = Clazz.containerLayout = '.el-cascader-layout';
   var _checkbox = Clazz.checkbox = '.el-checkbox';
   var _colorPicker = Clazz.colorPicker = '.el-color-picker';
   var _datePicker = Clazz.datePicker = '.el-date-picker';
   var _dateTimePicker = Clazz.dateTimePicker = '.el-date-time-picker';
   var _inputNumber = Clazz.inputNumber = '.el-input-number';
   var _input = Clazz.input = '.el-input';
+  var _radioButton = Clazz.radioButton = '.el-radio-button';
   var _radio = Clazz.radio = '.el-radio';
+  var _radioGroup = Clazz.radioGroup = '.el-radio-group';
   var _rate = Clazz.rate = '.el-rate';
   var _select = Clazz.select = '.el-select';
   var _slider = Clazz.slider = '.el-slider';
@@ -272,20 +276,28 @@ element() {
 
   CfgGlobal.css = {
     [
-      [Clazz.pagination]
+      [_pagination]
     ]: BaseStyle()
       ..padding = const EdgeInsets.symmetric(vertical: 5, horizontal: 2)
       ..color = CfgGlobal.textColor
       ..fontWeight = FontWeight.w700,
 
     [
-      [Clazz.pagination, Clazz.select, Clazz.input]
+      [_pagination, _select, _input]
     ]: BaseStyle()
       ..width = 100
       ..margin = const EdgeInsets.symmetric(
         vertical: 0,
         horizontal: 5,
       ),
+
+    [
+      [_result]
+    ]: BaseStyle()..textAlign = Alignment.center,
+
+    [
+      [_badge]
+    ]: BaseStyle()..textAlign = Alignment.topRight,
 
     [
       [_button]
@@ -837,7 +849,7 @@ element() {
         ..fontSize = 16
         ..fontWeight = FontWeight.w700)
       ..body = (BaseStyle()
-        ..color = ColorUtil.hexToColor('#606266')
+        ..color = CfgGlobal.textColor.shade700
         ..backgroundColor = Colors.white
         ..widthFactor = 1),
     [
@@ -861,7 +873,8 @@ element() {
       ..width = 40
       ..height = 40
       ..maxWidth = 40
-      ..fontSize = 14,
+      ..fontSize = 14
+      ..overflow = Clip.hardEdge,
     [
       [_avatar, '$_avatar$circleSuf']
     ]: BaseStyle()..borderRadius = BorderRadius.circular(1024),
@@ -1155,7 +1168,49 @@ element() {
     ]: BaseStyle()
       ..padding = const EdgeInsets.fromLTRB(20, 7, 0, 7)
       ..fontSize = 12
-      ..color = CfgGlobal.textColor.shade600
+      ..color = CfgGlobal.textColor.shade600,
+
+    [
+      [_inputNumber]
+    ]: WInputNumberStyle()..height = 40,
+
+    [
+      [_radio]
+    ]: WRadioStyle()..padding = EdgeInsets.zero,
+
+    [
+      [_radioGroup]
+    ]: WRadioGroupStyle()..padding = EdgeInsets.zero,
+
+    [
+      [_radioGroup, '$_radioGroup$miniSuf']
+    ]: WRadioGroupStyle()
+      ..button = (WRadioButtonStyle()..clazz = ['$_radioButton$miniSuf']),
+    [
+      [_radioGroup, '$_radioGroup$smallSuf']
+    ]: WRadioGroupStyle()
+      ..button = (WRadioButtonStyle()..clazz = ['$_radioButton$smallSuf']),
+    [
+      [_radioGroup, '$_radioGroup$mediumSuf']
+    ]: WRadioGroupStyle()
+      ..button = (WRadioButtonStyle()..clazz = ['$_radioButton$mediumSuf']),
+    [
+      [_radioGroup, '$_radioGroup$largeSuf']
+    ]: WRadioGroupStyle()
+      ..button = (WRadioButtonStyle()..clazz = ['$_radioButton$largeSuf']),
+
+    [
+      [_radioButton, '$_radioButton$miniSuf']
+    ]: WRadioButtonStyle()..padding = CfgGlobal.padding.mini,
+    [
+      [_radioButton, '$_radioButton$smallSuf']
+    ]: WRadioButtonStyle()..padding = CfgGlobal.padding.small,
+    [
+      [_radioButton, '$_radioButton$mediumSuf']
+    ]: WRadioButtonStyle()..padding = CfgGlobal.padding.medium,
+    [
+      [_radioButton, '$_radioButton$largeSuf']
+    ]: WRadioButtonStyle()..padding = CfgGlobal.padding.large,
   };
 
   // .el-button
@@ -1185,33 +1240,33 @@ element() {
     },
     'WContainerLayout': (cpn) {
       cpn as WContainerLayout;
-      return [Clazz.containerLayout];
+      return [_containerLayout];
     },
     'WContainer': (cpn) {
       cpn as WContainer;
-      return [Clazz.container];
+      return [_container];
     },
     'WMain': (cpn) {
       cpn as WMain;
-      return [Clazz.main];
+      return [_main];
     },
     'WAside': (cpn) {
       cpn as WAside;
-      return [Clazz.aside];
+      return [_aside];
     },
     'WHeader': (cpn) {
       cpn as WHeader;
-      return [Clazz.header];
+      return [_header];
     },
     'WFooter': (cpn) {
       cpn as WFooter;
-      return [Clazz.footer];
+      return [_footer];
     },
     'WAvatar': (cpn) {
       cpn as WAvatar;
       return [
         _avatar,
-        if (cpn.$props.isCircle) '$_avatar${Clazz.circleSuf}',
+        if (cpn.$props.isCircle) '$_avatar$circleSuf',
         if (cpn.$props.isSquare) '$_avatar$squareSuf',
         if (cpn.$props.icon != null) '$_avatar$iconSuf',
         '$_avatar--${cpn.$props.size}',
@@ -1219,111 +1274,119 @@ element() {
     },
     'WBadge': (cpn) {
       cpn as WBadge;
-      return [Clazz.badge];
+      return [_badge];
     },
     'WDescriptions': (cpn) {
       cpn as WDescriptions;
-      return [Clazz.decriptions];
+      return [_decriptions];
     },
     'WEmpty': (cpn) {
       cpn as WEmpty;
-      return [Clazz.empty];
+      return [_empty];
     },
     'WPagination': (cpn) {
       cpn as WPagination;
-      return [Clazz.pagination];
+      return [_pagination];
     },
     'WProgress': (cpn) {
       cpn as WProgress;
-      return [Clazz.progress];
+      return [_progress];
     },
     'WResult': (cpn) {
       cpn as WResult;
-      return [Clazz.result];
+      return [_result];
     },
     'WSkeleton': (cpn) {
       cpn as WSkeleton;
-      return [Clazz.skeleton];
+      return [_skeleton];
     },
     'WTable': (cpn) {
       cpn as WTable;
-      return [Clazz.table];
+      return [_table];
     },
     'WTag': (cpn) {
       cpn as WTag;
-      return [Clazz.tag];
+      return [_tag];
     },
     'WTree': (cpn) {
       cpn as WTree;
-      return [Clazz.tree];
+      return [_tree];
     },
     'WCascader': (cpn) {
       cpn as WCascader;
-      return [Clazz.cascader];
+      return [_cascader];
     },
     'WCheckbox': (cpn) {
       cpn as WCheckbox;
-      return [Clazz.checkbox];
+      return [_checkbox];
     },
     'WColorPicker': (cpn) {
       cpn as WColorPicker;
-      return [Clazz.colorPicker];
+      return [_colorPicker];
     },
     'WDatePicker': (cpn) {
       cpn as WDatePicker;
-      return [Clazz.datePicker];
+      return [_datePicker];
     },
     'WDateTimePicker': (cpn) {
       cpn as WDateTimePicker;
-      return [Clazz.dateTimePicker];
+      return [_dateTimePicker];
     },
     'WInputNumber': (cpn) {
       cpn as WInputNumber;
-      return [Clazz.inputNumber];
+      return [_inputNumber];
     },
     'WInput': (cpn) {
       cpn as WInput;
-      return [Clazz.input];
+      return [_input];
     },
     'WRadio': (cpn) {
       cpn as WRadio;
-      return [Clazz.radio];
+      return [_radio, '$_radio--${cpn.$props.size}'];
+    },
+    'WRadioGroup': (cpn) {
+      cpn as WRadioGroup;
+      return [_radioGroup, '$_radioGroup--${cpn.$props.size}'];
+    },
+    'WRadioButton': (cpn) {
+      cpn as WRadioButton;
+      return [_radioButton];
     },
     'WRate': (cpn) {
       cpn as WRate;
-      return [Clazz.rate];
+      return [_rate];
     },
     'WSelect': (cpn) {
       cpn as WSelect;
-      return [Clazz.select];
+      return [_select];
     },
     'WSlider': (cpn) {
       cpn as WSlider;
-      return [Clazz.slider];
+      return [_slider];
     },
     'WSwitch': (cpn) {
       cpn as WSwitch;
-      return [Clazz.swatch];
+      return [_swatch];
     },
     'WTimePicker': (cpn) {
       cpn as WTimePicker;
-      return [Clazz.timePicker];
+      return [_timePicker];
     },
     'WTransfer': (cpn) {
       cpn as WTransfer;
-      return [Clazz.transfer];
+      return [_transfer];
     },
     'WUpload': (cpn) {
       cpn as WUpload;
-      return [Clazz.upload];
+      return [_upload];
     },
     'WBreadcrumb': (cpn) {
       cpn as WBreadcrumb;
-      return [Clazz.breadcrumb];
+      return [_breadcrumb];
     },
     'WDropdown': (cpn) {
       cpn as WDropdown;
-      return [Clazz.dropdown];
+      return [_dropdown];
     },
     // 'WMenu': (cpn) {
     //   cpn as WMenu;
@@ -1343,95 +1406,95 @@ element() {
     // },
     'WPageHeader': (cpn) {
       cpn as WPageHeader;
-      return [Clazz.pageHeader];
+      return [_pageHeader];
     },
     'WSteps': (cpn) {
       cpn as WSteps;
-      return [Clazz.steps];
+      return [_steps];
     },
     'WTabs': (cpn) {
       cpn as WTabs;
-      return [Clazz.tabs];
+      return [_tabs];
     },
     'WAlert': (cpn) {
       cpn as WAlert;
-      return [Clazz.alert];
+      return [_alert];
     },
     'WLoading': (cpn) {
       cpn as WLoading;
-      return [Clazz.loading];
+      return [_loading];
     },
     'WMessage': (cpn) {
       cpn as WMessage;
-      return [Clazz.message];
+      return [_message];
     },
     'WMessageBox': (cpn) {
       cpn as WMessageBox;
-      return [Clazz.messageBox];
+      return [_messageBox];
     },
     'WNotification': (cpn) {
       cpn as WNotification;
-      return [Clazz.notification];
+      return [_notification];
     },
     'WBacktop': (cpn) {
       cpn as WBacktop;
-      return [Clazz.backtop];
+      return [_backtop];
     },
     'WCalendar': (cpn) {
       cpn as WCalendar;
-      return [Clazz.cascader];
+      return [_cascader];
     },
     'WCard': (cpn) {
       cpn as WCard;
-      return [Clazz.card];
+      return [_card];
     },
     'WCarousel': (cpn) {
       cpn as WCarousel;
-      return [Clazz.carousel];
+      return [_carousel];
     },
     'WCollapse': (cpn) {
       cpn as WCollapse;
-      return [Clazz.collapse];
+      return [_collapse];
     },
     'WDialog': (cpn) {
       cpn as WDialog;
-      return [Clazz.dialog];
+      return [_dialog];
     },
     'WDivider': (cpn) {
       cpn as WDivider;
-      return [Clazz.divider];
+      return [_divider];
     },
     'WDrawer': (cpn) {
       cpn as WDrawer;
-      return [Clazz.drawer];
+      return [_drawer];
     },
     'WImage': (cpn) {
       cpn as WImage;
-      return [Clazz.image];
+      return [_image];
     },
     'WInfiniteScroll': (cpn) {
       cpn as WInfiniteScroll;
-      return [Clazz.infiniteScroll];
+      return [_infiniteScroll];
     },
     'WPopconfirm': (cpn) {
       cpn as WPopconfirm;
-      return [Clazz.popconfirm];
+      return [_popconfirm];
     },
     'WPopover': (cpn) {
       cpn as WPopover;
-      return [Clazz.popover];
+      return [_popover];
     },
     'WTimeline': (cpn) {
       cpn as WTimeline;
-      return [Clazz.timeline];
+      return [_timeline];
     },
     'WTooltip': (cpn) {
       cpn as WTooltip;
-      return [Clazz.tooltip];
+      return [_tooltip];
     },
     'WForm': (cpn) {
       cpn as WForm;
-      return [Clazz.form];
+      return [_form];
     },
   };
 }

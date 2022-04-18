@@ -28,6 +28,8 @@ class WAvatar extends WStatelessWidget<WAvatarOn, WAvatarProp, WAvatarSlot,
         ? double.parse($props.size)
         : cfgGlobal.avatarSize.val($props.size);
     style.width = width;
+    style.maxWidth = width;
+    style.height = width;
     return super.beforeBuild();
   }
 

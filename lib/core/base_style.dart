@@ -56,6 +56,14 @@ class BaseStyle<W> {
 
   double? lineHeight;
 
+  Clip? overflow;
+
+  List<String> clazz = [];
+
+  BaseStyle newInstance() {
+    return BaseStyle();
+  }
+
   set borderTop(BorderSide? borderSide) {
     if (borderSide == null) return;
     borderTopColor = pickStyle(borderTopColor, borderSide.color, force: true);
@@ -275,6 +283,7 @@ class BaseStyle<W> {
     this.backgroundImage,
     this.backgroundBlendMode,
     double? lineHeight,
+    this.overflow,
   }) {
     this.padding = padding;
     this.borderRadius = borderRadius;
@@ -365,6 +374,11 @@ class BaseStyle<W> {
 
     opacity = pickStyle(opacity, source.opacity, force: force);
 
+    overflow = pickStyle(overflow, source.overflow, force: force);
+    source.clazz.forEach((element) {
+      if (!clazz.contains(element)) clazz.add(element);
+    });
+
     return this;
   }
 
@@ -374,6 +388,10 @@ class BaseStyle<W> {
         return source;
       }
     }
+    if (target is BaseStyle && source is BaseStyle) {
+      target.merge(source);
+    }
+
     return target ?? source;
   }
 
@@ -383,8 +401,6 @@ class BaseStyle<W> {
       wrap?.call(w);
     }
   }
-
-  Map<List<String>, BaseStyle> clazz = {};
 }
 
 class Clazz {
@@ -464,6 +480,7 @@ class Clazz {
   static String inputNumber = '.input-number';
   static String input = '.input';
   static String radio = '.radio';
+  static String radioGroup = '.radio-group';
   static String rate = '.rate';
   static String select = '.select';
   static String slider = '.slider';
@@ -500,4 +517,6 @@ class Clazz {
   static String timeline = '.timeline';
   static String tooltip = '.tooltip';
   static String form = '.form';
+
+  static String radioButton = '.radio-button';
 }

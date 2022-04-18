@@ -115,7 +115,8 @@ class _WSubmenuState extends WState<WSubmenu>
 
   @override
   void dispose() {
-    Navigator.of(context).pop();
+    var nav = Navigator.of(context);
+    if (nav.canPop()) nav.pop();
     panelOverlay?.dispose();
     itemsPanelController.dispose();
     panelController.dispose();

@@ -26,6 +26,19 @@ class WRadio
 
   @override
   _WRadioState createState() => _WRadioState();
+
+  @override
+  // TODO: implement slotTranslatorsCustom
+  List<SlotTranslator> get slotTranslatorsCustom => [
+        SlotTranslator(
+          WRadioGroup,
+          (slot, i, c, l) {
+            slot as WRadioGroup;
+            slot.$style.button = $style.button;
+            return slot;
+          },
+        ),
+      ];
 }
 
 class _WRadioState extends WState<WRadio> {
@@ -253,6 +266,9 @@ class WRadioGroup extends WStatelessWidget<WRadioGroupOn, WRadioGroupProp,
             ..value = $props.value
             ..disabled |= $props.disabled
             ..size = $props.size;
+          slot as WRadio;
+          print('set style: ' + runtimeType.toString());
+          slot.$style.merge(style.button);
           return slot;
         },
       ),
@@ -265,6 +281,11 @@ class WRadioGroup extends WStatelessWidget<WRadioGroupOn, WRadioGroupProp,
             .._size = $props.size
             ..isFirst = i == 0
             ..isLast = i == len - 1;
+
+          slot as WRadioButton;
+
+          print('set style: ' + runtimeType.toString());
+          slot.$style.merge(style.button);
           return slot;
         },
       )
@@ -326,14 +347,6 @@ class _WRadioButtonState extends WState<WRadioButton> {
     });
   }
 
-  double get paddingV {
-    return CfgGlobal.padding[widget.$props._size ?? 'large']?.left ?? 0;
-  }
-
-  double get paddingH {
-    return paddingV * 2;
-  }
-
   @override
   Widget wbuild(BuildContext context) {
     return Listener(
@@ -345,8 +358,7 @@ class _WRadioButtonState extends WState<WRadioButton> {
       child: MouseStateBuilder(
         builder: (context, state) {
           return Container(
-            padding:
-                EdgeInsets.fromLTRB(paddingH, paddingV, paddingH, paddingV),
+            padding: widget.style.padding,
             decoration: BoxDecoration(
               color: backgroudColor,
               borderRadius: borderRadius,
@@ -443,6 +455,12 @@ class WRadioButton extends WStatefulWidget<WRadioButtonOn, WRadioButtonProp,
 
   @override
   _WRadioButtonState createState() => _WRadioButtonState();
+
+  @override
+  beforeBuild() {
+    print(style);
+    return super.beforeBuild();
+  }
 }
 
 class WRadioButtonOn extends BaseOn {}

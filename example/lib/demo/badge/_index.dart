@@ -160,7 +160,8 @@ var badgeText = Demo(
       ..$slots.$ = (WButton()
         ..$slots.$ = '企业版'
         ..$props.type = 'primary'
-        ..$props.plain = true),
+        ..$props.plain = true)
+      ..$style.marginRight = 20,
     WBadge()
       ..$props.value = 'HOT'
       ..$props.type = 'danger'
@@ -177,7 +178,8 @@ var badgeText = Demo(
       ..$slots.$ = (WButton()
         ..$slots.$ = '企业版'
         ..$props.type = 'primary'
-        ..$props.plain = true),
+        ..$props.plain = true)
+      ..$style.marginRight = 20,
     WBadge()
       ..$props.value = 'HOT'
       ..$props.type = 'danger'

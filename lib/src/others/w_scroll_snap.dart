@@ -214,6 +214,7 @@ class WScrollSnap extends WStatefulWidget<WScrollSnapOn, WScrollSnapProp,
     $props = props ?? WScrollSnapProp();
     $slots = slots ?? WScrollSnapSlot(null);
     $style = style ?? WScrollSnapStyle();
+    init();
   }
 
   @override

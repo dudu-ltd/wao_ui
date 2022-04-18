@@ -110,6 +110,7 @@ class WHeader extends WStatelessWidget<WHeaderOn, WHeaderProp, WHeaderSlot,
     $props = props ?? WHeaderProp();
     $slots = slots ?? WHeaderSlot(null);
     $style = style ?? WHeaderStyle();
+    init();
   }
   @override
   Widget wbuild(BuildContext context) {
@@ -125,8 +126,6 @@ class WHeaderProp extends BaseProp {}
 class WHeaderSlot extends BaseSlot {
   WHeaderSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
-
-class WHeaderStyle extends BaseStyle {}
 
 ///
 /// @description:
@@ -148,6 +147,7 @@ class WAside
     $props = props ?? WAsideProp();
     $slots = slots ?? WAsideSlot(null);
     $style = style ?? WAsideStyle();
+    init();
   }
   @override
   Widget wbuild(BuildContext context) {
@@ -162,8 +162,6 @@ class WAsideProp extends BaseProp {}
 class WAsideSlot extends BaseSlot {
   WAsideSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
-
-class WAsideStyle extends BaseStyle {}
 
 ///
 /// @description:
@@ -185,6 +183,7 @@ class WMain
     $props = props ?? WMainProp();
     $slots = slots ?? WMainSlot(null);
     $style = style ?? WMainStyle();
+    init();
   }
   @override
   Widget wbuild(BuildContext context) {
@@ -199,8 +198,6 @@ class WMainProp extends BaseProp {}
 class WMainSlot extends BaseSlot {
   WMainSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
-
-class WMainStyle extends BaseStyle {}
 
 ///
 /// @description:
@@ -222,6 +219,7 @@ class WFooter extends WStatelessWidget<WFooterOn, WFooterProp, WFooterSlot,
     $props = props ?? WFooterProp();
     $slots = slots ?? WFooterSlot(null);
     $style = style ?? WFooterStyle();
+    init();
   }
   @override
   Widget wbuild(BuildContext context) {
@@ -236,5 +234,3 @@ class WFooterProp extends BaseProp {}
 class WFooterSlot extends BaseSlot {
   WFooterSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
-
-class WFooterStyle extends BaseStyle {}

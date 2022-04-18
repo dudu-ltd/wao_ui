@@ -199,62 +199,104 @@ var avatarCircleHtw = Demo(
   Wrap(spacing: 24, runSpacing: 16, children: [
     Padding(
       padding: const EdgeInsets.only(left: 14),
-      child: SizedBox(height: 80, child: WImage()..$props.src = htwImg),
+      child: SizedBox(
+        height: 80,
+        child: WImage()..$props.src = htwImg,
+      ),
     ),
     const ColoredBox(
-        color: Colors.black12, child: SizedBox(height: 80, width: 2)),
-    WAvatar(
-        props:
-            WAvatarProp(size: '80', shape: 'circle', src: htwImg, fit: 'fill')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'contain')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'cover')),
-    WAvatar(
-        props:
-            WAvatarProp(size: '80', shape: 'circle', src: htwImg, fit: 'none')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'scaleDown')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'fitWidth')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'fitHeight')),
+        color: Colors.black12,
+        child: SizedBox(
+          height: 80,
+          width: 2,
+        )),
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'fill',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'contain',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'cover',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'none',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'scaleDown',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'fitWidth',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'fitWidth',
   ]),
   r'''
   Wrap(spacing: 24, runSpacing: 16, children: [
     Padding(
       padding: const EdgeInsets.only(left: 14),
-      child: SizedBox(height: 80, child: WImage()..$props.src = htwImg),
+      child: SizedBox(
+        height: 80,
+        child: WImage()..$props.src = htwImg,
+      ),
     ),
     const ColoredBox(
-        color: Colors.black12, child: SizedBox(height: 80, width: 2)),
-    WAvatar(
-        props:
-            WAvatarProp(size: '80', shape: 'circle', src: htwImg, fit: 'fill')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'contain')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'cover')),
-    WAvatar(
-        props:
-            WAvatarProp(size: '80', shape: 'circle', src: htwImg, fit: 'none')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'scaleDown')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'fitWidth')),
-    WAvatar(
-        props: WAvatarProp(
-            size: '80', shape: 'circle', src: htwImg, fit: 'fitHeight')),
-  ])
+        color: Colors.black12,
+        child: SizedBox(
+          height: 80,
+          width: 2,
+        )),
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'fill',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'contain',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'cover',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'none',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'scaleDown',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'fitWidth',
+    WAvatar()
+      ..$props.size = '80'
+      ..$props.shape = 'circle'
+      ..$props.src = htwImg
+      ..$props.fit = 'fitWidth',
+  ]),
   ''',
 );
 
@@ -269,22 +311,46 @@ var avatarSquareHtw = Demo(
         child: SizedBox(height: 80, child: WImage()..$props.src = htwImg),
       ),
       const ColoredBox(
-          color: Colors.black12, child: SizedBox(height: 80, width: 2)),
+          color: Colors.black12,
+          child: SizedBox(
+            height: 80,
+            width: 2,
+          )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'fill')),
+        size: '80',
+        shape: 'square',
+        src: htwImg,
+        fit: 'fill',
+      )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'contain')),
+        size: '80',
+        shape: 'square',
+        src: htwImg,
+        fit: 'contain',
+      )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'cover')),
+        size: '80',
+        shape: 'square',
+        src: htwImg,
+        fit: 'cover',
+      )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'none')),
+        size: '80',
+        shape: 'square',
+        src: htwImg,
+        fit: 'none',
+      )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'scaleDown')),
+        size: '80',
+        shape: 'square',
+        src: htwImg,
+        fit: 'scaleDown',
+      )),
     ],
   ),
   r'''
@@ -297,22 +363,22 @@ var avatarSquareHtw = Demo(
         child: SizedBox(height: 80, child: WImage()..$props.src = htwImg),
       ),
       const ColoredBox(
-          color: Colors.black12, child: SizedBox(height: 80, width: 2)),
+          color: Colors.black12, child: SizedBox(height: 80, width: 2,)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'fill')),
+              size: '80', shape: 'square', src: htwImg, fit: 'fill',)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'contain')),
+              size: '80', shape: 'square', src: htwImg, fit: 'contain',)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'cover')),
+              size: '80', shape: 'square', src: htwImg, fit: 'cover',)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'none')),
+              size: '80', shape: 'square', src: htwImg, fit: 'none',)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: htwImg, fit: 'scaleDown')),
+              size: '80', shape: 'square', src: htwImg, fit: 'scaleDown',)),
     ],
   )
   ''',
@@ -327,22 +393,46 @@ var avatarSquareWth = Demo(
     children: [
       SizedBox(height: 80, child: WImage()..$props.src = wthImg),
       const ColoredBox(
-          color: Colors.black12, child: SizedBox(height: 80, width: 2)),
+          color: Colors.black12,
+          child: SizedBox(
+            height: 80,
+            width: 2,
+          )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'fill')),
+        size: '80',
+        shape: 'square',
+        src: wthImg,
+        fit: 'fill',
+      )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'contain')),
+        size: '80',
+        shape: 'square',
+        src: wthImg,
+        fit: 'contain',
+      )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'cover')),
+        size: '80',
+        shape: 'square',
+        src: wthImg,
+        fit: 'cover',
+      )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'none')),
+        size: '80',
+        shape: 'square',
+        src: wthImg,
+        fit: 'none',
+      )),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'scaleDown')),
+        size: '80',
+        shape: 'square',
+        src: wthImg,
+        fit: 'scaleDown',
+      )),
     ],
   ),
   r'''
@@ -354,22 +444,22 @@ var avatarSquareWth = Demo(
     children: [
       SizedBox(height: 80, child: WImage()..$props.src = wthImg),
       const ColoredBox(
-          color: Colors.black12, child: SizedBox(height: 80, width: 2)),
+          color: Colors.black12, child: SizedBox(height: 80, width: 2,)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'fill')),
+              size: '80', shape: 'square', src: wthImg, fit: 'fill',)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'contain')),
+              size: '80', shape: 'square', src: wthImg, fit: 'contain',)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'cover')),
+              size: '80', shape: 'square', src: wthImg, fit: 'cover',)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'none')),
+              size: '80', shape: 'square', src: wthImg, fit: 'none',)),
       WAvatar(
           props: WAvatarProp(
-              size: '80', shape: 'square', src: wthImg, fit: 'scaleDown')),
+              size: '80', shape: 'square', src: wthImg, fit: 'scaleDown',)),
     ]
   ''',
 );
@@ -379,7 +469,11 @@ var avatarCircleWth = Demo(
   Wrap(spacing: 12, runSpacing: 16, children: [
     SizedBox(height: 80, child: WImage()..$props.src = wthImg),
     const ColoredBox(
-        color: Colors.black12, child: SizedBox(height: 80, width: 2)),
+        color: Colors.black12,
+        child: SizedBox(
+          height: 80,
+          width: 2,
+        )),
     WAvatar(props: WAvatarProp())
       ..$props.size = '80'
       ..$props.shape = 'circle'
@@ -422,7 +516,7 @@ var avatarCircleWth = Demo(
   Wrap(spacing: 12, runSpacing: 16, children: [
     SizedBox(height: 80, child: WImage()..$props.src = wthImg),
     const ColoredBox(
-        color: Colors.black12, child: SizedBox(height: 80, width: 2)),
+        color: Colors.black12, child: SizedBox(height: 80, width: 2,)),
     WAvatar(props: WAvatarProp())
       ..$props.size = '80'
       ..$props.shape = 'circle'
@@ -430,22 +524,22 @@ var avatarCircleWth = Demo(
       ..$props.fit = 'fill',
     WAvatar(
         props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'contain')),
+            size: '80', shape: 'circle', src: wthImg, fit: 'contain',)),
     WAvatar(
         props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'cover')),
+            size: '80', shape: 'circle', src: wthImg, fit: 'cover',)),
     WAvatar(
         props:
-            WAvatarProp(size: '80', shape: 'circle', src: wthImg, fit: 'none')),
+            WAvatarProp(size: '80', shape: 'circle', src: wthImg, fit: 'none',)),
     WAvatar(
         props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'scaleDown')),
+            size: '80', shape: 'circle', src: wthImg, fit: 'scaleDown',)),
     WAvatar(
         props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'fitWidth')),
+            size: '80', shape: 'circle', src: wthImg, fit: 'fitWidth',)),
     WAvatar(
         props: WAvatarProp(
-            size: '80', shape: 'circle', src: wthImg, fit: 'fitHeight')),
+            size: '80', shape: 'circle', src: wthImg, fit: 'fitHeight',)),
   ])
   ''',
 );

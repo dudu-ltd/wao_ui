@@ -18,8 +18,8 @@ abstract class WStatelessWidget<
 
   @override
   Widget build(BuildContext context) {
-    beforeBuild(); // 部件生命周期埋点。
     readStyle();
+    beforeBuild(); // 部件生命周期埋点。
     Widget wWidget = wbuild(context);
     return useBox ? boxWrapper(wWidget, context) : wWidget;
   }
@@ -38,8 +38,8 @@ abstract class WStatefulWidget<
 abstract class WState<T extends WStatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) {
-    widget.beforeBuild(); // 部件生命周期埋点。
     widget.readStyle();
+    widget.beforeBuild(); // 部件生命周期埋点。
     // print(widget.style);
     Widget self = wbuild(context);
     return widget.useBox ? widget.boxWrapper(self, context) : self;
@@ -54,35 +54,29 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   late final P $props;
   late final S $slots;
   late final T $style;
-
-  late final BaseStyle style = BaseStyle<BaseMixins>();
+  // late final BaseStyle style = BaseStyle<BaseMixins>();
+  late T style;
 
   List<Widget>? $defaultSlot;
 
-  List<String> get selector =>
-      CfgGlobal.selectors[runtimeType.toString().trim()]?.call(this) ?? [];
+  List<String> get selector => [
+        ...(CfgGlobal.selectors[runtimeType.toString().trim()]?.call(this) ??
+            []),
+        ...$style.clazz
+      ];
 
   readStyle() {
+    print('read style: ' + runtimeType.toString());
     var _selector = selector;
+
+    _selector.addAll($style.clazz);
 
     List<BaseStyle?> stateStyles =
         findByListKey<BaseStyle?>(CfgGlobal.css, _selector);
 
-    // print(selector);
-    Map<List<List<String>>, BaseStyle> customStyle = {};
-    for (var element in $style.clazz.entries) {
-      customStyle[[element.key]] = element.value;
-    }
-
-    List<BaseStyle?> customStyles = findByListKey(customStyle, _selector);
-    // print('customStyles: $customStyles');
-    stateStyles.addAll(customStyles);
     for (var stateStyle in stateStyles) {
       style.merge(stateStyle, force: true);
-      // print(
-      //     'style.backgroundColor: ${style.backgroundColor}，stateStyle: ${stateStyle?.backgroundColor}');
     }
-    // print($style);
     style.merge($style, force: true);
   }
 
@@ -97,6 +91,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
       margin: style.margin,
       width: style.width,
       height: style.height,
+      clipBehavior: style.overflow ?? Clip.none,
       constraints: BoxConstraints(
         maxHeight: style.maxHeight ?? double.infinity,
         minHeight: style.minHeight ?? 0.0,
@@ -117,7 +112,10 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
 
   bool get useBox => true;
 
-  init() {}
+  init() {
+    print('$runtimeType be init');
+    style = $style.newInstance() as T;
+  }
 
   Widget wrap<E extends BaseStyle>(Widget content, E style) {
     return Container(

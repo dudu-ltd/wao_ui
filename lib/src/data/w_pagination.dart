@@ -88,7 +88,7 @@ class _WPaginationState extends WState<WPagination> {
     return Text(
       '${btnPage}',
       style: TextStyle(
-        color: widget.$props.background ? Colors.white : pkc,
+        color: widget.$props.background ? Colors.white : widget.style.color,
       ),
     );
   }
