@@ -60,7 +60,6 @@ class _WRadioState extends WState<WRadio> {
       onTap: widget.$props.disabled
           ? null
           : (() {
-              print(widget.$props.label);
               widget.$props.value.value = widget.$props.label;
             }),
       child: borderWrapper(
@@ -267,7 +266,6 @@ class WRadioGroup extends WStatelessWidget<WRadioGroupOn, WRadioGroupProp,
             ..disabled |= $props.disabled
             ..size = $props.size;
           slot as WRadio;
-          print('set style: ' + runtimeType.toString());
           slot.$style.merge(style.button);
           return slot;
         },
@@ -284,7 +282,6 @@ class WRadioGroup extends WStatelessWidget<WRadioGroupOn, WRadioGroupProp,
 
           slot as WRadioButton;
 
-          print('set style: ' + runtimeType.toString());
           slot.$style.merge(style.button);
           return slot;
         },
@@ -455,12 +452,6 @@ class WRadioButton extends WStatefulWidget<WRadioButtonOn, WRadioButtonProp,
 
   @override
   _WRadioButtonState createState() => _WRadioButtonState();
-
-  @override
-  beforeBuild() {
-    print(style);
-    return super.beforeBuild();
-  }
 }
 
 class WRadioButtonOn extends BaseOn {}

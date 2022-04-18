@@ -66,7 +66,6 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
       ];
 
   readStyle() {
-    print('read style: ' + runtimeType.toString());
     var _selector = selector;
 
     _selector.addAll($style.clazz);
@@ -113,7 +112,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   bool get useBox => true;
 
   init() {
-    print('$runtimeType be init');
+    // print('$runtimeType be init');
     style = $style.newInstance() as T;
   }
 

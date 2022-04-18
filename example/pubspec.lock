@@ -20,7 +20,7 @@ packages:
     description:
       path: bitsdojo_window
       ref: HEAD
-      resolved-ref: e5bb466e153396f8ed46d01bb1fb82e6fbca34dd
+      resolved-ref: "19ba1449ad9fb16e0d44994586aba9faf766357a"
       url: "https://github.com/CorvusYe/bitsdojo_window"
     source: git
     version: "0.1.1+1"

@@ -1078,7 +1078,6 @@ class WRadioGroupStyle extends BaseStyle {
   @override
   BaseStyle merge<T extends BaseStyle?>(T source, {bool force = false}) {
     if (source is WRadioGroupStyle && source.button != null) {
-      print('source.button ${source.button}');
       button = pickStyle(button, source.button);
     }
     return super.merge(source, force: force);

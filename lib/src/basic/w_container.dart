@@ -114,7 +114,7 @@ class WHeader extends WStatelessWidget<WHeaderOn, WHeaderProp, WHeaderSlot,
   }
   @override
   Widget wbuild(BuildContext context) {
-    print('wheader background : ${style.backgroundColor}');
+    // print('wheader background : ${style.backgroundColor}');
     return $col;
   }
 }
