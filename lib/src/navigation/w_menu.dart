@@ -3,6 +3,7 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
+import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
@@ -12,19 +13,17 @@ export 'menu/w_menu_item_group.dart';
 export 'menu/w_submenu.dart';
 
 mixin HasRootMenu on Widget {
-  WMenu? rootMenu = null;
+  GlobalKey? menuKey = null;
+  WMenu? _rootMenu = null;
+
+  WMenu? get rootMenu => menuKey?.currentContext?.widget as WMenu;
+  _WMenuState? get menuState => menuKey?.currentState as _WMenuState?;
+
   int level = 0;
 
   Widget injectRootMenu(slot, int i, component, len) {
     setLevel(slot, component);
-    slot.$style.padding = EdgeInsets.fromLTRB(
-      paddingVal,
-      0,
-      stepPadding,
-      0,
-    );
-    slot.$style.height = 50.0;
-    slot.rootMenu = component.rootMenu;
+    slot.menuKey = component.menuKey;
     return slot as Widget;
   }
 
@@ -32,18 +31,10 @@ mixin HasRootMenu on Widget {
     slot.level = component.level + 1;
   }
 
-  double get stepPadding {
-    return rootMenu?.$style.stepPadding ?? cfgGlobal.menu.stepPadding ?? 20.0;
-  }
-
-  double get paddingVal {
-    return (level < 1 || useOverlay ? 1 : level) * stepPadding;
-  }
-
   bool get useOverlay {
     if (rootMenu == null) return false;
     return rootMenu!.$props.modeIsHorizontal ||
-        (rootMenu!.$props.modeIsVertical && rootMenu!.collapse.value);
+        (rootMenu!.$props.modeIsVertical && menuState!.collapse.value);
   }
 }
 
@@ -55,20 +46,17 @@ class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
     WMenuProp? props,
     WMenuSlot? slots,
     WMenuStyle? style,
-  }) : super(key: key) {
+  }) : super(key: key ?? GlobalKey()) {
     $on = on ?? WMenuOn();
     $props = props ?? WMenuProp();
     $slots = slots ?? WMenuSlot(null);
     $style = style ?? WMenuStyle();
     init();
   }
-  late ValueNotifier<dynamic> value;
-  late ValueNotifier<List<dynamic>> openeds;
-  late ValueNotifier<bool> collapse;
 
   Widget injectRootMenu(slot, int i, component, len) {
     // slot.rootMenu = component;
-    rootMenu = this;
+    menuKey = key as GlobalKey;
     super.injectRootMenu(slot, i, component, len);
     return slot as Widget;
   }
@@ -77,14 +65,17 @@ class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
   Function(Map) valueGetter = (menu) => menu['value'];
   Function(Map) textGetter = (menu) => menu['text'];
 
-  Widget mapDataToWidget(Map menu) {
+  Widget mapDataToWidget(Map menu, [GlobalKey? submenu]) {
     var children = childrenGetter.call(menu);
     if (children != null) {
       children as List;
-      return WSubmenu()
+      GlobalKey submenuKey = GlobalKey();
+      return WSubmenu(key: submenuKey)
         ..$props.index = valueGetter.call(menu).toString()
-        ..$slots.title =
-            (WMenuItem()..$slots.$ = textGetter.call(menu).toString())
+        ..$slots.title = (WMenuItem(key: GlobalKey())
+          ..$style.clazz = [Clazz.titleSuf]
+          ..$slots.$ = textGetter.call(menu).toString()
+          ..$props.index = valueGetter.call(menu).toString())
         ..$slots.$ = List.generate(
           children.length,
           (index) {
@@ -99,11 +90,14 @@ class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
               return mapDataToWidget(child);
             }
           },
-        );
+        )
+        ..style.merge($style.submenu);
     } else {
       return WMenuItem()
+        ..belongTo = submenu
         ..$props.index = valueGetter.call(menu).toString()
-        ..$slots.$ = textGetter.call(menu).toString();
+        ..$slots.$ = textGetter.call(menu).toString()
+        ..style.merge(style.menuItem);
     }
   }
 
@@ -127,6 +121,9 @@ class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
 class _WMenuState extends WState<WMenu> with SingleTickerProviderStateMixin {
   late AnimationController _widthControl;
   late Animation<dynamic> _width;
+  late ValueNotifier<dynamic> value;
+  late ValueNotifier<List<dynamic>> openeds;
+  late ValueNotifier<bool> collapse;
 
   @override
   void initState() {
@@ -138,18 +135,12 @@ class _WMenuState extends WState<WMenu> with SingleTickerProviderStateMixin {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-    print('-----deactivate----');
-  }
-
-  @override
   dispose() {
     print('dispose');
     _widthControl.dispose();
-    widget.value.dispose();
-    widget.openeds.dispose();
-    widget.collapse.dispose();
+    value.dispose();
+    openeds.dispose();
+    collapse.dispose();
     super.dispose();
   }
 
@@ -171,14 +162,14 @@ class _WMenuState extends WState<WMenu> with SingleTickerProviderStateMixin {
   }
 
   bindValueHandle() {
-    widget.value = ValueNotifier(widget.$props.defaultActive);
-    widget.value.addListener(() {
-      widget.$props.defaultActive = widget.value.value;
-      if (widget.value.value != null) {
+    value = ValueNotifier(widget.$props.defaultActive);
+    value.addListener(() {
+      widget.$props.defaultActive = value.value;
+      if (value.value != null) {
         if (widget.$props.uniqueOpened &&
-            !widget.openeds.value.contains(widget.value.value)) {
-          widget.openeds.value.add(widget.value.value);
-          // widget.openeds.notifyListeners();
+            !openeds.value.contains(value.value)) {
+          openeds.value.add(value.value);
+          // openeds.notifyListeners();
         }
       }
       setState(() {});
@@ -186,16 +177,16 @@ class _WMenuState extends WState<WMenu> with SingleTickerProviderStateMixin {
   }
 
   bindOpenedsHandle() {
-    widget.openeds = ValueNotifier(widget.$props.defaultOpeneds);
-    widget.openeds.addListener(() {
-      widget.$props.defaultOpeneds = widget.openeds.value;
+    openeds = ValueNotifier(widget.$props.defaultOpeneds);
+    openeds.addListener(() {
+      widget.$props.defaultOpeneds = openeds.value;
     });
   }
 
   bindCollapseHandle() {
-    widget.collapse = ValueNotifier(widget.$props.collapse);
-    widget.collapse.addListener(() {
-      if (widget.collapse.value != widget.$props.collapse) {
+    collapse = ValueNotifier(widget.$props.collapse);
+    collapse.addListener(() {
+      if (collapse.value != widget.$props.collapse) {
         _widthControl.forward();
       } else {
         _widthControl.reverse();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wao_ui/core/base_style.dart';
-import 'package:wao_ui/core/theme_element.dart';
+import 'package:wao_ui/core/theme/element/theme_element.dart';
 
 import 'package:wao_ui/wao_ui.dart';
 
@@ -97,6 +97,6 @@ void main() {
       ];
 
     await tester.pumpWidget(group);
-    print(group);
+    // print(group);
   });
 }

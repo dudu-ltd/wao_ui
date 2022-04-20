@@ -1,4 +1,4 @@
-// ignore_for_file: overridden_fields
+// ignore_for_file: overridden_fields, avoid_init_to_null
 
 import 'dart:collection';
 
@@ -1295,11 +1295,12 @@ class WDropdownItemStyle extends BaseStyle {
 }
 
 class WMenuStyle extends BaseStyle {
-  late Color activeColor;
-  late Color prefixColor;
-  late Color suffixColor;
-  late double? stepPadding;
-  late WSubmenuStyle? submenu;
+  late Color? activeColor = null;
+  late Color? prefixColor = null;
+  late Color? suffixColor = null;
+  late double? stepPadding = null;
+  late WSubmenuStyle? submenu = null;
+  late WMenuItemStyle? menuItem = null;
   WMenuStyle({
     Color? color,
     Color? activeColor,
@@ -1318,25 +1319,31 @@ class WMenuStyle extends BaseStyle {
           minHeight: minHeight,
           backgroundColor: backgroundColor,
           hoverBackgroundColor: hoverBackgroundColor,
-        ) {
-    this.color = color ?? ColorUtil.hexToColor('#303133');
-    this.prefixColor = prefixColor ?? ColorUtil.hexToColor('#909399');
-    this.suffixColor = suffixColor ?? ColorUtil.hexToColor('#909399');
-    this.backgroundColor = backgroundColor ?? Colors.transparent;
-    this.hoverBackgroundColor =
-        hoverBackgroundColor ?? ColorUtil.hexToColor('#ecf5ff');
-    this.activeColor = activeColor ?? ColorUtil.hexToColor('#409EFF');
-  }
+        );
 
   @override
   WMenuStyle newInstance() {
     return WMenuStyle();
+  }
+
+  @override
+  WMenuStyle merge<T extends BaseStyle?>(T source, {bool force = false}) {
+    if (source is WMenuStyle) {
+      activeColor = pickStyle(activeColor, source.activeColor, force: force)!;
+      prefixColor = pickStyle(prefixColor, source.prefixColor, force: force)!;
+      suffixColor = pickStyle(suffixColor, source.suffixColor, force: force)!;
+      stepPadding = pickStyle(stepPadding, source.stepPadding, force: force);
+      submenu = pickStyle(submenu, source.submenu, force: force);
+      menuItem = pickStyle(menuItem, source.menuItem, force: force);
+    }
+    return super.merge<T>(source, force: force) as WMenuStyle;
   }
 }
 
 class WSubmenuStyle extends BaseStyle {
   double? panelBorder;
   WMenuItemStyle? menuItem;
+  BaseStyle? panel;
   WSubmenuStyle({
     double? width,
     double? height,

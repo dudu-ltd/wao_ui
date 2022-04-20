@@ -32,14 +32,11 @@ class WMenuItemGroup extends WStatelessWidget<
           SizedBox(
             height: lineHeight,
             child: Align(
-              child: Padding(
-                padding: $style.padding ?? EdgeInsets.only(left: paddingVal),
-                child: title,
-              ),
+              child: title,
               alignment: Alignment.centerLeft,
             ),
           ),
-        if (!hasTitle)
+        if (!hasTitle && $props.needDivider)
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: Divider(
@@ -84,6 +81,7 @@ class WMenuItemGroupOn extends BaseOn {}
 
 class WMenuItemGroupProp extends BaseProp {
   String? title;
+  bool needDivider = true;
   WMenuItemGroupProp({this.title});
 }
 

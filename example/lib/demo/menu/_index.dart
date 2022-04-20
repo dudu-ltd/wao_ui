@@ -21,7 +21,7 @@ var menus = [
         {
           'text': 'New Window',
           'value': '1-7',
-          'groups': [
+          'children': [
             [
               {'text': 'Reopen Closed Editor', 'value': '1-7-1'},
             ],
@@ -61,7 +61,15 @@ var menus = [
   {'text': 'Go', 'value': '5'},
   {'text': 'Run', 'value': '6'},
   {'text': 'Terminal', 'value': '7'},
-  {'text': 'Help', 'value': '8'},
+  {
+    'text': 'Help',
+    'value': '8',
+    'children': [
+      [
+        {'text': 'New File', 'value': '1-1'},
+      ],
+    ]
+  },
 ];
 regist() {
   var menuData = Demo(

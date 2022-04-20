@@ -24,6 +24,8 @@ abstract class WStatelessWidget<
     return useBox ? boxWrapper(wWidget, context) : wWidget;
   }
 
+  beforeBuild() {}
+
   Widget wbuild(BuildContext context);
 }
 
@@ -39,10 +41,36 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) {
     widget.readStyle();
-    widget.beforeBuild(); // 部件生命周期埋点。
+    beforeBuild(); // 部件生命周期埋点。
     // print(widget.style);
     Widget self = wbuild(context);
     return widget.useBox ? widget.boxWrapper(self, context) : self;
+  }
+
+  beforeBuild() {}
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    print('-----deactivate----$runtimeType');
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    print('-----dispose----$runtimeType');
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    print('-----setState----$runtimeType');
+  }
+
+  @override
+  void initState() {
+    print('-----initState----$runtimeType');
+    super.initState();
   }
 
   Widget wbuild(BuildContext context);
@@ -79,8 +107,6 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     style.merge($style, force: true);
   }
 
-  beforeBuild() {}
-
   boxWrapper(Widget willBeWrap, BuildContext context, [BaseStyle? style]) {
     style = style ?? this.style;
     // print(style);
@@ -91,12 +117,12 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
       width: style.width,
       height: style.height,
       clipBehavior: style.overflow ?? Clip.none,
-      constraints: BoxConstraints(
-        maxHeight: style.maxHeight ?? double.infinity,
-        minHeight: style.minHeight ?? 0.0,
-        maxWidth: style.maxWidth ?? double.infinity,
-        minWidth: style.minWidth ?? 0.0,
-      ),
+      // constraints: BoxConstraints(
+      //   maxHeight: style.maxHeight ?? double.infinity,
+      //   minHeight: style.minHeight ?? 0.0,
+      //   maxWidth: style.maxWidth ?? double.infinity,
+      //   minWidth: style.minWidth ?? 0.0,
+      // ),
       decoration: BoxDecoration(
           color: style.backgroundColor,
           borderRadius: style.borderRadius,

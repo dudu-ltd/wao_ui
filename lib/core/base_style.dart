@@ -325,8 +325,9 @@ class BaseStyle<W> {
     border = pickStyle(border, source.border, force: force);
     backgroundColor =
         pickStyle(backgroundColor, source.backgroundColor, force: force);
-    hoverBackgroundColor =
-        pickStyle(hoverBackgroundColor, source.hoverBackgroundColor);
+    hoverBackgroundColor = pickStyle(
+        hoverBackgroundColor, source.hoverBackgroundColor,
+        force: force);
     borderColor = pickStyle(borderColor, source.borderColor, force: force);
     fontSize = pickStyle(fontSize, source.fontSize, force: force);
     cursor = pickStyle(cursor, source.cursor, force: force);

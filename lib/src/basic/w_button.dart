@@ -94,7 +94,6 @@ class _WButtonState extends WState<WButton> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     focusNode.dispose();
   }

@@ -234,28 +234,9 @@ class WRadioGroup extends WStatelessWidget<WRadioGroupOn, WRadioGroupProp,
     $slots = slots ?? WRadioGroupSlot(null);
     $style = style ?? WRadioGroupStyle();
     init();
-
-    if (defaultSlot != null) {
-      var len = defaultSlot.length;
-      for (var i = 0; i < len; i++) {
-        var child = defaultSlot[i];
-        if (child is WRadio) {
-          child.$props.value = $props.value;
-          child.$props.disabled |= $props.disabled;
-          child.$props.size = $props.size;
-        } else if (child is WRadioButton) {
-          child.$props._value = $props.value;
-          child.$props.disabled |= $props.disabled;
-          child.$props._size = $props.size;
-          child.$props.isFirst = i == 0;
-          child.$props.isLast = i == len - 1;
-        }
-      }
-    }
   }
 
   @override
-  // TODO: implement slotTranslatorsCustom
   List<SlotTranslator> get slotTranslatorsCustom {
     return [
       SlotTranslator(

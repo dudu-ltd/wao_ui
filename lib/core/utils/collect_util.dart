@@ -26,7 +26,7 @@ bool contains(List<dynamic> list, dynamic item) {
 }
 
 List<T> findByListKey<T>(Map<List<List>, T> map, List key) {
-  var selectors = map.keys; // [[['.s', '.t'], ['.y', '.l', '.e']]]
+  // var selectors = map.keys; // [[['.s', '.t'], ['.y', '.l', '.e']]]
   var result = <T>[];
   for (var entry in map.entries) {
     for (var selector in entry.key) {

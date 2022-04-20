@@ -9,17 +9,6 @@ import '../../mixins/has_overlay_mixin.dart';
 
 class WSubmenu extends WStatefulWidget<WSubmenuOn, WSubmenuProp, WSubmenuSlot,
     WSubmenuStyle> with HasRootMenu {
-  late GlobalKey childrenKey;
-
-  late GlobalKey submenuKey;
-
-  _WSubmenuState? state;
-
-  @override
-  get $childrenKey {
-    return childrenKey;
-  }
-
   WSubmenu({
     Key? key,
     WSubmenuOn? on,
@@ -38,15 +27,22 @@ class WSubmenu extends WStatefulWidget<WSubmenuOn, WSubmenuProp, WSubmenuSlot,
   State<WSubmenu> createState() => _WSubmenuState();
 
   @override
+  bool get useBox => false;
+
+  @override
   List<SlotTranslator> get slotTranslatorsCustom {
     return [
       SlotTranslator(WSubmenu, injectRootMenu),
-      SlotTranslator(WMenuItemGroup, injectRootMenu),
+      SlotTranslator(WMenuItemGroup, (s, i, c, l) {
+        s as WMenuItemGroup;
+        s.$props.needDivider = i != 0;
+        return injectRootMenu(s, i, c, l);
+      }),
       SlotTranslator(WMenuItem, injectRootMenu),
       SlotTranslator(String, (slot, i, component, len) {
         return Text(
           slot,
-          style: TextStyle(color: rootMenu?.$style.color),
+          style: TextStyle(color: rootMenu?.style.color),
         );
       }),
     ];
@@ -59,15 +55,16 @@ class _WSubmenuState extends WState<WSubmenu>
   late ValueNotifier<bool> showSubmenu = ValueNotifier(false);
   late AnimationController itemsPanelController;
   late Animation<double> itemsPanelHeight;
+  late GlobalKey submenuKey;
+  late GlobalKey childrenKey;
 
   @override
   GlobalKey get triggerWidgetKey {
-    return widget.submenuKey;
+    return submenuKey;
   }
 
   @override
   void initState() {
-    widget.state = this;
     showSubmenu.addListener(() {
       if (widget.useOverlay) {
         if (showSubmenu.value) {
@@ -92,20 +89,20 @@ class _WSubmenuState extends WState<WSubmenu>
       setState(() {
         itemsPanelHeight = Tween(
           begin: 0.0,
-          end: (widget.childrenKey.currentContext)?.size?.height ?? 700.0,
+          end: (childrenKey.currentContext)?.size?.height ?? 700.0,
         ).animate(itemsPanelController)
           ..addListener(updateView);
       });
 
+      setAnimationWhenInit();
       doOpen();
     });
-    setAnimationWhenInit();
     super.initState();
   }
 
   doOpen() {
     bool isOpen =
-        widget.rootMenu?.openeds.value.contains(widget.$props.index) ?? false;
+        widget.menuState?.openeds.value.contains(widget.$props.index) ?? false;
     if (isOpen) {
       itemsPanelController.forward();
     }
@@ -115,25 +112,23 @@ class _WSubmenuState extends WState<WSubmenu>
 
   @override
   void dispose() {
-    var nav = Navigator.of(context);
-    if (nav.canPop()) nav.pop();
     panelOverlay?.dispose();
     itemsPanelController.dispose();
-    panelController.dispose();
+    panelController.reverse();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   Widget wbuild(BuildContext context) {
-    widget.childrenKey = GlobalKey();
-    widget.submenuKey = GlobalKey();
-
+    childrenKey = GlobalKey();
+    submenuKey = GlobalKey();
     return Column(
-      key: widget.submenuKey,
+      key: submenuKey,
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        if (title != null) title!,
+        if (title != null) widget.boxWrapper(title!, context),
         if (!widget.useOverlay)
           ConstrainedBox(
             constraints: BoxConstraints(maxHeight: itemsPanelHeight.value),
@@ -149,20 +144,19 @@ class _WSubmenuState extends WState<WSubmenu>
   }
 
   @override
-  double get panelBorder {
-    return widget.$style.panelBorder ?? cfgGlobal.submenu.panelBorder ?? 1;
+  Border get panelBorder {
+    return widget.style.panel?.border ?? Border.all(width: 1);
   }
 
   Widget? get title {
-    widget.$slots.title?.rootMenu = widget.rootMenu;
+    widget.$slots.title?.menuKey = widget.menuKey;
     if (widget.$slots.title != null) {
       if (widget.$slots.title is WMenuItem) {
         WMenuItem _title = widget.$slots.title!;
-        // var
         _title
           ..$slots.suffix = _title.$slots.suffix ?? Icons.expand_more
-          ..rootMenu = widget.rootMenu
-          ..belongTo = widget;
+          ..menuKey = widget.menuKey
+          ..belongTo = widget.key as GlobalKey;
       }
       return widget.$slots.title;
     } else {

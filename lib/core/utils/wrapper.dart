@@ -14,11 +14,18 @@ Widget alignWrapper(Widget child,
 Widget borderWrapper(Widget child, Border? border, bool needBorder,
     {EdgeInsets? padding, EdgeInsets? margin, BorderRadius? borderRadius}) {
   if (needBorder) {
+    BoxDecoration? decoration = null;
+    if (border != null || borderRadius != null) {
+      decoration = const BoxDecoration();
+      if (border != null) {
+        decoration.copyWith(border: border);
+      }
+      if (borderRadius != null) {
+        decoration.copyWith(borderRadius: borderRadius);
+      }
+    }
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: borderRadius,
-        border: border,
-      ),
+      decoration: decoration,
       padding: padding,
       margin: margin,
       child: child,

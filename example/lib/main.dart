@@ -5,7 +5,7 @@ import 'package:example/package/navigation/api_tabs.dart';
 import 'package:example/views/index.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/env.dart';
-import 'package:wao_ui/core/theme_element.dart';
+import 'package:wao_ui/core/theme/element/theme_element.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 import 'third_party/syntax_highlight.dart';
@@ -37,9 +37,9 @@ class Api extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Wao ui Home',
         theme: ThemeData(
-            fontFamily: 'PingFang',
-            primarySwatch: CfgGlobal.primaryColor,
-            textTheme: TextTheme(bodyText2: TextStyle(height: 1.3))),
+          fontFamily: 'PingFang',
+          primarySwatch: CfgGlobal.primaryColor,
+        ),
         themeMode: ThemeMode.light,
         onGenerateRoute: buildNestedRoutes(
           {
@@ -70,13 +70,6 @@ class Api extends StatelessWidget {
               },
             ),
           },
-        )
-
-// 作者：今天你摸鱼了吗
-// 链接：https://juejin.cn/post/6911890832555524110
-// 来源：稀土掘金
-// 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-        // initialRoute: '/',
-        );
+        ));
   }
 }

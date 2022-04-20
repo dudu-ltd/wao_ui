@@ -12,6 +12,8 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
   late Animation<double> panelHeightAnimation;
   late Animation<double> panelOpacity;
 
+  double panelHeight = 700;
+
   late OverlayEntry? panelOverlay = null;
 
   Widget get panel {
@@ -19,7 +21,6 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
       panelSetState = setState;
       panelContext = context;
 
-      /// [!flutter中获取控件位置](https://www.jianshu.com/p/5874e5e13761)
       // 在控件渲染完成后执行的回调
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _updatePanel(context, setState);
@@ -46,27 +47,34 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
   Widget get panelOutside {
     return shadowWrapper(borderWrapper(
       Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        padding: EdgeInsets.zero,
         child: panelInside,
       ),
-      Border.all(color: Colors.grey.shade300, width: panelBorder),
+      panelBorder,
       true,
     ));
   }
 
+  OverlayEntry? overlayEntry;
   showPanelAction() {
-    OverlayEntry overlayEntry = OverlayEntry(builder: (content) {
-      return panel;
-    });
+    print('----show panel action---------');
+    overlayEntry ??= OverlayEntry(
+        builder: (context) {
+          return panel;
+        },
+        maintainState: false);
     if (panelOverlay == null) {
       panelOverlay = overlayEntry;
-      Overlay.of(context)?.insert(overlayEntry);
+      Overlay.of(context)?.insert(overlayEntry!);
     }
     panelController.forward();
   }
 
   hidePanelAction() {
-    panelController.reverse();
+    panelController.reverse().whenComplete(() {
+      overlayEntry?.remove();
+      overlayEntry = null;
+    });
   }
 
   setAnimationWhenInit() {
@@ -89,8 +97,8 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
     throw Exception('No implements');
   }
 
-  double get panelBorder {
-    return 1;
+  Border get panelBorder {
+    return Border.all(width: 10, color: CfgGlobal.primaryColor);
   }
 
   double get panelMinWidth {
@@ -103,30 +111,31 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
 
   _updatePanel(BuildContext panelContext, panelSetState) {
     var itemRect = getPosition(context);
-    var selectRect = getPosition(triggerWidgetKey.currentContext!);
+    Rect selectRect = getPosition(triggerWidgetKey.currentContext!);
     var panelRect = getPosition(panelContext);
 
     panelSetState(() {
-      var dx = itemRect.left - panelBorder;
+      var dx = itemRect.left - panelBorder.left.width;
       var dy = itemRect.top + selectRect.height;
       if (dx < 0) {
         dx = 0;
       }
-      var win = MediaQuery.of(context).size;
-      var screenWidth = win.width;
-      var screenHeight = win.height;
-      if (itemRect.left + panelRect.width > MediaQuery.of(context).size.width) {
-        dx = screenWidth - panelRect.width;
-      }
+      try {
+        var win = MediaQuery.of(context).size;
+        var screenWidth = win.width;
+        var screenHeight = win.height;
+        if (itemRect.left + panelRect.width >
+            MediaQuery.of(context).size.width) {
+          dx = screenWidth - panelRect.width;
+        }
 
-      if (dy + panelHeight > screenHeight) {
-        dy = dy - panelRect.height - selectRect.height;
+        if (dy + selectRect.height > screenHeight) {
+          dy = dy - panelRect.height - selectRect.height;
+        }
+        panelOffset = Offset(dx, dy);
+      } catch (e) {
+        print('has overlay mixin   error: $e');
       }
-      panelOffset = Offset(dx, dy);
     });
-  }
-
-  double get panelHeight {
-    return 274.0;
   }
 }

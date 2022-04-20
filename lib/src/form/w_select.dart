@@ -278,6 +278,7 @@ class _WSelectState extends WState<WSelect>
         : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: widget.defaultSlot,
             ),
           );

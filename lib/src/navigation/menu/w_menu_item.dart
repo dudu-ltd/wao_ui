@@ -10,7 +10,7 @@ import 'package:wao_ui/wao_ui.dart';
 
 class WMenuItem extends WStatefulWidget<WMenuItemOn, WMenuItemProp,
     WMenuItemSlot, WMenuItemStyle> with HasRootMenu {
-  WSubmenu? belongTo;
+  GlobalKey? belongTo;
 
   WMenuItem({
     Key? key,
@@ -36,10 +36,10 @@ class WMenuItem extends WStatefulWidget<WMenuItemOn, WMenuItemProp,
         return Text(
           slot,
           style: TextStyle(
-            fontSize: fontSize,
-            color: rootMenu?.value.value == $props.index
-                ? component.rootMenu?.$style.activeColor
-                : component.rootMenu?.$style.color,
+            fontSize: style.fontSize,
+            color: menuState?.value.value == $props.index
+                ? component.rootMenu?.style.activeColor
+                : component.rootMenu?.style.color,
           ),
         );
       },
@@ -53,7 +53,7 @@ class WMenuItem extends WStatefulWidget<WMenuItemOn, WMenuItemProp,
         return Icon(
           slot,
           size: 20,
-          color: component.rootMenu?.$style.prefixColor,
+          color: component.rootMenu?.style.prefixColor,
         );
       },
     );
@@ -66,26 +66,6 @@ class WMenuItem extends WStatefulWidget<WMenuItemOn, WMenuItemProp,
       iconDataToWidget,
     ];
   }
-
-  double get lineHeight {
-    return $style.height ??
-        rootMenu?.$style.submenu?.menuItem?.height ??
-        cfgGlobal.menuItem.height ??
-        50;
-  }
-
-  double get fontSize {
-    return $style.fontSize ??
-        rootMenu?.$style.submenu?.menuItem?.fontSize ??
-        cfgGlobal.menuItem.fontSize ??
-        14;
-  }
-
-  EdgeInsets get padding {
-    return $style.padding ??
-        cfgGlobal.menuItem.padding ??
-        EdgeInsets.fromLTRB(paddingVal, 0.0, stepPadding, 0.0);
-  }
 }
 
 class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
@@ -96,6 +76,13 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
   late ValueNotifier isHover = ValueNotifier(false);
   late ValueNotifier isExpand = ValueNotifier(false);
   FocusNode focusNode = FocusNode();
+
+  @override
+  beforeBuild() {
+    widget.style.backgroundColor = bgColor.value;
+    return super.beforeBuild();
+  }
+
   @override
   void initState() {
     // 设置展开动画
@@ -109,7 +96,7 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
         AnimationController(vsync: this, duration: CfgGlobal.duration);
     bgColor = ColorTween(
             begin: Colors.white,
-            end: widget.rootMenu?.$style.hoverBackgroundColor)
+            end: widget.rootMenu?.style.hoverBackgroundColor)
         .animate(bgController)
       ..addListener(updateView);
 
@@ -118,23 +105,25 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
   }
 
   valueChangeBind() {
-    widget.rootMenu?.collapse.addListener(updateView);
-    widget.rootMenu?.value.addListener(updateView);
+    widget.menuState?.collapse.addListener(updateView);
+    widget.menuState?.value.addListener(updateView);
     // 触发展开动画
     isExpand.addListener(() {
       if (widget.rootMenu?.$props.triggerIsClick == true) {
-        widget.belongTo?.state?.showSubmenu.value = isExpand.value;
         if (isExpand.value)
           expandController.forward();
         else
           expandController.reverse();
+        (widget.belongTo?.currentState as dynamic).showSubmenu.value =
+            isExpand.value;
       } else {
         if (isExpand.value) {
           Timer(
             Duration(milliseconds: showTime),
             () {
               expandController.forward();
-              widget.belongTo?.state?.showSubmenu.value = true;
+              (widget.belongTo?.currentState as dynamic).showSubmenu.value =
+                  true;
             },
           );
         } else {
@@ -142,7 +131,8 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
             Duration(milliseconds: hideTime),
             () {
               expandController.reverse();
-              widget.belongTo?.state?.showSubmenu.value = false;
+              (widget.belongTo?.currentState as dynamic).showSubmenu.value =
+                  false;
             },
           );
         }
@@ -151,6 +141,7 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
 
     // 触发鼠标浮入动画
     isHover.addListener(() {
+      print('hover ----------------');
       if (isHover.value) {
         bgController.forward();
       } else {
@@ -158,18 +149,24 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
       }
     });
 
-    bool isOpen = widget.rootMenu?.openeds.value
-            .contains(widget.belongTo?.$props.index) ??
+    bool isOpen = widget.menuState?.openeds.value.contains(
+            (widget.belongTo?.currentWidget as WSubmenu?)?.$props.index) ??
         false;
     isExpand.value = isOpen;
   }
 
   int get showTime {
-    return timeByHover(widget.belongTo?.$props.showTimeout.toInt());
+    return timeByHover((widget.belongTo?.currentWidget as WSubmenu?)
+        ?.$props
+        .showTimeout
+        .toInt());
   }
 
   int get hideTime {
-    return timeByHover(widget.belongTo?.$props.hideTimeout.toInt());
+    return timeByHover((widget.belongTo?.currentWidget as WSubmenu?)
+        ?.$props
+        .hideTimeout
+        .toInt());
   }
 
   int timeByHover(int? time) {
@@ -177,6 +174,7 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
   }
 
   pointEnter(e) {
+    print('hover ----------------');
     if (expandByHover) isExpand.value = true;
     bgController.forward();
     widget.$on.enter?.call(e);
@@ -192,13 +190,14 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
     if (!expandByHover) {
       isExpand.value = !isExpand.value;
       widget.$on.click?.call();
-      widget.rootMenu?.value.value = widget.$props.index;
+      widget.menuState?.value.value = widget.$props.index;
     }
   }
 
   @override
   void dispose() {
-    widget.rootMenu?.collapse.removeListener(updateView);
+    widget.menuState?.collapse.removeListener(updateView);
+    widget.menuState?.value.removeListener(updateView);
     expandController.dispose();
     bgController.dispose();
     isExpand.dispose();
@@ -206,7 +205,9 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  updateView() => setState(() {});
+  updateView() {
+    if (widget.belongTo == null) setState(() {});
+  }
 
   @override
   Widget wbuild(BuildContext context) {
@@ -251,7 +252,7 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
       if (hasTitle && widget.rootMenu!.$props.modeIsVertical)
         Expanded(
           child: Offstage(
-            offstage: widget.rootMenu!.collapse.value,
+            offstage: widget.menuState!.collapse.value,
             child: widget.stringToWidget.fn.call(widget.$slots.title!, 0,
                 widget, widget.$defaultSlotBeforeLength),
           ),
@@ -272,7 +273,7 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
             child: Icon(
               widget.$slots.suffix,
               size: 12,
-              color: widget.rootMenu?.$style.suffixColor,
+              color: widget.rootMenu?.style.suffixColor,
             ),
           ),
         ),
@@ -286,7 +287,7 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
   }
 
   bool get needSuffix {
-    return widget.$slots.suffix != null && !widget.rootMenu!.collapse.value;
+    return widget.$slots.suffix != null && !widget.menuState!.collapse.value;
   }
 
   bool get iconNeedPadding {

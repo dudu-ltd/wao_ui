@@ -35,7 +35,6 @@ class WAvatar extends WStatelessWidget<WAvatarOn, WAvatarProp, WAvatarSlot,
 
   @override
   Widget wbuild(BuildContext context) {
-    print('\$props.isCircle  = ${$props.isCircle}');
     return $props.isCircle ? ClipOval(child: sizedBox) : sizedBox;
   }
 

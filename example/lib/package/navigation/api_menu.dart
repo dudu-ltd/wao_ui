@@ -429,10 +429,10 @@ class ApiMenu extends StatelessWidget {
   }
 
   Widget get collapse {
+    GlobalKey menuKey = GlobalKey();
     var isCollapse = ValueNotifier(true);
-    WMenu? menu = null;
     isCollapse.addListener((() {
-      menu?.collapse.value = isCollapse.value;
+      (menuKey.currentState as dynamic).collapse.value = isCollapse.value;
     }));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -448,7 +448,8 @@ class ApiMenu extends StatelessWidget {
                 slots: WRadioButtonSlot('收起')),
           ]),
         ),
-        menu = WMenu(
+        WMenu(
+          key: menuKey,
           props: WMenuProp(
             defaultActive: '1-4-1',
             collapse: isCollapse.value,
