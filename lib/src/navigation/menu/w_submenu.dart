@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
+import 'package:wao_ui/src/others/w_popup.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 import '../../mixins/has_overlay_mixin.dart';
@@ -54,14 +56,33 @@ class _WSubmenuState extends WState<WSubmenu>
   // late AnimationController expandController;
   late ValueNotifier<bool> showSubmenu = ValueNotifier(false);
   late AnimationController itemsPanelController;
-  late Animation<double> itemsPanelHeight;
+  Animation<double>? itemsPanelHeight;
   late GlobalKey submenuKey;
   late GlobalKey childrenKey;
+
+  bool isHover = false;
 
   @override
   GlobalKey get triggerWidgetKey {
     return submenuKey;
   }
+
+  // @override
+  // showPanelAction() async {
+  //   // return showBottomSheet(
+  //   //     context: context,
+  //   //     builder: (context) => panelInside,
+  //   //     constraints: BoxConstraints(maxWidth: 100, maxHeight: 280));
+  //   await popup(
+  //       context: context,
+  //       position: RelativeRect.fromLTRB(200, 200, 200, 200),
+  //       child: panelInside);
+  // }
+
+  // @override
+  // hidePanelAction() {
+  //   Navigator.of(context).pop();
+  // }
 
   @override
   void initState() {
@@ -80,16 +101,16 @@ class _WSubmenuState extends WState<WSubmenu>
         }
       }
     });
-    itemsPanelController =
-        AnimationController(vsync: this, duration: CfgGlobal.duration);
-    itemsPanelHeight = Tween(end: 0.0, begin: 700.0)
-        .animate(itemsPanelController)
-      ..addListener(updateView);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      itemsPanelController =
+          AnimationController(vsync: this, duration: CfgGlobal.duration);
+      itemsPanelHeight = Tween(end: 0.0, begin: panelHeight)
+          .animate(itemsPanelController)
+        ..addListener(updateView);
       setState(() {
         itemsPanelHeight = Tween(
           begin: 0.0,
-          end: (childrenKey.currentContext)?.size?.height ?? 700.0,
+          end: panelHeight,
         ).animate(itemsPanelController)
           ..addListener(updateView);
       });
@@ -97,6 +118,7 @@ class _WSubmenuState extends WState<WSubmenu>
       setAnimationWhenInit();
       doOpen();
     });
+
     super.initState();
   }
 
@@ -130,13 +152,10 @@ class _WSubmenuState extends WState<WSubmenu>
       children: [
         if (title != null) widget.boxWrapper(title!, context),
         if (!widget.useOverlay)
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: itemsPanelHeight.value),
-            child: SingleChildScrollView(
-              child: FractionallySizedBox(
-                widthFactor: 1,
-                child: widget.$col,
-              ),
+          SingleChildScrollView(
+            child: FractionallySizedBox(
+              widthFactor: 1,
+              child: widget.$col,
             ),
           ),
       ],
@@ -169,20 +188,20 @@ class _WSubmenuState extends WState<WSubmenu>
     if (widget.useOverlay) {
       if (widget.rootMenu!.$props.triggerIsClick) {
         return Listener(
-          child: SingleChildScrollView(child: widget.$col),
+          child: widget.$col,
+          onPointerHover: (e) => isHover = true,
+          onPointerCancel: (e) => isHover = false,
           onPointerUp: (e) => showSubmenu.value = !showSubmenu.value,
         );
       } else {
-        return SizedBox(
-          child: MouseRegion(
-            onEnter: (e) {
-              if (widget.rootMenu!.$props.triggerIsHover) {
-                showSubmenu.value = true;
-              }
-            },
-            onExit: (e) => showSubmenu.value = false,
-            child: SingleChildScrollView(child: widget.$col),
-          ),
+        return MouseRegion(
+          onEnter: (e) {
+            if (widget.rootMenu!.$props.triggerIsHover) {
+              showSubmenu.value = true;
+            }
+          },
+          onExit: (e) => showSubmenu.value = false,
+          child: widget.$col,
         );
       }
     } else {

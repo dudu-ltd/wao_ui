@@ -67,7 +67,8 @@ class ApiDetail extends StatefulWidget {
   ApiDetail({Key? key, required this.name}) : super(key: key);
 }
 
-class _ApiDetailState extends State<ApiDetail> {
+class _ApiDetailState extends State<ApiDetail>
+    with AutomaticKeepAliveClientMixin {
   Widget content = Container();
   late ScrollController scrollCtrl;
   late Widget snap = Container();
@@ -277,10 +278,15 @@ class _ApiDetailState extends State<ApiDetail> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return WScrollSnap(key: lastKey)
       ..$slots.content = Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: shadowWrapper(content),
       );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

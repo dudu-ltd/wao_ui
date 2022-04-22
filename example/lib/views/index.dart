@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:example/package/basic/api_container_layout.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/env.dart';
 import 'package:example/package/basic/api_button.dart';
@@ -162,6 +163,7 @@ class _IndexPageState extends State<IndexPage> {
     currentName = id;
     if (isPc) (appWindow.title = name);
     if (navContext != null) {
+      // 150ms 避免切换路由时，按钮的水波纹卡顿，造成程序卡顿的视觉效果。部分延迟感官上显得更流程。
       Timer(Duration(milliseconds: 150), () {
         // Navigator.maybePop(navContext!);
         Navigator.pushNamed(navContext!, id);
@@ -173,15 +175,6 @@ class _IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     Navigator nav = createNav();
-    var activeIndex = '1';
-    var activeIndex2 = '2';
-
-    var handleClose = (key, keyPath) {
-      print('$key $keyPath');
-    };
-    var handleOpen = (key, keyPath) {
-      print('$key $keyPath');
-    };
     return WFrame()
       ..$slots.header = Text('WaoUI')
       ..$slots.main = Scaffold(
@@ -218,8 +211,8 @@ class _IndexPageState extends State<IndexPage> {
     return guideNew;
   }
 
-  var guideContext;
-  var guideSetState;
+  var guideContext = null;
+  var guideSetState = null;
   var currentName = null;
 
   Widget get guideNew {
@@ -227,7 +220,6 @@ class _IndexPageState extends State<IndexPage> {
     return StatefulBuilder(builder: (context, setState) {
       guideContext = context;
       guideSetState = setState;
-      var menu = guideData;
       return Material(
         color: Colors.white,
         child: Column(children: [

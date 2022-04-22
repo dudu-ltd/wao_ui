@@ -83,8 +83,9 @@ class _WDropdownState extends WState<WDropdown>
       tooltip: '',
       key: popupKey,
       child: btn,
+      position: PopupMenuPosition.under,
       onCanceled: () => open = false,
-      offset: const Offset(0, 30),
+      offset: const Offset(0, 10),
       itemBuilder: (context) {
         var items = (widget.$slots.dropdown as WDropdownMenu).defaultSlot;
         return List.generate(items.length, (index) {

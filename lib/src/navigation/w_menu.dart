@@ -91,7 +91,7 @@ class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
             }
           },
         )
-        ..style.merge($style.submenu);
+        ..$style.merge($style.submenu);
     } else {
       return WMenuItem()
         ..belongTo = submenu

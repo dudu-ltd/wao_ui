@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/core/theme/element/theme_element.dart';
 
 import 'package:wao_ui/wao_ui.dart';
@@ -21,7 +22,11 @@ void main() {
       home: menu,
     ));
 
-    await tester.tap(find.byType(WSubmenu));
+    expect(find.text('File'), findsOneWidget);
+    expect(find.text('Open Folder...'), findsNWidgets(0));
+    await tester.tap(find.byType(WMenuItem));
+    await tester.tap(find.byType(WMenuItem));
+    expect(find.text('Open Folder...'), findsOneWidget);
   });
 }
 

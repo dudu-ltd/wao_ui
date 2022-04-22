@@ -1,3 +1,6 @@
+// ignore_for_file: avoid_init_to_null
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -52,24 +55,32 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
   @override
   void deactivate() {
     super.deactivate();
-    print('-----deactivate----$runtimeType');
+    if (kDebugMode) {
+      print('-----deactivate----$runtimeType');
+    }
   }
 
   @override
   dispose() {
     super.dispose();
-    print('-----dispose----$runtimeType');
+    if (kDebugMode) {
+      print('-----dispose----$runtimeType');
+    }
   }
 
   @override
   void setState(VoidCallback fn) {
     super.setState(fn);
-    print('-----setState----$runtimeType');
+    if (kDebugMode) {
+      print('-----setState----$runtimeType');
+    }
   }
 
   @override
   void initState() {
-    print('-----initState----$runtimeType');
+    if (kDebugMode) {
+      print('-----initState----$runtimeType');
+    }
     super.initState();
   }
 
