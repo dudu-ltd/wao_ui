@@ -13,12 +13,16 @@ export 'menu/w_menu_item_group.dart';
 export 'menu/w_submenu.dart';
 
 mixin HasRootMenu on Widget {
+  /// 用于标记 Menu 的子组件们（WSubmenu、WMenuItemGroup、WMenuItem）归属的主菜单
   GlobalKey? menuKey = null;
-  WMenu? _rootMenu = null;
 
+  /// 获取菜单组件
   WMenu? get rootMenu => menuKey?.currentContext?.widget as WMenu;
+
+  /// 获取菜单组件状态
   _WMenuState? get menuState => menuKey?.currentState as _WMenuState?;
 
+  /// 用于标记菜单项所属菜单层级
   int level = 0;
 
   Widget injectRootMenu(slot, int i, component, len) {
@@ -27,10 +31,12 @@ mixin HasRootMenu on Widget {
     return slot as Widget;
   }
 
-  void setLevel(slot, component) {
-    slot.level = component.level + 1;
+  /// 为子组件设置层级的公共方法
+  void setLevel(child, parent) {
+    child.level = parent.level + 1;
   }
 
+  /// 判断是否使用浮层来显示子菜单
   bool get useOverlay {
     if (rootMenu == null) return false;
     return rootMenu!.$props.modeIsHorizontal ||
@@ -54,6 +60,8 @@ class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
     init();
   }
 
+  /// 当组件为 WMenu 时，menuKey 设置成自身的 key
+  @override
   Widget injectRootMenu(slot, int i, component, len) {
     // slot.rootMenu = component;
     menuKey = key as GlobalKey;
@@ -61,10 +69,16 @@ class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
     return slot as Widget;
   }
 
+  /// 用于从 map<k, v> 的数据中提取菜单信息所使用的 k. 子菜单数组的属性
   Function(Map) childrenGetter = (menu) => menu['children'];
+
+  /// 用于从 map<k, v> 的数据中提取菜单信息所使用的 k. 子项的值
   Function(Map) valueGetter = (menu) => menu['value'];
+
+  /// 用于从 map<k, v> 的数据中提取菜单信息所使用的 k. 子项的文本
   Function(Map) textGetter = (menu) => menu['text'];
 
+  /// 用于将 map 的数据，翻译成多层菜单组件，（递归函数）
   Widget mapDataToWidget(Map menu, [GlobalKey? submenu]) {
     var children = childrenGetter.call(menu);
     if (children != null) {
@@ -101,6 +115,7 @@ class WMenu extends WStatefulWidget<WMenuOn, WMenuProp, WMenuSlot, WMenuStyle>
     }
   }
 
+  /// 自定义的插槽翻译器。
   @override
   List<SlotTranslator> get slotTranslatorsCustom {
     return [
@@ -127,16 +142,19 @@ class _WMenuState extends WState<WMenu> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
+    // 绑定折叠操作的处理事件
     bindCollapseHandle();
+    // 绑定值改变的处理事件
     bindValueHandle();
+    // 绑定打开关闭时的处理事件
     bindOpenedsHandle();
+    // 设置折叠动画
     setAnimations();
     super.initState();
   }
 
   @override
   dispose() {
-    print('dispose');
     _widthControl.dispose();
     value.dispose();
     openeds.dispose();
@@ -192,6 +210,12 @@ class _WMenuState extends WState<WMenu> with SingleTickerProviderStateMixin {
         _widthControl.reverse();
       }
     });
+  }
+
+  @override
+  beforeBuild() {
+    widget.style.width = _width.value;
+    return super.beforeBuild();
   }
 
   @override

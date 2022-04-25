@@ -48,7 +48,8 @@ class SyntaxHighlighter {
   TextSpan highlight(BuildContext context) {
     assert(_grammar != null);
     // Generate the styling for the various scopes based on the current theme.
-    _scopeStyles = _buildSyntaxColorTable(Theme.of(context));
+    _scopeStyles = _buildSyntaxColorTable(
+        Theme.of(context).copyWith(brightness: Brightness.dark));
     _currentPosition = 0;
     return TextSpan(
       children: _highlightLoopHelper(

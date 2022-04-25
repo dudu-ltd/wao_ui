@@ -10,7 +10,9 @@ var containerBasic1 = Demo(
       WHeader()
         ..$style.backgroundColor = CfgGlobal.primaryColor.shade100
         ..$style.textAlign = Alignment.center
-        ..$slots.$ = const Text("Header"),
+        ..$slots.$ = const Text("Header")
+        ..$crossAxisAlign = CrossAxisAlignment.center
+        ..$mainAxisSize = MainAxisSize.max,
       WMain()
         ..$style.backgroundColor = CfgGlobal.primaryColor.shade200
         ..$style.textAlign = Alignment.center

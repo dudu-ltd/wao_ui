@@ -214,7 +214,7 @@ class _WCollapseItemState extends WState<WCollapseItem>
       setState(() {
         bodyHeight = Tween(
           begin: 0.0,
-          end: (scrollKey.currentContext)?.size?.height ?? 100.0,
+          end: (scrollKey.currentContext)?.size?.height ?? 300.0,
         ).animate(expandController);
       });
     });

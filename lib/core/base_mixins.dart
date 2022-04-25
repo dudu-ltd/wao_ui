@@ -273,17 +273,11 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     return null;
   }
 
-  MainAxisAlignment get $mainAxisAlign {
-    return MainAxisAlignment.start;
-  }
+  MainAxisAlignment $mainAxisAlign = MainAxisAlignment.start;
 
-  CrossAxisAlignment get $crossAxisAlign {
-    return CrossAxisAlignment.start;
-  }
+  CrossAxisAlignment $crossAxisAlign = CrossAxisAlignment.start;
 
-  MainAxisSize get $mainAxisSize {
-    return MainAxisSize.min;
-  }
+  MainAxisSize $mainAxisSize = MainAxisSize.min;
 
   instanceof(t, type) {
     return type == Map &&

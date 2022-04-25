@@ -48,7 +48,7 @@ button() {
   var squareSuf = Clazz.squareSuf;
   var circleSuf = Clazz.circleSuf;
   var _button = Clazz.button = '.el-button';
-  var _buttonGroup = Clazz.button = '.el-button-group';
+  var _buttonGroup = Clazz.buttonGroup = '.el-button-group';
 
   CfgGlobal.selectors.addAll({
     'WButton': (btn) {

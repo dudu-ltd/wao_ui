@@ -121,7 +121,7 @@ class WTabs
         borderWrapper(
           colorWrapper(
             child,
-            CfgGlobal.textColor,
+            style.backgroundColor ?? Colors.white,
             true,
           ),
           Border.all(color: CfgGlobal.infoColor.shade300),

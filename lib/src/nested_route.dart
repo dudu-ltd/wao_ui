@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wao_ui/core/states/global_states.dart';
 
 typedef Widget NestedRouteBuilder(Widget child);
 
@@ -33,6 +34,7 @@ RouteFactory buildNestedRoutes(Map<String, NestedRoute> routes) {
     if (paths.length == 0) {
       return routes['/']?.buildRoute([], 1);
     }
+    routeTime.value = DateTime.now();
     return routes[paths[0]]?.buildRoute(paths, 1);
   };
 }

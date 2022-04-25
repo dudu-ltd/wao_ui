@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:example/package/navigation/api_tabs.dart';
+import 'package:example/views/home.dart';
 import 'package:example/views/index.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/env.dart';

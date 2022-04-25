@@ -56,6 +56,8 @@ class WAvatar extends WStatelessWidget<WAvatarOn, WAvatarProp, WAvatarSlot,
           ),
         ),
       );
+    } else if ($slots.$ != null) {
+      return img = $slots.$;
     } else {
       img = Icon(
         $props.icon!.icon,

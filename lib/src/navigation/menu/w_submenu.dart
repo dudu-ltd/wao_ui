@@ -4,6 +4,7 @@ import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
+import 'package:wao_ui/core/states/global_states.dart';
 import 'package:wao_ui/src/others/w_popup.dart';
 import 'package:wao_ui/wao_ui.dart';
 
@@ -23,6 +24,11 @@ class WSubmenu extends WStatefulWidget<WSubmenuOn, WSubmenuProp, WSubmenuSlot,
     $slots = slots ?? WSubmenuSlot(null);
     $style = style ?? WSubmenuStyle();
     init();
+  }
+  late GlobalKey childrenKey;
+  @override
+  get $childrenKey {
+    return childrenKey;
   }
 
   @override
@@ -58,7 +64,6 @@ class _WSubmenuState extends WState<WSubmenu>
   late AnimationController itemsPanelController;
   Animation<double>? itemsPanelHeight;
   late GlobalKey submenuKey;
-  late GlobalKey childrenKey;
 
   bool isHover = false;
 
@@ -66,23 +71,6 @@ class _WSubmenuState extends WState<WSubmenu>
   GlobalKey get triggerWidgetKey {
     return submenuKey;
   }
-
-  // @override
-  // showPanelAction() async {
-  //   // return showBottomSheet(
-  //   //     context: context,
-  //   //     builder: (context) => panelInside,
-  //   //     constraints: BoxConstraints(maxWidth: 100, maxHeight: 280));
-  //   await popup(
-  //       context: context,
-  //       position: RelativeRect.fromLTRB(200, 200, 200, 200),
-  //       child: panelInside);
-  // }
-
-  // @override
-  // hidePanelAction() {
-  //   Navigator.of(context).pop();
-  // }
 
   @override
   void initState() {
@@ -104,13 +92,10 @@ class _WSubmenuState extends WState<WSubmenu>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       itemsPanelController =
           AnimationController(vsync: this, duration: CfgGlobal.duration);
-      itemsPanelHeight = Tween(end: 0.0, begin: panelHeight)
-          .animate(itemsPanelController)
-        ..addListener(updateView);
       setState(() {
         itemsPanelHeight = Tween(
           begin: 0.0,
-          end: panelHeight,
+          end: (widget.childrenKey.currentContext)?.size?.height ?? 700.0,
         ).animate(itemsPanelController)
           ..addListener(updateView);
       });
@@ -143,7 +128,7 @@ class _WSubmenuState extends WState<WSubmenu>
 
   @override
   Widget wbuild(BuildContext context) {
-    childrenKey = GlobalKey();
+    widget.childrenKey = GlobalKey();
     submenuKey = GlobalKey();
     return Column(
       key: submenuKey,

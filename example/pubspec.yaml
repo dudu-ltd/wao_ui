@@ -45,6 +45,7 @@ dependencies:
   flutter_markdown: 
     git:
       url: https://github.com/CorvusYe/flutter_markdown
+  url_launcher: ^6.1.0
     # path: D:/work/codes/gitee/flutter_markdown
 
 dev_dependencies:

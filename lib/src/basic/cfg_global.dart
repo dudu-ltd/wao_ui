@@ -1862,6 +1862,8 @@ class PlainTreeStyle extends BaseStyle {
 }
 
 class WContainerStyle extends BaseStyle {
+  double? asideLeftWidth;
+
   @override
   WContainerStyle newInstance() {
     return WContainerStyle();

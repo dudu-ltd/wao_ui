@@ -10,7 +10,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: WContainerLayout()
-        ..$slots.header = Header()
+        // ..$slots.header = Header()
         ..$slots.$ = IndexPage(),
     );
   }

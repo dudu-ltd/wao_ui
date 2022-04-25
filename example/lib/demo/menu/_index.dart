@@ -4,6 +4,7 @@ import 'package:wao_ui/wao_ui.dart';
 
 import '../demos.dart';
 
+WMenu? menu;
 var menus = [
   {
     'text': 'File',

@@ -78,7 +78,8 @@ class WContainer extends WStatelessWidget<WContainerOn, WContainerProp,
       ..$slots.asideRight =
           _asideRight is List ? Row(children: _asideRight) : _asideRight
       ..$slots.footer = _footer is List ? Column(children: _footer) : _footer
-      ..$slots.$ = _main is List ? Row(children: _main) : _main;
+      ..$slots.$ = _main is List ? Row(children: _main) : _main
+      ..$props.asideLeftWidth = $style.asideLeftWidth ?? 200;
   }
 }
 

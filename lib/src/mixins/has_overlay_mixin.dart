@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/states/global_states.dart';
 import '../../core/utils/layout_util.dart';
 import '../../core/utils/wrapper.dart';
 import '../basic/cfg_global.dart';
@@ -29,6 +30,9 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
       children: [
         GestureDetector(onTap: () => hidePanelAction()),
         StatefulBuilder(builder: (context, setState) {
+          Navigator.of(context)
+              .userGestureInProgressNotifier
+              .addListener(removePanel);
           panelSetState = setState;
           panelContext = context;
 
@@ -96,13 +100,20 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
   }
 
   hidePanelAction() {
+    Navigator.of(context)
+        .userGestureInProgressNotifier
+        .removeListener(removePanel);
     if (kDebugMode) {
       print('----hide panel action---------');
     }
-    panelController.reverse().whenComplete(() {
-      panelOverlay?.remove();
-      panelOverlay = null;
-    });
+    panelController.reverse().whenComplete(removePanel);
+  }
+
+  removePanel() {
+    debugPrint('----remove panel action---------');
+    panelOverlay?.remove();
+    panelOverlay = null;
+    routeTime.removeListener(removePanel);
   }
 
   setAnimationWhenInit() {
