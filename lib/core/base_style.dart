@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_mixins.dart';
@@ -152,6 +154,13 @@ class BaseStyle<W> {
     borderBottomWidth = pickStyle(borderBottomWidth, borderWidth, force: true);
     borderLeftWidth = pickStyle(borderLeftWidth, borderWidth, force: true);
     borderRightWidth = pickStyle(borderRightWidth, borderWidth, force: true);
+  }
+
+  double? get borderWidth {
+    if (borderTopWidth == borderBottomWidth &&
+        borderTopWidth == borderLeftWidth &&
+        borderTopWidth == borderRightWidth) return borderTopWidth;
+    return null;
   }
 
   set border(Border? border) {

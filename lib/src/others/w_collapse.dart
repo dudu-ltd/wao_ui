@@ -29,20 +29,28 @@ class WCollapse extends WStatefulWidget<WCollapseOn, WCollapseProp,
   State<WCollapse> createState() => _WCollapseState();
 
   WCollapseItem itemWrapper(Widget child, i) {
+    var item;
     if (child is WCollapseItem) {
-      return child;
+      item = child;
     } else {
-      return WCollapseItem(
+      item = WCollapseItem(
         props: WCollapseItemProp(name: i, title: ''),
         slots: WCollapseItemSlot(child),
       );
     }
+    return item;
   }
 
   @override
   List<SlotTranslator> get slotTranslatorsCustom {
     return [
-      SlotTranslator(Widget, (slot, i, component, len) => itemWrapper(slot, i))
+      SlotTranslator(Widget, (slot, i, component, len) {
+        var item = itemWrapper(slot, i);
+        if (item.$props._expanded.value) {
+          return Expanded(child: item);
+        }
+        return item;
+      })
     ];
   }
 }
@@ -51,7 +59,7 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-
+    widget.$props.$addValueListener(updateView);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         for (var element in widget.defaultSlot) {
@@ -65,6 +73,7 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    widget.$props.$removeValueListener(updateView);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -73,6 +82,7 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   Widget wbuild(BuildContext context) {
     BorderSide border =
         BorderSide(color: borderColor, width: borderWidth, style: borderStyle);
+
     return borderWrapper(
       Column(
         children: widget.defaultSlot,
@@ -83,6 +93,7 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   }
 
   void initItemsStatus(WCollapseItem element) {
+    element.$props.$value = widget.$props.$value;
     if (widget.$props.accordion) {
       if (widget.$props.value == element.$props.name) {
         element.$props._expanded.value = true;
@@ -138,12 +149,12 @@ class WCollapseOn extends BaseOn {
   WCollapseOn({this.change});
 }
 
-class WCollapseProp extends BaseProp {
-  late dynamic value;
-
+class WCollapseProp extends BaseProp with ValueDriveProp {
   late bool accordion;
 
-  WCollapseProp({this.value, this.accordion = false});
+  WCollapseProp({value, this.accordion = false}) {
+    this.value = value;
+  }
 }
 
 class WCollapseSlot extends BaseSlot {
@@ -193,6 +204,7 @@ class _WCollapseItemState extends WState<WCollapseItem>
   @override
   void initState() {
     widget.$props._expanded.addListener(() {
+      widget.$props.$valueNotifyListeners();
       if (widget.$props._expanded.value) {
         expandController.forward();
       } else {
@@ -214,7 +226,7 @@ class _WCollapseItemState extends WState<WCollapseItem>
       setState(() {
         bodyHeight = Tween(
           begin: 0.0,
-          end: (scrollKey.currentContext)?.size?.height ?? 300.0,
+          end: (scrollKey.currentContext)?.size?.height ?? 200.0,
         ).animate(expandController);
       });
     });
@@ -244,9 +256,7 @@ class _WCollapseItemState extends WState<WCollapseItem>
         widget.$slots.title?.call(widget.$props) ?? Text(widget.$props.title);
     return InkWell(
       onTap: () {
-        print('---------');
         widget.$props._expanded.value = !widget.$props._expanded.value;
-        print(widget.$props._expanded.value);
       },
       child: SizedBox(
         height: titleHeight,
@@ -292,30 +302,29 @@ class _WCollapseItemState extends WState<WCollapseItem>
           ),
         ),
       ),
-      Border(bottom: border),
+      border,
       true,
     );
   }
 
-  BorderSide get border {
-    return BorderSide(
-        color: borderColor, width: borderWidth, style: borderStyle);
+  Border? get border {
+    return widget.style.border;
   }
 
   double get titleHeight {
-    return 48;
+    return widget.style.title?.height ?? 48;
   }
 
   double get bodyPaddingBottom {
-    return 25;
+    return widget.style.body?.paddingBottom ?? 0;
   }
 
   Color get borderColor {
-    return Colors.grey.shade200;
+    return widget.style.borderColor ?? Colors.grey.shade200;
   }
 
   double get borderWidth {
-    return 1;
+    return widget.style.borderWidth ?? 1;
   }
 
   BorderStyle get borderStyle {
@@ -325,7 +334,7 @@ class _WCollapseItemState extends WState<WCollapseItem>
 
 class WCollapseItemOn extends BaseOn {}
 
-class WCollapseItemProp extends BaseProp {
+class WCollapseItemProp extends BaseProp with ValueDriveProp {
   late dynamic name;
   late String title;
   late bool disabled;

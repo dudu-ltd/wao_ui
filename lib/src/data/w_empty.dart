@@ -41,12 +41,12 @@ class WEmpty
         Text(
           $props.description ?? '',
           style: TextStyle(
-            color: cfgGlobal.empty.descriptionColor,
+            color: cfgGlobal.empty.description?.color ?? CfgGlobal.textColor,
           ),
         );
     return paddingWrapper(
       desc,
-      padding: cfgGlobal.empty.descriptionPadding,
+      padding: cfgGlobal.empty.description?.padding ?? CfgGlobal.padding.small,
       need: true,
     );
   }
@@ -58,7 +58,8 @@ class WEmpty
             child: $props.image == null
                 ? AspectRatio(
                     aspectRatio: .9,
-                    child: SvgPicture.string(cfgGlobal.empty.imgSvg),
+                    child: SvgPicture.string(
+                        style.imgSvg ?? cfgGlobal.empty.imgSvg!),
                   )
                 : (WImage()
                   ..$props.src = $props.image

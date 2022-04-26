@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
@@ -202,7 +204,18 @@ PS D:\work\meta_number\wao_ui>'''),
   Widget get tabs {
     return StatefulBuilder(builder: (cxt, setState) {
       openFiles.addListener(() => setState(() {}));
-      if (openFiles.value.isEmpty) return WEmpty();
+      if (openFiles.value.isEmpty) {
+        return Transform.translate(
+          offset: const Offset(1100, 0),
+          child: Transform(
+            transform: Matrix4.rotationY(pi),
+            child: WEmpty()
+              ..$style.backgroundColor = Colors.grey.shade50
+              ..$style.imgSvg =
+                  '<svg t="1650783839102" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="968" width="60" height="60"><path d="M85.376 447.872l426.666667 426.666667 131.54133301-131.541334-558.20800001-558.08 0 262.954667z m392.448 0.256L709.12 677.461333 938.666667 448.256l0-264.064-230.4 229.845333-230.4-229.930666 0 264.021333z" fill="#ffffff" p-id="969"></path></svg>',
+          ),
+        );
+      }
       var tabs = WTabs()
         ..$props.value = null
         // ..$props.closable = true
@@ -247,34 +260,32 @@ PS D:\work\meta_number\wao_ui>'''),
           const Divider(),
           SizedBox(
             height: 431 - 123,
-            child: node.content.isEmpty
-                ? Center(child: WEmpty())
-                : (WScrollSnap(
-                    key: GlobalKey(),
-                  )..$slots.content = Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        width: 40,
-                        child: ColoredBox(
-                          color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: List.generate(
-                                lines.length ?? 10,
-                                (index) => Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: Text('${index + 1}'),
-                                    )),
-                          ),
-                        ),
+            child: (WScrollSnap(
+              key: GlobalKey(),
+            )..$slots.content = Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 40,
+                    child: ColoredBox(
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: List.generate(
+                            lines.length ?? 10,
+                            (index) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Text('${index + 1}'),
+                                )),
                       ),
-                      Expanded(
-                        child: richText,
-                      ),
-                    ],
-                  )),
+                    ),
+                  ),
+                  Expanded(
+                    child: richText,
+                  ),
+                ],
+              )),
           ),
         ],
       ),
