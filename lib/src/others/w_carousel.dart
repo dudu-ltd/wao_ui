@@ -199,10 +199,6 @@ class _WCarouselState extends WState<WCarousel>
     updateView();
   }
 
-  updateView() {
-    setState(() {});
-  }
-
   @override
   void dispose() {
     super.dispose();

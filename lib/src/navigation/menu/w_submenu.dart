@@ -115,8 +115,6 @@ class _WSubmenuState extends WState<WSubmenu>
     }
   }
 
-  updateView() => setState(() {});
-
   @override
   void dispose() {
     panelOverlay?.dispose();

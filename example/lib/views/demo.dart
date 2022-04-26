@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_style.dart';
+import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 import '../demo/menu/_index.dart';
@@ -14,60 +15,65 @@ class Demo extends StatelessWidget {
   Widget build(BuildContext context) {
     cxt = context;
     style();
-    return Center(
-        child: SizedBox(
-      height: 600,
-      width: 1360,
-      child: WContainerLayout()
-        ..$slots.header = (WHeader()
-          ..$style.clazz.addAll(['.demo-dark'])
-          ..$slots.$ = (WMenu()
-            ..$style.clazz.addAll(['.demo-dark'])
-            ..$props.menuTrigger = 'click'
-            ..$props.value = ValueNotifier('1')
-            ..$slots.$ = menus
-            ..$props.mode = 'horizontal'))
-        ..$slots.footer = ColoredBox(
-          color: Colors.black38,
-          child: Center(
-              child: Text(
-            '状态',
-            style: TextStyle(
-              color: CfgGlobal.textColor.shade50,
-            ),
-          )),
-        )
-        ..$props.footerHeight = 30
-        ..$slots.asideLeft = ColoredBox(
-          color: CfgGlobal.basicColor.shade50,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                  child: Column(
-                children: [
-                  WButton()
-                    ..$props.icon = Icons.file_copy
-                    ..$props.circle = true
-                    ..$style.clazz.addAll(['.demo-dark']),
-                  WButton()
-                    ..$props.icon = Icons.search
-                    ..$props.circle = true
-                    ..$style.clazz.addAll(['.demo-dark']),
-                  WButton()
-                    ..$props.icon = Icons.menu
-                    ..$props.circle = true
-                    ..$style.clazz.addAll(['.demo-dark']),
-                ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 73.5, horizontal: 88),
+      child: shadowWrapper(
+        Center(
+            child: SizedBox(
+          height: 600,
+          width: 1360,
+          child: WContainerLayout()
+            ..$slots.header = (WHeader()
+              ..$style.clazz.addAll(['.demo-dark'])
+              ..$slots.$ = (WMenu()
+                ..$style.clazz.addAll(['.demo-dark'])
+                ..$props.menuTrigger = 'click'
+                ..$props.value = ValueNotifier('1')
+                ..$slots.$ = menus
+                ..$props.mode = 'horizontal'))
+            ..$slots.footer = ColoredBox(
+              color: Colors.black38,
+              child: Center(
+                  child: Text(
+                '状态',
+                style: TextStyle(
+                  color: CfgGlobal.textColor.shade50,
+                ),
               )),
-              settingBtn,
-            ],
-          ),
-        )
-        ..$props.headerHeight = 57
-        ..$props.asideLeftWidth = 50
-        ..$slots.$ = editor,
-    ));
+            )
+            ..$props.footerHeight = 30
+            ..$slots.asideLeft = ColoredBox(
+              color: CfgGlobal.basicColor.shade50,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: Column(
+                    children: [
+                      WButton()
+                        ..$props.icon = Icons.file_copy
+                        ..$props.circle = true
+                        ..$style.clazz.addAll(['.demo-dark']),
+                      WButton()
+                        ..$props.icon = Icons.search
+                        ..$props.circle = true
+                        ..$style.clazz.addAll(['.demo-dark']),
+                      WButton()
+                        ..$props.icon = Icons.menu
+                        ..$props.circle = true
+                        ..$style.clazz.addAll(['.demo-dark']),
+                    ],
+                  )),
+                  settingBtn,
+                ],
+              ),
+            )
+            ..$props.headerHeight = 57
+            ..$props.asideLeftWidth = 50
+            ..$slots.$ = editor,
+        )),
+      ),
+    );
   }
 
   Widget get settingBtn {
@@ -148,14 +154,6 @@ class Demo extends StatelessWidget {
         ),
       ]),
     )..$style.clazz = ['no-border'];
-    return Center(
-      child: WSubmenu()
-        ..$slots.$ = (WButton()
-          ..$slots.$ = Icons.settings
-          ..$props.circle = true
-          ..$style.clazz.addAll(['.demo-dark']))
-        ..$style.clazz.add('.no-padding'),
-    );
   }
 
   Widget get editor {
@@ -176,9 +174,6 @@ class Demo extends StatelessWidget {
   Widget get cmd {
     return WTabs()
       ..$props.closable = true
-      ..$on.tabClick = (e) {
-        print(e);
-      }
       ..$style.backgroundColor = CfgGlobal.basicColor.shade50
       ..$props.value = openFile.value
       ..$slots.$ = [
@@ -188,7 +183,7 @@ class Demo extends StatelessWidget {
           ..$props.closable = true
           ..$style.backgroundColor = Colors.grey.shade300
           ..$slots.$ = ClipRect(
-            child: Text(r'''尝试新的跨平台 PowerShell https://aka.ms/pscore6
+            child: SelectableText(r'''尝试新的跨平台 PowerShell https://aka.ms/pscore6
           
 PS D:\work\meta_number\wao_ui>'''),
           ),
@@ -197,24 +192,24 @@ PS D:\work\meta_number\wao_ui>'''),
           ..$props.name = 'DEBUG CONSOLE'
           ..$props.closable = true
           ..$style.backgroundColor = Colors.grey.shade300
-          ..$slots.$ = Text(r'''尝试新的跨平台 PowerShell https://aka.ms/pscore6
-
-PS D:\work\meta_number\wao_ui>''')
+          ..$slots.$ = SelectableText(r'''DEBUG CONSOLE''')
       ];
   }
 
   ValueNotifier<List> openFiles = ValueNotifier([]);
   ValueNotifier<String> openFile = ValueNotifier('');
-
+  PlainTree? _fileTree;
   Widget get tabs {
     return StatefulBuilder(builder: (cxt, setState) {
       openFiles.addListener(() => setState(() {}));
       if (openFiles.value.isEmpty) return WEmpty();
-      var tabs = WTabs();
-      tabs
-        ..$props.closable = true
+      var tabs = WTabs()
+        ..$props.value = null
+        // ..$props.closable = true
         ..$on.tabClick = (e) {
-          print(e);
+          openFile.value = e;
+          _fileTree?.$props.value = e;
+          // print(openFile.value);
         }
         ..$style.backgroundColor = CfgGlobal.basicColor.shade50
         ..$props.value = openFile.value
@@ -288,9 +283,6 @@ PS D:\work\meta_number\wao_ui>''')
 
   Widget get collapse {
     return WCollapse(
-      on: WCollapseOn(change: (e) {
-        print(e);
-      }),
       props: WCollapseProp(value: [1], accordion: true),
       slots: WCollapseSlot(inner),
     )..$style.clazz.addAll(['.demo-dark']);
@@ -318,21 +310,24 @@ PS D:\work\meta_number\wao_ui>''')
   }
 
   Widget get fileTree {
-    return PlainTree(
+    return _fileTree = PlainTree(
       props: PlainTreeProp(data: demoTreeJson),
     )..$on.nodeClick = (ctx, node) {
         return () {
-          if (!openFiles.value.contains(node)) {
-            openFiles.value.add(node);
-          }
-          openFile.value = node.id;
-          openFiles.notifyListeners();
+          selectFileByNode(node);
         };
       };
   }
 
+  selectFileByNode(node) {
+    if (!openFiles.value.contains(node)) {
+      openFiles.value.add(node);
+    }
+    openFile.value = node.id;
+    openFiles.notifyListeners();
+  }
+
   style() {
-    print(Clazz.button);
     CfgGlobal.css.addAll({
       // [
       //   [Clazz.menu, Clazz.horizontalSuf, '.demo-dark']

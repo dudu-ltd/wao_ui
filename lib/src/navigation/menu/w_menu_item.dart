@@ -205,8 +205,9 @@ class _WMenuItemState extends WState<WMenuItem> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  updateView() {
-    if (widget.belongTo == null) setState(() {});
+  @override
+  updateView([Function()? fn]) {
+    if (widget.belongTo == null) super.updateView(fn);
   }
 
   @override

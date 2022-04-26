@@ -26,8 +26,6 @@ class _WScrollSnapState extends WState<WScrollSnap>
     _updateSnap();
   }
 
-  updateView() => setState(() {});
-
   updateMask() {
     topHeight = scrollCtrl.offset * scrollHeightToSnapHeight();
     bottomHeight =

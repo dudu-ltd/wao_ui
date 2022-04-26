@@ -14,7 +14,7 @@ class PlainTreeOn extends BaseOn {
   }) : super();
 }
 
-class PlainTreeProp extends BaseProp {
+class PlainTreeProp extends BaseProp with ValueDriveProp {
   late List<Map<String, dynamic>> data;
   late List<TreeData> treeData;
   late int level;
@@ -67,6 +67,26 @@ class PlainTree extends WStatefulWidget<PlainTreeOn, PlainTreeProp,
 
 class _TreeState extends WState<PlainTree> {
   TreeData? currentNode;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.$props.$addValueListener(pickNodeByValue);
+  }
+
+  void pickNodeByValue() {
+    print('============= pickNodeByValue ');
+    var node = TreeData.findById(widget.$props.treeData, widget.$props.value);
+    if (node != null) {
+      getNodeClickProxy(context, node).call();
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.$props.$removeValueListener(updateView);
+    super.dispose();
+  }
 
   void addNode(Map<String, dynamic> child) {
     setState(() {
@@ -174,7 +194,7 @@ class _TreeState extends WState<PlainTree> {
           props: PlainTreeProp(
             treeData: node.children,
             level: widget.$props.level + 1,
-          ),
+          )..$value = widget.$props.$value,
         );
         cols.add(tree);
       }
@@ -236,6 +256,15 @@ class TreeData {
   static List<TreeData> listFromJson(PlainTreeProp prop) {
     return List.generate(
         prop.data.length, (index) => TreeData.fromJson(prop.data[index], prop));
+  }
+
+  static TreeData? findById(List<TreeData> treeData, String id) {
+    for (var node in treeData) {
+      if (node.id == id) return node;
+      if (node.children.isNotEmpty) {
+        return findById(node.children, id);
+      }
+    }
   }
 }
 

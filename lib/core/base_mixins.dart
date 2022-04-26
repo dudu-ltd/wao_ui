@@ -52,6 +52,11 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
 
   beforeBuild() {}
 
+  updateView([Function()? fn]) {
+    print('-------------- update view -----------------');
+    setState(fn ?? () {});
+  }
+
   @override
   void deactivate() {
     super.deactivate();

@@ -7,8 +7,7 @@ import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WTabs
-    extends WStatelessWidget<WTabsOn, WTabsProp, WTabsSlot, WTabsStyle> {
+class WTabs extends WStatefulWidget<WTabsOn, WTabsProp, WTabsSlot, WTabsStyle> {
   WTabs({
     Key? key,
     WTabsOn? on,
@@ -24,16 +23,33 @@ class WTabs
   }
 
   @override
+  State<WTabs> createState() => _WTabsState();
+}
+
+class _WTabsState extends WState<WTabs> {
+  @override
+  void initState() {
+    super.initState();
+    widget.$props.$addValueListener(updateView);
+  }
+
+  @override
+  void dispose() {
+    widget.$props.$removeValueListener(updateView);
+    super.dispose();
+  }
+
+  @override
   Widget wbuild(BuildContext context) {
-    var children = defaultSlot;
+    var children = widget.defaultSlot;
     var content = <Widget>[
       _items(children),
       if (navScroll != null) navScroll!,
       _body(children),
     ];
-    if ($props.positionIsReverse) content = content.reversed.toList();
+    if (widget.$props.positionIsReverse) content = content.reversed.toList();
     var tabs;
-    if ($props.positionIsVertical) {
+    if (widget.$props.positionIsVertical) {
       tabs = SizedBox(
         height: height,
         child: Row(
@@ -51,7 +67,7 @@ class WTabs
   }
 
   double get height {
-    return $style.height ?? cfgGlobal.tabs.height ?? 200;
+    return widget.style.height ?? cfgGlobal.tabs.height ?? 200;
   }
 
   @override
@@ -68,9 +84,9 @@ class WTabs
   }
 
   Widget? get navScroll {
-    if ($props.type != null) return null;
+    if (widget.$props.type != null) return null;
     late Widget box;
-    if ($props.positionIsHorizontal) {
+    if (widget.$props.positionIsHorizontal) {
       box = Container(height: 2);
     } else {
       box = SizedBox(width: 2, height: height);
@@ -89,17 +105,18 @@ class WTabs
     var hs = borderWrapper(
       colorWrapper(
         Wrap(
-          spacing: $props.typeIsBorderCard ? 0 : 1,
+          spacing: widget.$props.typeIsBorderCard ? 0 : 1,
           alignment: WrapAlignment.center,
-          direction:
-              $props.positionIsHorizontal ? Axis.horizontal : Axis.vertical,
+          direction: widget.$props.positionIsHorizontal
+              ? Axis.horizontal
+              : Axis.vertical,
           children: children,
         ),
         CfgGlobal.infoColor.shade300,
-        $props.typeIsCard,
+        widget.$props.typeIsCard,
       ),
-      cfgGlobal.border.excludeReverse($props.tabPosition),
-      $props.typeIsCard,
+      cfgGlobal.border.excludeReverse(widget.$props.tabPosition),
+      widget.$props.typeIsCard,
     );
 
     return expandedWrapper(
@@ -108,11 +125,12 @@ class WTabs
             child: SizedBox(height: itemHeight + 2),
             decoration: BoxDecoration(
               border: Border(bottom: WBorder.common),
-              color: $props.typeIsBorderCard
+              color: widget.$props.typeIsBorderCard
                   ? ColorUtil.hexToColor('#f5f7fa')
                   : Colors.white,
             )),
-        need: $props.positionIsHorizontal && $props.typeNeedStyle);
+        need:
+            widget.$props.positionIsHorizontal && widget.$props.typeNeedStyle);
   }
 
   Widget tabsWrapper(Widget child) {
@@ -121,21 +139,21 @@ class WTabs
         borderWrapper(
           colorWrapper(
             child,
-            style.backgroundColor ?? Colors.white,
+            widget.style.backgroundColor ?? Colors.white,
             true,
           ),
           Border.all(color: CfgGlobal.infoColor.shade300),
-          $props.typeIsBorderCard,
+          widget.$props.typeIsBorderCard,
         ),
-        need: $props.typeIsBorderCard,
+        need: widget.$props.typeIsBorderCard,
       ),
-      need: $props.typeNeedStyle,
+      need: widget.$props.typeNeedStyle,
     );
   }
 
   Widget itemColorWrapper(Widget child, {active}) {
     var borderSide = BorderSide(
-      color: active && !$props.typeIsBorderCard
+      color: active && !widget.$props.typeIsBorderCard
           ? Colors.white
           : CfgGlobal.infoColor.shade300,
       width: 1,
@@ -145,23 +163,23 @@ class WTabs
         colorWrapper(
           child,
           Colors.white,
-          $props.typeIsCard,
+          widget.$props.typeIsCard,
         ),
         active ? Colors.white : ColorUtil.hexToColor('#f5f7fa'),
-        $props.typeIsBorderCard,
+        widget.$props.typeIsBorderCard,
       ),
       _itemBorder(active, borderSide),
-      $props.typeNeedStyle,
+      widget.$props.typeNeedStyle,
     );
   }
 
   Border _itemBorder(active, borderSide) {
-    return $props.positionIsHorizontal
-        ? ($props.typeIsBorderCard && active)
+    return widget.$props.positionIsHorizontal
+        ? (widget.$props.typeIsBorderCard && active)
             ? Border(left: borderSide, right: borderSide)
             : Border(bottom: borderSide)
-        : $props.positionIsReverse
-            ? $props.positionIsBottom
+        : widget.$props.positionIsReverse
+            ? widget.$props.positionIsBottom
                 ? Border(left: borderSide, top: borderSide)
                 : Border(left: borderSide)
             : Border(right: borderSide);
@@ -169,22 +187,40 @@ class WTabs
 
   Widget _item(WTabPane child) {
     var label = child.$props.label ?? '';
-    return itemColorWrapper(
-      Padding(
-        padding: itemPadding,
-        child: SizedBox(
-          height: itemHeight,
-          child: Align(
-            widthFactor: 1,
-            alignment: Alignment.centerLeft,
-            child: Text(
-              label,
-              style: TextStyle(color: textColor, fontSize: textSize),
+    print(
+        'widget.\$props.value ${widget.$props.value} == child.\$props.name ${child.$props.name} : ${widget.$props.value == child.$props.name}');
+    return itemEventWrapper(
+      itemColorWrapper(
+        Padding(
+          padding: itemPadding,
+          child: SizedBox(
+            height: itemHeight,
+            child: Align(
+              widthFactor: 1,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                label,
+                style: TextStyle(color: textColor, fontSize: textSize),
+              ),
             ),
           ),
         ),
+        active: widget.$props.value == child.$props.name,
       ),
-      active: $props.value == child.$props.name,
+      child.$props.name,
+    );
+  }
+
+  Widget itemEventWrapper(Widget child, String? itemValue) {
+    return InkWell(
+      onTap: () {
+        // showLicensePage(context: context);
+        debugPrint(
+            'widget.\$props.value ${widget.$props.value} change to $itemValue');
+        widget.$props.value = itemValue;
+        widget.$on.tabClick?.call(itemValue);
+      },
+      child: child,
     );
   }
 
@@ -196,11 +232,11 @@ class WTabs
       if (i == 0) {
         body = child.$col;
       }
-      if (child.$props.name == $props.value) {
+      if (child.$props.name == widget.$props.value) {
         body = child.$col;
       }
     }
-    return $props.positionIsVertical
+    return widget.$props.positionIsVertical
         ? Expanded(child: body)
         : FractionallySizedBox(
             widthFactor: 1,
@@ -213,23 +249,23 @@ class WTabs
   }
 
   EdgeInsets get itemPadding {
-    return $style.item?.padding ??
+    return widget.style.item?.padding ??
         cfgGlobal.tabs.item?.padding ??
         const EdgeInsets.symmetric(horizontal: 20);
   }
 
   double get itemHeight {
-    return $style.item?.height ?? cfgGlobal.tabs.item?.height ?? 40;
+    return widget.style.item?.height ?? cfgGlobal.tabs.item?.height ?? 40;
   }
 
   Color? get textColor {
-    return $style.item?.color ??
+    return widget.style.item?.color ??
         cfgGlobal.tabs.item?.color ??
         ColorUtil.hexToColor('#303133');
   }
 
   double? get textSize {
-    return $style.item?.fontSize ?? cfgGlobal.tabs.item?.fontSize;
+    return widget.style.item?.fontSize ?? cfgGlobal.tabs.item?.fontSize;
   }
 }
 
@@ -246,8 +282,7 @@ class WTabsOn extends BaseOn {
   });
 }
 
-class WTabsProp extends BaseProp {
-  late String? value;
+class WTabsProp extends BaseProp with ValueDriveProp<String> {
   late String? type;
   late bool closable;
   late bool addable;
@@ -256,7 +291,7 @@ class WTabsProp extends BaseProp {
   late bool stretch;
   late Function(String, String)? beforeLeave;
   WTabsProp({
-    this.value,
+    String? value,
     this.type,
     this.closable = false,
     this.addable = false,
@@ -264,7 +299,9 @@ class WTabsProp extends BaseProp {
     this.tabPosition = 'top',
     this.stretch = false,
     this.beforeLeave,
-  });
+  }) {
+    this.value = value;
+  }
   var h = ['top', 'bottom'];
 
   var v = ['left', 'right'];
@@ -304,13 +341,6 @@ class WTabsSlot extends BaseSlot {
   WTabsSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
-///
-///
-///
-///
-///
-///
-///
 ///
 ///
 class WTabPane extends WStatelessWidget<WTabPaneOn, WTabPaneProp, WTabPaneSlot,

@@ -175,10 +175,6 @@ class _WMenuState extends WState<WMenu> with SingleTickerProviderStateMixin {
       ..addListener(updateView);
   }
 
-  updateView() {
-    setState(() {});
-  }
-
   bindValueHandle() {
     value = ValueNotifier(widget.$props.defaultActive);
     value.addListener(() {

@@ -66,7 +66,7 @@ class WFrame
       titleSpacing: 0,
     );
     return Scaffold(
-      appBar: appBar,
+      appBar: isPc ? appBar : null,
       body: Flex(
         direction: Axis.vertical,
         children: [

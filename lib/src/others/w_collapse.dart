@@ -297,10 +297,6 @@ class _WCollapseItemState extends WState<WCollapseItem>
     );
   }
 
-  updateView() {
-    setState(() {});
-  }
-
   BorderSide get border {
     return BorderSide(
         color: borderColor, width: borderWidth, style: borderStyle);
