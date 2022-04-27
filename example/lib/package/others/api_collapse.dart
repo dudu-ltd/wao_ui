@@ -81,7 +81,7 @@ class ApiCollapse extends StatelessWidget {
         print(e);
       }),
       props: WCollapseProp(
-        value: activeNames,
+        model: activeNames,
       ),
       slots: WCollapseSlot(inner),
     );
@@ -94,7 +94,7 @@ class ApiCollapse extends StatelessWidget {
         print(e);
       }),
       props: WCollapseProp(
-        value: activeNames,
+        model: activeNames,
         accordion: true,
       ),
       slots: WCollapseSlot(inner),
@@ -108,7 +108,7 @@ class ApiCollapse extends StatelessWidget {
         print(e);
       }),
       props: WCollapseProp(
-        value: activeNames,
+        model: activeNames,
         accordion: true,
       ),
       slots: WCollapseSlot([

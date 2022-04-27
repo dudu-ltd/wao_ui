@@ -5,29 +5,29 @@ import 'package:flutter/material.dart';
 class BaseProp {}
 
 // 通过 value 属性驱动的 W组件属性类。
-mixin ValueDriveProp<T> on BaseProp {
-  ValueNotifier<T?>? $value = null;
+mixin ModelDriveProp<T> on BaseProp {
+  ValueNotifier<T?>? $model = null;
 
-  T? get value => $value?.value;
+  T? get model => $model?.value;
 
-  set value(T? t) {
-    if ($value == null) {
-      $value = ValueNotifier(t);
+  set model(T? t) {
+    if ($model == null) {
+      $model = ValueNotifier(t);
     } else {
-      $value!.value = t;
+      $model!.value = t;
     }
   }
 
-  $addValueListener(Function() fn) {
-    $value ??= ValueNotifier(null);
-    $value?.addListener(fn);
+  $addModelListener(Function() fn) {
+    $model ??= ValueNotifier(null);
+    $model?.addListener(fn);
   }
 
-  $removeValueListener(Function() fn) {
-    $value?.removeListener(fn);
+  $removeModelListener(Function() fn) {
+    $model?.removeListener(fn);
   }
 
-  $valueNotifyListeners() {
-    $value?.notifyListeners();
+  $modelNotifyListeners() {
+    $model?.notifyListeners();
   }
 }

@@ -371,7 +371,7 @@ class WInputOn extends BaseOn {
   });
 }
 
-class WInputProp extends BaseProp {
+class WInputProp extends BaseProp with ModelDriveProp {
   late String type;
   late ValueNotifier? $valueNotifier;
   late TextEditingController _value;

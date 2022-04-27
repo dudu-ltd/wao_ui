@@ -59,7 +59,7 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    widget.$props.$addValueListener(updateView);
+    widget.$props.$addModelListener(updateView);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         for (var element in widget.defaultSlot) {
@@ -73,7 +73,7 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    widget.$props.$removeValueListener(updateView);
+    widget.$props.$removeModelListener(updateView);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -93,13 +93,13 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   }
 
   void initItemsStatus(WCollapseItem element) {
-    element.$props.$value = widget.$props.$value;
+    element.$props.$model = widget.$props.$model;
     if (widget.$props.accordion) {
-      if (widget.$props.value == element.$props.name) {
+      if (widget.$props.model == element.$props.name) {
         element.$props._expanded.value = true;
       }
     } else {
-      if (widget.$props.value.contains(element.$props.name)) {
+      if (widget.$props.model.contains(element.$props.name)) {
         element.$props._expanded.value = true;
       }
     }
@@ -108,8 +108,8 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   void addItemsListener(WCollapseItem element) {
     element.$props._expanded.addListener(() {
       if (widget.$props.accordion && element.$props._expanded.value) {
-        widget.$props.value = element.$props.name;
-        widget.$on.change?.call(widget.$props.value);
+        widget.$props.model = element.$props.name;
+        widget.$on.change?.call(widget.$props.model);
         for (var other in widget.defaultSlot) {
           other as WCollapseItem;
           if (element != other) other.$props._expanded.value = false;
@@ -120,15 +120,15 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   }
 
   void updateValue() {
-    widget.$props.value = widget.$props.value ?? [];
-    widget.$props.value.clear();
+    widget.$props.model = widget.$props.model ?? [];
+    widget.$props.model.clear();
     for (var element in widget.defaultSlot) {
       element as WCollapseItem;
       if (element.$props._expanded.value) {
-        widget.$props.value.add(element.$props.name);
+        widget.$props.model.add(element.$props.name);
       }
     }
-    widget.$on.change?.call(widget.$props.value);
+    widget.$on.change?.call(widget.$props.model);
   }
 
   Color get borderColor {
@@ -149,11 +149,11 @@ class WCollapseOn extends BaseOn {
   WCollapseOn({this.change});
 }
 
-class WCollapseProp extends BaseProp with ValueDriveProp {
+class WCollapseProp extends BaseProp with ModelDriveProp {
   late bool accordion;
 
-  WCollapseProp({value, this.accordion = false}) {
-    this.value = value;
+  WCollapseProp({model, this.accordion = false}) {
+    this.model = model;
   }
 }
 
@@ -204,7 +204,7 @@ class _WCollapseItemState extends WState<WCollapseItem>
   @override
   void initState() {
     widget.$props._expanded.addListener(() {
-      widget.$props.$valueNotifyListeners();
+      widget.$props.$modelNotifyListeners();
       if (widget.$props._expanded.value) {
         expandController.forward();
       } else {
@@ -334,7 +334,7 @@ class _WCollapseItemState extends WState<WCollapseItem>
 
 class WCollapseItemOn extends BaseOn {}
 
-class WCollapseItemProp extends BaseProp with ValueDriveProp {
+class WCollapseItemProp extends BaseProp with ModelDriveProp {
   late dynamic name;
   late String title;
   late bool disabled;

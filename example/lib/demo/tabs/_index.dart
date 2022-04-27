@@ -9,7 +9,7 @@ regist() {
       ..$on.tabClick = (e) {
         print(e);
       }
-      ..$props.value = 'second'
+      ..$props.model = 'second'
       ..$slots.$ = [
         WTabPane()
           ..$props.label = '用户管理'
@@ -73,7 +73,7 @@ regist() {
       ..$on.tabClick = (e) {
         print(e);
       }
-      ..$props.value = 'second'
+      ..$props.model = 'second'
       ..$props.type = 'card'
       ..$slots.$ = [
         WTabPane()
@@ -124,7 +124,7 @@ regist() {
   var tabsBorderCard = Demo(
     'tabsBorderCard',
     WTabs()
-      ..$props.value = 'second'
+      ..$props.model = 'second'
       ..$props.type = 'border-card'
       ..$slots.$ = [
         WTabPane()
@@ -171,7 +171,7 @@ regist() {
   var tabsPosition = Demo(
     'tabsPosition',
     WTabs()
-      ..$props.value = 'second'
+      ..$props.model = 'second'
       ..$props.type = 'card'
       ..$props.tabPosition = 'right'
       ..$slots.$ = [

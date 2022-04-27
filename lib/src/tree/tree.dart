@@ -14,7 +14,7 @@ class PlainTreeOn extends BaseOn {
   }) : super();
 }
 
-class PlainTreeProp extends BaseProp with ValueDriveProp {
+class PlainTreeProp extends BaseProp with ModelDriveProp {
   late List<Map<String, dynamic>> data;
   late List<TreeData> treeData;
   late int level;
@@ -71,12 +71,12 @@ class _TreeState extends WState<PlainTree> {
   @override
   void initState() {
     super.initState();
-    widget.$props.$addValueListener(pickNodeByValue);
+    widget.$props.$addModelListener(pickNodeByValue);
   }
 
   void pickNodeByValue() {
     print('============= pickNodeByValue ');
-    var node = TreeData.findById(widget.$props.treeData, widget.$props.value);
+    var node = TreeData.findById(widget.$props.treeData, widget.$props.model);
     if (node != null) {
       getNodeClickProxy(context, node).call();
     }
@@ -84,7 +84,7 @@ class _TreeState extends WState<PlainTree> {
 
   @override
   void dispose() {
-    widget.$props.$removeValueListener(updateView);
+    widget.$props.$removeModelListener(updateView);
     super.dispose();
   }
 
@@ -194,7 +194,7 @@ class _TreeState extends WState<PlainTree> {
           props: PlainTreeProp(
             treeData: node.children,
             level: widget.$props.level + 1,
-          )..$value = widget.$props.$value,
+          )..$model = widget.$props.$model,
         );
         cols.add(tree);
       }

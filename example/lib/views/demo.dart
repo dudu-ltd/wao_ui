@@ -177,7 +177,7 @@ class Demo extends StatelessWidget {
     return WTabs()
       ..$props.closable = true
       ..$style.backgroundColor = CfgGlobal.basicColor.shade50
-      ..$props.value = openFile.value
+      ..$props.model = openFile.value
       ..$slots.$ = [
         WTabPane()
           ..$props.label = 'TERMINAL'
@@ -217,15 +217,15 @@ PS D:\work\meta_number\wao_ui>'''),
         );
       }
       var tabs = WTabs()
-        ..$props.value = null
+        ..$props.model = null
         // ..$props.closable = true
         ..$on.tabClick = (e) {
           openFile.value = e;
-          _fileTree?.$props.value = e;
+          _fileTree?.$props.model = e;
           // print(openFile.value);
         }
         ..$style.backgroundColor = CfgGlobal.basicColor.shade50
-        ..$props.value = openFile.value
+        ..$props.model = openFile.value
         ..$slots.$ = List.generate(openFiles.value.length, (index) {
           var node = openFiles.value[index];
           return WTabPane()
@@ -294,7 +294,7 @@ PS D:\work\meta_number\wao_ui>'''),
 
   Widget get collapse {
     return WCollapse(
-      props: WCollapseProp(value: [1], accordion: true),
+      props: WCollapseProp(model: [1], accordion: true),
       slots: WCollapseSlot(inner),
     )..$style.clazz.addAll(['.demo-dark']);
   }

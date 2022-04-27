@@ -30,12 +30,12 @@ class _WTabsState extends WState<WTabs> {
   @override
   void initState() {
     super.initState();
-    widget.$props.$addValueListener(updateView);
+    widget.$props.$addModelListener(updateView);
   }
 
   @override
   void dispose() {
-    widget.$props.$removeValueListener(updateView);
+    widget.$props.$removeModelListener(updateView);
     super.dispose();
   }
 
@@ -188,7 +188,7 @@ class _WTabsState extends WState<WTabs> {
   Widget _item(WTabPane child) {
     var label = child.$props.label ?? '';
     print(
-        'widget.\$props.value ${widget.$props.value} == child.\$props.name ${child.$props.name} : ${widget.$props.value == child.$props.name}');
+        'widget.\$props.value ${widget.$props.model} == child.\$props.name ${child.$props.name} : ${widget.$props.model == child.$props.name}');
     return itemEventWrapper(
       itemColorWrapper(
         Padding(
@@ -205,7 +205,7 @@ class _WTabsState extends WState<WTabs> {
             ),
           ),
         ),
-        active: widget.$props.value == child.$props.name,
+        active: widget.$props.model == child.$props.name,
       ),
       child.$props.name,
     );
@@ -216,8 +216,8 @@ class _WTabsState extends WState<WTabs> {
       onTap: () {
         // showLicensePage(context: context);
         debugPrint(
-            'widget.\$props.value ${widget.$props.value} change to $itemValue');
-        widget.$props.value = itemValue;
+            'widget.\$props.value ${widget.$props.model} change to $itemValue');
+        widget.$props.model = itemValue;
         widget.$on.tabClick?.call(itemValue);
       },
       child: child,
@@ -232,7 +232,7 @@ class _WTabsState extends WState<WTabs> {
       if (i == 0) {
         body = child.$col;
       }
-      if (child.$props.name == widget.$props.value) {
+      if (child.$props.name == widget.$props.model) {
         body = child.$col;
       }
     }
@@ -282,7 +282,7 @@ class WTabsOn extends BaseOn {
   });
 }
 
-class WTabsProp extends BaseProp with ValueDriveProp<String> {
+class WTabsProp extends BaseProp with ModelDriveProp<String> {
   late String? type;
   late bool closable;
   late bool addable;
@@ -291,7 +291,7 @@ class WTabsProp extends BaseProp with ValueDriveProp<String> {
   late bool stretch;
   late Function(String, String)? beforeLeave;
   WTabsProp({
-    String? value,
+    String? model,
     this.type,
     this.closable = false,
     this.addable = false,
@@ -300,7 +300,7 @@ class WTabsProp extends BaseProp with ValueDriveProp<String> {
     this.stretch = false,
     this.beforeLeave,
   }) {
-    this.value = value;
+    this.model = model;
   }
   var h = ['top', 'bottom'];
 

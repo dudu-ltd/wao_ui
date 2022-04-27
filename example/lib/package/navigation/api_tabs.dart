@@ -11,7 +11,7 @@ class ApiTabs extends StatelessWidget {
       ..$on.tabClick = (e) {
         print(e);
       }
-      ..$props.value = 'second'
+      ..$props.model = 'second'
       ..$slots.$ = [
         WTabPane()
           ..$props.label = '用户管理'
@@ -46,7 +46,7 @@ class ApiTabs extends StatelessWidget {
       ..$on.tabClick = (e) {
         print(e);
       }
-      ..$props.value = 'second'
+      ..$props.model = 'second'
       ..$props.type = 'card'
       ..$slots.$ = [
         WTabPane()
@@ -72,7 +72,7 @@ class ApiTabs extends StatelessWidget {
   Widget get borderCard {
     var tabs = WTabs();
     tabs
-      ..$props.value = 'second'
+      ..$props.model = 'second'
       ..$props.type = 'border-card'
       ..$slots.$ = [
         WTabPane()
@@ -104,7 +104,7 @@ class ApiTabs extends StatelessWidget {
           setState(() {});
         });
         return WTabs()
-          ..$props.value = 'second'
+          ..$props.model = 'second'
           ..$props.type = 'card'
           ..$props.tabPosition = position.value
           ..$slots.$ = [
