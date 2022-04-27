@@ -24,6 +24,7 @@ export 'src/form/w_date_picker.dart';
 export 'src/form/w_date_time_picker.dart';
 export 'src/form/w_form.dart';
 export 'src/form/w_input_number.dart';
+export 'src/form/w_autocomplete.dart';
 export 'src/form/w_input.dart';
 export 'src/form/w_radio.dart';
 export 'src/form/w_rate.dart';
