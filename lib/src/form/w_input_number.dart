@@ -85,25 +85,16 @@ class WInputNumber extends WStatelessWidget<WInputNumberOn, WInputNumberProp,
     );
   }
 
-  get newVal {
-    return double.parse($props.value) - $props.step;
-  }
-
-  newValStr(double newVal) {
-    // TODO 处理 stepStrictly 属性
-    return newVal.toStringAsFixed($props.precision);
-  }
-
   minusFn() {
-    var newVal = (double.parse($props.value) - $props.step);
+    var newVal = ($props.model - $props.step);
     if ($props.min != null && newVal < $props.min!) return;
-    $props.value = newValStr(newVal);
+    $props.model = newVal;
   }
 
   addFn() {
-    var newVal = (double.parse($props.value) + $props.step);
+    var newVal = ($props.model + $props.step);
     if ($props.max != null && newVal > $props.max!) return;
-    $props.value = newValStr(newVal);
+    $props.model = newVal;
   }
 
   Widget? addWrapper(Widget? child) {
@@ -150,7 +141,7 @@ class WInputNumberProp extends WInputProp {
   late bool controls;
   String? controlsPosition;
   WInputNumberProp({
-    num? value,
+    num? model,
     num? min,
     num? max,
     num? step,
@@ -174,14 +165,18 @@ class WInputNumberProp extends WInputProp {
           placeholder: placeholder,
           $textAlign: TextAlign.center,
         ) {
+    this.model = model ?? 0;
     this.step = step ?? 1;
     this.stepStrictly = stepStrictly ?? false;
     this.precision = precision ?? 0;
     this.controls = controls ?? true;
     this.name = name;
     this.label = label;
-    value = value ?? 0;
-    this.value = value.toStringAsFixed(this.precision);
+
+    encode = ($model) {
+      return $model.value?.toStringAsFixed(this.precision);
+    };
+    decode = (text) => double.parse(text);
   }
 
   bool get controllerIsRight {

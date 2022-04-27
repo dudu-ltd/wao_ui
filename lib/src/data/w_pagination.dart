@@ -223,7 +223,7 @@ class _WPaginationState extends WState<WPagination> {
       children: [
         Text('前往'),
         input = WInput()
-          ..$props.value = widget.$props.currentPage
+          ..$props.model = widget.$props.currentPage
           ..$props.size = 'mini'
           ..$on.blur = (() {
             widget.$props.currentPage = int.parse(input.$props.value);

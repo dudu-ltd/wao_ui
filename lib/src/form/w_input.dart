@@ -48,8 +48,13 @@ class WInputState extends WState<WInput> {
   @override
   void initState() {
     super.initState();
+    // widget.$props._value.addListener(updateView);
+  }
 
-    widget.$props._value.addListener(valueChange);
+  @override
+  void dispose() {
+    // widget.$props._value.removeListener(updateView);
+    super.dispose();
   }
 
   @override
@@ -215,15 +220,6 @@ class WInputState extends WState<WInput> {
           )
         : null;
   }
-
-  @override
-  void dispose() {
-    widget.$props._value.removeListener(valueChange);
-    widget.$props._value.dispose();
-    super.dispose();
-  }
-
-  void valueChange() => setState;
 
   InputDecoration get decoration {
     var baseBorder = OutlineInputBorder(
@@ -406,21 +402,13 @@ class WInputProp extends BaseProp with ModelDriveProp {
 
   TextAlign $textAlign;
 
-  set value(value) {
-    _value.text = value != null
-        ? value is String
-            ? value
-            : value.toString()
-        : '';
-  }
+  String Function(ValueNotifier) encode = ($model) => $model.value.toString();
 
-  dynamic get value {
-    return _value.text;
-  }
+  dynamic Function(String) decode = (text) => text;
 
   WInputProp({
     String? type,
-    value,
+    dynamic model,
     this.maxlength,
     this.minlength,
     bool? showWordLimit,
@@ -452,7 +440,14 @@ class WInputProp extends BaseProp with ModelDriveProp {
     ValueNotifier? $valueNotifier,
   }) {
     this.type = type ?? 'text';
-    _value = TextEditingController(text: value != null ? value.toString() : '');
+    _value = TextEditingController();
+
+    this.model = model;
+
+    _value.addListener(updateModelValue);
+    $addModelListener(updateTextValue);
+    _value.value =
+        TextEditingValue(text: this.model != null ? this.model.toString() : '');
 
     this.$valueNotifier = $valueNotifier;
     this.showWordLimit = showWordLimit ?? false;
@@ -477,6 +472,16 @@ class WInputProp extends BaseProp with ModelDriveProp {
 
   bool get isTextarea {
     return type == 'textarea';
+  }
+
+  updateModelValue() {
+    model = decode(_value.text);
+  }
+
+  updateTextValue() {
+    var selection = _value.selection;
+    _value.text = encode($model!);
+    _value.selection = selection;
   }
 }
 

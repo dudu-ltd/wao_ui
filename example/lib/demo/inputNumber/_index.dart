@@ -6,7 +6,7 @@ regist() {
   var inputNumberBasic = Demo(
     'inputNumberBasic',
     WInputNumber()
-      ..$props.value = 1
+      ..$props.model = 1
       ..$on.change = (v) => print(v),
     r'''
     WInputNumber()
@@ -18,7 +18,7 @@ regist() {
   var inputNumberDisabled = Demo(
     'inputNumberDisabled',
     WInputNumber()
-      ..$props.value = 1
+      ..$props.model = 1
       ..$props.disabled = true,
     r'''
     WInputNumber()
@@ -30,7 +30,7 @@ regist() {
   var inputNumberStep = Demo(
     'inputNumberStep',
     WInputNumber()
-      ..$props.value = 1
+      ..$props.model = 1
       ..$props.step = 5,
     r'''
     WInputNumber()
@@ -42,7 +42,7 @@ regist() {
   var inputNumberStepStrictly = Demo(
     'inputNumberStepStrictly',
     WInputNumber()
-      ..$props.value = 1
+      ..$props.model = 1
       ..$props.step = 2
       ..$props.stepStrictly = true,
     r'''
@@ -56,7 +56,7 @@ regist() {
   var inputNumberPrecision = Demo(
     'inputNumberPrecision',
     WInputNumber()
-      ..$props.value = 1
+      ..$props.model = 1
       ..$props.step = 0.1
       ..$props.precision = 2
       ..$props.max = 10,
@@ -71,7 +71,7 @@ regist() {
 
   var inputNumberSize1 = Demo(
     'inputNumberSize1',
-    WInputNumber()..$props.value = 1,
+    WInputNumber()..$props.model = 1,
     r'''
     WInputNumber()..$props.value = 1
     ''',
@@ -80,7 +80,7 @@ regist() {
   var inputNumberSize2 = Demo(
     'inputNumberSize2',
     WInputNumber()
-      ..$props.value = 1
+      ..$props.model = 1
       ..$props.size = 'medium',
     r'''
     WInputNumber()
@@ -92,7 +92,7 @@ regist() {
   var inputNumberSize3 = Demo(
     'inputNumberSize3',
     WInputNumber()
-      ..$props.value = 1
+      ..$props.model = 1
       ..$props.size = 'small',
     r'''
     WInputNumber()
@@ -104,7 +104,7 @@ regist() {
   var inputNumberSize4 = Demo(
     'inputNumberSize4',
     WInputNumber()
-      ..$props.value = 1
+      ..$props.model = 1
       ..$props.size = 'mini',
     r'''
     WInputNumber()
@@ -116,7 +116,7 @@ regist() {
   var inputNumberBtnPosition = Demo(
     'inputNumberBtnPosition',
     WInputNumber()
-      ..$props.value = 1
+      ..$props.model = 1
       ..$props.controlsPosition = 'right'
       ..$on.change = (v) => print(v),
     r'''

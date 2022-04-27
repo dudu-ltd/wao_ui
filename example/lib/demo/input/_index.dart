@@ -290,7 +290,7 @@ regist() {
     WInput()
       ..$props.type = 'text'
       ..$props.placeholder = '请输入内容'
-      ..$props.value = ''
+      ..$props.model = ''
       ..$props.maxlength = 10
       ..$props.showPassword = true,
     r'''
@@ -308,7 +308,7 @@ regist() {
     WInput()
       ..$props.type = 'textarea'
       ..$props.placeholder = '请输入内容'
-      ..$props.value = ''
+      ..$props.model = ''
       ..$props.maxlength = 30
       ..$props.showWordLimit = true,
     r'''

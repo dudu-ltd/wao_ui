@@ -7,7 +7,7 @@ class ApiInputNumber extends StatelessWidget {
 
   Widget get basic {
     return WInputNumber(
-      props: WInputNumberProp(value: 1),
+      props: WInputNumberProp(model: 1),
       on: WInputNumberOn(
         change: (v) {
           print(v);
@@ -18,25 +18,25 @@ class ApiInputNumber extends StatelessWidget {
 
   Widget get disabled {
     return WInputNumber(
-      props: WInputNumberProp(value: 1, disabled: true),
+      props: WInputNumberProp(model: 1, disabled: true),
     );
   }
 
   Widget get step {
     return WInputNumber(
-      props: WInputNumberProp(value: 1, step: 5),
+      props: WInputNumberProp(model: 1, step: 5),
     );
   }
 
   Widget get stepStrictly {
     return WInputNumber(
-      props: WInputNumberProp(value: 1, step: 2, stepStrictly: true),
+      props: WInputNumberProp(model: 1, step: 2, stepStrictly: true),
     );
   }
 
   Widget get precision {
     return WInputNumber(
-      props: WInputNumberProp(value: 1, step: 0.1, precision: 2, max: 10),
+      props: WInputNumberProp(model: 1, step: 0.1, precision: 2, max: 10),
     );
   }
 
@@ -44,16 +44,16 @@ class ApiInputNumber extends StatelessWidget {
     return Row(
       children: [
         WInputNumber(
-          props: WInputNumberProp(value: 1),
+          props: WInputNumberProp(model: 1),
         ),
         WInputNumber(
-          props: WInputNumberProp(value: 1, size: 'medium'),
+          props: WInputNumberProp(model: 1, size: 'medium'),
         ),
         WInputNumber(
-          props: WInputNumberProp(value: 1, size: 'small'),
+          props: WInputNumberProp(model: 1, size: 'small'),
         ),
         WInputNumber(
-          props: WInputNumberProp(value: 1, size: 'mini'),
+          props: WInputNumberProp(model: 1, size: 'mini'),
         ),
       ],
     );
@@ -61,7 +61,7 @@ class ApiInputNumber extends StatelessWidget {
 
   Widget get btnPosition {
     return WInputNumber(
-      props: WInputNumberProp(value: 1, controlsPosition: 'right'),
+      props: WInputNumberProp(model: 1, controlsPosition: 'right'),
       on: WInputNumberOn(
         change: (v) {
           print(v);

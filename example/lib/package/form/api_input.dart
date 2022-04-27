@@ -256,7 +256,7 @@ class ApiInput extends StatelessWidget {
           props: WInputProp(
             type: 'text',
             placeholder: '请输入内容',
-            value: '',
+            model: '',
             maxlength: 10,
             showWordLimit: true,
           ),
@@ -265,7 +265,7 @@ class ApiInput extends StatelessWidget {
           props: WInputProp(
             type: 'textarea',
             placeholder: '请输入内容',
-            value: '',
+            model: '',
             maxlength: 30,
             showWordLimit: true,
           ),
