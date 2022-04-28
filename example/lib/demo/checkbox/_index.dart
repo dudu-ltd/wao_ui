@@ -7,7 +7,7 @@ regist() {
   var checkboxBasic = Demo(
     'checkboxBasic',
     WCheckbox()
-      ..$props.value = ValueNotifier(true)
+      ..$props.model = true
       ..$slots.$ = '备选项',
     r'''
     WCheckbox()
@@ -21,11 +21,11 @@ regist() {
     Row(
       children: [
         WCheckbox()
-          ..$props.value = ValueNotifier(false)
+          ..$props.model = false
           ..$props.disabled = true
           ..$slots.$ = '备选项',
         WCheckbox()
-          ..$props.value = ValueNotifier(true)
+          ..$props.model = true
           ..$props.disabled = true
           ..$slots.$ = '备选项',
       ],
@@ -49,7 +49,7 @@ regist() {
   var checkboxMultiGroup = Demo(
     'checkboxMultiGroup',
     WCheckboxGroup()
-      ..$props.value = ValueNotifier(['选中且禁用', '复选框 A'])
+      ..$props.model = ['选中且禁用', '复选框 A']
       ..$slots.$ = [
         WCheckbox()..$props.label = '复选框A',
         WCheckbox()..$props.label = '复选框B',
@@ -79,23 +79,25 @@ regist() {
   );
 
   List<String> cityOptions = ['上海', '北京', '广州', '深圳'];
-  var checkAll = ValueNotifier(false);
-  var checkedCities = ValueNotifier(['上海', '北京']);
+  var checkAll = false;
+  var checkedCities = ['上海', '北京'];
   var selectAllProp = WCheckboxProp(
-    value: checkAll,
+    model: checkAll,
     indeterminate: true,
   );
+
+  WCheckboxGroup? cbg = null;
   var checkboxIndeterminate = Demo(
     'checkboxIndeterminate',
     Column(children: [
       WCheckbox(props: selectAllProp)
         ..$slots.$ = '全选'
         ..$on.change = (val) {
-          checkedCities.value = val ? cityOptions.sublist(0) : [];
+          cbg?.$props.model = val ? cityOptions.sublist(0) : [];
           selectAllProp.indeterminate = false;
         },
-      WCheckboxGroup()
-        ..$props.value = checkedCities
+      cbg = WCheckboxGroup()
+        ..$props.model = checkedCities
         ..$slots.$ = List.generate(
           cityOptions.length,
           (index) => WCheckbox()
@@ -104,7 +106,7 @@ regist() {
         )
         ..$on.change = (val) {
           var checkedCount = val.length;
-          checkAll.value = checkedCount == cityOptions.length;
+          selectAllProp.model = checkedCount == cityOptions.length;
           selectAllProp.indeterminate =
               checkedCount > 0 && checkedCount < cityOptions.length;
         },
@@ -145,7 +147,7 @@ regist() {
   var checkboxSizeLimit = Demo(
     'checkboxSizeLimit',
     WCheckboxGroup()
-      ..$props.value = checkedCities
+      ..$props.model = checkedCities
       ..$props.min = 1
       ..$props.max = 3
       ..$slots.$ = List.generate(
@@ -179,11 +181,11 @@ regist() {
     ''',
   );
 
-  var checkedCities1 = ValueNotifier(['上海']);
+  var checkedCities1 = ['上海'];
   var checkboxButton1 = Demo(
     'checkboxButton1',
     WCheckboxGroup()
-      ..$props.value = checkedCities1
+      ..$props.model = checkedCities1
       ..$slots.$ = List.generate(cityOptions.length, (index) {
         var city = cityOptions[index];
         return WCheckboxButton()
@@ -204,11 +206,11 @@ regist() {
     ''',
   );
 
-  var checkedCities2 = ValueNotifier(['上海']);
+  var checkedCities2 = ['上海'];
   var checkboxButton2 = Demo(
     'checkboxButton2',
     WCheckboxGroup()
-      ..$props.value = checkedCities2
+      ..$props.model = checkedCities2
       ..$props.size = 'medium'
       ..$slots.$ = List.generate(cityOptions.length, (index) {
         var city = cityOptions[index];
@@ -231,11 +233,11 @@ regist() {
     ''',
   );
 
-  var checkedCities3 = ValueNotifier(['上海']);
+  var checkedCities3 = ['上海'];
   var checkboxButton3 = Demo(
     'checkboxButton3',
     WCheckboxGroup()
-      ..$props.value = checkedCities3
+      ..$props.model = checkedCities3
       ..$props.size = 'small'
       ..$slots.$ = List.generate(cityOptions.length, (index) {
         var city = cityOptions[index];
@@ -258,11 +260,11 @@ regist() {
     ''',
   );
 
-  var checkedCities4 = ValueNotifier(['上海']);
+  var checkedCities4 = ['上海'];
   var checkboxButton4 = Demo(
     'checkboxButton4',
     WCheckboxGroup()
-      ..$props.value = checkedCities4
+      ..$props.model = checkedCities4
       ..$props.size = 'mini'
       ..$slots.$ = List.generate(cityOptions.length, (index) {
         var city = cityOptions[index];
@@ -288,7 +290,7 @@ regist() {
   var checkboxBorder1 = Demo(
     'checkboxBorder1',
     WCheckboxGroup()
-      ..$props.value = checkedCities1
+      ..$props.model = checkedCities1
       ..$slots.$ = List.generate(cityOptions.length, (index) {
         var city = cityOptions[index];
         return WCheckbox()
@@ -314,7 +316,7 @@ regist() {
   var checkboxBorder2 = Demo(
     'checkboxBorder2',
     WCheckboxGroup()
-      ..$props.value = checkedCities2
+      ..$props.model = checkedCities2
       ..$props.size = 'medium'
       ..$slots.$ = List.generate(cityOptions.length, (index) {
         var city = cityOptions[index];
@@ -342,7 +344,7 @@ regist() {
   var checkboxBorder3 = Demo(
     'checkboxBorder3',
     WCheckboxGroup()
-      ..$props.value = checkedCities3
+      ..$props.model = checkedCities3
       ..$props.size = 'small'
       ..$slots.$ = List.generate(cityOptions.length, (index) {
         var city = cityOptions[index];
@@ -369,7 +371,7 @@ regist() {
   var checkboxBorder4 = Demo(
     'checkboxBorder4',
     WCheckboxGroup()
-      ..$props.value = checkedCities4
+      ..$props.model = checkedCities4
       ..$props.size = 'mini'
       ..$slots.$ = List.generate(cityOptions.length, (index) {
         var city = cityOptions[index];

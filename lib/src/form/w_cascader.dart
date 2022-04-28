@@ -664,7 +664,7 @@ class WCascaderNode extends WStatelessWidget<WCascaderNodeOn, WCascaderNodeProp,
   Widget get complexOption {
     if ($props.props.multiple) {
       return WCheckbox(
-        props: WCheckboxProp(value: ValueNotifier([_isSelected]), label: true),
+        props: WCheckboxProp(model: [_isSelected], label: true),
         slots: WCheckboxSlot(
           $props.props.getLabel($props.option),
         ),

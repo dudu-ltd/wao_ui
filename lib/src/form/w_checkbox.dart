@@ -35,7 +35,7 @@ class _WCheckboxState extends WState<WCheckbox> {
   void initState() {
     super.initState();
     widget.$props._indeterminate.addListener(valueChange);
-    widget.$props.value.addListener(valueChange);
+    widget.$props.$addModelListener(valueChange);
   }
 
   @override
@@ -54,19 +54,18 @@ class _WCheckboxState extends WState<WCheckbox> {
               ? null
               : (() {
                   print('change checkbox');
-                  print(widget.$props.value.value);
-                  if (widget.$props.value.value is bool) {
-                    widget.$props.value.value = !widget.$props.value.value;
+                  print(widget.$props.model);
+                  if (widget.$props.model is bool) {
+                    widget.$props.model = !widget.$props.model;
                   } else {
-                    if (widget.$props.value.value
-                        .contains(widget.$props.label)) {
-                      widget.$props.value.value.remove(widget.$props.label);
+                    if (widget.$props.model.contains(widget.$props.label)) {
+                      widget.$props.model.remove(widget.$props.label);
                     } else {
-                      widget.$props.value.value.add(widget.$props.label);
+                      widget.$props.model.add(widget.$props.label);
                     }
                   }
-                  widget.$props.value.notifyListeners();
-                  widget.$on.change?.call(widget.$props.value.value);
+                  widget.$props.$modelNotifyListeners();
+                  widget.$on.change?.call(widget.$props.model);
                 }),
           child: borderWrapper(
             Padding(
@@ -112,7 +111,7 @@ class _WCheckboxState extends WState<WCheckbox> {
   @override
   void dispose() {
     widget.$props._indeterminate.removeListener(valueChange);
-    widget.$props.value.removeListener(valueChange);
+    widget.$props.$removeModelListener(valueChange);
     super.dispose();
   }
 
@@ -170,8 +169,7 @@ class WCheckboxOn extends BaseOn {
   WCheckboxOn({this.change});
 }
 
-class WCheckboxProp extends BaseProp {
-  late ValueNotifier<dynamic> value;
+class WCheckboxProp extends BaseProp with ModelDriveProp {
   late dynamic label;
   late dynamic trueLabel;
   late dynamic falseLabel;
@@ -192,7 +190,7 @@ class WCheckboxProp extends BaseProp {
   }
 
   WCheckboxProp({
-    ValueNotifier<dynamic>? value,
+    dynamic model,
     dynamic label,
     dynamic trueLabel,
     dynamic falseLabel,
@@ -203,7 +201,8 @@ class WCheckboxProp extends BaseProp {
     bool? checked,
     bool? indeterminate,
   }) {
-    this.value = value ?? ValueNotifier([]);
+    assert(model == null || model is bool || model is List);
+    this.model = model ?? [];
     // 选中状态的值（只有在checkbox-group或者绑定对象类型为array时有效）
     this.label = label;
     this.disabled = disabled ?? false;
@@ -219,8 +218,8 @@ class WCheckboxProp extends BaseProp {
     _indeterminate = ValueNotifier(indeterminate ?? false);
   }
   bool get isSelected {
-    if (label == null && value.value is bool) return value.value;
-    return value.value.contains(label);
+    if (label == null && model is bool) return model;
+    return model.contains(label);
   }
 }
 
@@ -307,7 +306,8 @@ class WCheckboxGroup extends WStatelessWidget<WCheckboxGroupOn,
       SlotTranslator(
         WCheckbox,
         (child, i, c, l) {
-          child.$props.value = $props.value;
+          child as WCheckbox;
+          child.$props.$model = $props.$model;
           child.$props.disabled |= $props.disabled;
           child.$props._disabled = child.$props.disabled;
           child.$props.size = $props.size;
@@ -317,7 +317,8 @@ class WCheckboxGroup extends WStatelessWidget<WCheckboxGroupOn,
       SlotTranslator(
         WCheckboxButton,
         (child, i, c, len) {
-          child.$props._value = $props.value;
+          child as WCheckboxButton;
+          child.$props.$model = $props.$model;
           child.$props.disabled |= $props.disabled;
           child.$props._disabled = child.$props.disabled;
           child.$props._size = $props.size;
@@ -331,8 +332,8 @@ class WCheckboxGroup extends WStatelessWidget<WCheckboxGroupOn,
 
   @override
   beforeBuild() {
-    $props.value.addListener(() {
-      $on.change?.call($props.value.value);
+    $props.$addModelListener(() {
+      $on.change?.call($props.model);
       sizeLimit();
     });
     sizeLimit();
@@ -366,8 +367,7 @@ class WCheckboxGroupOn extends BaseOn {
 // late num? max;
 // late Color textColor;
 // late Color fill;
-class WCheckboxGroupProp extends BaseProp {
-  late ValueNotifier<List> value;
+class WCheckboxGroupProp extends BaseProp with ModelDriveProp<List> {
   late String size;
   late bool disabled;
   late num min;
@@ -376,7 +376,7 @@ class WCheckboxGroupProp extends BaseProp {
   late Color fill;
 
   WCheckboxGroupProp({
-    ValueNotifier<List>? value,
+    List? model,
     String? size,
     bool? disabled,
     num? min,
@@ -384,7 +384,7 @@ class WCheckboxGroupProp extends BaseProp {
     String? textColor,
     String? fill,
   }) {
-    this.value = value ?? ValueNotifier([]);
+    this.model = model ?? [];
     this.size = size ?? 'medium';
     this.disabled = disabled ?? false;
     this.min = min ?? 0;
@@ -426,7 +426,7 @@ class _WCheckboxButtonState extends WState<WCheckboxButton> {
   @override
   void initState() {
     super.initState();
-    widget.$props._value.addListener(() {
+    widget.$props.$addModelListener(() {
       setState(() {});
     });
   }
@@ -437,16 +437,16 @@ class _WCheckboxButtonState extends WState<WCheckboxButton> {
       onPointerUp: widget.$props.disabled
           ? null
           : ((e) {
-              if (widget.$props._value.value is bool) {
-                widget.$props._value.value = !widget.$props._value.value;
+              if (widget.$props.model is bool) {
+                widget.$props.model = !widget.$props.model;
               } else {
-                if (widget.$props._value.value.contains(widget.$props.label)) {
-                  widget.$props._value.value.remove(widget.$props.label);
+                if (widget.$props.model.contains(widget.$props.label)) {
+                  widget.$props.model.remove(widget.$props.label);
                 } else {
-                  widget.$props._value.value.add(widget.$props.label);
+                  widget.$props.model.add(widget.$props.label);
                 }
               }
-              widget.$props._value.notifyListeners();
+              widget.$props.$modelNotifyListeners();
             }),
       child: MouseStateBuilder(
         builder: (context, state) {
@@ -532,7 +532,7 @@ class _WCheckboxButtonState extends WState<WCheckboxButton> {
 
 class WCheckboxButtonOn extends BaseOn {}
 
-class WCheckboxButtonProp extends BaseProp {
+class WCheckboxButtonProp extends BaseProp with ModelDriveProp {
   late dynamic label;
   late dynamic trueLabel;
   late dynamic falseLabel;
@@ -542,7 +542,6 @@ class WCheckboxButtonProp extends BaseProp {
   late bool checked;
   late bool isFirst;
   late bool isLast;
-  late ValueNotifier _value;
   String? _size;
 
   WCheckboxButtonProp({
@@ -566,8 +565,8 @@ class WCheckboxButtonProp extends BaseProp {
     this.isLast = isLast ?? false;
   }
   bool get isSelected {
-    if (label == null && _value.value is bool) return _value.value;
-    return _value.value.contains(label);
+    if (label == null && model is bool) return model;
+    return model.contains(label);
   }
 }
 

@@ -6,7 +6,7 @@ class ApiCheckbox extends StatelessWidget {
 
   WCheckbox get basic {
     return WCheckbox(
-      props: WCheckboxProp(value: ValueNotifier(true)),
+      props: WCheckboxProp(model: true),
       slots: WCheckboxSlot('备选项'),
     );
   }
@@ -15,11 +15,11 @@ class ApiCheckbox extends StatelessWidget {
     return Row(
       children: [
         WCheckbox(
-          props: WCheckboxProp(value: ValueNotifier(false), disabled: true),
+          props: WCheckboxProp(model: false, disabled: true),
           slots: WCheckboxSlot('备选项'),
         ),
         WCheckbox(
-          props: WCheckboxProp(value: ValueNotifier(true), disabled: true),
+          props: WCheckboxProp(model: true, disabled: true),
           slots: WCheckboxSlot('备选项'),
         )
       ],
@@ -29,7 +29,7 @@ class ApiCheckbox extends StatelessWidget {
   WCheckboxGroup get multiCheckGroup {
     return WCheckboxGroup(
       props: WCheckboxGroupProp(
-        value: ValueNotifier(['选中且禁用', '复选框 A']),
+        model: ['选中且禁用', '复选框 A'],
       ),
       slots: WCheckboxGroupSlot([
         WCheckbox(
@@ -54,26 +54,27 @@ class ApiCheckbox extends StatelessWidget {
   List<String> cityOptions = ['上海', '北京', '广州', '深圳'];
   Widget get indeterminate {
     var checkAll = ValueNotifier(false);
-    var checkedCities = ValueNotifier(['上海', '北京']);
+    var checkedCities = ['上海', '北京'];
     var selectAllProp = WCheckboxProp(
-      value: checkAll,
+      model: checkAll,
       indeterminate: true,
     );
+    WCheckbox? cb = null;
     return Column(
       children: [
-        WCheckbox(
+        cb = WCheckbox(
           props: selectAllProp,
           slots: WCheckboxSlot('全选'),
           on: WCheckboxOn(
             change: (val) {
-              checkedCities.value = val ? cityOptions.sublist(0) : [];
+              cb?.$props.model = val ? cityOptions.sublist(0) : [];
               selectAllProp.indeterminate = false;
             },
           ),
         ),
         WCheckboxGroup(
           props: WCheckboxGroupProp(
-            value: checkedCities,
+            model: checkedCities,
           ),
           slots: WCheckboxGroupSlot(
             List.generate(cityOptions.length, (index) {
@@ -98,10 +99,10 @@ class ApiCheckbox extends StatelessWidget {
   }
 
   Widget get sizeLimit {
-    var checkedCities = ValueNotifier(['上海', '北京']);
+    var checkedCities = ['上海', '北京'];
     return WCheckboxGroup(
       props: WCheckboxGroupProp(
-        value: checkedCities,
+        model: checkedCities,
         min: 1,
         max: 2,
       ),
@@ -118,15 +119,15 @@ class ApiCheckbox extends StatelessWidget {
   }
 
   Widget get button {
-    var checkedCities1 = ValueNotifier(['上海']);
-    var checkedCities2 = ValueNotifier(['上海']);
-    var checkedCities3 = ValueNotifier(['上海']);
-    var checkedCities4 = ValueNotifier(['上海']);
+    var checkedCities1 = ['上海'];
+    var checkedCities2 = ['上海'];
+    var checkedCities3 = ['上海'];
+    var checkedCities4 = ['上海'];
     return Column(
       children: [
         WCheckboxGroup(
           props: WCheckboxGroupProp(
-            value: checkedCities1,
+            model: checkedCities1,
           ),
           slots: WCheckboxGroupSlot(
             List.generate(cityOptions.length, (index) {
@@ -140,7 +141,7 @@ class ApiCheckbox extends StatelessWidget {
         ),
         WCheckboxGroup(
           props: WCheckboxGroupProp(
-            value: checkedCities2,
+            model: checkedCities2,
             size: "medium",
           ),
           slots: WCheckboxGroupSlot(
@@ -155,7 +156,7 @@ class ApiCheckbox extends StatelessWidget {
         ),
         WCheckboxGroup(
           props: WCheckboxGroupProp(
-            value: checkedCities3,
+            model: checkedCities3,
             size: 'small',
           ),
           slots: WCheckboxGroupSlot(
@@ -170,7 +171,7 @@ class ApiCheckbox extends StatelessWidget {
         ),
         WCheckboxGroup(
           props: WCheckboxGroupProp(
-            value: checkedCities4,
+            model: checkedCities4,
             disabled: true,
             size: 'mini',
           ),
@@ -189,15 +190,15 @@ class ApiCheckbox extends StatelessWidget {
   }
 
   Widget get border {
-    var checkedCities1 = ValueNotifier(['上海']);
-    var checkedCities2 = ValueNotifier(['上海']);
-    var checkedCities3 = ValueNotifier(['上海']);
-    var checkedCities4 = ValueNotifier(['上海']);
+    var checkedCities1 = ['上海'];
+    var checkedCities2 = ['上海'];
+    var checkedCities3 = ['上海'];
+    var checkedCities4 = ['上海'];
     return Column(
       children: [
         WCheckboxGroup(
           props: WCheckboxGroupProp(
-            value: checkedCities1,
+            model: checkedCities1,
           ),
           slots: WCheckboxGroupSlot(
             List.generate(cityOptions.length, (index) {
@@ -211,7 +212,7 @@ class ApiCheckbox extends StatelessWidget {
         ),
         WCheckboxGroup(
           props: WCheckboxGroupProp(
-            value: checkedCities2,
+            model: checkedCities2,
             size: "medium",
           ),
           slots: WCheckboxGroupSlot(
@@ -226,7 +227,7 @@ class ApiCheckbox extends StatelessWidget {
         ),
         WCheckboxGroup(
           props: WCheckboxGroupProp(
-            value: checkedCities3,
+            model: checkedCities3,
             size: 'small',
           ),
           slots: WCheckboxGroupSlot(
@@ -245,7 +246,7 @@ class ApiCheckbox extends StatelessWidget {
         ),
         WCheckboxGroup(
           props: WCheckboxGroupProp(
-            value: checkedCities4,
+            model: checkedCities4,
             disabled: true,
             size: 'mini',
           ),
