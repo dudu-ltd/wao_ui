@@ -156,7 +156,7 @@ class _IndexPageState extends State<IndexPage>
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'form/WInput',
+      initialRoute: 'form/WUpload',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -444,7 +444,7 @@ regist() {}''');
           {"id": "WSwitch", "text": "开关", "finish": true},
           {"id": "WTimePicker", "text": "时间选择器"},
           {"id": "WTransfer", "text": "穿梭框"},
-          {"id": "WUpload", "text": "文件上传"}
+          {"id": "WUpload", "text": "文件上传", "finish": true}
         ]
       },
       // {

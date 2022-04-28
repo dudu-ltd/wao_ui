@@ -102,7 +102,7 @@ class _WUploadState extends WState<WUpload> {
       bindPicker(widget.$slots.trigger!, _triggers);
     }
 
-    if (widget.defaultSlot.isEmpty) {
+    if (widget.defaultSlot.isNotEmpty) {
       for (var child in widget.defaultSlot) {
         if (widget.$slots.trigger == null) {
           bindPicker(child, _triggers);
