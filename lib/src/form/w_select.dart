@@ -194,9 +194,8 @@ class _WSelectState extends WState<WSelect>
       on: closable
           ? WTagOn(
               close: () {
-                widget.$props.$valueListener.value.remove(m['k']);
-                widget.$props.value =
-                    widget.$props.$valueListener.value.sublist(0);
+                widget.$props.model.remove(m['k']);
+                widget.$props.value = widget.$props.model.sublist(0);
                 setState(() {});
               },
             )
@@ -305,7 +304,7 @@ class _WSelectState extends WState<WSelect>
   }
 
   setEvent() {
-    widget.$props.$valueListener.addListener(() {
+    widget.$props.$addModelListener(() {
       if (widget.$props.automaticDropup && !widget.$props.multiple) hidePanel();
     });
     if (widget.defaultSlot.isNotEmpty) {
@@ -320,7 +319,7 @@ class _WSelectState extends WState<WSelect>
           slot.$props.$multiple = widget.$props.multiple;
           selectedArr.add(slot);
           var fn = slot.$on.click ?? (e) {};
-          slot.$props.$valueListener = widget.$props.$valueListener;
+          slot.$props.$model = widget.$props.$model;
           slot.$on.click = (e) {
             onSelect(e);
             fn(e);
@@ -354,11 +353,11 @@ class _WSelectState extends WState<WSelect>
 
   clearValue() {
     if (widget.$props.multiple) {
-      widget.$props.$valueListener.value.clear();
+      widget.$props.model.clear();
     } else {
-      widget.$props.$valueListener.value = null;
+      widget.$props.model = null;
     }
-    widget.$props.$valueListener.notifyListeners();
+    widget.$props.$modelNotifyListeners();
     setState(() {});
   }
 
@@ -388,7 +387,7 @@ class _WSelectState extends WState<WSelect>
       var v = widget.$props.value as List;
       var contains = v.contains(option.value);
       contains ? v.remove(option.value) : v.add(option.value);
-      widget.$props.value = widget.$props.$valueListener.value;
+      widget.$props.value = widget.$props.model;
     } else {
       widget.$props.value = option.value;
     }
@@ -498,7 +497,6 @@ class WSelectProp extends WInputProp {
   late bool popperAppendToBody;
   late bool automaticDropdown;
   late bool automaticDropup;
-  late ValueNotifier<dynamic> $valueListener;
 
   WSelectProp({
     dynamic value,
@@ -528,7 +526,7 @@ class WSelectProp extends WInputProp {
     bool? popperAppendToBody,
     bool? automaticDropdown,
     bool? automaticDropup,
-    ValueNotifier<dynamic>? $valueListener,
+    ValueNotifier<dynamic>? $model,
   }) : super(
           disabled: disabled,
           size: size,
@@ -537,10 +535,10 @@ class WSelectProp extends WInputProp {
           autocomplete: autocomplete,
           autoComplete: autoComplete,
           placeholder: placeholder,
-          $model: $valueListener,
+          $model: $model,
         ) {
     this.multiple = multiple ?? false;
-    this.$valueListener = super.$model = $valueListener ?? ValueNotifier(value);
+    this.$model = super.$model = $model ?? ValueNotifier(value);
     this.value = value;
     this.disabled = disabled ?? false;
     this.valueKey = valueKey ?? 'value';
@@ -569,12 +567,12 @@ class WSelectProp extends WInputProp {
 
   @override
   set value(value) {
-    $valueListener.value = value;
+    model = value;
   }
 
   @override
   dynamic get value {
-    return $valueListener.value;
+    return model;
   }
 }
 
@@ -690,7 +688,7 @@ class WOption extends WStatelessWidget<WOptionOn, WOptionProp, WOptionSlot,
     return !$props.disabled
         ? () {
             $on.click?.call($props);
-            if ($props.$multiple) $props.$valueListener.notifyListeners();
+            if ($props.$multiple) $props.$modelNotifyListeners();
           }
         : null;
   }
@@ -699,7 +697,7 @@ class WOption extends WStatelessWidget<WOptionOn, WOptionProp, WOptionSlot,
     return !$props.disabled
         ? (b) {
             $on.hover?.call($props);
-            if ($props.$multiple) $props.$valueListener.notifyListeners();
+            if ($props.$multiple) $props.$modelNotifyListeners();
           }
         : null;
   }
@@ -736,8 +734,7 @@ class WOptionOn extends BaseOn {
   WOptionOn({this.click, this.hover});
 }
 
-class WOptionProp extends BaseProp {
-  late ValueNotifier $valueListener;
+class WOptionProp extends BaseProp with ModelDriveProp {
   late bool $multiple;
   late dynamic value;
   late dynamic label;
@@ -746,27 +743,23 @@ class WOptionProp extends BaseProp {
     this.value,
     this.label,
     this.disabled = false,
-    ValueNotifier? $valueListener,
+    ValueNotifier? $model,
     bool? multiple,
     dynamic selectValue,
   }) {
     $multiple = multiple ?? false;
-    this.$valueListener = $valueListener ?? ValueNotifier(selectValue);
+    this.$model = $model ?? ValueNotifier(selectValue);
   }
 
   bool get isSelected {
     if (kDebugMode) {
       if ($multiple) {
-        print(
-            '${$valueListener.value} contains $value is ${$valueListener.value.contains(value)}');
+        print('${model} contains $value is ${model.contains(value)}');
       } else {
-        print(
-            '${$valueListener.value} equals $value = ${$valueListener.value == value}');
+        print('${model} equals $value = ${model == value}');
       }
     }
-    return $multiple
-        ? $valueListener.value.contains(value)
-        : $valueListener.value == value;
+    return $multiple ? model.contains(value) : model == value;
   }
 }
 

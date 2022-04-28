@@ -59,15 +59,14 @@ class _WCascaderState extends WState<WCascader> {
         return WCascaderPanel(
           props: WCascaderPanelProp(
             value: widget.$props.value,
-            $valueListener: widget.$props.$valueListener,
+            $model: widget.$props.$model,
             options: widget.$props.options,
             props: widget.$props.props,
           ),
         );
       },
       valueLabelsGetter: () {
-        if (widget.$props.$valueListener.value == null ||
-            widget.$props.$valueListener.value.isEmpty) {
+        if (widget.$props.model == null || widget.$props.model.isEmpty) {
           return [];
         }
         var result = [];
@@ -76,7 +75,7 @@ class _WCascaderState extends WState<WCascader> {
         var pickedLabels = [];
         var menus = [];
         widget.$props.props.getSelected(
-          widget.$props.$valueListener.value ?? [],
+          widget.$props.model ?? [],
           widget.$props.options,
           pickedOptions,
           pickedLabels,
@@ -85,16 +84,16 @@ class _WCascaderState extends WState<WCascader> {
         if (!isMultiple) {
           result.add(
             {
-              'k': widget.$props.$valueListener.value,
+              'k': widget.$props.model,
               'v': widget.$props.showAllLevels
                   ? pickedLabels.join(widget.$props.separator)
                   : pickedLabels.last
             },
           );
         } else {
-          widget.$props.$valueListener.value;
+          widget.$props.model;
           var index = 0;
-          for (var valueArr in widget.$props.$valueListener.value) {
+          for (var valueArr in widget.$props.model) {
             var labels = pickedLabels[index];
             result.add({
               'k': valueArr,
@@ -166,7 +165,7 @@ class WCascaderProp extends WSelectProp {
     num? debounce,
     List<dynamic> Function(dynamic)? beforeFilter,
     String? popperClass,
-    ValueNotifier? $valueListener,
+    ValueNotifier? $model,
     /**
      * 
      */
@@ -179,7 +178,7 @@ class WCascaderProp extends WSelectProp {
           collapseTags: collapseTags,
           filterable: filterable,
           popperClass: popperClass,
-          $valueListener: $valueListener,
+          $model: $model,
         ) {
     this.props = props ?? PanelPropDetail();
     super.multiple = this.props.multiple;
@@ -241,9 +240,8 @@ class _WCascaderPanelState extends WState<WCascaderPanel> {
   @override
   void initState() {
     super.initState();
-    List panelValuePicked = widget.$props.$valueListener.value == null
-        ? []
-        : [...widget.$props.$valueListener.value];
+    List panelValuePicked =
+        widget.$props.model == null ? [] : [...widget.$props.model];
     menus.add(widget.$props.options);
     widget.$props.props.getSelected(
       panelValuePicked,
@@ -339,12 +337,12 @@ class WCascaderPanelProp extends WCascaderProp {
     dynamic value,
     required List<dynamic> options,
     PanelPropDetail? props,
-    ValueNotifier<dynamic>? $valueListener,
+    ValueNotifier<dynamic>? $model,
   }) : super(
           options: options,
           props: props,
           value: value,
-          $valueListener: $valueListener,
+          $model: $model,
         );
 }
 
@@ -561,6 +559,7 @@ class WCascaderMenuOn extends BaseOn {
   WCascaderMenuOn({this.expand, this.click});
 }
 
+// TODO 排查为啥不需要使用 ModelDriveProp
 class WCascaderMenuProp extends BaseProp {
   late List<Map<String, dynamic>> options;
   late List picked;
@@ -721,6 +720,7 @@ class WCascaderNodeOn extends BaseOn {
   WCascaderNodeOn({this.expand, this.click});
 }
 
+// TODO 排查为啥不需要使用 ModelDriveProp
 class WCascaderNodeProp extends BaseProp {
   late Map<String, dynamic> option;
   late List picked;
