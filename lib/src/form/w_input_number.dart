@@ -164,8 +164,8 @@ class WInputNumberProp extends WInputProp {
           label: label,
           placeholder: placeholder,
           $textAlign: TextAlign.center,
+          model: model ?? 0,
         ) {
-    this.model = model ?? 0;
     this.step = step ?? 1;
     this.stepStrictly = stepStrictly ?? false;
     this.precision = precision ?? 0;
@@ -174,9 +174,12 @@ class WInputNumberProp extends WInputProp {
     this.label = label;
 
     encode = ($model) {
+      print('model value = ${$model.value}');
       return $model.value?.toStringAsFixed(this.precision);
     };
-    decode = (text) => double.parse(text);
+    decode = (text) {
+      return double.parse(text);
+    };
   }
 
   bool get controllerIsRight {

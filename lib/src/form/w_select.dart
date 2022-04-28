@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, implementation_imports
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -65,7 +66,7 @@ class _WSelectState extends WState<WSelect>
   Function(void Function())? panelSetState;
   BuildContext? panelContext;
 
-  late OverlayEntry panelOverlay;
+  OverlayEntry? panelOverlay;
 
   List selectedArr = [];
 
@@ -282,16 +283,17 @@ class _WSelectState extends WState<WSelect>
               children: widget.defaultSlot,
             ),
           );
-    return SizedBox(
-      width: panelMinWidth,
-      child: defaultPanelInside,
+    return Material(
+      child: SizedBox(
+        width: panelMinWidth,
+        child: defaultPanelInside,
+      ),
     );
   }
 
   @override
   void dispose() {
-    iconSpinController.removeListener(updatePanel);
-    panelHeightAnimation.removeListener(updatePanel);
+    iconSpinController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     hidePanelAction();
     super.dispose();
@@ -347,7 +349,7 @@ class _WSelectState extends WState<WSelect>
   }
 
   hidePanelAction() {
-    panelOverlay.remove();
+    panelOverlay?.remove();
   }
 
   clearValue() {
@@ -535,11 +537,10 @@ class WSelectProp extends WInputProp {
           autocomplete: autocomplete,
           autoComplete: autoComplete,
           placeholder: placeholder,
-          $valueNotifier: $valueListener,
+          $model: $valueListener,
         ) {
     this.multiple = multiple ?? false;
-    this.$valueListener =
-        super.$valueNotifier = $valueListener ?? ValueNotifier(value);
+    this.$valueListener = super.$model = $valueListener ?? ValueNotifier(value);
     this.value = value;
     this.disabled = disabled ?? false;
     this.valueKey = valueKey ?? 'value';

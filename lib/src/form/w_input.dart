@@ -5,6 +5,7 @@ import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
+import 'dart:convert';
 
 import '../../core/utils/collect_util.dart';
 
@@ -283,9 +284,7 @@ class WInputState extends WState<WInput> {
 
   bool get showClearIcon {
     var valueIsNotEmpty = widget.$props._value.text.isNotEmpty ||
-        (widget.$props.$valueNotifier != null &&
-            widget.$props.$valueNotifier!.value != null &&
-            widget.$props.$valueNotifier!.value.isNotEmpty);
+        (widget.$props.$model != null && widget.$props.$model!.value != null);
     return widget.$props.clearable &&
         valueIsNotEmpty &&
         isHover; //  || isFocus 聚焦时将不再响应清空按钮
@@ -369,7 +368,6 @@ class WInputOn extends BaseOn {
 
 class WInputProp extends BaseProp with ModelDriveProp {
   late String type;
-  late ValueNotifier? $valueNotifier;
   late TextEditingController _value;
   int? maxlength;
   int? minlength;
@@ -402,9 +400,12 @@ class WInputProp extends BaseProp with ModelDriveProp {
 
   TextAlign $textAlign;
 
-  String Function(ValueNotifier) encode = ($model) => $model.value.toString();
+  String Function(ValueNotifier) encode = ($model) {
+    var model = $model.value;
+    return model is String ? model : const JsonEncoder().convert(model);
+  };
 
-  dynamic Function(String) decode = (text) => text;
+  dynamic Function(String) decode = (text) => const JsonDecoder().convert(text);
 
   WInputProp({
     String? type,
@@ -437,19 +438,16 @@ class WInputProp extends BaseProp with ModelDriveProp {
     // ElementUI 中没有的属性，加了前缀 $ 以区分
     TextInputType? $keyboardType,
     this.$textAlign = TextAlign.left,
-    ValueNotifier? $valueNotifier,
+    ValueNotifier? $model,
   }) {
     this.type = type ?? 'text';
     _value = TextEditingController();
-
-    this.model = model;
+    this.$model = $model ?? this.$model;
 
     _value.addListener(updateModelValue);
     $addModelListener(updateTextValue);
-    _value.value =
-        TextEditingValue(text: this.model != null ? this.model.toString() : '');
+    this.model = model;
 
-    this.$valueNotifier = $valueNotifier;
     this.showWordLimit = showWordLimit ?? false;
     this.placeholder = placeholder ?? '';
     this.clearable = clearable ?? false;

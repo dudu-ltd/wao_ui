@@ -5,7 +5,7 @@ import '../demos.dart';
 regist() {
   var inputNumberBasic = Demo(
     'inputNumberBasic',
-    WInputNumber()
+    WInputNumber(props: WInputNumberProp(model: 3))
       ..$props.model = 1
       ..$on.change = (v) => print(v),
     r'''
