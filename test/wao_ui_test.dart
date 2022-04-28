@@ -80,7 +80,7 @@ void main() {
     var valueButtonSize1 = ValueNotifier('上海');
     element();
     var group = WRadioGroup()
-      ..$props.value = valueButtonSize1
+      ..$props.$model = valueButtonSize1
       ..$slots.$ = [
         WRadioButton()
           ..$props.label = '上海'

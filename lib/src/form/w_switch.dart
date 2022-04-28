@@ -43,14 +43,20 @@ class _WSwitchState extends WState<WSwitch>
   late Animation<Color?> animationColor;
 
   @override
+  void dispose() {
+    switchAnimation.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
-    widget.$props.valueNotifier.addListener(() {
+    widget.$props.$addModelListener(() {
       !widget.flutterStyle && isActive
           ? switchAnimation.forward()
           : switchAnimation.reverse();
       if (widget.flutterStyle) setState(() {});
-      widget.$on.change?.call(widget.$props.value);
+      widget.$on.change?.call(widget.$props.model);
     });
 
     switchAnimation = AnimationController(
@@ -144,7 +150,7 @@ class _WSwitchState extends WState<WSwitch>
 
   Widget get flutterSwitch {
     return Switch(
-      value: widget.$props.valueNotifier.value == widget.$props.valueArr[1],
+      value: widget.$props.model == widget.$props.valueArr[1],
       activeColor: activeColor,
       inactiveTrackColor: inactiveColor,
       inactiveThumbColor: Colors.white,
@@ -154,9 +160,8 @@ class _WSwitchState extends WState<WSwitch>
 
   void changeAction(e) {
     if (widget.$props.disabled) return;
-    var index =
-        widget.$props.valueArr.indexOf(widget.$props.valueNotifier.value);
-    widget.$props.value = widget.$props.valueArr[(index + 1) % 2];
+    var index = widget.$props.valueArr.indexOf(widget.$props.model);
+    widget.$props.model = widget.$props.valueArr[(index + 1) % 2];
   }
 
   Color disableColor(Color color) {
@@ -206,7 +211,7 @@ class _WSwitchState extends WState<WSwitch>
     return InkWell(
       child: child,
       onTap: () {
-        widget.$props.value = value;
+        widget.$props.model = value;
       },
     );
   }
@@ -230,9 +235,8 @@ class _WSwitchState extends WState<WSwitch>
   }
 
   get isActive {
-    return (widget.$props.valueNotifier.value is bool &&
-            widget.$props.valueNotifier.value) ||
-        widget.$props.valueNotifier.value == widget.$props.activeValue;
+    return (widget.$props.model is bool && widget.$props.model) ||
+        widget.$props.model == widget.$props.activeValue;
   }
 
   double get btnWidth {
@@ -270,8 +274,7 @@ class WSwitchOn extends BaseOn {
   WSwitchOn({this.change});
 }
 
-class WSwitchProp extends BaseProp {
-  late ValueNotifier<dynamic> valueNotifier;
+class WSwitchProp extends BaseProp with ModelDriveProp {
   late bool disabled;
   late num width;
   IconData? activeIconClass;
@@ -286,7 +289,7 @@ class WSwitchProp extends BaseProp {
   late bool validateEvent;
 
   WSwitchProp({
-    dynamic value,
+    dynamic model,
     bool? disabled,
     num? width,
     this.activeIconClass,
@@ -299,10 +302,10 @@ class WSwitchProp extends BaseProp {
     String? inactiveColor,
     this.name,
     bool? validateEvent,
-    ValueNotifier? valueNotifier,
+    ValueNotifier? $model,
   }) {
-    this.valueNotifier = valueNotifier ?? ValueNotifier(value ?? false);
-    this.value = value;
+    this.$model = $model ?? ValueNotifier(this.model ?? false);
+    this.model = model ?? this.model;
     this.disabled = disabled ?? false;
     this.width = width ?? 40;
     this.activeValue = activeValue ?? true;
@@ -314,14 +317,6 @@ class WSwitchProp extends BaseProp {
         ? ColorUtil.hexToColor(inactiveColor)
         : CfgGlobal.disabledColor.shade300;
     this.validateEvent = validateEvent ?? true;
-  }
-
-  set value(v) {
-    valueNotifier.value = v;
-  }
-
-  get value {
-    return valueNotifier.value;
   }
 
   List get valueArr {

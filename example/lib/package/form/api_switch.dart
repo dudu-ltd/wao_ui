@@ -12,7 +12,7 @@ class ApiSwitch extends StatelessWidget {
   Widget get basic {
     return WSwitch(
       props: WSwitchProp(
-        value: true,
+        model: true,
         activeColor: '#13ce66',
         inactiveColor: '#ff4949',
       ),
@@ -27,14 +27,14 @@ class ApiSwitch extends StatelessWidget {
         WSwitch(
           // flutterStyle: true,
           props: WSwitchProp(
-            value: true,
+            model: true,
             activeText: '按月付费',
             inactiveText: '按年付费',
           ),
         ),
         WSwitch(
           props: WSwitchProp(
-            value: true,
+            model: true,
             activeColor: '#13ce66',
             inactiveColor: '#ff4949',
             activeText: '按月付费',
@@ -49,7 +49,7 @@ class ApiSwitch extends StatelessWidget {
   Widget get valutRuntimeType {
     return WSwitch(
       props: WSwitchProp(
-        value: 100,
+        model: 100,
         activeColor: '#13ce66',
         inactiveColor: '#ff4949',
         activeValue: 100,
@@ -66,13 +66,13 @@ class ApiSwitch extends StatelessWidget {
       children: [
         WSwitch(
           props: WSwitchProp(
-            value: true,
+            model: true,
             disabled: true,
           ),
         ),
         WSwitch(
           props: WSwitchProp(
-            value: false,
+            model: false,
             disabled: true,
           ),
         )

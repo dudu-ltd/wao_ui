@@ -440,8 +440,8 @@ class WSliderProp extends BaseProp with ModelDriveProp {
     ValueNotifier? $model,
   }) : super() {
     this.range = range ?? false;
-    this.model = model ?? (this.range ? [0.0, 0.0] : 0.0);
     this.$model = $model;
+    this.model = model ?? this.model ?? (this.range ? [0.0, 0.0] : 0.0);
     this.min = min ?? 0;
     this.max = max ?? 100;
     this.disabled = disabled ?? false;

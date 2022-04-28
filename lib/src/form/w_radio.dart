@@ -203,8 +203,8 @@ class WRadioProp extends BaseProp with ModelDriveProp {
     String? size,
     String? name,
   }) {
-    this.$model = $model;
-    this.model = model;
+    this.$model = $model ?? this.$model;
+    this.model = model ?? this.model ?? false;
     this.disabled = disabled ?? false;
     this.border = border ?? false;
     this.size = size ?? 'medium';

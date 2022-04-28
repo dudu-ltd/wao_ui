@@ -14,7 +14,7 @@ regist() {
   var switchBasic2 = Demo(
     'switchBasic2',
     WSwitch()
-      ..$props.value = true
+      ..$props.model = true
       ..$props.activeColor = const Color(0xFF13ce66)
       ..$props.inactiveColor = const Color(0xffff4949),
     r'''
@@ -27,7 +27,7 @@ regist() {
   var switchText = Demo(
     'switchText',
     WSwitch()
-      ..$props.value = true
+      ..$props.model = true
       ..$props.activeText = '向左走'
       ..$props.inactiveText = '向右走',
     r'''
@@ -40,7 +40,7 @@ regist() {
   var switchTextColor = Demo(
     'switchTextColor',
     WSwitch()
-      ..$props.value = true
+      ..$props.model = true
       ..$props.activeText = '向左走'
       ..$props.inactiveText = '向右走'
       ..$props.activeColor = CfgGlobal.successColor
@@ -57,7 +57,7 @@ regist() {
   var switchValueType = Demo(
     'switchValueType',
     WSwitch()
-      ..$props.value = 100
+      ..$props.model = 100
       ..$props.activeColor = CfgGlobal.successColor
       ..$props.inactiveColor = CfgGlobal.dangerColor
       ..$props.activeValue = 100
@@ -74,7 +74,7 @@ regist() {
   var switchDisabled1 = Demo(
     'switchDisabled1',
     WSwitch()
-      ..$props.value = true
+      ..$props.model = true
       ..$props.disabled = true,
     r'''
     WSwitch()
@@ -85,7 +85,7 @@ regist() {
   var switchDisabled2 = Demo(
     'switchDisabled2',
     WSwitch()
-      ..$props.value = false
+      ..$props.model = false
       ..$props.disabled = true,
     r'''
     WSwitch()
