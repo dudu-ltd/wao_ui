@@ -673,7 +673,7 @@ class WCascaderNode extends WStatelessWidget<WCascaderNodeOn, WCascaderNodeProp,
     }
     if ($props.props.checkStrictly) {
       return WRadio(
-        props: WRadioProp(value: ValueNotifier(_isSelected), label: true),
+        props: WRadioProp($model: ValueNotifier(_isSelected), label: true),
         slots: WRadioSlot(
           $props.props.getLabel($props.option),
         ),

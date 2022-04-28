@@ -45,7 +45,7 @@ class _WRadioState extends WState<WRadio> {
   @override
   void initState() {
     super.initState();
-    widget.$props.value.addListener(valueChange);
+    widget.$props.$addModelListener(valueChange);
   }
 
   @override
@@ -60,7 +60,7 @@ class _WRadioState extends WState<WRadio> {
       onTap: widget.$props.disabled
           ? null
           : (() {
-              widget.$props.value.value = widget.$props.label;
+              widget.$props.model = widget.$props.label;
             }),
       child: borderWrapper(
         Padding(
@@ -101,7 +101,7 @@ class _WRadioState extends WState<WRadio> {
 
   @override
   void dispose() {
-    widget.$props.value.removeListener(valueChange);
+    widget.$props.$removeModelListener(valueChange);
     super.dispose();
   }
 
@@ -188,23 +188,23 @@ class WRadioOn extends BaseOn {
   Function? change;
 }
 
-class WRadioProp extends BaseProp {
-  late ValueNotifier value;
+class WRadioProp extends BaseProp with ModelDriveProp {
   late dynamic label;
   late bool disabled;
   late bool border;
   late String size;
   String? name;
   WRadioProp({
-    ValueNotifier? value,
-    dynamic label,
+    ValueNotifier? $model,
+    dynamic model,
+    this.label,
     bool? disabled,
     bool? border,
     String? size,
     String? name,
   }) {
-    this.value = value ?? ValueNotifier('');
-    this.label = label;
+    this.$model = $model;
+    this.model = model;
     this.disabled = disabled ?? false;
     this.border = border ?? false;
     this.size = size ?? 'medium';
@@ -212,7 +212,7 @@ class WRadioProp extends BaseProp {
   }
 
   bool get isSelected {
-    return value.value == label;
+    return model == label;
   }
 }
 
@@ -242,8 +242,9 @@ class WRadioGroup extends WStatelessWidget<WRadioGroupOn, WRadioGroupProp,
       SlotTranslator(
         WRadio,
         (slot, i, component, len) {
+          slot as WRadio;
           slot.$props
-            ..value = $props.value
+            ..$model = $props.$model
             ..disabled |= $props.disabled
             ..size = $props.size;
           slot as WRadio;
@@ -254,8 +255,9 @@ class WRadioGroup extends WStatelessWidget<WRadioGroupOn, WRadioGroupProp,
       SlotTranslator(
         WRadioButton,
         (slot, i, component, len) {
+          slot as WRadioButton;
           slot.$props
-            .._value = $props.value
+            ..$model = $props.$model
             ..disabled |= $props.disabled
             .._size = $props.size
             ..isFirst = i == 0
@@ -287,22 +289,25 @@ class WRadioGroup extends WStatelessWidget<WRadioGroupOn, WRadioGroupProp,
   }
 }
 
-class WRadioGroupOn extends BaseOn {}
+class WRadioGroupOn extends BaseOn {
+  Function()? change;
+}
 
-class WRadioGroupProp extends BaseProp {
-  late ValueNotifier value;
+class WRadioGroupProp extends BaseProp with ModelDriveProp {
   late String size;
   late bool disabled;
   late Color textColor;
   Color? fill;
   WRadioGroupProp({
-    ValueNotifier? value,
+    dynamic model,
+    ValueNotifier? $model,
     bool? disabled,
     String? size,
     String? textColor,
     String? fill,
   }) {
-    this.value = value ?? ValueNotifier('');
+    this.model = model;
+    this.$model = $model ?? this.$model;
     this.disabled = disabled ?? false;
     textColor = textColor ?? '#FFFFFF';
     this.textColor = ColorUtil.hexToColor(textColor);
@@ -320,7 +325,7 @@ class _WRadioButtonState extends WState<WRadioButton> {
   @override
   void initState() {
     super.initState();
-    widget.$props._value.addListener(() {
+    widget.$props.$addModelListener(() {
       setState(() {});
     });
   }
@@ -331,7 +336,7 @@ class _WRadioButtonState extends WState<WRadioButton> {
       onPointerUp: widget.$props.disabled
           ? (e) {}
           : ((e) {
-              widget.$props._value.value = widget.$props.label;
+              widget.$props.model = widget.$props.label;
             }),
       child: MouseStateBuilder(
         builder: (context, state) {
@@ -437,21 +442,24 @@ class WRadioButton extends WStatefulWidget<WRadioButtonOn, WRadioButtonProp,
 
 class WRadioButtonOn extends BaseOn {}
 
-class WRadioButtonProp extends BaseProp {
+class WRadioButtonProp extends BaseProp with ModelDriveProp {
   late dynamic label;
   late bool disabled;
   late bool isFirst;
   late bool isLast;
-  late ValueNotifier _value;
   String? _size;
   String? name;
   WRadioButtonProp({
+    ValueNotifier? $model,
+    dynamic model,
     dynamic label,
     bool? isFirst,
     bool? isLast,
     bool? disabled,
     String? name,
   }) {
+    this.$model = $model ?? this.$model;
+    this.model = model;
     this.label = label;
     this.disabled = disabled ?? false;
     this.isFirst = isFirst ?? false;
@@ -459,7 +467,7 @@ class WRadioButtonProp extends BaseProp {
     this.name = name ?? '';
   }
   bool get isSelected {
-    return _value.value == label;
+    return model == label;
   }
 }
 

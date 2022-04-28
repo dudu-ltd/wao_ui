@@ -130,7 +130,7 @@ class ApiTabs extends StatelessWidget {
     return Column(
       children: [
         WRadioGroup()
-          ..$props.value = position
+          ..$props.$model = position
           ..$slots.$ = [
             WRadioButton()
               ..$props.label = 'top'

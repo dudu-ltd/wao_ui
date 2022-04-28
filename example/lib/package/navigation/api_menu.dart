@@ -438,7 +438,7 @@ class ApiMenu extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         WRadioGroup(
-          props: WRadioGroupProp(value: isCollapse),
+          props: WRadioGroupProp($model: isCollapse),
           slots: WRadioGroupSlot([
             WRadioButton(
                 props: WRadioButtonProp(label: false),

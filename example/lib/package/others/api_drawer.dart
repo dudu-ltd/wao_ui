@@ -19,7 +19,7 @@ class ApiDrawer extends StatelessWidget {
         return Row(
           children: [
             WRadioGroup(
-              props: WRadioGroupProp(value: direction),
+              props: WRadioGroupProp($model: direction),
               slots: WRadioGroupSlot([
                 WRadio(
                   props: WRadioProp(label: 'ltr'),

@@ -11,11 +11,11 @@ regist() {
       mainAxisSize: MainAxisSize.min,
       children: [
         WRadio()
-          ..$props.value = value
+          ..$props.$model = value
           ..$props.label = '1'
           ..$slots.$ = '选项1',
         WRadio()
-          ..$props.value = value
+          ..$props.$model = value
           ..$props.label = '2'
           ..$slots.$ = '选项2'
       ],
@@ -45,12 +45,12 @@ regist() {
     Row(
       children: [
         WRadio()
-          ..$props.value = valueDisabled
+          ..$props.$model = valueDisabled
           ..$props.disabled = true
           ..$props.label = '禁用'
           ..$slots.$ = '选项1',
         WRadio()
-          ..$props.value = valueDisabled
+          ..$props.$model = valueDisabled
           ..$props.disabled = true
           ..$props.label = '选中且禁用'
           ..$slots.$ = '选项2',
@@ -113,7 +113,7 @@ regist() {
   var radioButtonGroupSize1 = Demo(
     'radioButtonGroupSize1',
     WRadioGroup()
-      ..$props.value = valueButtonSize1
+      ..$props.$model = valueButtonSize1
       ..$slots.$ = [
         WRadioButton()
           ..$props.label = '上海'
@@ -154,7 +154,7 @@ regist() {
   var radioButtonGroupSize2 = Demo(
     'radioButtonGroupSize2',
     WRadioGroup()
-      ..$props.value = valueButtonSize2
+      ..$props.$model = valueButtonSize2
       ..$props.size = 'medium'
       ..$slots.$ = [
         WRadioButton()
@@ -196,7 +196,7 @@ regist() {
   var radioButtonGroupSize3 = Demo(
     'radioButtonGroupSize3',
     WRadioGroup()
-      ..$props.value = valueButtonSize3
+      ..$props.$model = valueButtonSize3
       ..$props.size = 'small'
       ..$slots.$ = [
         WRadioButton()
@@ -238,7 +238,7 @@ regist() {
   var radioButtonGroupSize4 = Demo(
     'radioButtonGroupSize4',
     WRadioGroup()
-      ..$props.value = valueButtonSize4
+      ..$props.$model = valueButtonSize4
       ..$props.size = 'mini'
       ..$slots.$ = [
         WRadioButton()
@@ -283,17 +283,17 @@ regist() {
     Row(
       children: [
         WRadio()
-          ..$props.value = value1
+          ..$props.$model = value1
           ..$props.label = '1'
           ..$props.border = true
           ..$slots.$ = 'A',
         WRadio()
-          ..$props.value = value1
+          ..$props.$model = value1
           ..$props.label = '2'
           ..$props.border = true
           ..$slots.$ = 'B',
         WRadio()
-          ..$props.value = value1
+          ..$props.$model = value1
           ..$props.label = '3'
           ..$props.border = true
           ..$slots.$ = '钝角'
@@ -328,19 +328,19 @@ regist() {
     Row(
       children: [
         WRadio()
-          ..$props.value = value2
+          ..$props.$model = value2
           ..$props.label = '1'
           ..$props.border = true
           ..$props.size = 'medium'
           ..$slots.$ = 'A',
         WRadio()
-          ..$props.value = value2
+          ..$props.$model = value2
           ..$props.label = '2'
           ..$props.border = true
           ..$props.size = 'medium'
           ..$slots.$ = 'B',
         WRadio()
-          ..$props.value = value2
+          ..$props.$model = value2
           ..$props.label = '3'
           ..$props.border = true
           ..$props.size = 'medium'
@@ -379,19 +379,19 @@ regist() {
     Row(
       children: [
         WRadio()
-          ..$props.value = value3
+          ..$props.$model = value3
           ..$props.label = '1'
           ..$props.border = true
           ..$props.size = 'small'
           ..$slots.$ = 'A',
         WRadio()
-          ..$props.value = value3
+          ..$props.$model = value3
           ..$props.label = '2'
           ..$props.border = true
           ..$props.size = 'small'
           ..$slots.$ = 'B',
         WRadio()
-          ..$props.value = value3
+          ..$props.$model = value3
           ..$props.label = '3'
           ..$props.border = true
           ..$props.size = 'small'
@@ -432,19 +432,19 @@ regist() {
     Row(
       children: [
         WRadio()
-          ..$props.value = value4
+          ..$props.$model = value4
           ..$props.label = '1'
           ..$props.border = true
           ..$props.size = 'mini'
           ..$slots.$ = 'A',
         WRadio()
-          ..$props.value = value4
+          ..$props.$model = value4
           ..$props.label = '2'
           ..$props.border = true
           ..$props.size = 'small'
           ..$slots.$ = 'B',
         WRadio()
-          ..$props.value = value4
+          ..$props.$model = value4
           ..$props.label = '3'
           ..$props.border = true
           ..$props.size = 'small'

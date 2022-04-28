@@ -42,14 +42,14 @@ class ApiRadio extends StatelessWidget {
     return [
       WRadio(
         props: WRadioProp(
-          value: value,
+          $model: value,
           label: '1',
         ),
         slots: WRadioSlot('备选项1'),
       ),
       WRadio(
         props: WRadioProp(
-          value: value,
+          $model: value,
           label: '2',
         ),
         slots: WRadioSlot('备选项1'),
@@ -62,7 +62,7 @@ class ApiRadio extends StatelessWidget {
     return [
       WRadio(
         props: WRadioProp(
-          value: value,
+          $model: value,
           disabled: true,
           label: '禁用',
         ),
@@ -70,7 +70,7 @@ class ApiRadio extends StatelessWidget {
       ),
       WRadio(
         props: WRadioProp(
-          value: value,
+          $model: value,
           disabled: true,
           label: '选中且禁用',
         ),
@@ -109,7 +109,7 @@ class ApiRadio extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: WRadioGroup(
-            props: WRadioGroupProp(value: value1),
+            props: WRadioGroupProp($model: value1),
             slots: WRadioGroupSlot([
               WRadioButton(
                   props: WRadioButtonProp(label: '上海'),
@@ -129,7 +129,7 @@ class ApiRadio extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: WRadioGroup(
-            props: WRadioGroupProp(value: value2, size: 'medium'),
+            props: WRadioGroupProp($model: value2, size: 'medium'),
             slots: WRadioGroupSlot([
               WRadioButton(
                   props: WRadioButtonProp(label: '上海'),
@@ -149,7 +149,7 @@ class ApiRadio extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: WRadioGroup(
-            props: WRadioGroupProp(value: value3, size: 'small'),
+            props: WRadioGroupProp($model: value3, size: 'small'),
             slots: WRadioGroupSlot([
               WRadioButton(
                   props: WRadioButtonProp(label: '上海'),
@@ -169,7 +169,8 @@ class ApiRadio extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: WRadioGroup(
-            props: WRadioGroupProp(value: value4, size: 'mini', disabled: true),
+            props:
+                WRadioGroupProp($model: value4, size: 'mini', disabled: true),
             slots: WRadioGroupSlot([
               WRadioButton(
                   props: WRadioButtonProp(label: '上海'),
@@ -200,11 +201,11 @@ class ApiRadio extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(children: [
           WRadio(
-            props: WRadioProp(value: value1, label: '1', border: true),
+            props: WRadioProp($model: value1, label: '1', border: true),
             slots: WRadioSlot('备选项1'),
           ),
           WRadio(
-            props: WRadioProp(value: value1, label: '2', border: true),
+            props: WRadioProp($model: value1, label: '2', border: true),
             slots: WRadioSlot('备选项2'),
           ),
         ]),
@@ -214,12 +215,12 @@ class ApiRadio extends StatelessWidget {
         child: Row(children: [
           WRadio(
             props: WRadioProp(
-                value: value2, label: '1', size: 'medium', border: true),
+                $model: value2, label: '1', size: 'medium', border: true),
             slots: WRadioSlot('备选项1'),
           ),
           WRadio(
             props: WRadioProp(
-                value: value2, label: '2', size: 'medium', border: true),
+                $model: value2, label: '2', size: 'medium', border: true),
             slots: WRadioSlot('备选项2'),
           ),
         ]),
@@ -227,7 +228,7 @@ class ApiRadio extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: WRadioGroup(
-          props: WRadioGroupProp(value: value3, size: 'medium'),
+          props: WRadioGroupProp($model: value3, size: 'medium'),
           slots: WRadioGroupSlot([
             WRadio(
               props: WRadioProp(label: '1', border: true),
@@ -243,7 +244,7 @@ class ApiRadio extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: WRadioGroup(
-          props: WRadioGroupProp(value: value4, size: 'mini', disabled: true),
+          props: WRadioGroupProp($model: value4, size: 'mini', disabled: true),
           slots: WRadioGroupSlot([
             WRadio(
               props: WRadioProp(label: '1', border: true),
