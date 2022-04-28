@@ -19,7 +19,7 @@ class ApiSlider extends StatelessWidget {
               flex: 5,
               child: WSlider(
                 props: WSliderProp(
-                  value: 0,
+                  model: 0,
                 ),
               ),
             ),
@@ -36,7 +36,7 @@ class ApiSlider extends StatelessWidget {
               child: WSlider(
                 props: WSliderProp(
                   min: 0,
-                  value: 50,
+                  model: 50,
                 ),
               ),
             ),
@@ -52,7 +52,7 @@ class ApiSlider extends StatelessWidget {
               flex: 5,
               child: WSlider(
                 props: WSliderProp(
-                  value: 36,
+                  model: 36,
                   showTooltip: false,
                 ),
               ),
@@ -69,7 +69,7 @@ class ApiSlider extends StatelessWidget {
               flex: 5,
               child: WSlider(
                 props: WSliderProp(
-                  value: 48,
+                  model: 48,
                   formatTooltip: (v) => '${v / 100}',
                 ),
               ),
@@ -86,7 +86,7 @@ class ApiSlider extends StatelessWidget {
               flex: 5,
               child: WSlider(
                 props: WSliderProp(
-                  value: 42,
+                  model: 42,
                   disabled: true,
                 ),
               ),
@@ -111,7 +111,7 @@ class ApiSlider extends StatelessWidget {
               flex: 5,
               child: WSlider(
                 props: WSliderProp(
-                  value: 0,
+                  model: 0,
                   step: 10,
                 ),
               ),
@@ -128,7 +128,7 @@ class ApiSlider extends StatelessWidget {
               flex: 5,
               child: WSlider(
                 props: WSliderProp(
-                  value: 0,
+                  model: 0,
                   step: 10,
                   showStops: true,
                 ),
@@ -143,7 +143,7 @@ class ApiSlider extends StatelessWidget {
   Widget get withInput {
     return WSlider(
       props: WSliderProp(
-        value: 0,
+        model: 0,
         showInput: true,
       ),
     );
@@ -152,7 +152,7 @@ class ApiSlider extends StatelessWidget {
   Widget get range {
     return WSlider(
       props: WSliderProp(
-        value: [0.0, 0.0],
+        model: [0.0, 0.0],
         range: true,
         showStops: true,
         max: 10,
@@ -163,7 +163,7 @@ class ApiSlider extends StatelessWidget {
   Widget get vertical {
     return WSlider(
       props: WSliderProp(
-        value: 0,
+        model: 0,
         vertical: true,
         height: 200,
       ),
@@ -173,7 +173,7 @@ class ApiSlider extends StatelessWidget {
   Widget get marks {
     return WSlider(
       props: WSliderProp(
-        value: [20.0, 50.0],
+        model: [20.0, 50.0],
         range: true,
         marks: {
           0: '0°C',

@@ -250,28 +250,28 @@ class _WSliderState extends WState<WSlider> with TickerProviderStateMixin {
   rulerOnDrag(e) {
     var hoverValue = axisValue(e.localPosition.dx);
     if (!widget.$props.range) {
-      widget.$props.value = stepNum(hoverValue, widget.$props.value);
+      widget.$props.model = stepNum(hoverValue, widget.$props.model);
     } else {
       var closeToMin =
           (hoverValue - minVal).abs() - (hoverValue - maxVal).abs() < 0;
       if (closeToMin) {
-        widget.$props.value[0] = stepNum(hoverValue, minVal);
+        widget.$props.model[0] = stepNum(hoverValue, minVal);
       } else {
-        widget.$props.value[1] = stepNum(hoverValue, maxVal);
+        widget.$props.model[1] = stepNum(hoverValue, maxVal);
       }
     }
     setState(() {});
   }
 
   setStableValue(e) {
-    if (widget.$props.range) stableValues = [...widget.$props.value];
+    if (widget.$props.range) stableValues = [...widget.$props.model];
   }
 
   onDrag(details, initValueIndex) {
     if (!widget.$props.range) {
       _tempValue += axisValue(details.delta.dx);
       if (_tempValue >= widget.$props.min && _tempValue <= widget.$props.max) {
-        widget.$props.value = stepNum(_tempValue, widget.$props.value);
+        widget.$props.model = stepNum(_tempValue, widget.$props.model);
       }
     } else {
       var focusValue = _tempValue[initValueIndex];
@@ -280,22 +280,22 @@ class _WSliderState extends WState<WSlider> with TickerProviderStateMixin {
 
       if (focusValue >= widget.$props.min && focusValue <= widget.$props.max) {
         if (_tempValue[0] > _tempValue[1]) {
-          widget.$props.value = initValueIndex == 0
+          widget.$props.model = initValueIndex == 0
               ? [
                   stableValues[1],
-                  stepNum(_tempValue[0], widget.$props.value[1])
+                  stepNum(_tempValue[0], widget.$props.model[1])
                 ]
               : [
-                  stepNum(_tempValue[1], widget.$props.value[0]),
+                  stepNum(_tempValue[1], widget.$props.model[0]),
                   stableValues[0]
                 ];
         } else {
-          widget.$props.value = [
+          widget.$props.model = [
             initValueIndex == 0
-                ? stepNum(_tempValue[0], widget.$props.value[0])
+                ? stepNum(_tempValue[0], widget.$props.model[0])
                 : stableValues[0],
             initValueIndex == 1
-                ? stepNum(_tempValue[1], widget.$props.value[1])
+                ? stepNum(_tempValue[1], widget.$props.model[1])
                 : stableValues[1],
           ];
         }
@@ -306,7 +306,7 @@ class _WSliderState extends WState<WSlider> with TickerProviderStateMixin {
 
   setTempValue(e) {
     _tempValue =
-        widget.$props.range ? [...widget.$props.value] : widget.$props.value;
+        widget.$props.range ? [...widget.$props.model] : widget.$props.model;
   }
 
   double stepNum(num current, num _defalut) {
@@ -339,16 +339,16 @@ class _WSliderState extends WState<WSlider> with TickerProviderStateMixin {
 
   double get minVal {
     if (widget.$props.range) {
-      return widget.$props.value[0].toDouble();
+      return widget.$props.model[0].toDouble();
     }
     return 0.0;
   }
 
   double get maxVal {
     if (widget.$props.range) {
-      return widget.$props.value[1].toDouble();
+      return widget.$props.model[1].toDouble();
     }
-    return widget.$props.valueNotifier.value.toDouble();
+    return widget.$props.model.toDouble();
   }
 
   Color get inactiveColor {
@@ -397,7 +397,7 @@ class WSliderOn extends BaseOn {
    */
 }
 
-class WSliderProp extends FormFieldProp {
+class WSliderProp extends BaseProp with ModelDriveProp {
   late num min;
   late num max;
   late bool disabled;
@@ -419,7 +419,7 @@ class WSliderProp extends FormFieldProp {
   final List<num> _stops = [];
 
   WSliderProp({
-    dynamic value,
+    dynamic model,
     num? min,
     num? max,
     bool? disabled,
@@ -437,8 +437,11 @@ class WSliderProp extends FormFieldProp {
     num? debounce,
     String? tooltipClass,
     Map<num, dynamic>? marks,
-    ValueNotifier? valueNotifier,
-  }) : super(valueNotifier: valueNotifier) {
+    ValueNotifier? $model,
+  }) : super() {
+    this.range = range ?? false;
+    this.model = model ?? (this.range ? [0.0, 0.0] : 0.0);
+    this.$model = $model;
     this.min = min ?? 0;
     this.max = max ?? 100;
     this.disabled = disabled ?? false;
@@ -449,7 +452,6 @@ class WSliderProp extends FormFieldProp {
     this.showStops = showStops ?? false;
     this.showTooltip = showTooltip ?? true;
     this.formatTooltip = formatTooltip;
-    this.range = range ?? false;
     this.vertical = vertical ?? false;
     this.height = height;
     this.label = label;
@@ -457,11 +459,9 @@ class WSliderProp extends FormFieldProp {
     this.tooltipClass = tooltipClass;
     this.marks = marks ?? {};
 
-    super.value = value ?? (this.range ? [0.0, 0.0] : 0.0);
-
     assert(
-        (this.range && value is List) || (!this.range && super.value is! List),
-        '属性类型不正确，value: ${super.value}，range: ${this.range}');
+        (this.range && model is List) || (!this.range && super.model is! List),
+        '属性类型不正确，value: ${super.model}，range: ${this.range}');
 
     assert(this.min <= this.max, '最大最小值异常: [ ${this.min}, ${this.max} ]');
 

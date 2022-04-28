@@ -7,7 +7,7 @@ import '../demos.dart';
 regist() {
   var sliderBasic = Demo(
     'sliderBasic',
-    WSlider()..$props.value = 0,
+    WSlider()..$props.model = 0,
     r'''
     WSlider()..$props.value = 0
     ''',
@@ -16,7 +16,7 @@ regist() {
   var sliderDisabled = Demo(
     'sliderDisabled',
     WSlider()
-      ..$props.value = 42
+      ..$props.model = 42
       ..$props.disabled = true,
     r'''
     WSlider()
@@ -29,7 +29,7 @@ regist() {
     'sliderValue',
     WSlider()
       ..$props.min = 0
-      ..$props.value = 50,
+      ..$props.model = 50,
     r'''
     WSlider()
       ..$props.min = 0
@@ -40,7 +40,7 @@ regist() {
   var sliderNoTooltip = Demo(
     'sliderNoTooltip',
     WSlider()
-      ..$props.value = 42
+      ..$props.model = 42
       ..$props.showTooltip = false,
     r'''
     WSlider()
@@ -52,7 +52,7 @@ regist() {
   var sliderFormatTooltip = Demo(
     'sliderFormatTooltip',
     WSlider()
-      ..$props.value = 48
+      ..$props.model = 48
       ..$props.formatTooltip = (v) => '${v / 100}',
     r'''
     WSlider()
@@ -65,7 +65,7 @@ regist() {
     'sliderStep',
     WSlider()
       ..$props.step = 10
-      ..$props.value = 0,
+      ..$props.model = 0,
     r'''
     WSlider()
       ..$props.step = 10
@@ -77,7 +77,7 @@ regist() {
     'sliderNoStep',
     WSlider()
       ..$props.step = 10
-      ..$props.value = 0
+      ..$props.model = 0
       ..$props.showStops = true,
     r'''
     WSlider()
@@ -90,7 +90,7 @@ regist() {
   var sliderWithInput = Demo(
     'sliderWithInput',
     WSlider()
-      ..$props.value = 0
+      ..$props.model = 0
       ..$props.showInput = true,
     r'''
     WSlider()
@@ -102,7 +102,7 @@ regist() {
   var sliderRange = Demo(
     'sliderRange',
     WSlider()
-      ..$props.value = [0.0, 0.0]
+      ..$props.model = [0.0, 0.0]
       ..$props.range = true
       ..$props.showStops = true
       ..$props.max = 10,
@@ -118,7 +118,7 @@ regist() {
   var sliderVertical = Demo(
     'sliderVertical',
     WSlider()
-      ..$props.value = 0
+      ..$props.model = 0
       ..$props.vertical = true
       ..$props.height = 200,
     r'''
@@ -132,7 +132,7 @@ regist() {
   var sliderMarks = Demo(
     'sliderMarks',
     WSlider()
-      ..$props.value = [20.0, 50.0]
+      ..$props.model = [20.0, 50.0]
       ..$props.range = true
       ..$props.marks = {
         0: '0°C',
