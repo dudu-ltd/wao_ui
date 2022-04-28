@@ -21,9 +21,7 @@ void main() {
           ..$slots.$ = '选项2'
       ],
     );
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(body: radio),
-    ));
+    await tester.pumpWidget(MaterialApp(home: Scaffold(body: radio)));
     expect(radio1.$props.$model, radio2.$props.$model);
     expect($model, radio1.$props.$model);
     expect($model, radio2.$props.$model);
@@ -35,5 +33,33 @@ void main() {
     await tester.tap(find.byType(WRadio).last);
     expect(radio2.$props.model, '2');
     expect(radio1.$props.model, '2');
+  });
+
+  testWidgets('test WRadioGroup button', (WidgetTester tester) async {
+    var valueButtonSize1 = ValueNotifier('上海');
+    element();
+    var group = WRadioGroup()
+      ..$props.$model = valueButtonSize1
+      ..$slots.$ = [
+        WRadioButton()
+          ..$props.label = '上海'
+          ..$slots.$ = '上海',
+        WRadioButton()
+          ..$props.label = '北京'
+          ..$slots.$ = '北京',
+        WRadioButton()
+          ..$props.label = '广州'
+          ..$slots.$ = '广州',
+        WRadioButton()
+          ..$props.label = '深圳'
+          ..$slots.$ = '深圳',
+      ];
+
+    await tester.pumpWidget(MaterialApp(home: Scaffold(body: group)));
+    await tester.tap(find.byType(WRadioButton).first);
+    expect(valueButtonSize1.value, '上海');
+    await tester.tap(find.byType(WRadioButton).last);
+    expect(valueButtonSize1.value, '深圳');
+    // print(group);
   });
 }

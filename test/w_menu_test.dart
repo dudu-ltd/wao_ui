@@ -25,8 +25,9 @@ void main() {
     expect(find.text('File'), findsOneWidget);
     expect(find.text('Open Folder...'), findsNWidgets(0));
     await tester.tap(find.byType(WMenuItem));
-    await tester.tap(find.byType(WMenuItem));
+    await tester.pumpAndSettle(CfgGlobal.duration);
     expect(find.text('Open Folder...'), findsOneWidget);
+    await tester.tap(find.byType(WMenuItem));
   });
 }
 

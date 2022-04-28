@@ -25,8 +25,8 @@ void main() {
     await tester.tap(find.byType(WInput));
     await tester.pump();
     expect(find.byType(InkWell), findsNWidgets(5));
-    await tester.pump();
-    await tester.tap(find.byType(InkWell).first);
+    await tester.pumpAndSettle(CfgGlobal.duration);
+    await tester.tap(find.byType(WSelect).first);
     await tester.pump();
   });
 

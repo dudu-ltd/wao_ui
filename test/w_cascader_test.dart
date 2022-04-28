@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wao_ui/core/theme/element/theme_element.dart';
+import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/basic/w_button.dart';
 import 'package:wao_ui/src/form/w_cascader.dart';
 import 'package:wao_ui/src/form/w_input.dart';
@@ -16,7 +17,9 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(body: cascader),
     ));
-    await tester.tap(find.byType(WSelect));
+    expect(find.byType(WSelect), findsOneWidget);
+    // await tester.tap(find.byType(WSelect));
+    // await tester.pumpAndSettle(CfgGlobal.duration);
   });
 }
 

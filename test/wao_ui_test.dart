@@ -75,28 +75,4 @@ void main() {
     assert(style.button!.clazz.contains('test1') &&
         style.button!.clazz.contains('test'));
   });
-
-  testWidgets('test WRadioGroup button', (WidgetTester tester) async {
-    var valueButtonSize1 = ValueNotifier('上海');
-    element();
-    var group = WRadioGroup()
-      ..$props.$model = valueButtonSize1
-      ..$slots.$ = [
-        WRadioButton()
-          ..$props.label = '上海'
-          ..$slots.$ = '上海',
-        WRadioButton()
-          ..$props.label = '北京'
-          ..$slots.$ = '北京',
-        WRadioButton()
-          ..$props.label = '广州'
-          ..$slots.$ = '广州',
-        WRadioButton()
-          ..$props.label = '深圳'
-          ..$slots.$ = '深圳',
-      ];
-
-    await tester.pumpWidget(group);
-    // print(group);
-  });
 }
