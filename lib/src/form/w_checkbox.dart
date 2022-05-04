@@ -367,7 +367,7 @@ class WCheckboxGroupOn extends BaseOn {
 // late num? max;
 // late Color textColor;
 // late Color fill;
-class WCheckboxGroupProp extends BaseProp with ModelDriveProp<List> {
+class WCheckboxGroupProp extends BaseProp with ModelDriveProp {
   late String size;
   late bool disabled;
   late num min;

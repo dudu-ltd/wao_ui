@@ -195,7 +195,7 @@ class _WSelectState extends WState<WSelect>
           ? WTagOn(
               close: () {
                 widget.$props.model.remove(m['k']);
-                widget.$props.value = widget.$props.model.sublist(0);
+                widget.$props.model = widget.$props.model.sublist(0);
                 setState(() {});
               },
             )
@@ -384,15 +384,15 @@ class _WSelectState extends WState<WSelect>
 
   onSelect(option) {
     if (widget.$props.multiple) {
-      var v = widget.$props.value as List;
+      var v = widget.$props.model as List;
       var contains = v.contains(option.value);
       contains ? v.remove(option.value) : v.add(option.value);
-      widget.$props.value = widget.$props.model;
+      widget.$props.$modelNotifyListeners();
     } else {
-      widget.$props.value = option.value;
+      widget.$props.model = option.value;
     }
     setState(() {});
-    widget.$on.change?.call(widget.$props.value);
+    widget.$on.change?.call(widget.$props.model);
   }
 
   _updatePanel(BuildContext panelContext, panelSetState) {
@@ -477,7 +477,7 @@ class WSelectOn extends WInputOn {
         );
 }
 
-class WSelectProp extends WInputProp {
+class WSelectProp extends WInputProp with ModelDriveProp {
   late bool multiple;
   late String valueKey;
   late bool collapseTags;
@@ -499,7 +499,7 @@ class WSelectProp extends WInputProp {
   late bool automaticDropup;
 
   WSelectProp({
-    dynamic value,
+    dynamic model,
     bool? multiple,
     bool? disabled,
     String? valueKey,
@@ -538,8 +538,8 @@ class WSelectProp extends WInputProp {
           $model: $model,
         ) {
     this.multiple = multiple ?? false;
-    this.$model = super.$model = $model ?? ValueNotifier(value);
-    this.value = value;
+    this.$model = super.$model = $model ?? ValueNotifier(model);
+    this.model = model;
     this.disabled = disabled ?? false;
     this.valueKey = valueKey ?? 'value';
     this.clearable = clearable ?? false;
@@ -563,16 +563,6 @@ class WSelectProp extends WInputProp {
 
     readonly = !this.allowCreate && !this.remote;
     this.$textAlign = TextAlign.center;
-  }
-
-  @override
-  set value(value) {
-    model = value;
-  }
-
-  @override
-  dynamic get value {
-    return model;
   }
 }
 

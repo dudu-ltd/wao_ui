@@ -58,7 +58,7 @@ class _WCascaderState extends WState<WCascader> {
       panelInsideBuilder: (parent, state) {
         return WCascaderPanel(
           props: WCascaderPanelProp(
-            value: widget.$props.value,
+            value: widget.$props.model,
             $model: widget.$props.$model,
             options: widget.$props.options,
             props: widget.$props.props,
@@ -150,7 +150,7 @@ class WCascaderProp extends WSelectProp {
   List<dynamic> Function(dynamic)? beforeFilter;
 
   WCascaderProp({
-    dynamic value,
+    dynamic model,
     required this.options,
     PanelPropDetail? props,
     String? size,
@@ -170,7 +170,7 @@ class WCascaderProp extends WSelectProp {
      * 
      */
   }) : super(
-          value: value,
+          model: model,
           size: size,
           placeholder: placeholder,
           disabled: disabled,
@@ -182,7 +182,7 @@ class WCascaderProp extends WSelectProp {
         ) {
     this.props = props ?? PanelPropDetail();
     super.multiple = this.props.multiple;
-    this.value = value;
+    this.model = model;
     this.showAllLevels = showAllLevels ?? true;
     this.separator = separator ?? ' / ';
     this.filterMethod = filterMethod;
@@ -307,16 +307,16 @@ class _WCascaderPanelState extends WState<WCascaderPanel> {
     if (widget.$props.props.multiple) {
       // 当前为多选模式
       var select = selected();
-      if (contains(widget.$props.value, select)) {
-        widget.$props.value
+      if (contains(widget.$props.model, select)) {
+        widget.$props.model
             .removeWhere((element) => element.toString() == select.toString());
         panelPicked.remove(node.$props.option);
       } else {
-        widget.$props.value.add(select);
+        widget.$props.model.add(select);
         panelPicked.add(node.$props.option);
       }
     } else {
-      widget.$props.value = selected();
+      widget.$props.model = selected();
     }
     setState(() {});
   }
@@ -341,7 +341,7 @@ class WCascaderPanelProp extends WCascaderProp {
   }) : super(
           options: options,
           props: props,
-          value: value,
+          model: value,
           $model: $model,
         );
 }

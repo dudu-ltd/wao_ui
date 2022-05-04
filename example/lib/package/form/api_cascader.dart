@@ -197,7 +197,7 @@ class ApiCascader extends StatelessWidget {
             const Text('默认显示所有Tag'),
             WCascader(
               props: WCascaderProp(
-                value: value,
+                model: value,
                 props: multiProps,
                 clearable: true,
                 options: options,
@@ -211,7 +211,7 @@ class ApiCascader extends StatelessWidget {
             const Text('折叠展示Tag'),
             WCascader(
               props: WCascaderProp(
-                value: value,
+                model: value,
                 options: options,
                 clearable: true,
                 props: multiProps,
@@ -245,7 +245,7 @@ class ApiCascader extends StatelessWidget {
             const Text('多选选择任意一级选项'),
             WCascader(
               props: WCascaderProp(
-                value: value,
+                model: value,
                 options: options,
                 props: PanelPropDetail(multiple: true, checkStrictly: true),
                 collapseTags: true,
@@ -305,7 +305,7 @@ class ApiCascader extends StatelessWidget {
             const Text('多选可搜索'),
             WCascader(
               props: WCascaderProp(
-                value: value,
+                model: value,
                 placeholder: '试试搜索：指南',
                 options: options,
                 filterable: true,

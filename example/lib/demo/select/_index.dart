@@ -98,7 +98,7 @@ regist() {
     'selectBasic',
     WSelect()
       ..$props.placeholder = '请选择'
-      ..$props.value = '选项1'
+      ..$props.model = '选项1'
       ..$slots.$ = List.generate(
         selectOption1.length,
         (index) => WOption()
@@ -122,7 +122,7 @@ regist() {
     'selectItemDisabled',
     WSelect()
       ..$props.placeholder = '请选择'
-      ..$props.value = '选项1'
+      ..$props.model = '选项1'
       ..$slots.$ = List.generate(
         selectOption1.length,
         (index) => WOption()
@@ -148,7 +148,7 @@ regist() {
     'selectDisabled',
     WSelect()
       ..$props.placeholder = '请选择'
-      ..$props.value = '选项1'
+      ..$props.model = '选项1'
       ..$props.disabled = true
       ..$slots.$ = List.generate(
         selectOption1.length,
@@ -174,7 +174,7 @@ regist() {
     'selectSingleClear',
     WSelect()
       ..$props.clearable = true
-      ..$props.value = '选项1'
+      ..$props.model = '选项1'
       ..$slots.$ = List.generate(
         selectOption1.length,
         (index) => WOption()
@@ -198,7 +198,7 @@ regist() {
     'selectBasicMulti1',
     WSelect()
       ..$props.clearable = true
-      ..$props.value = ['选项1']
+      ..$props.model = ['选项1']
       ..$props.multiple = true
       ..$slots.$ = List.generate(
         selectOption1.length,
@@ -223,7 +223,7 @@ regist() {
     'selectBasicMulti2',
     WSelect()
       ..$props.clearable = true
-      ..$props.value = ['选项1']
+      ..$props.model = ['选项1']
       ..$props.multiple = true
       ..$props.collapseTags = true
       ..$slots.$ = List.generate(
@@ -249,7 +249,7 @@ regist() {
   var selectCustomTpl = Demo(
     'selectCustomTpl',
     WSelect()
-      ..$props.value = ['选项1']
+      ..$props.model = ['选项1']
       ..$props.clearable = true
       ..$props.multiple = true
       ..$slots.$ = List.generate(selectOption1.length, (index) {
@@ -300,7 +300,7 @@ regist() {
     'selectGroup',
     WSelect()
       ..$props.placeholder = '请选择'
-      ..$props.value = ['Shanghai']
+      ..$props.model = ['Shanghai']
       ..$props.multiple = true
       ..$slots.$ = List.generate(selectOption3.length, (index) {
         var city = selectOption3[index];
@@ -338,7 +338,7 @@ regist() {
     'selectSearch',
     WSelect()
       ..$props.placeholder = '请选择'
-      ..$props.value = '选项1'
+      ..$props.model = '选项1'
       ..$props.filterable = true
       ..$slots.$ = List.generate(selectOption1.length, (index) {
         return WOption()
@@ -360,7 +360,7 @@ regist() {
     'selectRemote',
     WSelect()
       ..$props.placeholder = '请选择'
-      ..$props.value = ['选项1']
+      ..$props.model = ['选项1']
       ..$props.multiple = true
       ..$props.filterable = true
       ..$props.remote = true
@@ -391,7 +391,7 @@ regist() {
     'selectCreatable',
     WSelect()
       ..$props.placeholder = '请选择文章标签'
-      ..$props.value = []
+      ..$props.model = []
       ..$props.multiple = true
       ..$props.filterable = true
       ..$props.allowCreate = true

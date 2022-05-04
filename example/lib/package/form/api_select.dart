@@ -49,7 +49,7 @@ class ApiSelect extends StatelessWidget {
 
   Widget get basic {
     return WSelect(
-      props: WSelectProp(placeholder: '请选择', value: '选项1'),
+      props: WSelectProp(placeholder: '请选择', model: '选项1'),
       slots: WSelectSlot(
         List.generate(
           option.length,
@@ -66,7 +66,7 @@ class ApiSelect extends StatelessWidget {
 
   Widget get itemDisabled {
     return WSelect(
-      props: WSelectProp(placeholder: '请选择', value: '选项1'),
+      props: WSelectProp(placeholder: '请选择', model: '选项1'),
       slots: WSelectSlot(
         List.generate(
           option.length,
@@ -84,7 +84,7 @@ class ApiSelect extends StatelessWidget {
 
   Widget get disabled {
     return WSelect(
-      props: WSelectProp(value: '选项1', disabled: true),
+      props: WSelectProp(model: '选项1', disabled: true),
       slots: WSelectSlot(
         List.generate(
           option.length,
@@ -101,7 +101,7 @@ class ApiSelect extends StatelessWidget {
 
   Widget get singleClear {
     return WSelect(
-      props: WSelectProp(clearable: true, value: '选项1'),
+      props: WSelectProp(clearable: true, model: '选项1'),
       slots: WSelectSlot(
         List.generate(
           option.length,
@@ -123,7 +123,7 @@ class ApiSelect extends StatelessWidget {
         WSelect(
           props: WSelectProp(
             clearable: true,
-            value: ['选项1'],
+            model: ['选项1'],
             multiple: true,
           ),
           slots: WSelectSlot(
@@ -141,7 +141,7 @@ class ApiSelect extends StatelessWidget {
         WSelect(
           props: WSelectProp(
             clearable: true,
-            value: ['选项1'],
+            model: ['选项1'],
             multiple: true,
             collapseTags: true,
           ),
@@ -165,7 +165,7 @@ class ApiSelect extends StatelessWidget {
     return WSelect(
       props: WSelectProp(
         clearable: true,
-        value: ['选项1'],
+        model: ['选项1'],
         multiple: true,
       ),
       slots: WSelectSlot(
@@ -197,7 +197,7 @@ class ApiSelect extends StatelessWidget {
   Widget get group {
     return WSelect(
       props:
-          WSelectProp(placeholder: '请选择', value: ['Shanghai'], multiple: true),
+          WSelectProp(placeholder: '请选择', model: ['Shanghai'], multiple: true),
       slots: WSelectSlot(
         List.generate(
           cityTree.length,
@@ -226,7 +226,7 @@ class ApiSelect extends StatelessWidget {
 
   Widget get search {
     return WSelect(
-      props: WSelectProp(placeholder: '请选择', value: '选项1', filterable: true),
+      props: WSelectProp(placeholder: '请选择', model: '选项1', filterable: true),
       slots: WSelectSlot(
         List.generate(
           option.length,
@@ -245,7 +245,7 @@ class ApiSelect extends StatelessWidget {
     return WSelect(
       props: WSelectProp(
         placeholder: '请选择',
-        value: ['选项1'],
+        model: ['选项1'],
         multiple: true,
         filterable: true,
         remote: true,
@@ -271,7 +271,7 @@ class ApiSelect extends StatelessWidget {
     return WSelect(
       props: WSelectProp(
         placeholder: '请选择文章标签',
-        value: [],
+        model: [],
         multiple: true,
         filterable: true,
         allowCreate: true,

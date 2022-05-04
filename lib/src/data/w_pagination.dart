@@ -135,7 +135,7 @@ class _WPaginationState extends WState<WPagination> {
     print('${widget.$props.pageSize}===========');
     return WSelect()
       ..$props.placeholder = '请选择'
-      ..$props.value = '${widget.$props.pageSize}'
+      ..$props.model = '${widget.$props.pageSize}'
       ..$props.size = 'mini'
       ..$slots.$ = List.generate(
         widget.$props.pageSizes.length,

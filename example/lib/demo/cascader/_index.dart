@@ -302,7 +302,7 @@ regist() {
       ..$props.options = options
       ..$props.clearable = true
       ..$props.props = multiProps
-      ..$props.value = value
+      ..$props.model = value
       ..$on.change = (value) => print('handleChange , value = $value'),
     r'''
     var value = [];
@@ -322,7 +322,7 @@ regist() {
       ..$props.clearable = true
       ..$props.collapseTags = true
       ..$props.props = multiProps
-      ..$props.value = value
+      ..$props.model = value
       ..$on.change = (value) => print('handleChange , value = $value'),
     r'''
     var value = [];
@@ -416,7 +416,7 @@ regist() {
   var cascaderSeach2 = Demo(
     'cascaderSeach2',
     WCascader()
-      ..$props.value = value
+      ..$props.model = value
       ..$props.placeholder = '试试搜索：指南'
       ..$props.options = options
       ..$props.filterable = true

@@ -13,7 +13,7 @@ void main() {
     element();
     var select = WSelect()
       ..$props.placeholder = '请选择'
-      ..$props.value = '选项1'
+      ..$props.model = '选项1'
       ..$slots.$ = List.generate(
         selectOption1.length,
         (index) => WOption()
@@ -34,7 +34,7 @@ void main() {
     element();
     var select = WSelect()
       ..$props.clearable = true
-      ..$props.value = ['选项1']
+      ..$props.model = ['选项1']
       ..$props.multiple = true
       ..$slots.$ = List.generate(
         selectOption1.length,

@@ -62,31 +62,27 @@ class WFormProp extends BaseProp with ModelDriveProp {
 
   WFormProp({
     required Map<String, dynamic> model,
-    dynamic rules,
+    this.rules,
     bool? inline,
     String? labelPosition,
-    double? labelWidth,
-    String? labelSuffix,
+    this.labelWidth,
+    this.labelSuffix,
     bool? hideRequiredAsterisk,
     bool? showMessage,
     bool? inlineMessage,
     bool? statusIcon,
     bool? validateOnRuleChange,
-    String? size,
+    this.size,
     bool? disabled,
   }) {
     this.model = fieldValueListener(model);
-    this.rules = rules;
     this.inline = inline ?? false;
     this.labelPosition = labelPosition ?? 'right';
-    this.labelWidth = labelWidth;
-    this.labelSuffix = labelSuffix;
     this.hideRequiredAsterisk = hideRequiredAsterisk ?? false;
     this.showMessage = showMessage ?? true;
     this.inlineMessage = inlineMessage ?? false;
     this.statusIcon = statusIcon ?? false;
     this.validateOnRuleChange = validateOnRuleChange ?? true;
-    this.size = size;
     this.disabled = disabled ?? false;
   }
 
@@ -137,6 +133,10 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
             var p = slot.$props as ModelDriveProp;
             c as WFormItem;
             p.model = belongTo?.$props.model[c.$props.prop];
+            // p.$model?.addListener(() {
+            //   print('-------------p.\$model?.addListener----');
+            //   belongTo?.$props.model[c.$props.prop] = p.model;
+            // });
             return slot;
           },
           (slot) => slot is BaseMixins && slot.$props is ModelDriveProp,

@@ -412,7 +412,13 @@ class WInputProp extends BaseProp with ModelDriveProp {
     return model is String ? model : const JsonEncoder().convert(model);
   };
 
-  dynamic Function(String) decode = (text) => const JsonDecoder().convert(text);
+  dynamic Function(String) decode = (text) {
+    try {
+      return const JsonDecoder().convert(text);
+    } catch (e) {
+      return text;
+    }
+  };
 
   WInputProp({
     String? type,
@@ -453,7 +459,7 @@ class WInputProp extends BaseProp with ModelDriveProp {
 
     _value.addListener(updateModelValue);
     $addModelListener(updateTextValue);
-    this.model = model;
+    this.model = model ?? this.model ?? '';
 
     this.showWordLimit = showWordLimit ?? false;
     this.placeholder = placeholder ?? '';
