@@ -6,6 +6,7 @@ import 'package:example/demo/skeleton/_index.dart' as skeleton;
 import 'package:example/demo/result/_index.dart' as result;
 import 'package:example/demo/cascader/_index.dart' as cascader;
 import 'package:example/demo/tree/_index.dart' as tree;
+import 'package:example/demo/form/_index.dart' as form;
 import 'package:example/demo/inputNumber/_index.dart' as input_number;
 import 'package:example/demo/select/_index.dart' as select;
 import 'package:example/demo/dateTimePicker/_index.dart' as date_time_picker;
@@ -99,6 +100,7 @@ class _ApiDetailState extends State<ApiDetail>
     page_header.regist();
     slider.regist();
     tabs.regist();
+    form.regist();
     input.regist();
     time_picker.regist();
     checkbox.regist();

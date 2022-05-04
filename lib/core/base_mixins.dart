@@ -197,7 +197,9 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     var t = slot.runtimeType;
     for (var translator in translators) {
       // print('slot: $slot，type: $t，Type: ${translator.type}');
-      if (t == translator.type || instanceof(t, translator.type)) {
+      if (t == translator.type ||
+          instanceof(t, translator.type) ||
+          (translator.typeIs?.call(slot) ?? false)) {
         newWidget =
             translator.fn.call(slot, index, this, $defaultSlotBeforeLength);
         break;
@@ -296,9 +298,10 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
 }
 
 class SlotTranslator {
-  late Type type;
+  Type? type;
   late Widget Function(dynamic, int, dynamic, int) fn;
-  SlotTranslator(this.type, this.fn);
+  bool Function(dynamic)? typeIs;
+  SlotTranslator(this.type, this.fn, [this.typeIs]);
   @override
   String toString() {
     return 'type : $type, fn: $fn';

@@ -224,7 +224,10 @@ class WInputState extends WState<WInput> {
 
   InputDecoration get decoration {
     var baseBorder = OutlineInputBorder(
-      borderSide: BorderSide(color: CfgGlobal.primaryColor, width: 1),
+      borderSide: BorderSide(
+        color: widget.$style.borderColor ?? CfgGlobal.primaryColor,
+        width: widget.$style.borderWidth ?? 1,
+      ),
     );
 
     var inputDecoration = InputDecoration(
@@ -248,19 +251,19 @@ class WInputState extends WState<WInput> {
       label: label,
       alignLabelWithHint: false,
       floatingLabelAlignment: FloatingLabelAlignment.start,
-      constraints: widget.$props.isTextarea
-          ? null
-          : BoxConstraints(
-              minWidth: minWidth,
-              maxWidth: maxWidth,
-              minHeight: minHeight,
-              maxHeight: widget.$strictOneRow ? minHeight : double.infinity,
-            ),
+      // constraints: widget.$props.isTextarea
+      //     ? null
+      //     : BoxConstraints(
+      //         minWidth: minWidth,
+      //         maxWidth: maxWidth,
+      //         minHeight: minHeight,
+      //         maxHeight: widget.$strictOneRow ? minHeight : double.infinity,
+      //       ),
       focusedBorder: baseBorder,
       focusedErrorBorder: baseBorder.copyWith(
         borderSide: BorderSide(color: CfgGlobal.dangerColor),
       ),
-      hoverColor: Colors.red,
+      // hoverColor: Colors.red,
       border: baseBorder.copyWith(
         borderSide: BorderSide(color: Colors.grey.shade300),
       ),
@@ -291,19 +294,23 @@ class WInputState extends WState<WInput> {
   }
 
   double get maxWidth {
-    return widget.$style.maxWidth ?? cfgGlobal.input.maxWidth ?? 500;
+    return widget.$style.maxWidth ?? cfgGlobal.input.maxWidth ?? 300;
   }
 
   double get minWidth {
-    return widget.$style.minWidth ?? cfgGlobal.input.minWidth ?? 300;
+    return widget.$style.minWidth ??
+        widget.$style.minWidth ??
+        cfgGlobal.input.minWidth ??
+        0;
   }
 
   double get minHeight {
-    return fontSize + (CfgGlobal.padding[widget.$props.size]?.left ?? 1) * 2.0;
+    return widget.$style.minHeight ??
+        fontSize + (CfgGlobal.padding[widget.$props.size]?.left ?? 1) * 2.0;
   }
 
   double get fontSize {
-    return cfgGlobal.font.val(widget.$props.size);
+    return widget.$style.fontSize ?? cfgGlobal.font.val(widget.$props.size);
   }
 
   double get iconSize {

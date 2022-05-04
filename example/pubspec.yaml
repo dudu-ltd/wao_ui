@@ -94,6 +94,7 @@ flutter:
     - assets/md/data/WSkeleton.md
     - assets/md/data/WTag.md
     - assets/md/data/WTree.md
+    - assets/md/form/WForm.md
     - assets/md/form/WCheckbox.md
     - assets/md/form/WCascader.md
     - assets/md/form/WDatePicker.md
