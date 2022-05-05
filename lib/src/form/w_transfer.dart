@@ -39,7 +39,7 @@ class WTransferOn extends BaseOn {
   WTransferOn({this.change, this.leftCheckChange, this.rightCheckChange});
 }
 
-class WTransferProp extends BaseProp {
+class WTransferProp extends FormFieldProp {
   /**
       value / v-model	绑定值	array	—	—
       data	Transfer 的数据源	array[{ key, label, disabled }]	—	[ ]

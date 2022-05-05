@@ -4,13 +4,24 @@ import 'package:flutter/material.dart';
 
 class BaseProp {}
 
-mixin HasFirstAndLast {
+class FormFieldProp extends BaseProp
+    with HasFirstAndLastProp, HasSizeProp, HasDisabledProp, ModelDriveProp {}
+
+mixin HasFirstAndLastProp {
   bool isFirst = false;
   bool isLast = false;
 }
 
+mixin HasSizeProp {
+  late String size;
+}
+
+mixin HasDisabledProp {
+  bool disabled = false;
+}
+
 // 通过 value 属性驱动的 W组件属性类。
-mixin ModelDriveProp<T> on BaseProp {
+mixin ModelDriveProp<T> {
   ValueNotifier<T?>? $model = null;
 
   T? get model => $model?.value;

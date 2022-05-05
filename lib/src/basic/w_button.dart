@@ -168,7 +168,7 @@ var buttonTypes = [
   'text',
 ];
 
-class WButtonProp extends BaseProp with HasFirstAndLast {
+class WButtonProp extends BaseProp with HasFirstAndLastProp {
   late String size;
   late String? type;
   late bool plain;

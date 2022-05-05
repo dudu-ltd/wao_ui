@@ -53,6 +53,11 @@ class _WCascaderState extends WState<WCascader> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget wbuild(BuildContext context) {
     return WSelect(
       panelInsideBuilder: (parent, state) {

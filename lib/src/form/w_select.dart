@@ -477,7 +477,7 @@ class WSelectOn extends WInputOn {
         );
 }
 
-class WSelectProp extends WInputProp with ModelDriveProp {
+class WSelectProp extends WInputProp {
   late bool multiple;
   late String valueKey;
   late bool collapseTags;

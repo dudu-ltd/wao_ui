@@ -44,7 +44,6 @@ class WUpload
 class _WUploadState extends WState<WUpload> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     widget.state = this;
   }

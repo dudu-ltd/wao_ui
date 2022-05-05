@@ -67,7 +67,7 @@ class WForm
 
 class WFormOn extends BaseOn {}
 
-class WFormProp extends BaseProp with ModelDriveProp {
+class WFormProp extends FormFieldProp {
   late dynamic rules;
   late bool inline; // √
   late String labelPosition; // √
@@ -78,8 +78,6 @@ class WFormProp extends BaseProp with ModelDriveProp {
   late bool inlineMessage;
   late bool statusIcon;
   late bool validateOnRuleChange;
-  late String? size;
-  late bool disabled;
 
   WFormProp({
     required Map<String, dynamic> model,
@@ -93,9 +91,10 @@ class WFormProp extends BaseProp with ModelDriveProp {
     bool? inlineMessage,
     bool? statusIcon,
     bool? validateOnRuleChange,
-    this.size,
+    String? size,
     bool? disabled,
   }) {
+    this.size = size ?? 'large';
     this.model = model;
     this.inline = inline ?? false;
     this.labelPosition = labelPosition ?? 'right';
@@ -148,16 +147,19 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
         SlotTranslator(
           null,
           (slot, i, c, l) {
-            var p = slot.$props as ModelDriveProp;
+            var p = slot.$props as FormFieldProp;
             c as WFormItem;
             assert(c.$props.prop != null,
-                'WFormItem \$props\'s prop can not be null when slot is an form widget. (当插槽是表单元素时，WFormItem \$props 的 prop 属性不能为空。)');
+                r'''WFormItem $props's prop can not be null when slot is an form widget. 
+                (当插槽是表单元素时, WFormItem $props 的 prop 属性不能为空。)''');
             belongTo?._useForReset[c.$props.prop!] = p;
             p.model = belongTo?.$props.model[c.$props.prop];
             p.$model?.addListener(() {
               debugPrint('-------------p.\$model?.addListener----');
               belongTo?.$props.model[c.$props.prop] = p.model;
             });
+            p.size = belongTo?.$props.size ?? 'large';
+            p.disabled = belongTo?.$props.disabled ?? false;
             if (slot is WInput) {
               _inputOnChange.putIfAbsent(c.$props.prop!, () => slot.$on.change);
               slot.$on.change = (v) {
@@ -167,7 +169,7 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
             }
             return slot;
           },
-          (slot) => slot is BaseMixins && slot.$props is ModelDriveProp,
+          (slot) => slot is BaseMixins && slot.$props is FormFieldProp,
         )
       ];
 
@@ -214,7 +216,7 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
 
 class WFormItemOn extends BaseOn {}
 
-class WFormItemProp extends BaseProp with HasFirstAndLast {
+class WFormItemProp extends BaseProp with HasFirstAndLastProp {
   String? prop; // √
   String? label; // √
   double? labelWidth; // √

@@ -38,13 +38,12 @@ class WTimePickerOn extends BaseOn {
    */
 }
 
-class WTimePickerProp extends BaseProp {
+class WTimePickerProp extends FormFieldProp {
   late ValueNotifier<Object> value;
   late bool readonly;
   late bool disabled;
   late bool editable;
   late bool clearable;
-  String? size;
   String? placeholder;
   String? startPlaceholder;
   String? endPlaceholder;
@@ -86,7 +85,7 @@ class WTimePickerProp extends BaseProp {
     this.disabled = disabled ?? false;
     this.editable = editable ?? true;
     this.clearable = clearable ?? true;
-    this.size = size;
+    this.size = size ?? 'large';
     this.placeholder = placeholder;
     this.startPlaceholder = startPlaceholder;
     this.endPlaceholder = endPlaceholder;

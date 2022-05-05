@@ -11,14 +11,18 @@ void main() {
   testWidgets('test WCascader', (WidgetTester tester) async {
     element();
     var cascader = WCascader()
+      // ..$props.model = value
+      ..$props.placeholder = '试试搜索：指南'
       ..$props.options = options
-      ..$props.showAllLevels = false;
+      ..$props.filterable = true
+      ..$props.props = (PanelPropDetail()..multiple = true)
+      ..$on.change = (value) => print('handleChange , value = $value');
 
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(body: cascader),
     ));
     expect(find.byType(WSelect), findsOneWidget);
-    // await tester.tap(find.byType(WSelect));
+    await tester.tap(find.byType(WSelect));
     // await tester.pumpAndSettle(CfgGlobal.duration);
   });
 }

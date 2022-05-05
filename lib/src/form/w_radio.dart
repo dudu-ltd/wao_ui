@@ -293,9 +293,7 @@ class WRadioGroupOn extends BaseOn {
   Function()? change;
 }
 
-class WRadioGroupProp extends BaseProp with ModelDriveProp {
-  late String size;
-  late bool disabled;
+class WRadioGroupProp extends FormFieldProp {
   late Color textColor;
   Color? fill;
   WRadioGroupProp({
@@ -442,7 +440,8 @@ class WRadioButton extends WStatefulWidget<WRadioButtonOn, WRadioButtonProp,
 
 class WRadioButtonOn extends BaseOn {}
 
-class WRadioButtonProp extends BaseProp with ModelDriveProp, HasFirstAndLast {
+class WRadioButtonProp extends BaseProp
+    with ModelDriveProp, HasFirstAndLastProp {
   late dynamic label;
   late bool disabled;
   String? _size;

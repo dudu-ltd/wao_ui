@@ -373,7 +373,7 @@ class WInputOn extends BaseOn {
   });
 }
 
-class WInputProp extends BaseProp with ModelDriveProp {
+class WInputProp extends FormFieldProp {
   late String type;
   late TextEditingController _value;
   int? maxlength;
@@ -382,8 +382,6 @@ class WInputProp extends BaseProp with ModelDriveProp {
   late String placeholder;
   late bool clearable;
   late bool showPassword;
-  late bool disabled;
-  late String size;
   IconData? prefixIcon;
   IconData? suffixIcon;
   late int rows;

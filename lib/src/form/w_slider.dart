@@ -8,7 +8,7 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-import '../../core/base_form_prop.dart';
+import '../../core/base_prop.dart';
 import '../../core/utils/layout_util.dart';
 
 class WSlider
@@ -397,7 +397,7 @@ class WSliderOn extends BaseOn {
    */
 }
 
-class WSliderProp extends BaseProp with ModelDriveProp {
+class WSliderProp extends FormFieldProp {
   late num min;
   late num max;
   late bool disabled;

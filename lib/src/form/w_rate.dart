@@ -33,10 +33,9 @@ class WRateOn extends BaseOn {
   WRateOn({this.change});
 }
 
-class WRateProp extends BaseProp {
+class WRateProp extends FormFieldProp {
   late ValueNotifier<num> value;
   late num max;
-  late bool disabled;
   late bool allowHalf;
   late num lowThreshold;
   late num highThreshold;

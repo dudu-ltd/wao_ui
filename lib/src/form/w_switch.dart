@@ -274,8 +274,7 @@ class WSwitchOn extends BaseOn {
   WSwitchOn({this.change});
 }
 
-class WSwitchProp extends BaseProp with ModelDriveProp {
-  late bool disabled;
+class WSwitchProp extends FormFieldProp {
   late num width;
   IconData? activeIconClass;
   IconData? inactiveIconClass;

@@ -169,14 +169,12 @@ class WCheckboxOn extends BaseOn {
   WCheckboxOn({this.change});
 }
 
-class WCheckboxProp extends BaseProp with ModelDriveProp {
+class WCheckboxProp extends FormFieldProp {
   late dynamic label;
   late dynamic trueLabel;
   late dynamic falseLabel;
-  late bool disabled;
   late bool _disabled;
   late bool border;
-  late String size;
   late String name;
   late bool checked;
   late ValueNotifier _indeterminate;
@@ -367,9 +365,7 @@ class WCheckboxGroupOn extends BaseOn {
 // late num? max;
 // late Color textColor;
 // late Color fill;
-class WCheckboxGroupProp extends BaseProp with ModelDriveProp {
-  late String size;
-  late bool disabled;
+class WCheckboxGroupProp extends FormFieldProp {
   late num min;
   late num? max;
   late Color textColor;
@@ -380,7 +376,7 @@ class WCheckboxGroupProp extends BaseProp with ModelDriveProp {
     String? size,
     bool? disabled,
     num? min,
-    num? max,
+    this.max,
     String? textColor,
     String? fill,
   }) {
@@ -388,7 +384,6 @@ class WCheckboxGroupProp extends BaseProp with ModelDriveProp {
     this.size = size ?? 'medium';
     this.disabled = disabled ?? false;
     this.min = min ?? 0;
-    this.max = max;
     this.textColor = textColor != null
         ? ColorUtil.hexToColor(textColor)
         : ColorUtil.hexToColor('#FFFFFF');
@@ -532,33 +527,27 @@ class _WCheckboxButtonState extends WState<WCheckboxButton> {
 
 class WCheckboxButtonOn extends BaseOn {}
 
-class WCheckboxButtonProp extends BaseProp
-    with ModelDriveProp, HasFirstAndLast {
+class WCheckboxButtonProp extends FormFieldProp {
   late dynamic label;
   late dynamic trueLabel;
   late dynamic falseLabel;
-  late bool disabled;
   late bool _disabled;
   String? name;
   late bool checked;
   String? _size;
 
   WCheckboxButtonProp({
-    dynamic label,
-    dynamic trueLabel,
-    dynamic falseLabel,
+    this.label,
+    this.trueLabel,
+    this.falseLabel,
     bool? disabled,
-    String? name,
+    this.name,
     bool? checked,
     bool? isFirst,
     bool? isLast,
   }) {
-    this.label = label;
-    this.trueLabel = trueLabel;
-    this.falseLabel = falseLabel;
     this.disabled = disabled ?? false;
     this._disabled = this.disabled;
-    this.name = name;
     this.checked = checked ?? false;
     this.isFirst = isFirst ?? false;
     this.isLast = isLast ?? false;
