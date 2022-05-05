@@ -11,19 +11,20 @@ regist() {
     'gender': 'F',
     'exp': 4,
     'skills': ['1', '2', '3', '4'],
-    'introduce': '忠于本心，服务大众。'
+    'introduce': '忠于本心，专注技术。',
   };
-
+  var refForm;
   var formBasic = Demo(
     'formBasic',
-    WForm()
+    refForm = WForm()
       ..$props.labelWidth = 100
       ..$props.model = model
       ..$slots.$ = [
         WFormItem()
           ..$props.prop = 'name'
           ..$props.label = '姓名  '
-          ..$slots.$ = WInput(),
+          ..$slots.$ =
+              (WInput()..$on.change = ((p0) => print('- print for debug $p0'))),
         WFormItem()
           ..$props.prop = 'gender'
           ..$props.label = '性别  '
@@ -103,6 +104,7 @@ regist() {
               WButton()
                 // ..$props.type = ''
                 ..$slots.$ = '重置'
+                ..$on.click = () => refForm.reset(),
             ]),
       ],
     r'''

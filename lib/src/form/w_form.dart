@@ -23,6 +23,23 @@ class WForm
     init();
   }
 
+  final Map<String, ModelDriveProp> _useForReset = {};
+
+  reset() {
+    for (var prop in _useForReset.values) {
+      var v = prop.model;
+      if (v is Map) {
+        prop.model = {};
+      } else if (v is List) {
+        prop.model = [];
+      } else if (v is Set) {
+        prop.model = <dynamic>{};
+      } else {
+        prop.model = null;
+      }
+    }
+  }
+
   @override
   List<SlotTranslator> get slotTranslatorsCustom => [
         SlotTranslator(
@@ -75,7 +92,7 @@ class WFormProp extends BaseProp with ModelDriveProp {
     this.size,
     bool? disabled,
   }) {
-    this.model = fieldValueListener(model);
+    this.model = model;
     this.inline = inline ?? false;
     this.labelPosition = labelPosition ?? 'right';
     this.hideRequiredAsterisk = hideRequiredAsterisk ?? false;
@@ -96,11 +113,6 @@ class WFormProp extends BaseProp with ModelDriveProp {
 
   bool get isLabelPositionIsTop {
     return labelPosition == 'top';
-  }
-
-  Map<String, ValueNotifier<dynamic>> fieldValueListener(
-      Map<String, dynamic> model) {
-    return Map<String, ValueNotifier<dynamic>>();
   }
 }
 
@@ -125,6 +137,8 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
     init();
   }
 
+  final Map<String, Function(dynamic)?> _inputOnChange = {};
+
   @override
   List<SlotTranslator> get slotTranslatorsCustom => [
         SlotTranslator(
@@ -132,11 +146,21 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
           (slot, i, c, l) {
             var p = slot.$props as ModelDriveProp;
             c as WFormItem;
+            assert(c.$props.prop != null,
+                'WFormItem \$props\'s prop can not be null when slot is an form widget. (当插槽是表单元素时，WFormItem \$props 的 prop 属性不能为空。)');
+            belongTo?._useForReset[c.$props.prop!] = p;
             p.model = belongTo?.$props.model[c.$props.prop];
-            // p.$model?.addListener(() {
-            //   print('-------------p.\$model?.addListener----');
-            //   belongTo?.$props.model[c.$props.prop] = p.model;
-            // });
+            p.$model?.addListener(() {
+              debugPrint('-------------p.\$model?.addListener----');
+              belongTo?.$props.model[c.$props.prop] = p.model;
+            });
+            if (slot is WInput) {
+              _inputOnChange.putIfAbsent(c.$props.prop!, () => slot.$on.change);
+              slot.$on.change = (v) {
+                belongTo?.$props.model[c.$props.prop] = v;
+                _inputOnChange[c.$props.prop]?.call(v);
+              };
+            }
             return slot;
           },
           (slot) => slot is BaseMixins && slot.$props is ModelDriveProp,

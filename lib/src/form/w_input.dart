@@ -409,6 +409,7 @@ class WInputProp extends BaseProp with ModelDriveProp {
 
   String Function(ValueNotifier) encode = ($model) {
     var model = $model.value;
+    if (model == null) return '';
     return model is String ? model : const JsonEncoder().convert(model);
   };
 
@@ -457,7 +458,7 @@ class WInputProp extends BaseProp with ModelDriveProp {
     _value = TextEditingController();
     this.$model = $model ?? this.$model;
 
-    _value.addListener(updateModelValue);
+    // _value.addListener(updateModelValue);
     $addModelListener(updateTextValue);
     this.model = model ?? this.model ?? '';
 
