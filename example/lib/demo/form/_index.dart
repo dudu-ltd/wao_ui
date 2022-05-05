@@ -10,6 +10,7 @@ regist() {
     'name': 'CorvusY',
     'gender': 'F',
     'exp': 4,
+    'resumeOpen': true,
     'skills': ['1', '2', '3', '4'],
     'introduce': '忠于本心，专注技术。',
   };
@@ -58,6 +59,10 @@ regist() {
                 ..$props.label = '8年以上'
                 ..$props.value = 4
             ]),
+        WFormItem()
+          ..$props.prop = 'resumeOpen'
+          ..$props.label = '简历是否开放  '
+          ..$slots.$ = WSwitch(),
         WFormItem()
           ..$props.prop = 'skills'
           ..$props.label = '技术栈  '
@@ -293,6 +298,97 @@ regist() {
               ..$slots.$ = '查询',
           ])
     ],
+    ''',
+  );
+
+  var labelPosition = ValueNotifier('left');
+  var formAlign = Demo(
+    'formAlign',
+    StatefulBuilder(
+      builder: ((context, setState) {
+        labelPosition.addListener(
+          () => setState(() {}),
+        );
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WRadioGroup()
+              ..$props.$model = labelPosition
+              ..$props.size = 'small'
+              ..$slots.$ = [
+                WRadioButton()
+                  ..$props.label = 'left'
+                  ..$slots.$ = '左对齐',
+                WRadioButton()
+                  ..$props.label = 'right'
+                  ..$slots.$ = '右对齐',
+                WRadioButton()
+                  ..$props.label = 'top'
+                  ..$slots.$ = '顶部对齐',
+              ],
+            WForm()
+              // ..$style.width = 300
+              // ..$style.textAlign = Alignment.centerLeft
+              ..$props.model = {}
+              ..$props.labelPosition = labelPosition.value
+              ..$props.labelWidth = 80
+              ..$slots.$ = [
+                WFormItem()
+                  ..$props.prop = 'name'
+                  ..$props.label = '姓名  '
+                  ..$slots.$ = WInput(),
+                WFormItem()
+                  ..$props.prop = 'name'
+                  ..$props.label = '联系方式  '
+                  ..$slots.$ = WInput()
+              ],
+          ],
+        );
+      }),
+    ),
+    r'''
+    StatefulBuilder(
+      builder: ((context, setState) {
+        labelPosition.addListener(
+          () => setState(() {}),
+        );
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WRadioGroup()
+              ..$props.$model = labelPosition
+              ..$props.size = 'small'
+              ..$slots.$ = [
+                WRadioButton()
+                  ..$props.label = 'left'
+                  ..$slots.$ = '左对齐',
+                WRadioButton()
+                  ..$props.label = 'right'
+                  ..$slots.$ = '右对齐',
+                WRadioButton()
+                  ..$props.label = 'top'
+                  ..$slots.$ = '顶部对齐',
+              ],
+            WForm()
+              // ..$style.width = 300
+              // ..$style.textAlign = Alignment.centerLeft
+              ..$props.model = {}
+              ..$props.labelPosition = labelPosition.value
+              ..$props.labelWidth = 80
+              ..$slots.$ = [
+                WFormItem()
+                  ..$props.prop = 'name'
+                  ..$props.label = '姓名  '
+                  ..$slots.$ = WInput(),
+                WFormItem()
+                  ..$props.prop = 'name'
+                  ..$props.label = '联系方式  '
+                  ..$slots.$ = WInput()
+              ],
+          ],
+        );
+      }),
+    ),
     ''',
   );
 }

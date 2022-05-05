@@ -52,4 +52,26 @@ main() {
       home: Scaffold(body: form),
     ));
   });
+
+  testWidgets('test form labelPosition : top', (WidgetTester tester) async {
+    var topForm = WForm()
+      // ..$style.width = 300
+      // ..$style.textAlign = Alignment.centerLeft
+      ..$props.model = {}
+      ..$props.labelPosition = 'top'
+      ..$props.labelWidth = 80
+      ..$slots.$ = [
+        WFormItem()
+          ..$props.prop = 'name'
+          ..$props.label = '姓名  '
+          ..$slots.$ = WInput(),
+        WFormItem()
+          ..$props.prop = 'name'
+          ..$props.label = '联系方式  '
+          ..$slots.$ = WInput()
+      ];
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(body: topForm),
+    ));
+  });
 }

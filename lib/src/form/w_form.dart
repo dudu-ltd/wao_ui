@@ -115,7 +115,7 @@ class WFormProp extends BaseProp with ModelDriveProp {
     return labelPosition == 'left';
   }
 
-  bool get isLabelPositionIsTop {
+  bool get isLabelPositionTop {
     return labelPosition == 'top';
   }
 }
@@ -173,6 +173,15 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
 
   @override
   Widget wbuild(BuildContext context) {
+    if (belongTo?.$props.isLabelPositionTop ?? false) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (label != null) label!,
+          ...defaultSlot,
+        ],
+      );
+    }
     return Row(
       children: [
         if (label != null) label!,

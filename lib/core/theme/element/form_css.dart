@@ -9,6 +9,8 @@ form() {
   var isLast = Clazz.lastChild;
   var _form = Clazz.form = '.el-form';
 
+  var _labelTop = '--label-top';
+
   var _formItem = Clazz.formItem = '.el-form-item';
 
   CfgGlobal.selectors.addAll({
@@ -31,6 +33,7 @@ form() {
       return [
         _formItem,
         if (cpn.belongTo?.$props.inline ?? false) inline,
+        if (cpn.belongTo?.$props.isLabelPositionTop ?? false) _labelTop,
         if (cpn.$props.isFirst) isFirst,
         if (cpn.$props.isLast) isLast,
       ];
@@ -40,6 +43,9 @@ form() {
     [
       [_formItem]
     ]: WFormItemStyle(),
+    [
+      [_formItem, _labelTop]
+    ]: WFormItemStyle()..maxHeight = 100,
     [
       [_formItem, inline]
     ]: WFormItemStyle()

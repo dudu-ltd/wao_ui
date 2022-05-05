@@ -14,6 +14,7 @@ import '../../swatch/size_swatch.dart';
 import 'avatar_css.dart';
 import 'button_css.dart';
 import 'decriptions_css.dart';
+import 'input_css.dart';
 import 'menu_css.dart';
 
 not(String str) {
@@ -462,4 +463,5 @@ element() {
   radio();
   result();
   form();
+  input();
 }

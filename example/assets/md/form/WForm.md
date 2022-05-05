@@ -11,3 +11,8 @@ formBasic
 ```widget
 formInline
 ```
+
+## 对齐方式
+```widget
+formAlign
+```
