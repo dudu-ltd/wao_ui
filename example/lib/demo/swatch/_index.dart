@@ -28,28 +28,28 @@ regist() {
     'switchText',
     WSwitch()
       ..$props.model = true
-      ..$props.activeText = '向左走'
-      ..$props.inactiveText = '向右走',
+      ..$props.activeText = '向右走'
+      ..$props.inactiveText = '向左走',
     r'''
     WSwitch()
       ..$props.value = true
-      ..$props.activeText = '向左走'
-      ..$props.inactiveText = '向右走' ''',
+      ..$props.activeText = '向右走'
+      ..$props.inactiveText = '向左走' ''',
   );
 
   var switchTextColor = Demo(
     'switchTextColor',
     WSwitch()
       ..$props.model = true
-      ..$props.activeText = '向左走'
-      ..$props.inactiveText = '向右走'
+      ..$props.activeText = '向右走'
+      ..$props.inactiveText = '向左走'
       ..$props.activeColor = CfgGlobal.successColor
       ..$props.inactiveColor = CfgGlobal.dangerColor,
     r'''
     WSwitch()
       ..$props.value = true
-      ..$props.activeText = '向左走'
-      ..$props.inactiveText = '向右走'
+      ..$props.activeText = '向右走'
+      ..$props.inactiveText = '向左走'
       ..$props.activeColor = CfgGlobal.successColor
       ..$props.inactiveColor = CfgGlobal.dangerColor ''',
   );

@@ -69,9 +69,9 @@ class WFormOn extends BaseOn {}
 
 class WFormProp extends BaseProp with ModelDriveProp {
   late dynamic rules;
-  late bool inline;
-  late String labelPosition;
-  late double? labelWidth;
+  late bool inline; // √
+  late String labelPosition; // √
+  late double? labelWidth; // √
   late String? labelSuffix;
   late bool hideRequiredAsterisk;
   late bool showMessage;
@@ -215,9 +215,9 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
 class WFormItemOn extends BaseOn {}
 
 class WFormItemProp extends BaseProp with HasFirstAndLast {
-  String? prop;
-  String? label;
-  double? labelWidth;
+  String? prop; // √
+  String? label; // √
+  double? labelWidth; // √
   bool required = false;
   dynamic rules;
   String? error;

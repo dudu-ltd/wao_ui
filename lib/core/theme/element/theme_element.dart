@@ -16,6 +16,7 @@ import 'button_css.dart';
 import 'decriptions_css.dart';
 import 'input_css.dart';
 import 'menu_css.dart';
+import 'swatch_css.dart';
 
 not(String str) {
   return ':not($str)';
@@ -464,4 +465,5 @@ element() {
   result();
   form();
   input();
+  swatch();
 }
