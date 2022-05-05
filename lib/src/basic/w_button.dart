@@ -168,7 +168,7 @@ var buttonTypes = [
   'text',
 ];
 
-class WButtonProp extends BaseProp {
+class WButtonProp extends BaseProp with HasFirstAndLast {
   late String size;
   late String? type;
   late bool plain;
@@ -179,9 +179,6 @@ class WButtonProp extends BaseProp {
   IconData? icon;
   IconData? iconRight;
   late bool autofocus;
-
-  bool isFirst = false;
-  bool isLast = false;
 
   bool inGroup = false;
 
@@ -199,9 +196,11 @@ class WButtonProp extends BaseProp {
     iconRight,
     autofocus,
     active,
-    this.isFirst = false,
-    this.isLast = false,
+    bool? isFirst,
+    bool? isLast,
   }) {
+    this.isFirst = isFirst ?? this.isFirst;
+    this.isLast = isLast ?? this.isLast;
     this.size = size ?? 'large';
     this.type = buttonTypes.contains(type) ? type : null;
     this.plain = plain ?? false;

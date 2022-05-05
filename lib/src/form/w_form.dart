@@ -46,6 +46,8 @@ class WForm
           WFormItem,
           (slot, i, c, l) {
             slot as WFormItem;
+            if (i == 0) slot.$props.isFirst = true;
+            if (i == l - 1) slot.$props.isLast = true;
             slot.belongTo = c;
             return slot;
           },
@@ -54,9 +56,11 @@ class WForm
 
   @override
   Widget wbuild(BuildContext context) {
+    var items = defaultSlot;
     return Wrap(
+      direction: Axis.horizontal,
       runSpacing: 8,
-      children: defaultSlot,
+      children: items,
     );
   }
 }
@@ -182,7 +186,7 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
   Widget? get label {
     var label = slotToWidget($props.label, 0);
     return SizedBox(
-      width: belongTo?.$props.labelWidth,
+      width: $props.labelWidth ?? belongTo?.$props.labelWidth,
       child: _labelAlignWrapper(label),
     );
   }
@@ -201,7 +205,7 @@ class WFormItem extends WStatelessWidget<WFormItemOn, WFormItemProp,
 
 class WFormItemOn extends BaseOn {}
 
-class WFormItemProp extends BaseProp {
+class WFormItemProp extends BaseProp with HasFirstAndLast {
   String? prop;
   String? label;
   double? labelWidth;

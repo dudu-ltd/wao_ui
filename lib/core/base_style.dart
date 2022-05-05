@@ -466,6 +466,8 @@ class Clazz {
   static String header = '.header';
   static String footer = '.footer';
 
+  static String inline = '--inline';
+
   static String containerLayout = '.container-layout';
 
   static String avatar = '.avatar';
@@ -527,6 +529,7 @@ class Clazz {
   static String timeline = '.timeline';
   static String tooltip = '.tooltip';
   static String form = '.form';
+  static String formItem = '.form-item';
 
   static String radioButton = '.radio-button';
 }

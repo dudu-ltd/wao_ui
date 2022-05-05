@@ -532,7 +532,8 @@ class _WCheckboxButtonState extends WState<WCheckboxButton> {
 
 class WCheckboxButtonOn extends BaseOn {}
 
-class WCheckboxButtonProp extends BaseProp with ModelDriveProp {
+class WCheckboxButtonProp extends BaseProp
+    with ModelDriveProp, HasFirstAndLast {
   late dynamic label;
   late dynamic trueLabel;
   late dynamic falseLabel;
@@ -540,8 +541,6 @@ class WCheckboxButtonProp extends BaseProp with ModelDriveProp {
   late bool _disabled;
   String? name;
   late bool checked;
-  late bool isFirst;
-  late bool isLast;
   String? _size;
 
   WCheckboxButtonProp({

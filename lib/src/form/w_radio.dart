@@ -442,11 +442,9 @@ class WRadioButton extends WStatefulWidget<WRadioButtonOn, WRadioButtonProp,
 
 class WRadioButtonOn extends BaseOn {}
 
-class WRadioButtonProp extends BaseProp with ModelDriveProp {
+class WRadioButtonProp extends BaseProp with ModelDriveProp, HasFirstAndLast {
   late dynamic label;
   late bool disabled;
-  late bool isFirst;
-  late bool isLast;
   String? _size;
   String? name;
   WRadioButtonProp({

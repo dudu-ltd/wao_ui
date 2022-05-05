@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 
 class BaseProp {}
 
+mixin HasFirstAndLast {
+  bool isFirst = false;
+  bool isLast = false;
+}
+
 // 通过 value 属性驱动的 W组件属性类。
 mixin ModelDriveProp<T> on BaseProp {
   ValueNotifier<T?>? $model = null;

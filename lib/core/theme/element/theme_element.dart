@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/theme/element/badge_css.dart';
 import 'package:wao_ui/core/theme/element/container_css.dart';
+import 'package:wao_ui/core/theme/element/form_css.dart';
 import 'package:wao_ui/core/theme/element/input_number_css.dart';
 import 'package:wao_ui/core/theme/element/pagination_css.dart';
 import 'package:wao_ui/core/theme/element/radio_css.dart';
@@ -460,4 +461,5 @@ element() {
   pagination();
   radio();
   result();
+  form();
 }
