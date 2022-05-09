@@ -18,7 +18,6 @@ regist() {
   var formBasic = Demo(
     'formBasic',
     refForm = WForm()
-      ..$props.size = 'small'
       ..$props.labelWidth = 100
       ..$props.model = model
       ..$slots.$ = [
@@ -123,7 +122,6 @@ regist() {
   };
 
   WForm()
-    ..$props.size = 'small'
     ..$props.labelWidth = 100
     ..$props.model = model
     ..$slots.$ = [

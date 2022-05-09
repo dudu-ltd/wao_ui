@@ -55,7 +55,7 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
               child: Container(
                 constraints: BoxConstraints(
                   maxHeight: panelHeightAnimation.value,
-                  maxWidth: panelMinWidth,
+                  minWidth: panelMinWidth,
                 ),
                 decoration: BoxDecoration(
                   color: Color.fromARGB(panelOpacity.value ~/ 1, 255, 255, 255),
@@ -125,6 +125,12 @@ mixin HasOverlayMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
     panelHeightAnimation = Tween(begin: 0.0, end: panelHeight)
         .animate(panelController)
       ..addListener(updatePanel);
+  }
+
+  @override
+  void dispose() {
+    panelController.dispose();
+    super.dispose();
   }
 
   updatePanel() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/theme/element/badge_css.dart';
+import 'package:wao_ui/core/theme/element/color_picker_css.dart';
 import 'package:wao_ui/core/theme/element/container_css.dart';
 import 'package:wao_ui/core/theme/element/form_css.dart';
 import 'package:wao_ui/core/theme/element/input_number_css.dart';
@@ -466,4 +467,5 @@ element() {
   form();
   input();
   swatch();
+  colorPicker();
 }

@@ -997,6 +997,7 @@ class WCheckboxButtonStyle extends BaseStyle {
 }
 
 class WColorPickerStyle extends BaseStyle {
+  BaseStyle? panel;
   WColorPickerStyle({
     double? width,
     double? height,
@@ -1008,6 +1009,14 @@ class WColorPickerStyle extends BaseStyle {
   @override
   WColorPickerStyle newInstance() {
     return WColorPickerStyle();
+  }
+
+  @override
+  BaseStyle merge<T extends BaseStyle?>(T source, {bool force = false}) {
+    if (source is WColorPickerStyle) {
+      panel = pickStyle(panel, source.panel, force: force);
+    }
+    return super.merge(source, force: force);
   }
 }
 

@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 class BaseProp {}
 
 class FormFieldProp extends BaseProp
-    with HasFirstAndLastProp, HasSizeProp, HasDisabledProp, ModelDriveProp {}
+    with HasFirstAndLastProp, HasSizeProp, HasDisabledProp, ModelDriveProp {
+  FormFieldProp([ValueNotifier? $model, dynamic model]) {
+    this.$model = $model ?? this.$model;
+    this.model = model ?? model;
+  }
+}
 
 mixin HasFirstAndLastProp {
   bool isFirst = false;
