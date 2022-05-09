@@ -23,13 +23,62 @@ class WAlert
 
   @override
   Widget wbuild(BuildContext context) {
-    return Container();
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            $props.title,
+            style: TextStyle(
+              fontSize: style.fontSize,
+              color: style.color,
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.close,
+              size: 12,
+              color: style.color,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
-class WAlertOn extends BaseOn {}
+class WAlertOn extends BaseOn {
+  Function()? close;
+  WAlertOn({this.close});
+}
 
-class WAlertProp extends BaseProp {}
+class WAlertProp extends BaseProp {
+  late String title;
+  late String type;
+  String? description;
+  late bool closable;
+  late bool center;
+  String? closeText;
+  late bool showIcon;
+  String? effect;
+  WAlertProp({
+    this.title = '',
+    this.type = 'info',
+    this.description,
+    this.closable = true,
+    this.center = true,
+    this.closeText,
+    this.showIcon = false,
+    this.effect,
+  });
+
+  bool get effectIsDark {
+    return effect == 'dark';
+  }
+}
 
 class WAlertSlot extends BaseSlot {
   WAlertSlot(defaultSlotBefore) : super(defaultSlotBefore);

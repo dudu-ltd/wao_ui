@@ -156,7 +156,7 @@ class _IndexPageState extends State<IndexPage>
   Navigator createNav() {
     return Navigator(
       // Navigator
-      initialRoute: 'form/WColorPicker',
+      initialRoute: 'notice/WAlert',
       onGenerateRoute: (val) {
         RoutePageBuilder builder = getNext(val.name!);
         return PageRouteBuilder(
@@ -176,7 +176,7 @@ class _IndexPageState extends State<IndexPage>
     currentName = id;
     if (isPc) (appWindow.title = name);
     if (navContext != null) {
-      // 150ms 避免切换路由时，按钮的水波纹卡顿，造成程序卡顿的视觉效果。部分延迟感官上显得更流程。
+      // 150ms 避免切换路由时，按钮的水波纹卡顿，造成程序卡顿的视觉效果。部分延迟感官上显得更流畅。
       Timer(Duration(milliseconds: 150), () {
         // Navigator.maybePop(navContext!);
         Navigator.pushNamed(navContext!, id);
@@ -426,28 +426,28 @@ regist() {}''');
       //     {"id": "WTree", "text": "树"}
       //   ]
       // },
-      {
-        "id": "form",
-        "text": "表单",
-        "children": [
-          {"id": "WForm", "text": "表单"},
-          {"id": "WCascader", "text": "级联选择器", 'finish': true},
-          {"id": "WCheckbox", "text": "复选", 'finish': true},
-          {"id": "WColorPicker", "text": "颜色选择器"},
-          {"id": "WDatePicker", "text": "日期选择器"},
-          {"id": "WDateTimePicker", "text": "日期时间选择器"},
-          {"id": "WInputNumber", "text": "数字输入框", 'finish': true},
-          {"id": "WInput", "text": "输入框", 'finish': true},
-          {"id": "WRadio", "text": "单选", 'finish': true},
-          {"id": "WRate", "text": "评分"},
-          {"id": "WSelect", "text": "下拉框", 'finish': true},
-          {"id": "WSlider", "text": "滑动设值", "finish": true},
-          {"id": "WSwitch", "text": "开关", "finish": true},
-          {"id": "WTimePicker", "text": "时间选择器"},
-          {"id": "WTransfer", "text": "穿梭框"},
-          {"id": "WUpload", "text": "文件上传", "finish": true}
-        ]
-      },
+      // {
+      //   "id": "form",
+      //   "text": "表单",
+      //   "children": [
+      //     {"id": "WForm", "text": "表单"},
+      //     {"id": "WCascader", "text": "级联选择器", 'finish': true},
+      //     {"id": "WCheckbox", "text": "复选", 'finish': true},
+      //     {"id": "WColorPicker", "text": "颜色选择器"},
+      //     {"id": "WDatePicker", "text": "日期选择器"},
+      //     {"id": "WDateTimePicker", "text": "日期时间选择器"},
+      //     {"id": "WInputNumber", "text": "数字输入框", 'finish': true},
+      //     {"id": "WInput", "text": "输入框", 'finish': true},
+      //     {"id": "WRadio", "text": "单选", 'finish': true},
+      //     {"id": "WRate", "text": "评分"},
+      //     {"id": "WSelect", "text": "下拉框", 'finish': true},
+      //     {"id": "WSlider", "text": "滑动设值", "finish": true},
+      //     {"id": "WSwitch", "text": "开关", "finish": true},
+      //     {"id": "WTimePicker", "text": "时间选择器"},
+      //     {"id": "WTransfer", "text": "穿梭框"},
+      //     {"id": "WUpload", "text": "文件上传", "finish": true}
+      //   ]
+      // },
       // {
       //   "id": "navigation",
       //   "text": "导航",
@@ -460,17 +460,17 @@ regist() {}''');
       //     {"id": "WTabs", "text": "Tab 页", "finish": true},
       //   ]
       // },
-      // {
-      //   "id": "notice",
-      //   "text": "通知/消息",
-      //   "children": [
-      //     {"id": "WAlert", "text": "对话框"},
-      //     {"id": "WLoading", "text": "加载中"},
-      //     {"id": "WMessage", "text": "提醒"},
-      //     {"id": "WMessageBox", "text": "消息窗"},
-      //     {"id": "WNotification", "text": "消息提醒"}
-      //   ]
-      // },
+      {
+        "id": "notice",
+        "text": "通知/消息",
+        "children": [
+          {"id": "WAlert", "text": "对话框"},
+          {"id": "WLoading", "text": "加载中"},
+          {"id": "WMessage", "text": "提醒"},
+          {"id": "WMessageBox", "text": "消息窗"},
+          {"id": "WNotification", "text": "消息提醒"}
+        ]
+      },
       // {
       //   "id": "others",
       //   "text": "其他",
