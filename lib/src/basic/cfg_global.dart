@@ -1502,6 +1502,7 @@ class WTabPaneStyle extends BaseStyle {
 }
 
 class WAlertStyle extends BaseStyle {
+  IconData? icon;
   WAlertStyle({
     double? width,
     double? height,
@@ -1509,6 +1510,14 @@ class WAlertStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  BaseStyle merge<T extends BaseStyle?>(T source, {bool force = false}) {
+    if (source is WAlertStyle) {
+      icon = pickStyle(icon, source.icon, force: force);
+    }
+    return super.merge(source, force: force);
+  }
 
   @override
   WAlertStyle newInstance() {

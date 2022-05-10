@@ -126,28 +126,31 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   boxWrapper(Widget willBeWrap, BuildContext context, [BaseStyle? style]) {
     style = style ?? this.style;
     // print(style);
-    return Container(
-      // alignment: style.textAlign ?? Alignment.centerLeft,
-      padding: style.padding,
-      margin: style.margin,
-      width: style.width,
-      height: style.height,
-      clipBehavior: style.overflow ?? Clip.none,
-      // constraints: BoxConstraints(
-      //   maxHeight: style.maxHeight ?? double.infinity,
-      //   minHeight: style.minHeight ?? 0.0,
-      //   maxWidth: style.maxWidth ?? double.infinity,
-      //   minWidth: style.minWidth ?? 0.0,
-      // ),
-      decoration: BoxDecoration(
-          color: style.backgroundColor,
-          borderRadius: style.borderRadius,
-          border: style.border,
-          image: style.backgroundImage,
-          boxShadow: style.boxShadow,
-          gradient: style.gradient,
-          backgroundBlendMode: style.backgroundBlendMode),
-      child: willBeWrap,
+    return Offstage(
+      offstage: !(style.display ?? true),
+      child: Container(
+        // alignment: style.textAlign ?? Alignment.centerLeft,
+        padding: style.padding,
+        margin: style.margin,
+        width: style.width,
+        height: style.height,
+        clipBehavior: style.overflow ?? Clip.none,
+        // constraints: BoxConstraints(
+        //   maxHeight: style.maxHeight ?? double.infinity,
+        //   minHeight: style.minHeight ?? 0.0,
+        //   maxWidth: style.maxWidth ?? double.infinity,
+        //   minWidth: style.minWidth ?? 0.0,
+        // ),
+        decoration: BoxDecoration(
+            color: style.backgroundColor,
+            borderRadius: style.borderRadius,
+            border: style.border,
+            image: style.backgroundImage,
+            boxShadow: style.boxShadow,
+            gradient: style.gradient,
+            backgroundBlendMode: style.backgroundBlendMode),
+        child: willBeWrap,
+      ),
     );
   }
 

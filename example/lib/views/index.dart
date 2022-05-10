@@ -464,7 +464,7 @@ regist() {}''');
         "id": "notice",
         "text": "通知/消息",
         "children": [
-          {"id": "WAlert", "text": "对话框"},
+          {"id": "WAlert", "text": "对话框", "finish": true},
           {"id": "WLoading", "text": "加载中"},
           {"id": "WMessage", "text": "提醒"},
           {"id": "WMessageBox", "text": "消息窗"},

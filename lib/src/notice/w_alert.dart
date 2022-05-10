@@ -5,8 +5,98 @@ import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/wao_ui.dart';
 
+class _WAlertState extends WState<WAlert> {
+  @override
+  Widget wbuild(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(child: message),
+        ...closeBtn,
+      ],
+    );
+  }
+
+  Widget get message {
+    var messageContent = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          widget.$props.title,
+          maxLines: 2,
+          softWrap: false,
+          style: TextStyle(
+            overflow: TextOverflow.ellipsis,
+            fontSize: widget.style.fontSize,
+            color: widget.style.color,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        if (widget.$props.description != null)
+          Text(
+            widget.$props.description!,
+            maxLines: 2,
+            style: TextStyle(
+              overflow: TextOverflow.ellipsis,
+              fontSize: (widget.style.fontSize ?? 14) - 2,
+              color: widget.style.color,
+            ),
+          ),
+      ],
+    );
+
+    return Row(
+      mainAxisAlignment: widget.$props.center
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start,
+      children: [
+        if (widget.$props.showIcon)
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: Icon(
+              widget.style.icon,
+              color: widget.style.color,
+              size: widget.style.fontSize ?? 18,
+            ),
+          ),
+        Flexible(child: messageContent),
+      ],
+    );
+  }
+
+  List<Widget> get closeBtn {
+    return widget.$props.closable
+        ? [
+            InkWell(
+              child: closeBtnContent,
+              onTap: () {
+                widget.$on.close?.call();
+                widget.style.display = false;
+                updateView();
+              },
+            )
+          ]
+        : [];
+  }
+
+  Widget get closeBtnContent {
+    return widget.$props.closeText == null
+        ? Align(
+            alignment: Alignment.topRight,
+            child: Icon(
+              Icons.close,
+              size: 12,
+              color: widget.style.color,
+            ),
+          )
+        : Text(
+            widget.$props.closeText!,
+            style: TextStyle(color: widget.style.color),
+          );
+  }
+}
+
 class WAlert
-    extends WStatelessWidget<WAlertOn, WAlertProp, WAlertSlot, WAlertStyle> {
+    extends WStatefulWidget<WAlertOn, WAlertProp, WAlertSlot, WAlertStyle> {
   WAlert({
     Key? key,
     WAlertOn? on,
@@ -20,34 +110,8 @@ class WAlert
     $style = style ?? WAlertStyle();
     init();
   }
-
   @override
-  Widget wbuild(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            $props.title,
-            style: TextStyle(
-              fontSize: style.fontSize,
-              color: style.color,
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topRight,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.close,
-              size: 12,
-              color: style.color,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  State<WAlert> createState() => _WAlertState();
 }
 
 class WAlertOn extends BaseOn {
@@ -69,7 +133,7 @@ class WAlertProp extends BaseProp {
     this.type = 'info',
     this.description,
     this.closable = true,
-    this.center = true,
+    this.center = false,
     this.closeText,
     this.showIcon = false,
     this.effect,
