@@ -100,7 +100,7 @@ class _WButtonState extends WState<WButton> {
 
   Widget get content {
     return Wrap(
-      alignment: WrapAlignment.spaceBetween,
+      alignment: WrapAlignment.center,
       runAlignment: WrapAlignment.spaceBetween,
       spacing: 5,
       children: [

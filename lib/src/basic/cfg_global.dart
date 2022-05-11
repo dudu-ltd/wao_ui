@@ -1712,6 +1712,12 @@ class WCollapseItemStyle extends BaseStyle {
 }
 
 class WDialogStyle extends BaseStyle {
+  double? footSpace;
+
+  EdgeInsets? contentPadding;
+
+  EdgeInsets? footPadding;
+
   WDialogStyle({
     double? width,
     double? height,
@@ -1719,6 +1725,17 @@ class WDialogStyle extends BaseStyle {
           height: height,
           width: width,
         );
+
+  @override
+  BaseStyle merge<T extends BaseStyle?>(T source, {bool force = false}) {
+    if (source is WDialogStyle) {
+      footSpace = pickStyle(footSpace, source.footSpace, force: force);
+      contentPadding =
+          pickStyle(contentPadding, source.contentPadding, force: force);
+      footPadding = pickStyle(footPadding, source.footPadding, force: force);
+    }
+    return super.merge(source, force: force);
+  }
 
   @override
   WDialogStyle newInstance() {

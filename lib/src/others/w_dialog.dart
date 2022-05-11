@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:simple_observable/simple_observable.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
 import 'package:wao_ui/core/base_slot.dart';
 import 'package:wao_ui/core/base_mixins.dart';
+import 'package:wao_ui/core/theme/element/theme_element.dart';
 import 'package:wao_ui/wao_ui.dart';
 
 class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
@@ -20,15 +20,19 @@ class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
     $slots = slots ?? WDialogSlot(null);
     $style = style ?? WDialogStyle();
     init();
-    $props._widget = this;
   }
+
+  bool _closeFromThen = false;
 
   Function(bool value)? show;
 
   setShow(BuildContext context) {
     show = ([bool visible = true]) {
-      if (!visible) return;
-      if ($props.appendToBody) {
+      if (!visible) {
+        if (!_closeFromThen) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+      } else if ($props.appendToBody) {
         showInWindow(context);
       } else {
         showInPage(context);
@@ -46,34 +50,32 @@ class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
     var builder = (BuildContext context) {
       var title =
           $slots.title ?? ($props.title != null ? Text($props.title!) : null);
+
+      $mainAxisAlign =
+          $props.center ? MainAxisAlignment.center : MainAxisAlignment.start;
+      var actionAxisAlign =
+          $props.center ? MainAxisAlignment.center : MainAxisAlignment.end;
       return AlertDialog(
-        titlePadding: const EdgeInsets.fromLTRB(5.0, 2.0, 5.0, 0.0),
-        contentPadding: const EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 5.0),
-        insetPadding: EdgeInsets.zero,
-        buttonPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        // titlePadding: const EdgeInsets.fromLTRB(5.0, 2.0, 5.0, 0.0),
+        contentPadding: style.contentPadding ??
+            EdgeInsets.fromLTRB(24, 20, 24, $slots.footer == null ? 20.0 : 0.0),
+        // insetPadding: const EdgeInsets.all(20),
+        buttonPadding: $slots.footer == null
+            ? EdgeInsets.zero
+            : style.footPadding ?? EdgeInsets.zero,
         titleTextStyle: const TextStyle(fontSize: 16.0, color: Colors.black),
         alignment: getAlign(context),
         title: title != null ? centerWrapper(title) : null,
-        content: $first,
-        actions: $slots.footer == null
-            ? []
-            : List.generate(
-                $slots.footer!.length,
-                (index) {
-                  var foot = Listener(
-                    onPointerUp: (e) {
-                      $props.visible = false;
-                      Navigator.of(context).pop();
-                    },
-                    child: $slots.footer![index],
-                  );
-                  return centerWrapper(foot);
-                },
-              ),
+        content: $row,
+        actionsOverflowButtonSpacing: $style.footSpace,
+        actionsAlignment: actionAxisAlign,
+        actions: $slots.footer ?? [],
       );
     };
-    showDialog(context: context, builder: builder).then((val) {
+    showDialog(context: context, builder: builder).then((value) {
+      _closeFromThen = true;
       $props.visible = false;
+      _closeFromThen = false;
     });
   }
 
@@ -119,7 +121,7 @@ class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
   @override
   Widget wbuild(BuildContext context) {
     setShow(context);
-    $props.visible = false;
+    $props.$addVisibleListener(() => show!($props.visible));
     return $slots.btn != null
         ? InkWell(
             onTap: open,
@@ -135,26 +137,12 @@ class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
 
   open() {
     $props.visible = true;
-    show?.call(true);
   }
 }
 
 class WDialogOn extends BaseOn {}
 
-class WDialogProp extends BaseProp {
-  Observable? _visibleListener;
-  WDialog? _widget;
-
-  set visible(visible) {
-    _visibleListener ??= Observable<bool>(
-        initialValue: false, onChanged: _widget?.show!, checkEquality: true);
-    _visibleListener!.value = visible;
-  }
-
-  get visible {
-    return _visibleListener?.value;
-  }
-
+class WDialogProp extends BaseProp with VisibleProp {
   String? title;
   late String? btn;
   late String width;

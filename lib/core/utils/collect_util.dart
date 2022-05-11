@@ -32,7 +32,7 @@ List<T> findByListKey<T>(Map<List<List>, T> map, List key) {
     for (var selector in entry.key) {
       // [['.s', '.t'], ['.y', '.l', '.e']]
       if (key.toSet().containsAll(selector) && entry.value != null) {
-        // print('${key.toSet()} containsAll $selector');
+        debugPrint('${key.toSet()} containsAll $selector');
         result.add(entry.value!);
       }
     }

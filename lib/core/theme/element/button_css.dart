@@ -572,6 +572,7 @@ button() {
       [_button, '$_button$miniSuf', isRound]
     ]: BaseStyle(
       padding: CfgGlobal.roundPadding.mini,
+      borderRadius: CfgGlobal.circularBorderRadius.large,
     ),
     [
       [_button, '$_button$miniSuf', isCircle]

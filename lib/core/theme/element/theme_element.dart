@@ -3,6 +3,7 @@ import 'package:wao_ui/core/theme/element/alert_css.dart';
 import 'package:wao_ui/core/theme/element/badge_css.dart';
 import 'package:wao_ui/core/theme/element/color_picker_css.dart';
 import 'package:wao_ui/core/theme/element/container_css.dart';
+import 'package:wao_ui/core/theme/element/dialog_css.dart';
 import 'package:wao_ui/core/theme/element/form_css.dart';
 import 'package:wao_ui/core/theme/element/input_number_css.dart';
 import 'package:wao_ui/core/theme/element/pagination_css.dart';
@@ -470,4 +471,5 @@ element() {
   swatch();
   colorPicker();
   alert();
+  dialog();
 }

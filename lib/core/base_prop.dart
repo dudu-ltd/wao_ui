@@ -25,6 +25,29 @@ mixin HasDisabledProp {
   bool disabled = false;
 }
 
+mixin VisibleProp {
+  ValueNotifier<bool>? _visible;
+  ValueNotifier get $visible {
+    return _visible = _visible ?? ValueNotifier(false);
+  }
+
+  set visible(bool visible) {
+    $visible.value = visible;
+  }
+
+  bool get visible {
+    return $visible.value;
+  }
+
+  $addVisibleListener(Function() fn) {
+    $visible.addListener(fn);
+  }
+
+  $removeVisibleListener(Function() fn) {
+    $visible.removeListener(fn);
+  }
+}
+
 // 通过 value 属性驱动的 W组件属性类。
 mixin ModelDriveProp<T> {
   ValueNotifier<T?>? $model = null;

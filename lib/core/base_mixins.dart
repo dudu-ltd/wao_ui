@@ -219,16 +219,29 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     return newWidget;
   }
 
+  Text strToText(String text) {
+    return Text(
+      text,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
   ///
   List<SlotTranslator> get slotTranslatorsDefault {
     return [
       SlotTranslator(
         String,
         (slot, i, component, len) {
-          return Text(
-            slot,
-            overflow: TextOverflow.ellipsis,
-          );
+          slot as String;
+          if (slot.contains('\n')) {
+            var str = slot.split('\n');
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children:
+                  List.generate(str.length, (index) => strToText(str[index])),
+            );
+          }
+          return strToText(slot);
         },
       ),
       // SlotTranslator(
