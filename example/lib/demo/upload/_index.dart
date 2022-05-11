@@ -299,8 +299,23 @@ regist() {
         tip: const Text('只能上传jpg/png文件，且不超过500kb'),
       ),
     ),
-    r'''
-  
+    r'''    
+    WUpload(
+      props: WUploadProp(
+        action: 'http://localhost:8080/upload/single',
+        drag: true,
+        multiple: true,
+      ),
+      slots: WUploadSlot(
+        Column(
+          children: const [
+            Icon(Icons.upload),
+            Text('将文件拖到此处，或点击上传'),
+          ],
+        ),
+        tip: const Text('只能上传jpg/png文件，且不超过500kb'),
+      ),
+    ),
     ''',
   );
 

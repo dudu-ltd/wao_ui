@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:desktop_drop/desktop_drop.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -111,11 +112,50 @@ class _WUploadState extends WState<WUpload> {
       }
     }
 
-    return Row(
+    return dragWrapper(Row(
       key: GlobalKey(),
       mainAxisSize: MainAxisSize.min,
       children: _triggers,
-    );
+    ));
+  }
+
+  bool _dragging = false;
+
+  FilePickerResult toFilePickerResult(List<PlatformFile> files) {
+    return FilePickerResult(files);
+  }
+
+  Future<PlatformFile> xFileToPlatformFile(dynamic file) async {
+    return PlatformFile(
+        name: file.name,
+        size: (await file.readAsBytes()).length,
+        path: file.path);
+  }
+
+  Future<List<PlatformFile>> xFilesToPlatformFiles(List files) async {
+    var pfiles = <PlatformFile>[];
+    for (var file in files) {
+      var pfile = await xFileToPlatformFile(file);
+      pfiles.add(pfile);
+    }
+    return pfiles;
+  }
+
+  Widget dragWrapper(Widget child) {
+    if (widget.$props.drag) {
+      print(' use drag to upload ');
+      return DropTarget(
+        onDragDone: (detail) async {
+          List<PlatformFile> pfiles = await xFilesToPlatformFiles(detail.files);
+          FilePickerResult fpResult = FilePickerResult(pfiles);
+          addAndUpload(fpResult);
+        },
+        onDragEntered: (detail) {},
+        onDragExited: (detail) {},
+        child: child,
+      );
+    }
+    return child;
   }
 
   List<Widget> get fileListWidget {
@@ -385,16 +425,20 @@ class _WUploadState extends WState<WUpload> {
 
   triggerAction() async {
     platformPicker[platform]?.doPicker((result) {
-      widget.$props.fileList.add(result);
-      var promise = doUpload(result);
-      if (promise != null) {
-        promise.then((v) {
-          setState(() {});
-        });
-      } else {
-        setState(() {});
-      }
+      addAndUpload(result);
     });
+  }
+
+  addAndUpload(FilePickerResult result) {
+    widget.$props.fileList.add(result);
+    var promise = doUpload(result);
+    if (promise != null) {
+      promise.then((v) {
+        setState(() {});
+      });
+    } else {
+      setState(() {});
+    }
   }
 
   doBeforeUpload(ByteFile file) {
@@ -511,8 +555,7 @@ class WUploadProp extends BaseProp {
     String? name,
     bool? withCredentials,
     bool? showFileList,
-    @Deprecated("暂时不支持文件的拖拽上传。(File upload by drag is not support in current version.)")
-        bool? drag,
+    bool? drag,
     String? accept,
     Function(File)? onPreview,
     Function(File, List<File>)? onRemove,

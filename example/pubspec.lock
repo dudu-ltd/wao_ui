@@ -94,6 +94,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.16.0"
+  cross_file:
+    dependency: transitive
+    description:
+      name: cross_file
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.3"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -101,6 +108,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
+  desktop_drop:
+    dependency: transitive
+    description:
+      name: desktop_drop
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.3"
   dio:
     dependency: transitive
     description:
