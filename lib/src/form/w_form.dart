@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -9,6 +11,8 @@ import '../../core/base_style.dart';
 
 class WForm
     extends WStatelessWidget<WFormOn, WFormProp, WFormSlot, WFormStyle> {
+  GlobalKey formKey = GlobalKey();
+
   WForm({
     Key? key,
     WFormOn? on,
@@ -57,10 +61,17 @@ class WForm
   @override
   Widget wbuild(BuildContext context) {
     var items = defaultSlot;
-    return Wrap(
-      direction: Axis.horizontal,
-      runSpacing: 8,
-      children: items,
+    Timer(Duration(seconds: 1), () {
+      FormState fs = formKey.currentState as FormState;
+      fs.validate();
+    });
+    return Form(
+      key: formKey,
+      child: Wrap(
+        direction: Axis.horizontal,
+        runSpacing: 8,
+        children: items,
+      ),
     );
   }
 }
@@ -237,4 +248,40 @@ class WFormItemStyle extends BaseStyle {
   WFormItemStyle newInstance() {
     return WFormItemStyle();
   }
+}
+
+enum FormValidTrigger {
+  blur,
+  change,
+}
+
+enum FormFieldType {
+  string,
+  number,
+  boolean,
+  method,
+  regexp,
+  creating,
+  integer,
+  float,
+  array,
+  object,
+  enums,
+  date,
+  url,
+  hex,
+  email,
+  any
+}
+
+class FormValidRule {
+  bool? required;
+  String? message;
+  FormValidTrigger? trigger;
+  double? min;
+  double? max;
+  FormFieldType? type;
+  int? len;
+  Map<String, FormValidRule>? fields;
+  List? enums;
 }

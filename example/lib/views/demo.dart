@@ -5,7 +5,7 @@ import 'package:wao_ui/core/base_style.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-import '../demo/menu/_index.dart';
+import '../demo/waoui/menu/_index.dart';
 import '../jsonData/tree_json.dart';
 import '../third_party/syntax_highlight.dart';
 

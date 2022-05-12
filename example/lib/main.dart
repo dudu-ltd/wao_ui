@@ -11,6 +11,8 @@ import 'package:wao_ui/wao_ui.dart';
 
 import 'third_party/syntax_highlight.dart';
 
+late ThemeData themeData;
+
 void main() async {
   await SyntaxHighlighter.initialize();
   element();
@@ -37,11 +39,11 @@ class Api extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Wao ui Home',
-        theme: ThemeData(
+        theme: themeData = ThemeData(
           fontFamily: 'PingFang',
           primarySwatch: CfgGlobal.primaryColor,
         ),
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.dark,
         onGenerateRoute: buildNestedRoutes(
           {
             '/': NestedRoute(

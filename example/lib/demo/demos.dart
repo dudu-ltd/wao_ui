@@ -6,7 +6,8 @@ class Demo {
   String name;
   Widget widget;
   String code;
-  Demo(this.name, this.widget, this.code) {
+  String? title;
+  Demo(this.name, this.widget, this.code, [this.title]) {
     demos[name] = this;
   }
 }

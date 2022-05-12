@@ -86,6 +86,11 @@ class WInputState extends WState<WInput> {
       maxLength: widget.$props.maxlength,
       maxLengthEnforcement: MaxLengthEnforcement.none,
 
+      // validator: (s) {
+      //   print('---------validator $s');
+      //   return '对不起，程序错了。';
+      // },
+
       textAlignVertical: TextAlignVertical.center,
       textAlign: widget.$props.$textAlign,
     );

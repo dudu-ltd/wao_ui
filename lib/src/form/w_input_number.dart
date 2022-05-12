@@ -174,7 +174,6 @@ class WInputNumberProp extends WInputProp {
     this.label = label;
 
     encode = ($model) {
-      print('model value = ${$model.value}');
       return $model.value?.toStringAsFixed(this.precision);
     };
     decode = (text) {
