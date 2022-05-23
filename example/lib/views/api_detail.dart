@@ -25,16 +25,16 @@ class _ApiDetailState extends State<ApiDetail>
   late Widget snap = Container();
   GlobalKey? lastKey;
 
-  _registerDemo() {
+  _registerDemo(context) {
     registWaoUI();
-    registMaterial();
+    registMaterial(context);
   }
 
   @override
   void initState() {
     scrollCtrl = ScrollController();
     // _setRefBuild();
-    _registerDemo();
+    _registerDemo(context);
     rootBundle.load("${widget.path}${widget.name}.md").then(
       (bytes) {
         final buffer = bytes.buffer;
@@ -129,7 +129,7 @@ class _ApiDetailState extends State<ApiDetail>
         padding: const EdgeInsets.all(8.0),
         child: shadowWrapper(
           Column(
-            mainAxisSize: MainAxisSize.min,
+            // mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (demo.title != null)
@@ -140,7 +140,7 @@ class _ApiDetailState extends State<ApiDetail>
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 8.0, horizontal: 16.0),
-                      child: Text(
+                      child: SelectableText(
                         demo.title!,
                         style: TextStyle(fontSize: 16),
                       ),
@@ -155,7 +155,7 @@ class _ApiDetailState extends State<ApiDetail>
                 Border.fromBorderSide(BorderSide(color: Colors.grey.shade300)),
                 false,
               ),
-              code(demo.code),
+              code('    ${demo.code.trim()}'),
             ],
           ),
         ),

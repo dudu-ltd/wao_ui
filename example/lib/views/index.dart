@@ -63,7 +63,7 @@ class _IndexPageState extends State<IndexPage>
         ApiPage(
           guideData: materialGuideData,
           path: 'assets/md/material/',
-          initialRoute: 'basic/Button',
+          initialRoute: 'quick_start/all',
         ),
       ],
     );
@@ -102,10 +102,17 @@ class _IndexPageState extends State<IndexPage>
 List<Map<String, dynamic>> get materialGuideData {
   return [
     {
+      'id': 'quick_start',
+      'text': '快速开始',
+      "children": [
+        {"id": "all", "text": "组件总览"},
+      ]
+    },
+    {
       'id': 'basic',
       'text': '按钮',
       "children": [
-        {"id": "Button", "text": "按钮"},
+        {"id": "button", "text": "按钮"},
       ]
     },
     {
