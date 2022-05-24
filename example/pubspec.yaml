@@ -28,6 +28,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   wao_ui: 
     path:  ../
 
@@ -135,6 +137,8 @@ flutter:
     # Material md
     - assets/md/material/quick_start/all.md
     - assets/md/material/basic/button.md
+    - assets/md/material/form/Slider.md
+    - assets/md/material/form/Input.md
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

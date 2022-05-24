@@ -119,7 +119,8 @@ List<Map<String, dynamic>> get materialGuideData {
       'id': 'form',
       'text': '表单',
       "children": [
-        {"id": "TextFormField", "text": "输入域"},
+        {"id": "Input", "text": "输入域"},
+        {"id": "Slider", "text": "滑块"},
       ]
     }
   ];
@@ -307,32 +308,45 @@ class _ApiPageState extends State<ApiPage> {
     for (var i = 0; i < data.length; i++) {
       var node = data[i];
       if (level == 0) {
-        result.add(Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
+        List<Widget> children = [];
+        if (node['children'] is List) {
+          children = guideDataToWidget(node['children'],
+              level: level + 1, preId: '$preId${node['id']}');
+        }
+        result.add(
+          ExpansionTile(
+            initiallyExpanded: true,
+            title: Text(
               node['text'],
-              style: theme.textTheme.titleLarge
+              style: theme.textTheme.titleMedium
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
+            children: children,
           ),
-        ));
+          // Padding(
+          //   padding: const EdgeInsets.all(16.0),
+          //   child: Align(
+          //     alignment: Alignment.centerLeft,
+          //     child: Text(
+          //       node['text'],
+          //       style: theme.textTheme.titleLarge
+          //           ?.copyWith(fontWeight: FontWeight.bold),
+          //     ),
+          //   ),
+          // ),
+        );
       } else {
-        result.add(ListTile(
-          onTap: () => to(node['text'], fileId(preId, node['id'])),
-          title: Text(node['text']),
-          subtitle: Text(node['id']),
-          trailing: (node['finish'] is bool && node['finish'])
-              ? Icon(Icons.check, color: CfgGlobal.successColor)
-              : null,
-          selected: currentName == fileId(preId, node['id']),
-        ));
-      }
-      if (node['children'] is List) {
-        var children = guideDataToWidget(node['children'],
-            level: level + 1, preId: '$preId${node['id']}');
-        result.addAll(children);
+        result.add(
+          ListTile(
+            onTap: () => to(node['text'], fileId(preId, node['id'])),
+            title: Text(node['text']),
+            subtitle: Text(node['id']),
+            trailing: (node['finish'] is bool && node['finish'])
+                ? Icon(Icons.check, color: CfgGlobal.successColor)
+                : null,
+            selected: currentName == fileId(preId, node['id']),
+          ),
+        );
       }
     }
     return result;

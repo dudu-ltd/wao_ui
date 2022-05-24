@@ -5,6 +5,7 @@ import 'package:example/package/navigation/api_tabs.dart';
 import 'package:example/views/home.dart';
 import 'package:example/views/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:wao_ui/core/env.dart';
 import 'package:wao_ui/core/theme/element/theme_element.dart';
 import 'package:wao_ui/wao_ui.dart';
@@ -37,6 +38,14 @@ class Api extends StatelessWidget {
   Widget build(BuildContext context) {
     var main = const IndexPage();
     return MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate, // 指定本地化的字符串
+          GlobalCupertinoLocalizations.delegate, // 对应的Cupertino风格
+          GlobalWidgetsLocalizations.delegate // 指定默认的文本排列方向, 由左到右或由右到左
+        ],
+        supportedLocales: const [
+          Locale("zh")
+        ],
         debugShowCheckedModeBanner: false,
         title: 'Wao ui Home',
         theme: themeData = ThemeData(

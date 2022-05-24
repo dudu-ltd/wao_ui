@@ -1177,22 +1177,28 @@ registMaterialWidgetBasic(context) {
     ''',
   );
 
+  var radioValue = false;
   var radio = Demo(
     'radio',
-    Radio<int>(
-      value: 1,
-      groupValue: 2,
-      onChanged: (v) {
-        debugPrint('on changed');
-      },
-    ),
+    StatefulBuilder(builder: (context, setState) {
+      return Radio<bool>(
+        value: true,
+        groupValue: radioValue,
+        onChanged: (v) {
+          setState(() => radioValue = !radioValue);
+        },
+      );
+    }),
     r'''
-   Radio<int>(
-          key: key,
-          value: 1,
-          groupValue: 2,
-          onChanged: log.add,
-        )
+    StatefulBuilder(builder: (context, setState) {
+      return Radio<int>(
+        value: radioValue,
+        groupValue: 2,
+        onChanged: (v) {
+          setState(() => radioValue == 1 ? 2 : 1);
+        },
+      );
+    }),
     ''',
   );
 
@@ -1606,6 +1612,223 @@ registMaterialWidgetBasic(context) {
   tabbedScrollview();
 
   tabs(context);
+
+  var textField = Demo(
+    'textField',
+    TextField(
+      controller: TextEditingController(
+        text: '',
+      ),
+    ),
+    r'''
+    TextField(
+      controller: TextEditingController(
+        text: '',
+      ),
+    ),
+    ''',
+    'TextField',
+  );
+
+  var theme = Demo(
+    'theme',
+    Theme(
+      data: ThemeData(
+        textSelectionTheme: const TextSelectionThemeData(
+          selectionColor: Color(0x33333333),
+          cursorColor: Color(0x44444444),
+        ),
+      ),
+      child: TextField(),
+    ),
+    r'''
+    Theme(
+      data: ThemeData(
+        textSelectionTheme: const TextSelectionThemeData(
+          selectionColor: themeSelectionColor,
+          cursorColor: themeCursorColor,
+        ),
+      ),
+      child: TextField(
+        key: key,
+      ),
+    ),
+    ''',
+    'Theme',
+  );
+
+  var _showTimePicker = Demo(
+    'showTimePicker',
+    ElevatedButton(
+      onPressed: () {
+        showTimePicker(
+          context: context,
+          useRootNavigator: false,
+          initialTime: const TimeOfDay(hour: 7, minute: 0),
+        );
+      },
+      child: const Text('Show Picker'),
+    ),
+    r'''
+    ElevatedButton(
+      onPressed: () {
+        showTimePicker(
+          context: context,
+          useRootNavigator: false,
+          initialTime: const TimeOfDay(hour: 7, minute: 0),
+        );
+      },
+      child: const Text('Show Picker'),
+    ),
+    ''',
+    'showTimePicker',
+  );
+
+  var tooltip = Demo(
+    'tooltip',
+    Tooltip(
+      message: '提示语',
+      triggerMode: TooltipTriggerMode.manual,
+      onTriggered: () {},
+      showDuration: const Duration(milliseconds: 300),
+      child: const SizedBox(width: 100.0, height: 100.0),
+    ),
+    r'''
+    Tooltip(
+      message: '提示语',
+      triggerMode: TooltipTriggerMode.manual,
+      onTriggered: () {},
+      showDuration: const Duration(milliseconds: 300),
+      child: const SizedBox(width: 100.0, height: 100.0),
+    ),
+    ''',
+    'Tooltip',
+  );
+
+  var tooltipVisibility = Demo(
+    'tooltipVisibility',
+    TooltipVisibility(
+      visible: false,
+      child: Tooltip(
+        message: '提示语',
+        child: SizedBox(
+          width: 100.0,
+          height: 100.0,
+        ),
+      ),
+    ),
+    r'''
+    TooltipVisibility(
+      visible: false,
+      child: Tooltip(
+        message: '提示语',
+        child: SizedBox(
+          width: 100.0,
+          height: 100.0,
+        ),
+      ),
+    ),
+    ''',
+    'TooltipVisibility',
+  );
+
+  var userAccountsDrawerHeader = Demo(
+    'userAccountsDrawerHeader',
+    UserAccountsDrawerHeader(
+      onDetailsPressed: () {},
+      currentAccountPictureSize: const Size.square(72.0),
+      otherAccountsPicturesSize: const Size.square(40.0),
+      currentAccountPicture: const ExcludeSemantics(
+        child: CircleAvatar(
+          child: Text('A'),
+        ),
+      ),
+      otherAccountsPictures: const <Widget>[
+        CircleAvatar(
+          child: Text('B'),
+        ),
+        CircleAvatar(
+          child: Text('C'),
+        ),
+        CircleAvatar(
+          child: Text('D'),
+        ),
+        CircleAvatar(
+          child: Text('E'),
+        ),
+      ],
+      accountName: const Text('name'),
+      accountEmail: const Text('email'),
+    ),
+    r'''
+    UserAccountsDrawerHeader(
+      onDetailsPressed: () {},
+      currentAccountPictureSize: const Size.square(72.0),
+      otherAccountsPicturesSize: const Size.square(40.0),
+      currentAccountPicture: const ExcludeSemantics(
+        child: CircleAvatar(
+          key: Key('A'),
+          child: Text('A'),
+        ),
+      ),
+      otherAccountsPictures: const <Widget>[
+        CircleAvatar(
+          child: Text('B'),
+        ),
+        CircleAvatar(
+          key: Key('C'),
+          child: Text('C'),
+        ),
+        CircleAvatar(
+          key: Key('D'),
+          child: Text('D'),
+        ),
+        CircleAvatar(
+          child: Text('E'),
+        ),
+      ],
+      accountName: const Text('name'),
+      accountEmail: const Text('email'),
+    ),
+    ''',
+    'UserAccountsDrawerHeader',
+  );
+
+  double valueIndicationgSliderValue = .7;
+  var valueIndicationgSlider = Demo(
+    'valueIndicationgSlider',
+    StatefulBuilder(builder: (context, setState) {
+      return SliderTheme(
+        data: Theme.of(context).sliderTheme.copyWith(
+              showValueIndicator: ShowValueIndicator.always,
+            ),
+        child: Slider(
+          value: valueIndicationgSliderValue,
+          label: valueIndicationgSliderValue.toStringAsFixed(4),
+          onChanged: (double newValue) {
+            setState((() => valueIndicationgSliderValue = newValue));
+          },
+        ),
+      );
+    }),
+    r'''
+    StatefulBuilder(builder: (context, setState) {
+      return SliderTheme(
+        data: Theme.of(context).sliderTheme.copyWith(
+              showValueIndicator: ShowValueIndicator.always,
+            ),
+        child: Slider(
+          value: valueIndicationgSliderValue,
+          label: valueIndicationgSliderValue.toStringAsFixed(0),
+          onChanged: (double newValue) {
+            setState((() => valueIndicationgSliderValue = newValue));
+          },
+        ),
+      );
+    }),
+    ''',
+    'SliderTheme',
+  );
 
   var textButton = Demo(
     'textButton',
