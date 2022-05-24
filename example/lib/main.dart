@@ -30,13 +30,11 @@ void main() async {
 }
 
 class Api extends StatelessWidget {
-  static BuildContext? rootContext;
   const Api({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    rootContext = context;
     var main = const IndexPage();
     return MaterialApp(
         debugShowCheckedModeBanner: false,

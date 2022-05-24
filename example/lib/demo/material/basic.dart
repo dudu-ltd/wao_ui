@@ -1,6 +1,7 @@
 import 'package:example/demo/demos.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 import '../../main.dart';
 
@@ -8,7 +9,7 @@ registMaterialWidgetBasic(context) {
   const FlutterLogo logo = FlutterLogo();
   var aboutListTile = Demo(
     'aboutListTile',
-    AboutListTile(
+    const AboutListTile(
       applicationVersion: '0.1.2',
       applicationIcon: logo,
       applicationLegalese: 'I am the very model of a modern major general.',
@@ -33,7 +34,7 @@ registMaterialWidgetBasic(context) {
 
   var animatedIcon = Demo(
     'animatedIcon',
-    AnimatedIcon(
+    const AnimatedIcon(
       progress: AlwaysStoppedAnimation<double>(0.0),
       icon: AnimatedIcons.menu_arrow,
     ),
@@ -65,7 +66,7 @@ registMaterialWidgetBasic(context) {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: Container(
+      home: const SizedBox(
         height: 50,
         child: Text('body'),
       ),
@@ -78,11 +79,14 @@ registMaterialWidgetBasic(context) {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const Placeholder(),
+      home: const SizedBox(
+        height: 50,
+        child: Text('body'),
+      ),
       builder: (BuildContext context, Widget? child) {
-        return const Placeholder();
+        return AppBar();
       },
-    )
+    ),
     ''',
   );
 
@@ -142,7 +146,7 @@ registMaterialWidgetBasic(context) {
   var bottomAppBar = Demo(
     'bottomAppBar',
     BottomAppBar(
-      child: Row(children: [
+      child: Row(children: const [
         Expanded(
           child: Icon(Icons.message),
         ),
@@ -213,7 +217,7 @@ registMaterialWidgetBasic(context) {
 
   var buttonBar = Demo(
     'buttonBar',
-    ButtonBar(
+    const ButtonBar(
       // buttonPadding set to zero to simplify test calculations.
       buttonPadding: EdgeInsets.zero,
       children: <Widget>[
@@ -331,7 +335,7 @@ registMaterialWidgetBasic(context) {
 
   var choiceChip = Demo(
     'choiceChip',
-    ChoiceChip(
+    const ChoiceChip(
       label: Text('Chip A'),
       selected: true,
     ),
@@ -387,7 +391,7 @@ registMaterialWidgetBasic(context) {
 
   var circleAvatar = Demo(
     'circleAvatar',
-    CircleAvatar(
+    const CircleAvatar(
       radius: 50.0,
       child: const Text('Z'),
     ),
@@ -415,7 +419,7 @@ registMaterialWidgetBasic(context) {
           onSort: (int columnIndex, bool ascending) {},
         ),
       ],
-      rows: <DataRow>[],
+      rows: const <DataRow>[],
     ),
     r'''
     DataTable(
@@ -442,12 +446,10 @@ registMaterialWidgetBasic(context) {
     ElevatedButton(
       onPressed: () {
         showDatePicker(
-          context: Api.rootContext!,
-          useRootNavigator: false,
+          context: context,
           initialDate: DateTime.now(),
           firstDate: DateTime(2018),
           lastDate: DateTime(2030),
-          builder: (BuildContext context, Widget? child) => const SizedBox(),
         );
       },
       child: const Text('Show Date Picker'),
@@ -491,10 +493,11 @@ registMaterialWidgetBasic(context) {
   var _showDialog = Demo(
     'showDialog',
     TextButton(
-      child: Text('弹窗'),
+      child: const Text('弹窗'),
       onPressed: () {
+        // 追加自动关闭
         showDialog<void>(
-          context: Api.rootContext!,
+          context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return Dialog(
@@ -532,11 +535,11 @@ registMaterialWidgetBasic(context) {
 
   var divide = Demo(
     'divide',
-    Divider(
+    const Divider(
       thickness: 5.0,
     ),
     r'''
-    Divider(
+    const Divider(
       thickness: 5.0,
     ),
     ''',
@@ -546,13 +549,13 @@ registMaterialWidgetBasic(context) {
     'drawer',
     Drawer(
       child: ListView(
-        children: <Widget>[
+        children: const <Widget>[
           DrawerHeader(
-            child: Container(
+            child: Center(
               child: const Text('header'),
             ),
           ),
-          const ListTile(
+          ListTile(
             leading: Icon(Icons.archive),
             title: Text('Archive'),
           ),
@@ -938,66 +941,84 @@ registMaterialWidgetBasic(context) {
   );
 
   bool extended = false;
+  int navigationRailSelectedIndex = 0;
   var navigationRail = Demo(
     'navigationRail',
-    SizedBox(
-      height: 300,
-      width: 400,
-      child: NavigationRail(
-        selectedIndex: 0,
-        destinations: const [
-          NavigationRailDestination(
-            icon: Icon(Icons.favorite_border),
-            selectedIcon: Icon(Icons.favorite),
-            label: Text('Abc'),
+    StatefulBuilder(
+      builder: (BuildContext context, setState) {
+        return SizedBox(
+          height: 300,
+          child: NavigationRail(
+            selectedIndex: navigationRailSelectedIndex,
+            onDestinationSelected: (v) {
+              setState(() => navigationRailSelectedIndex = v);
+            },
+            destinations: const [
+              NavigationRailDestination(
+                icon: Icon(Icons.favorite_border),
+                selectedIcon: Icon(Icons.favorite),
+                label: Text('Abc'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.bookmark_border),
+                selectedIcon: Icon(Icons.bookmark),
+                label: Text('Def'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.star_border),
+                selectedIcon: Icon(Icons.star),
+                label: Text('Ghi'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.hotel),
+                selectedIcon: Icon(Icons.home),
+                label: Text('Jkl'),
+              ),
+            ],
+            extended: extended,
           ),
-          NavigationRailDestination(
-            icon: Icon(Icons.bookmark_border),
-            selectedIcon: Icon(Icons.bookmark),
-            label: Text('Def'),
-          ),
-          NavigationRailDestination(
-            icon: Icon(Icons.star_border),
-            selectedIcon: Icon(Icons.star),
-            label: Text('Ghi'),
-          ),
-          NavigationRailDestination(
-            icon: Icon(Icons.hotel),
-            selectedIcon: Icon(Icons.home),
-            label: Text('Jkl'),
-          ),
-        ],
-        extended: extended,
-      ),
+        );
+      },
     ),
     r'''
     bool extended = false;
+    int navigationRailSelectedIndex = 0;
 
-    NavigationRail(
-      selectedIndex: 0,
-      destinations: const [
-        NavigationRailDestination(
-          icon: Icon(Icons.favorite_border),
-          selectedIcon: Icon(Icons.favorite),
-          label: Text('Abc'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.bookmark_border),
-          selectedIcon: Icon(Icons.bookmark),
-          label: Text('Def'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.star_border),
-          selectedIcon: Icon(Icons.star),
-          label: Text('Ghi'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.hotel),
-          selectedIcon: Icon(Icons.home),
-          label: Text('Jkl'),
-        ),
-      ],
-      extended: extended,
+    StatefulBuilder(
+      builder: (BuildContext context, setState) {
+        return SizedBox(
+          height: 300,
+          child: NavigationRail(
+            selectedIndex: navigationRailSelectedIndex,
+            onDestinationSelected: (v) {
+              setState(() => navigationRailSelectedIndex = v);
+            },
+            destinations: const [
+              NavigationRailDestination(
+                icon: Icon(Icons.favorite_border),
+                selectedIcon: Icon(Icons.favorite),
+                label: Text('Abc'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.bookmark_border),
+                selectedIcon: Icon(Icons.bookmark),
+                label: Text('Def'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.star_border),
+                selectedIcon: Icon(Icons.star),
+                label: Text('Ghi'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.hotel),
+                selectedIcon: Icon(Icons.home),
+                label: Text('Jkl'),
+              ),
+            ],
+            extended: extended,
+          ),
+        );
+      },
     ),
     ''',
   );
@@ -1069,7 +1090,7 @@ registMaterialWidgetBasic(context) {
     'popupMenu',
     PopupMenuButton<int>(
       onSelected: (int value) {
-        Navigator.pushNamed(context, '/next');
+        // Navigator.pushNamed(context, '/next');
       },
       itemBuilder: (BuildContext context) {
         return <PopupMenuItem<int>>[
@@ -1083,7 +1104,7 @@ registMaterialWidgetBasic(context) {
     r'''
     PopupMenuButton<int>(
       onSelected: (int value) {
-        Navigator.pushNamed(context, '/next');
+        // Navigator.pushNamed(context, '/next');
       },
       itemBuilder: (BuildContext context) {
         return <PopupMenuItem<int>>[
@@ -1512,56 +1533,33 @@ registMaterialWidgetBasic(context) {
     ''',
   );
 
+  var switchListTileValue = true;
   var switchListTile = Demo(
     'switchListTile',
-    Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        SwitchListTile(
-          value: true,
-          onChanged: (bool value) {},
+    StatefulBuilder(
+      builder: (BuildContext context, setState) {
+        return SwitchListTile(
+          value: switchListTileValue,
+          onChanged: (bool value) {
+            setState(() => switchListTileValue = value);
+          },
           title: const Text('AAA'),
           secondary: const Text('aaa'),
-        ),
-        CheckboxListTile(
-          value: true,
-          onChanged: (bool? value) {},
-          title: const Text('BBB'),
-          secondary: const Text('bbb'),
-        ),
-        RadioListTile<bool>(
-          value: true,
-          groupValue: false,
-          onChanged: (bool? value) {},
-          title: const Text('CCC'),
-          secondary: const Text('ccc'),
-        ),
-      ],
+        );
+      },
     ),
     r'''
-    Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        SwitchListTile(
-          value: true,
-          onChanged: (bool value) {},
+    StatefulBuilder(
+      builder: (BuildContext context, setState) {
+        return SwitchListTile(
+          value: switchListTileValue,
+          onChanged: (bool value) {
+            setState(() => switchListTileValue = value);
+          },
           title: const Text('AAA'),
           secondary: const Text('aaa'),
-        ),
-        CheckboxListTile(
-          value: true,
-          onChanged: (bool? value) {},
-          title: const Text('BBB'),
-          secondary: const Text('bbb'),
-        ),
-        RadioListTile<bool>(
-          value: true,
-          groupValue: false,
-          onChanged: (bool? value) {},
-          title: const Text('CCC'),
-          secondary: const Text('ccc'),
-        ),
-      ],
+        );
+      },
     ),
     ''',
   );
@@ -1572,19 +1570,15 @@ registMaterialWidgetBasic(context) {
     'swatch',
     StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
-        return Material(
-          child: Center(
-            child: Switch(
-              dragStartBehavior: DragStartBehavior.down,
-              key: switchKey,
-              value: swatchValue,
-              onChanged: (bool newValue) {
-                setState(() {
-                  swatchValue = newValue;
-                });
-              },
-            ),
-          ),
+        return Switch(
+          dragStartBehavior: DragStartBehavior.down,
+          key: switchKey,
+          value: swatchValue,
+          onChanged: (bool newValue) {
+            setState(() {
+              swatchValue = newValue;
+            });
+          },
         );
       },
     ),
@@ -1594,113 +1588,24 @@ registMaterialWidgetBasic(context) {
     
     StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
-        return Material(
-          child: Center(
-            child: Switch(
-              dragStartBehavior: DragStartBehavior.down,
-              key: switchKey,
-              value: swatchValue,
-              onChanged: (bool newValue) {
-                setState(() {
-                  swatchValue = newValue;
-                });
-              },
-            ),
-          ),
+        return Switch(
+          dragStartBehavior: DragStartBehavior.down,
+          key: switchKey,
+          value: swatchValue,
+          onChanged: (bool newValue) {
+            setState(() {
+              swatchValue = newValue;
+            });
+          },
         );
       },
     ),
     ''',
   );
 
-  var tabbedScrollview = Demo(
-    'tabbedScrollview',
-    TabDemo(),
-    r'''
+  tabbedScrollview();
 
-class TabDemo extends StatefulWidget {
-  TabDemo({Key? key}) : super(key: key);
-
-  @override
-  State<TabDemo> createState() => _TabDemoState();
-}
-
-class TabHeaderDelegate extends SliverPersistentHeaderDelegate {
-  @override
-  double get minExtent => 50.0;
-
-  @override
-  double get maxExtent => 150.0;
-
-  @override
-  Widget build(
-          BuildContext context, double shrinkOffset, bool overlapsContent) =>
-      const Placeholder(color: Colors.teal);
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      false;
-}
-
-class _TabDemoState extends State<TabDemo> with TickerProviderStateMixin {
-  static const int tabCount = 3;
-  late TabController tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = TabController(length: tabCount, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Colors.orange,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 400,
-            width: 300,
-            child: TabBarView(
-              controller: tabController,
-              children: List<Widget>.generate(tabCount, (int index) {
-                return CustomScrollView(
-                  // The bug only occurs when this key is included
-                  key: ValueKey<String>('Page $index'),
-                  slivers: <Widget>[
-                    SliverPersistentHeader(
-                      delegate: TabHeaderDelegate(),
-                    ),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
-          SizedBox(
-            width: 300,
-            height: 60,
-            child: AppBar(
-              bottom: TabBar(
-                controller: tabController,
-                tabs: List<Widget>.generate(
-                    tabCount, (int index) => Tab(text: 'Tab $index')).toList(),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-    ''',
-  );
+  tabs(context);
 
   var textButton = Demo(
     'textButton',
@@ -2002,6 +1907,7 @@ class _TestSearchDelegate extends SearchDelegate<String> {
   }
 }
 
+/// TabDemo
 class TabDemo extends StatefulWidget {
   TabDemo({Key? key}) : super(key: key);
 
@@ -2009,31 +1915,13 @@ class TabDemo extends StatefulWidget {
   State<TabDemo> createState() => _TabDemoState();
 }
 
-class TabHeaderDelegate extends SliverPersistentHeaderDelegate {
-  @override
-  double get minExtent => 50.0;
-
-  @override
-  double get maxExtent => 150.0;
-
-  @override
-  Widget build(
-          BuildContext context, double shrinkOffset, bool overlapsContent) =>
-      const Placeholder(color: Colors.teal);
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      false;
-}
-
 class _TabDemoState extends State<TabDemo> with TickerProviderStateMixin {
-  static const int tabCount = 3;
   late TabController tabController;
 
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: tabCount, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -2044,34 +1932,306 @@ class _TabDemoState extends State<TabDemo> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Colors.grey.shade100,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.fromBorderSide(
+          BorderSide(
+            width: 1,
+            color: Colors.grey.shade200,
+          ),
+        ),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
             width: 300,
-            height: 60,
-            child: AppBar(
-              bottom: TabBar(
-                controller: tabController,
-                tabs: List<Widget>.generate(
-                    tabCount, (int index) => Tab(text: 'Tab $index')).toList(),
-              ),
+            height: 50,
+            child: TabBar(
+              controller: tabController,
+              labelColor: Colors.green,
+              indicatorColor: Colors.green,
+              unselectedLabelColor: Colors.grey,
+              automaticIndicatorColorAdjustment: false,
+              tabs: const [
+                Tab(text: '朋友圈相册'),
+                Tab(text: '状态'),
+              ],
             ),
           ),
           SizedBox(
-            height: 200,
             width: 300,
+            height: 350,
             child: TabBarView(
               controller: tabController,
-              children: List<Widget>.generate(tabCount, (int index) {
-                return const CustomScrollView();
-              }).toList(),
+              children: [
+                ListView(
+                  children: List.generate(
+                    100,
+                    (i) => ListTile(
+                      title: Text('照片 ${i + 1}'),
+                    ),
+                  ),
+                ),
+                ListView(
+                  children: List.generate(
+                    100,
+                    (i) => ListTile(
+                      title: Text('状态 ${i + 1}'),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
+}
+
+void tabbedScrollview() {
+  var tabbedScrollview = Demo(
+    'tabbedScrollview',
+    TabDemo(),
+    r'''
+// 声明Tab组件。
+class TabDemo extends StatefulWidget {
+  TabDemo({Key? key}) : super(key: key);
+
+  @override
+  State<TabDemo> createState() => _TabDemoState();
+}
+
+class _TabDemoState extends State<TabDemo> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.fromBorderSide(
+          BorderSide(
+            width: 1,
+            color: Colors.grey.shade200,
+          ),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 300,
+            height: 50,
+            child: TabBar(
+              controller: tabController,
+              labelColor: Colors.green,
+              indicatorColor: Colors.green,
+              unselectedLabelColor: Colors.grey,
+              automaticIndicatorColorAdjustment: false,
+              tabs: const [
+                Tab(text: '朋友圈相册'),
+                Tab(text: '状态'),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 300,
+            height: 350,
+            child: TabBarView(
+              controller: tabController,
+              children: [
+                ListView(
+                  children: List.generate(
+                    100,
+                    (i) => ListTile(
+                      title: Text('照片 ${i + 1}'),
+                    ),
+                  ),
+                ),
+                ListView(
+                  children: List.generate(
+                    100,
+                    (i) => ListTile(
+                      title: Text('状态 ${i + 1}'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+    // 创建组件对象。
+    TabDemo(),
+    ''',
+  );
+}
+
+// Tabs
+class TabsDemo extends StatefulWidget {
+  TabsDemo({Key? key}) : super(key: key);
+
+  @override
+  State<TabsDemo> createState() => _TabsDemoState();
+}
+
+class _TabsDemoState extends State<TabsDemo>
+    with SingleTickerProviderStateMixin {
+  late TabController mainTabController;
+
+  @override
+  void initState() {
+    super.initState();
+    mainTabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    mainTabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Tabs Demo'),
+        ),
+        bottomNavigationBar: ColoredBox(
+          color: Theme.of(context).primaryColor,
+          child: TabBar(
+            controller: mainTabController,
+            tabs: const <Widget>[
+              Tab(icon: Icon(Icons.message)),
+              Tab(icon: Icon(Icons.list)),
+              Tab(icon: Icon(Icons.discord)),
+              Tab(icon: Icon(Icons.person)),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          controller: mainTabController,
+          children: const <Widget>[
+            Center(child: Text('消息')),
+            Center(child: Text('联系人')),
+            Center(child: Text('发现')),
+            Center(child: Text('我的')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+tabs(BuildContext context) {
+  var tabs = Demo(
+    'tabs',
+    TextButton(
+      child: Text('打开 Tab 页 Demo'),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (ctx) => Dialog(
+            child: SizedBox(
+              width: 300,
+              height: 500,
+              child: TabsDemo(),
+            ),
+          ),
+        );
+      },
+    ),
+    r'''
+    TextButton(
+      child: Text('打开 Tab 页 Demo'),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (ctx) => Dialog(
+            child: SizedBox(
+              width: 300,
+              height: 500,
+              child: TabsDemo(),
+            ),
+          ),
+        );
+      },
+    ),
+
+// 自建类
+// 声明 tabs 组件
+class TabsDemo extends StatefulWidget {
+  TabsDemo({Key? key}) : super(key: key);
+
+  @override
+  State<TabsDemo> createState() => _TabsDemoState();
+}
+
+class _TabsDemoState extends State<TabsDemo>
+    with SingleTickerProviderStateMixin {
+  late TabController mainTabController;
+
+  @override
+  void initState() {
+    super.initState();
+    mainTabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    mainTabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tabs详情'),
+      ),
+      bottomNavigationBar: ColoredBox(
+        color: Theme.of(context).primaryColor,
+        child: TabBar(
+          controller: mainTabController,
+          tabs: const <Widget>[
+            Tab(icon: Icon(Icons.message)),
+            Tab(icon: Icon(Icons.list)),
+            Tab(icon: Icon(Icons.discord)),
+            Tab(icon: Icon(Icons.person)),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: mainTabController,
+        children: <Widget>[
+          Container(child: Text('消息')),
+          Container(child: Text('联系人')),
+          Container(child: Text('发现')),
+          Container(child: Text('我的')),
+        ],
+      ),
+    );
+  }
+}
+    ''',
+  );
 }

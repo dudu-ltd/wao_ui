@@ -155,7 +155,8 @@ class _ApiDetailState extends State<ApiDetail>
                 Border.fromBorderSide(BorderSide(color: Colors.grey.shade300)),
                 false,
               ),
-              code('    ${demo.code.trim()}'),
+              code(
+                  '${demo.code.trim().startsWith('class') ? '' : '\t'}${demo.code.trim()}'),
             ],
           ),
         ),
