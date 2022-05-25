@@ -156,7 +156,7 @@ class _ApiDetailState extends State<ApiDetail>
                 false,
               ),
               code(
-                  '${demo.code.trim().startsWith('class') ? '' : '\t'}${demo.code.trim()}'),
+                  '${demo.code.trim().startsWith('class') ? '' : '    '}${demo.code.trim()}'),
             ],
           ),
         ),

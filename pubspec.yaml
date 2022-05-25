@@ -61,8 +61,8 @@ flutter:
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages
 
-  fonts:
-    - family: PingFang
-      fonts:
-        - asset: lib/fonts/PingFang.ttf
-          weight: 500
+  # fonts:
+  #   - family: PingFang
+  #     fonts:
+  #       - asset: lib/fonts/PingFang.ttf
+  #         weight: 500

@@ -81,7 +81,7 @@ class _WScrollSnapState extends WState<WScrollSnap>
         controller: scrollCtrl,
         child: widget.$slots.content,
       )
-      ..$slots.asideRight = snapBuilder
+      // ..$slots.asideRight = snapBuilder
       ..$props.rightJudge = true
       ..$props.asideRightWidth = widget.$style.snapWidth;
   }

@@ -289,33 +289,54 @@ registMaterialWidgetBasic(context) {
     ''',
   );
 
+  var checkboxListTileValue = true;
   var checkboxListTile = Demo(
     'checkboxListTile',
-    CheckboxListTile(
-      value: true,
-      onChanged: (bool? value) {},
-      title: const Text('Hello'),
-    ),
+    StatefulBuilder(builder: (context, setState) {
+      return CheckboxListTile(
+        value: checkboxListTileValue,
+        title: const Text('Hello'),
+        onChanged: (bool? value) {
+          setState(() => checkboxListTileValue = value ?? false);
+        },
+      );
+    }),
     r'''
-    CheckboxListTile(
-      value: true,
-      onChanged: (bool? value) {},
-      title: const Text('Hello'),
-    ),
+  var checkboxListTileValue = true;
+    StatefulBuilder(builder: (context, setState) {
+      return CheckboxListTile(
+        value: checkboxListTileValue,
+        title: const Text('Hello'),
+        onChanged: (bool? value) {
+          setState(() => checkboxListTileValue = value ?? false);
+        },
+      );
+    }),
     ''',
   );
 
+  var checkboxValue = true;
   var checkbox = Demo(
     'checkbox',
-    Checkbox(
-      value: true,
-      onChanged: (bool? newValue) {},
-    ),
+    StatefulBuilder(builder: (context, setState) {
+      return Checkbox(
+        value: checkboxValue,
+        onChanged: (bool? newValue) {
+          setState(() => checkboxValue = newValue ?? false);
+        },
+      );
+    }),
     r'''
-    Checkbox(
-      value: true,
-      onChanged: (bool? newValue) {},
-    ),
+    var checkboxValue = true;
+
+    StatefulBuilder(builder: (context, setState) {
+      return Checkbox(
+        value: checkboxValue,
+        onChanged: (bool? newValue) {
+          setState(() => checkboxValue = newValue ?? false);
+        },
+      );
+    }),
     ''',
   );
 
@@ -333,17 +354,26 @@ registMaterialWidgetBasic(context) {
     ''',
   );
 
+  var choiceChipValue = true;
   var choiceChip = Demo(
     'choiceChip',
-    const ChoiceChip(
-      label: Text('Chip A'),
-      selected: true,
-    ),
+    StatefulBuilder(builder: (context, setState) {
+      return ChoiceChip(
+        onSelected: (value) => setState((() => choiceChipValue = value)),
+        label: const Text('Chip A'),
+        selected: choiceChipValue,
+      );
+    }),
     r'''
-    ChoiceChip(
-      label: Text('Chip A'),
-      selected: true,
-    ),
+    var choiceChipValue = true;
+
+    StatefulBuilder(builder: (context, setState) {
+      return ChoiceChip(
+        onSelected: (value) => setState((() => choiceChipValue = value)),
+        label: const Text('Chip A'),
+        selected: choiceChipValue,
+      );
+    }),
     ''',
   );
 
@@ -406,43 +436,101 @@ registMaterialWidgetBasic(context) {
   var dataTable = Demo(
     'dataTable',
     DataTable(
-      onSelectAll: (bool? value) {},
-      columns: <DataColumn>[
-        const DataColumn(
-          label: Text('Name'),
-          tooltip: 'Name',
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text(
+            'Name',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
         ),
         DataColumn(
-          label: const Text('Calories'),
-          tooltip: 'Calories',
-          numeric: true,
-          onSort: (int columnIndex, bool ascending) {},
+          label: Text(
+            'Age',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Role',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
         ),
       ],
-      rows: const <DataRow>[],
+      rows: const <DataRow>[
+        DataRow(
+          cells: <DataCell>[
+            DataCell(Text('Sarah')),
+            DataCell(Text('19')),
+            DataCell(Text('Student')),
+          ],
+        ),
+        DataRow(
+          cells: <DataCell>[
+            DataCell(Text('Janine')),
+            DataCell(Text('43')),
+            DataCell(Text('Professor')),
+          ],
+        ),
+        DataRow(
+          cells: <DataCell>[
+            DataCell(Text('William')),
+            DataCell(Text('27')),
+            DataCell(Text('Associate Professor')),
+          ],
+        ),
+      ],
     ),
     r'''
     DataTable(
-      onSelectAll: (bool? value) {},
-      columns: <DataColumn>[
-        const DataColumn(
-          label: Text('Name'),
-          tooltip: 'Name',
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text(
+            'Name',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
         ),
         DataColumn(
-          label: const Text('Calories'),
-          tooltip: 'Calories',
-          numeric: true,
-          onSort: (int columnIndex, bool ascending) {},
+          label: Text(
+            'Age',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Role',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
         ),
       ],
-      rows: <DataRow>[],
-    ),
+      rows: const <DataRow>[
+        DataRow(
+          cells: <DataCell>[
+            DataCell(Text('Sarah')),
+            DataCell(Text('19')),
+            DataCell(Text('Student')),
+          ],
+        ),
+        DataRow(
+          cells: <DataCell>[
+            DataCell(Text('Janine')),
+            DataCell(Text('43')),
+            DataCell(Text('Professor')),
+          ],
+        ),
+        DataRow(
+          cells: <DataCell>[
+            DataCell(Text('William')),
+            DataCell(Text('27')),
+            DataCell(Text('Associate Professor')),
+          ],
+        ),
+      ],
+    )
     ''',
   );
 
-  var datePicker = Demo(
-    'datePicker',
+  var _showDatePicker = Demo(
+    'showDatePicker',
     ElevatedButton(
       onPressed: () {
         showDatePicker(
@@ -450,7 +538,7 @@ registMaterialWidgetBasic(context) {
           initialDate: DateTime.now(),
           firstDate: DateTime(2018),
           lastDate: DateTime(2030),
-        );
+        ).then((v) => print(v));
       },
       child: const Text('Show Date Picker'),
     ),
@@ -458,17 +546,16 @@ registMaterialWidgetBasic(context) {
     ElevatedButton(
       onPressed: () {
         showDatePicker(
-          context: Api.rootContext!,
-          useRootNavigator: false,
+          context: context,
           initialDate: DateTime.now(),
           firstDate: DateTime(2018),
           lastDate: DateTime(2030),
-          builder: (BuildContext context, Widget? child) => const SizedBox(),
-        );
+        ).then((v) => print(v));
       },
       child: const Text('Show Date Picker'),
     ),
     ''',
+    'showDatePicker',
   );
 
   var dialog = Demo(
@@ -585,25 +672,25 @@ registMaterialWidgetBasic(context) {
     'dropdownButtonFormField',
     DropdownButtonFormField<int?>(
       decoration: const InputDecoration(
-        labelText: 'labelText',
+        labelText: '性别',
       ),
       value: value,
-      hint: const Text('Hint'),
+      hint: const Text('请选择性别'),
       onChanged: (int? newValue) {
         value = newValue;
       },
       items: const <DropdownMenuItem<int?>>[
         DropdownMenuItem<int?>(
           value: 1,
-          child: Text('One'),
+          child: Text('男'),
         ),
         DropdownMenuItem<int?>(
           value: 2,
-          child: Text('Two'),
+          child: Text('女'),
         ),
         DropdownMenuItem<int?>(
           value: 3,
-          child: Text('Three'),
+          child: Text('保密'),
         ),
       ],
     ),
@@ -769,41 +856,35 @@ registMaterialWidgetBasic(context) {
   var gridTile = Demo(
     'gridTile',
     SizedBox(
-      height: 300,
-      width: 400,
+      height: 400,
       child: GridTile(
-        header: const GridTileBar(
-          leading: Icon(Icons.thumb_up),
-          title: Text('Header'),
-          subtitle: Text('Subtitle'),
-          trailing: Icon(Icons.thumb_up),
-        ),
         footer: const GridTileBar(
-          title: Text('Footer'),
           backgroundColor: Colors.black38,
+          leading: Icon(Icons.percent),
+          title: Text('Flutter势头强劲'),
+          subtitle: Text('Flutter 3.0, Dart 2.17 持续稳定支持6大平台'),
+          trailing: Icon(Icons.arrow_forward_ios),
         ),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.green[500],
-          ),
+        child: Image.asset(
+          'image/wth.jpg',
+          fit: BoxFit.cover,
         ),
       ),
     ),
     r'''
-    GridTile(
-      header: const GridTileBar(
-        leading: Icon(Icons.thumb_up),
-        title: Text('Header'),
-        subtitle: Text('Subtitle'),
-        trailing: Icon(Icons.thumb_up),
-      ),
-      footer: const GridTileBar(
-        title: Text('Footer'),
-        backgroundColor: Colors.black38,
-      ),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: Colors.green[500],
+    SizedBox(
+      height: 400,
+      child: GridTile(
+        footer: const GridTileBar(
+          backgroundColor: Colors.black38,
+          leading: Icon(Icons.percent),
+          title: Text('Flutter势头强劲'),
+          subtitle: Text('Flutter 3.0, Dart 2.17 持续稳定支持6大平台'),
+          trailing: Icon(Icons.arrow_forward_ios),
+        ),
+        child: Image.asset(
+          'image/wth.jpg',
+          fit: BoxFit.cover,
         ),
       ),
     ),
@@ -880,17 +961,39 @@ registMaterialWidgetBasic(context) {
   var listTile = Demo(
     'listTile',
     ListTile(
-      leading: SizedBox(width: 24.0, height: 24.0),
-      title: const Text('title'),
-      subtitle: Text('subtitle'),
-      trailing: SizedBox(width: 24.0, height: 24.0),
+      leading: const ColoredBox(
+        color: Colors.blue,
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.library_books_rounded,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
+      ),
+      title: const Text('订阅号'),
+      subtitle: const Text('Flutter 发布3.0版本'),
+      trailing: Text('${DateTime.now().hour}:${DateTime.now().minute}',
+          style: TextStyle(color: Colors.grey.shade400)),
     ),
     r'''
     ListTile(
-      leading: SizedBox(width: 24.0, height: 24.0),
-      title: const Text('title'),
-      subtitle: Text('subtitle'),
-      trailing: SizedBox(width: 24.0, height: 24.0),
+      leading: const ColoredBox(
+        color: Colors.blue,
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.library_books_rounded,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
+      ),
+      title: const Text('订阅号'),
+      subtitle: const Text('Flutter 发布3.0版本'),
+      trailing: Text('${DateTime.now().hour}:${DateTime.now().minute}',
+          style: TextStyle(color: Colors.grey.shade400)),
     ),
     ''',
   );
@@ -1031,58 +1134,134 @@ registMaterialWidgetBasic(context) {
   //   ''',
   // );
 
+  var rowsPerPageValue = 2;
   final TestDataSource source = TestDataSource();
   var paginatedDataTable = Demo(
     'paginatedDataTable',
-    PaginatedDataTable(
-      header: const Text('Test table'),
-      source: source,
-      rowsPerPage: 2,
-      showFirstLastButtons: true,
-      availableRowsPerPage: const <int>[
-        2,
-        4,
-        8,
-        16,
-      ],
-      onRowsPerPageChanged: (int? rowsPerPage) {
-        // log.add('rows-per-page-changed: $rowsPerPage');
-      },
-      onPageChanged: (int rowIndex) {
-        // log.add('page-changed: $rowIndex');
-      },
-      columns: const <DataColumn>[
-        DataColumn(label: Text('Name')),
-        DataColumn(label: Text('Calories'), numeric: true),
-        DataColumn(label: Text('Generation')),
-      ],
-    ),
+    StatefulBuilder(builder: (context, setState) {
+      return PaginatedDataTable(
+        header: const Text('Test table'),
+        source: source,
+        rowsPerPage: rowsPerPageValue,
+        showFirstLastButtons: true,
+        availableRowsPerPage: const <int>[2, 4, 8, 16],
+        onRowsPerPageChanged: (int? rowsPerPage) {
+          setState(() => rowsPerPageValue = rowsPerPage!);
+        },
+        onPageChanged: (int rowIndex) {
+          // log.add('page-changed: $rowIndex');
+        },
+        columns: const <DataColumn>[
+          DataColumn(label: Text('Name')),
+          DataColumn(label: Text('Calories'), numeric: true),
+          DataColumn(label: Text('Generation')),
+        ],
+      );
+    }),
     r'''
+    var rowsPerPageValue = 2;
     final TestDataSource source = TestDataSource();
 
-    PaginatedDataTable(
-      header: const Text('Test table'),
-      source: source,
-      rowsPerPage: 2,
-      showFirstLastButtons: true,
-      availableRowsPerPage: const <int>[
-        2,
-        4,
-        8,
-        16,
+    StatefulBuilder(builder: (context, setState) {
+      return PaginatedDataTable(
+        header: const Text('Test table'),
+        source: source,
+        rowsPerPage: rowsPerPageValue,
+        showFirstLastButtons: true,
+        availableRowsPerPage: const <int>[2, 4, 8, 16],
+        onRowsPerPageChanged: (int? rowsPerPage) {
+          setState(() => rowsPerPageValue = rowsPerPage!);
+        },
+        onPageChanged: (int rowIndex) {},
+        columns: const <DataColumn>[
+          DataColumn(label: Text('Name')),
+          DataColumn(label: Text('Calories'), numeric: true),
+          DataColumn(label: Text('Generation')),
+        ],
+      );
+    })
+
+
+class TestDataSource extends DataTableSource {
+  TestDataSource({
+    this.allowSelection = false,
+  });
+
+  final bool allowSelection;
+
+  int get generation => _generation;
+  int _generation = 0;
+  set generation(int value) {
+    if (_generation == value) return;
+    _generation = value;
+    notifyListeners();
+  }
+
+  final Set<int> _selectedRows = <int>{};
+
+  void _handleSelected(int index, bool? selected) {
+    if (selected ?? false) {
+      _selectedRows.add(index);
+    } else {
+      _selectedRows.remove(index);
+    }
+    notifyListeners();
+  }
+
+  @override
+  DataRow getRow(int index) {
+    final Dessert dessert = kDesserts[index % kDesserts.length];
+    final int page = index ~/ kDesserts.length;
+    return DataRow.byIndex(
+      index: index,
+      selected: _selectedRows.contains(index),
+      cells: <DataCell>[
+        DataCell(Text('${dessert.name} ($page)')),
+        DataCell(Text('${dessert.calories}')),
+        DataCell(Text('$generation')),
       ],
-      onRowsPerPageChanged: (int? rowsPerPage) {
-        // log.add('rows-per-page-changed: $rowsPerPage');
-      },
-      onPageChanged: (int rowIndex) {
-        // log.add('page-changed: $rowIndex');
-      },
-      columns: const <DataColumn>[
-        DataColumn(label: Text('Name')),
-        DataColumn(label: Text('Calories'), numeric: true),
-        DataColumn(label: Text('Generation')),
-      ],
-    ),
+      onSelectChanged: allowSelection
+          ? (bool? selected) => _handleSelected(index, selected)
+          : null,
+    );
+  }
+
+  @override
+  int get rowCount => 50 * kDesserts.length;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get selectedRowCount => _selectedRows.length;
+}
+
+class Dessert {
+  Dessert(this.name, this.calories, this.fat, this.carbs, this.protein,
+      this.sodium, this.calcium, this.iron);
+
+  final String name;
+  final int calories;
+  final double fat;
+  final int carbs;
+  final double protein;
+  final int sodium;
+  final int calcium;
+  final int iron;
+}
+
+final List<Dessert> kDesserts = <Dessert>[
+  Dessert('Frozen yogurt', 159, 6.0, 24, 4.0, 87, 14, 1),
+  Dessert('Ice cream sandwich', 237, 9.0, 37, 4.3, 129, 8, 1),
+  Dessert('Eclair', 262, 16.0, 24, 6.0, 337, 6, 7),
+  Dessert('Cupcake', 305, 3.7, 67, 4.3, 413, 3, 8),
+  Dessert('Gingerbread', 356, 16.0, 49, 3.9, 327, 7, 16),
+  Dessert('Jelly bean', 375, 0.0, 94, 0.0, 50, 0, 0),
+  Dessert('Lollipop', 392, 0.2, 98, 0.0, 38, 0, 2),
+  Dessert('Honeycomb', 408, 3.2, 87, 6.5, 562, 0, 45),
+  Dessert('Donut', 452, 25.0, 51, 4.9, 326, 2, 22),
+  Dessert('KitKat', 518, 26.0, 65, 7.0, 54, 12, 6),
+];
     ''',
   );
 
@@ -1549,12 +1728,14 @@ registMaterialWidgetBasic(context) {
           onChanged: (bool value) {
             setState(() => switchListTileValue = value);
           },
-          title: const Text('AAA'),
-          secondary: const Text('aaa'),
+          title: const Text('接收新消息通知'),
+          // secondary: const Text('aaa'),
         );
       },
     ),
     r'''
+    var switchListTileValue = true;
+    
     StatefulBuilder(
       builder: (BuildContext context, setState) {
         return SwitchListTile(
@@ -1562,8 +1743,8 @@ registMaterialWidgetBasic(context) {
           onChanged: (bool value) {
             setState(() => switchListTileValue = value);
           },
-          title: const Text('AAA'),
-          secondary: const Text('aaa'),
+          title: const Text('接收新消息通知'),
+          // secondary: const Text('aaa'),
         );
       },
     ),
@@ -1575,15 +1756,13 @@ registMaterialWidgetBasic(context) {
   var swatch = Demo(
     'swatch',
     StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
+      builder: (context, setState) {
         return Switch(
           dragStartBehavior: DragStartBehavior.down,
           key: switchKey,
           value: swatchValue,
           onChanged: (bool newValue) {
-            setState(() {
-              swatchValue = newValue;
-            });
+            setState(() => swatchValue = newValue);
           },
         );
       },
@@ -1593,15 +1772,13 @@ registMaterialWidgetBasic(context) {
     bool swatchValue = false;
     
     StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
+      builder: (context, setState) {
         return Switch(
           dragStartBehavior: DragStartBehavior.down,
           key: switchKey,
           value: swatchValue,
           onChanged: (bool newValue) {
-            setState(() {
-              swatchValue = newValue;
-            });
+            setState(() => swatchValue = newValue);
           },
         );
       },
@@ -1630,8 +1807,8 @@ registMaterialWidgetBasic(context) {
     'TextField',
   );
 
-  var theme = Demo(
-    'theme',
+  var themeWithTextField = Demo(
+    'themeWithTextField',
     Theme(
       data: ThemeData(
         textSelectionTheme: const TextSelectionThemeData(
@@ -1663,9 +1840,9 @@ registMaterialWidgetBasic(context) {
       onPressed: () {
         showTimePicker(
           context: context,
-          useRootNavigator: false,
+          useRootNavigator: true,
           initialTime: const TimeOfDay(hour: 7, minute: 0),
-        );
+        ).then((v) => print(v));
       },
       child: const Text('Show Picker'),
     ),
@@ -1674,9 +1851,9 @@ registMaterialWidgetBasic(context) {
       onPressed: () {
         showTimePicker(
           context: context,
-          useRootNavigator: false,
+          useRootNavigator: true,
           initialTime: const TimeOfDay(hour: 7, minute: 0),
-        );
+        ).then((v) => print(v));
       },
       child: const Text('Show Picker'),
     ),
@@ -1734,16 +1911,16 @@ registMaterialWidgetBasic(context) {
 
   var userAccountsDrawerHeader = Demo(
     'userAccountsDrawerHeader',
-    UserAccountsDrawerHeader(
-      onDetailsPressed: () {},
-      currentAccountPictureSize: const Size.square(72.0),
-      otherAccountsPicturesSize: const Size.square(40.0),
-      currentAccountPicture: const ExcludeSemantics(
+    const UserAccountsDrawerHeader(
+      // onDetailsPressed: () {},
+      currentAccountPictureSize: Size.square(72.0),
+      otherAccountsPicturesSize: Size.square(40.0),
+      currentAccountPicture: ExcludeSemantics(
         child: CircleAvatar(
           child: Text('A'),
         ),
       ),
-      otherAccountsPictures: const <Widget>[
+      otherAccountsPictures: <Widget>[
         CircleAvatar(
           child: Text('B'),
         ),
@@ -1757,8 +1934,8 @@ registMaterialWidgetBasic(context) {
           child: Text('E'),
         ),
       ],
-      accountName: const Text('name'),
-      accountEmail: const Text('email'),
+      accountName: Text('CorvusYe'),
+      accountEmail: Text('CorvusYe@163.com'),
     ),
     r'''
     UserAccountsDrawerHeader(
@@ -1767,7 +1944,6 @@ registMaterialWidgetBasic(context) {
       otherAccountsPicturesSize: const Size.square(40.0),
       currentAccountPicture: const ExcludeSemantics(
         child: CircleAvatar(
-          key: Key('A'),
           child: Text('A'),
         ),
       ),
@@ -1776,11 +1952,9 @@ registMaterialWidgetBasic(context) {
           child: Text('B'),
         ),
         CircleAvatar(
-          key: Key('C'),
           child: Text('C'),
         ),
         CircleAvatar(
-          key: Key('D'),
           child: Text('D'),
         ),
         CircleAvatar(

@@ -134,11 +134,35 @@ flutter:
     - assets/md/waoui/navigation/WSteps.md
     - assets/md/waoui/others/WDrawer.md
     - assets/md/waoui/navigation/WPageHeader.md
-    # Material md
+    #================= Material md ================
     - assets/md/material/quick_start/all.md
-    - assets/md/material/basic/button.md
-    - assets/md/material/form/Slider.md
+    - assets/md/material/basic/button/all.md
+    # display
+    - assets/md/material/display/DataTable.md
+    - assets/md/material/display/GridTile.md
+    - assets/md/material/display/ListTile.md
+    - assets/md/material/display/Progress.md
+    - assets/md/material/display/UserAccountsDrawerHeader.md
+    # feedback
+    - assets/md/material/feedback/SnackBar.md
+    - assets/md/material/feedback/Tooltip.md
+
+    # navigation
+    - assets/md/material/navigation/NavigationBar.md
+    - assets/md/material/navigation/NavigationRail.md
+    - assets/md/material/navigation/PopupMenuButton.md
+    - assets/md/material/navigation/Stepper.md
+    # form
+    - assets/md/material/form/Autocomplete.md
+    - assets/md/material/form/Checkbox.md
+    - assets/md/material/form/DateTime.md
     - assets/md/material/form/Input.md
+    - assets/md/material/form/Radio.md
+    - assets/md/material/form/Select.md
+    - assets/md/material/form/Slider.md
+    - assets/md/material/form/Swatch.md
+    # - assets/md/material/form/Swatch.md
+    # - assets/md/material/form/Swatch.md
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

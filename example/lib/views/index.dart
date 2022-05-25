@@ -63,7 +63,7 @@ class _IndexPageState extends State<IndexPage>
         ApiPage(
           guideData: materialGuideData,
           path: 'assets/md/material/',
-          initialRoute: 'quick_start/all',
+          initialRoute: 'form/DateTime',
         ),
       ],
     );
@@ -110,17 +110,60 @@ List<Map<String, dynamic>> get materialGuideData {
     },
     {
       'id': 'basic',
-      'text': '按钮',
+      'text': '基本使用',
       "children": [
-        {"id": "button", "text": "按钮"},
+        {
+          "id": "button",
+          "text": "按钮",
+          "children": [
+            {"id": "all", "text": "概览"},
+            {"id": "button", "text": "按钮"},
+          ]
+        },
+      ]
+    },
+    {
+      'id': 'display',
+      'text': '数据展示',
+      "children": [
+        {"id": "DataTable", "text": "表格"},
+        {"id": "GridTile", "text": "类公众号文章卡片元素"},
+        {"id": "ListTile", "text": "列表元素"},
+        {"id": "Progress", "text": "进度条"},
+        {"id": "UserAccountsDrawerHeader", "text": "用户账号信息"},
+      ]
+    },
+    {
+      'id': 'navigation',
+      'text': '导航',
+      "children": [
+        {"id": "NavigationBar", "text": "导航栏"},
+        {"id": "NavigationRail", "text": "侧边导航"},
+        {"id": "PopupMenuButton", "text": "弹出菜单"},
+        {"id": "Stepper", "text": "步骤条"},
+        {"id": "Tabs", "text": "标签页"},
+      ]
+    },
+    {
+      'id': 'feedback',
+      'text': '反馈',
+      "children": [
+        {"id": "SnackBar", "text": "横幅提示"},
+        {"id": "Tooltip", "text": "鼠标提示语"},
       ]
     },
     {
       'id': 'form',
       'text': '表单',
       "children": [
+        {"id": "Autocomplete", "text": "可搜索下拉"},
+        {"id": "Checkbox", "text": "复选"},
+        {"id": "DateTime", "text": "日期与时间"},
         {"id": "Input", "text": "输入域"},
+        {"id": "Radio", "text": "单选"},
+        {"id": "Select", "text": "选择下拉框"},
         {"id": "Slider", "text": "滑块"},
+        {"id": "Swatch", "text": "开关"},
       ]
     }
   ];
@@ -301,27 +344,42 @@ class _ApiPageState extends State<ApiPage> {
     });
   }
 
-  List<Widget> guideDataToWidget(data, {level = 0, preId = ''}) {
+  TextStyle navTextStyle(int i) {
     var theme = Theme.of(context);
+    var textStyles = [
+      theme.textTheme.titleMedium,
+      theme.textTheme.titleSmall,
+      theme.textTheme.bodyLarge,
+      theme.textTheme.bodyMedium,
+      theme.textTheme.bodySmall,
+    ];
+    var levelStyle = i < textStyles.length ? textStyles[i]! : textStyles.last!;
+    return levelStyle.copyWith(fontWeight: FontWeight.bold);
+  }
+
+  List<Widget> guideDataToWidget(data, {level = 0, preId = ''}) {
     if (data == null) return List.empty();
     var result = <Widget>[];
     for (var i = 0; i < data.length; i++) {
       var node = data[i];
-      if (level == 0) {
-        List<Widget> children = [];
-        if (node['children'] is List) {
-          children = guideDataToWidget(node['children'],
-              level: level + 1, preId: '$preId${node['id']}');
-        }
+      var text = '${' ' * level}${node['text']}';
+      if (node['children'] is List) {
+        List<Widget> children = guideDataToWidget(
+          node['children'],
+          level: level + 1,
+          preId: '$preId/${node['id']}',
+        );
         result.add(
-          ExpansionTile(
-            initiallyExpanded: true,
-            title: Text(
-              node['text'],
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.bold),
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              initiallyExpanded: true,
+              title: Text(
+                text,
+                style: navTextStyle(level),
+              ),
+              children: children,
             ),
-            children: children,
           ),
           // Padding(
           //   padding: const EdgeInsets.all(16.0),
@@ -338,9 +396,11 @@ class _ApiPageState extends State<ApiPage> {
       } else {
         result.add(
           ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
             onTap: () => to(node['text'], fileId(preId, node['id'])),
-            title: Text(node['text']),
-            subtitle: Text(node['id']),
+            title: Text(text, style: const TextStyle(fontSize: 14)),
+            // subtitle: Text(node['id']),
             trailing: (node['finish'] is bool && node['finish'])
                 ? Icon(Icons.check, color: CfgGlobal.successColor)
                 : null,
