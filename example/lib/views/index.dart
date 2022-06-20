@@ -57,13 +57,13 @@ class _IndexPageState extends State<IndexPage>
         Demo(),
         ApiPage(
           guideData: waouiGuideData,
-          path: 'assets/md/waoui/',
-          initialRoute: 'others/WDialog',
+          path: 'assets/md/waoui',
+          initialRoute: '/others/WDialog',
         ),
         ApiPage(
           guideData: materialGuideData,
-          path: 'assets/md/material/',
-          initialRoute: 'form/DateTime',
+          path: 'assets/md/material',
+          initialRoute: '/form/DateTime',
         ),
       ],
     );
@@ -139,6 +139,7 @@ List<Map<String, dynamic>> get materialGuideData {
       "children": [
         {"id": "NavigationBar", "text": "导航栏"},
         {"id": "NavigationRail", "text": "侧边导航"},
+        {"id": "PlatformMenuBar", "text": "菜单"},
         {"id": "PopupMenuButton", "text": "弹出菜单"},
         {"id": "Stepper", "text": "步骤条"},
         {"id": "Tabs", "text": "标签页"},
