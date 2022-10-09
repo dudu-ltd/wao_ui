@@ -31,7 +31,7 @@ RouteFactory buildNestedRoutes(Map<String, NestedRoute> routes) {
     settings.name?.split('/').forEach((element) {
       if (element != '') paths.add(element);
     });
-    if (paths.length == 0) {
+    if (paths.isEmpty) {
       return routes['/']?.buildRoute([], 1);
     }
     routeTime.value = DateTime.now();

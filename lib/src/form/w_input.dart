@@ -34,7 +34,7 @@ class WInput
   bool $strictOneRow;
   @override
   WInputState createState() => WInputState();
-  /* // TODO 赋鹬组件基本的操作能力
+  /* // TODO 赋予组件基本的操作能力
       focus	使 input 获取焦点	—
       blur	使 input 失去焦点	—
       select	选中 input 中的文字	—

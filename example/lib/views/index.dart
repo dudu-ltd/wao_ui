@@ -24,7 +24,7 @@ class _IndexPageState extends State<IndexPage>
     tabController = TabController(
         length: 3,
         vsync: this,
-        initialIndex: 2,
+        initialIndex: 1,
         animationDuration: Duration.zero);
   }
 

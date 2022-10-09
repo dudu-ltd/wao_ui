@@ -22,41 +22,111 @@ class CfgGlobal {
   static double goldRate = 0.618;
   static Map<List<List<String>>, BaseStyle?> css = {};
   // static MaterialColor primaryColor = Colors.deepPurple;
-  static MaterialColor primaryColor = Colors.blue;
-  static MaterialColor successColor = Colors.lightGreen;
-  static MaterialColor warningColor = Colors.orange;
-  static MaterialColor dangerColor = Colors.red;
-  static MaterialColor infoColor = Colors.grey;
-  static MaterialColor textColor = const MaterialColor(
-    0xFF303133,
+  static MaterialColor primaryColor = const MaterialColor(
+    0xFF1890FF,
     <int, Color>{
-      50: Color(0xFFFFFFFF),
-      100: Color(0xFFF2F6FC),
-      200: Color(0xFFEBEEF5),
-      300: Color(0xFFE4E7ED),
-      400: Color(0xFFDCDFE6),
-      500: Color(0xFFC0C4CC),
-      600: Color(0xFF909399),
-      700: Color(0xFF606266),
-      800: Color(0xFF303133),
+      50: Color(0x191890FF),
+      100: Color(0x331890FF),
+      200: Color(0x4c1890FF),
+      300: Color(0x661890FF),
+      400: Color(0x7f1890FF),
+      500: Color(0x991890FF),
+      600: Color(0xb21890FF), //
+      700: Color(0xCC1890FF),
+      800: Color(0xFF1373cc),
+      900: Color(0xFF1064b2),
+    },
+  );
+  static MaterialColor successColor = const MaterialColor(
+    0xFF52C41A,
+    <int, Color>{
+      50: Color(0x1952C41A),
+      100: Color(0x3352C41A),
+      200: Color(0x4c52C41A),
+      300: Color(0x6652C41A),
+      400: Color(0x7f52C41A),
+      500: Color(0x9952C41A),
+      600: Color(0xb252C41A),
+      700: Color(0xCC52C41A),
+      800: Color(0xFF419c14),
+      900: Color(0xFF398812),
+    },
+  );
+  static MaterialColor warningColor = const MaterialColor(
+    0xFFfaad14,
+    <int, Color>{
+      50: Color(0x19faad14),
+      100: Color(0x33faad14),
+      200: Color(0x4cfaad14),
+      300: Color(0x66faad14),
+      400: Color(0x7ffaad14),
+      500: Color(0x99faad14),
+      600: Color(0xb2faad14),
+      700: Color(0xCCfaad14),
+      800: Color(0xFFc68810),
+      900: Color(0xFFae780d),
+    },
+  );
+  static MaterialColor dangerColor = const MaterialColor(
+    0xFFF5222D,
+    <int, Color>{
+      50: Color(0x19F5222D),
+      100: Color(0x33F5222D),
+      200: Color(0x4cF5222D),
+      300: Color(0x66F5222D),
+      400: Color(0x7fF5222D),
+      500: Color(0x99F5222D),
+      600: Color(0xb2F5222D),
+      700: Color(0xCCF5222D),
+      800: Color(0xFFc41b24),
+      900: Color(0xFFab171f),
+    },
+  );
+  static MaterialColor infoColor = const MaterialColor(
+    0xFF999999,
+    <int, Color>{
+      50: Color(0x19999999),
+      100: Color(0x33999999),
+      200: Color(0x4c999999),
+      300: Color(0x66999999),
+      400: Color(0x7f999999),
+      500: Color(0x99999999),
+      600: Color(0xb2999999),
+      700: Color(0xCC999999),
+      800: Color(0xFF7a7a7a),
+      900: Color(0xFF6a6a6a),
+    },
+  );
+  static MaterialColor textColor = const MaterialColor(
+    0xFF333333,
+    <int, Color>{
+      50: Color(0x19333333),
+      100: Color(0x33333333),
+      200: Color(0x4c333333),
+      300: Color(0x66333333),
+      400: Color(0x7f333333),
+      500: Color(0x99333333),
+      600: Color(0xb2333333),
+      700: Color(0xCC333333),
+      800: Color(0xFF222222),
       900: Color(0xFF000000),
     },
   );
   static MaterialColor defaultColor = Colors.blue;
   static MaterialColor disabledColor = Colors.grey;
   static MaterialColor basicColor = const MaterialColor(
-    0xFF303133,
+    0xFF999999,
     <int, Color>{
-      50: Color(0xFFFFFFFF),
-      100: Color(0xFFF2F6FC),
-      200: Color(0xFFEBEEF5),
-      300: Color(0xFFE4E7ED),
-      400: Color(0xFFDCDFE6),
-      500: Color(0xFFC0C4CC),
-      600: Color(0xFF909399),
-      700: Color(0xFF606266),
-      800: Color(0xFF303133),
-      900: Color(0xFF000000),
+      50: Color(0x19999999),
+      100: Color(0x33999999),
+      200: Color(0x4c999999),
+      300: Color(0x66999999),
+      400: Color(0x7f999999),
+      500: Color(0x99999999),
+      600: Color(0xb2999999),
+      700: Color(0xCC999999),
+      800: Color(0xFF7a7a7a),
+      900: Color(0xFF6a6a6a),
     },
   );
 
