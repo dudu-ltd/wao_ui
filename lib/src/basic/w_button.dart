@@ -8,7 +8,7 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/src/basic/cfg_global.dart';
 import 'package:wao_ui/src/others/w_spin.dart';
 import 'package:wao_ui/wao_ui.dart';
-import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 class WButton
     extends WStatefulWidget<WButtonOn, WButtonProp, WButtonSlot, WButtonStyle> {

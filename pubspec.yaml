@@ -1,20 +1,19 @@
 name: wao_ui
-description: An base UI framework for windows.
+description: A new Flutter package project.
 version: 0.0.1
-homepage: http:over-sky.cn
-publish_to: none
+homepage: dudu.ltd
 
 environment:
-  sdk: ">=2.15.0-172.0.dev <3.0.0"
+  sdk: '>=2.19.0-306.0.dev <3.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
-  bitsdojo_window: ^0.1.2
-  desktop_drop: ^0.3.3
-  dio: ^4.0.4
-  file_picker: ^4.3.0
   flutter:
     sdk: flutter
+  bitsdojo_window: ^0.1.5
+  # desktop_drop: ^0.3.3
+  dio: ^4.0.4
+  file_picker: ^5.2.1
   flutter_svg: ^0.22.0
   mustache_template: ^2.0.0
   simple_observable: ^2.0.0
@@ -22,12 +21,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
-# The following section is specific to Flutter.
+# The following section is specific to Flutter packages.
 flutter:
 
   # To add assets to your package, add an assets section, like this:
@@ -39,7 +38,7 @@ flutter:
   # https://flutter.dev/assets-and-images/#from-packages
   #
   # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
+  # https://flutter.dev/assets-and-images/#resolution-aware
 
   # To add custom fonts to your package, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
@@ -60,9 +59,3 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages
-
-  # fonts:
-  #   - family: PingFang
-  #     fonts:
-  #       - asset: lib/fonts/PingFang.ttf
-  #         weight: 500

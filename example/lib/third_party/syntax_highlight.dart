@@ -1,9 +1,6 @@
 // Copyright 2021 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file
-// https://github.com/flutter/devtools/blob/master/LICENSE
-
-// @dart=2.9
 
 import 'dart:collection';
 import 'dart:convert';
@@ -13,25 +10,50 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import 'span_parser.dart';
 
+/// A Range-like class that works for inclusive ranges of lines in source code.
+class LineRange {
+  const LineRange(this.begin, this.end) : assert(begin <= end);
+
+  final int begin;
+  final int end;
+
+  int get size => end - begin + 1;
+
+  bool contains(num target) => target >= begin && target <= end;
+
+  @override
+  String toString() => 'LineRange($begin, $end)';
+
+  @override
+  bool operator ==(other) {
+    if (other is! LineRange) return false;
+    return begin == other.begin && end == other.end;
+  }
+
+  @override
+  int get hashCode => Object.hash(begin, end);
+}
+
 class SyntaxHighlighter {
-  SyntaxHighlighter({this.source});
+  SyntaxHighlighter({source}) : source = source ?? '';
 
   SyntaxHighlighter.withGrammar({
-    Grammar grammar,
-    this.source,
-  }) {
+    Grammar? grammar,
+    source,
+  }) : source = source ?? '' {
     _grammar = grammar;
   }
 
   final String source;
+  late String _processedSource;
 
   final _spanStack = ListQueue<ScopeSpan>();
 
-  int _currentPosition;
+  int _currentPosition = 0;
 
-  Map<String, TextStyle> _scopeStyles;
+  late Map<String, TextStyle> _scopeStyles;
 
-  static Grammar _grammar;
+  static Grammar? _grammar;
 
   static Future<void> initialize() async {
     if (_grammar == null) {
@@ -45,17 +67,26 @@ class SyntaxHighlighter {
     }
   }
 
-  TextSpan highlight(BuildContext context) {
-    assert(_grammar != null);
+  /// Returns the highlighted [source] in [TextSpan] form.
+  ///
+  /// If [lineRange] is provided, only the lines between
+  /// `[lineRange.begin, lineRange.end]` will be returned.
+  TextSpan highlight(BuildContext context, {LineRange? lineRange}) {
     // Generate the styling for the various scopes based on the current theme.
-    _scopeStyles = _buildSyntaxColorTable(
-        Theme.of(context).copyWith(brightness: Brightness.dark));
+    _scopeStyles = _buildSyntaxColorTable(Theme.of(context));
     _currentPosition = 0;
+    _processedSource = source;
+    if (lineRange != null) {
+      _processedSource = _processedSource
+          .split('\n')
+          .sublist(lineRange.begin - 1, lineRange.end)
+          .join('\n');
+    }
     return TextSpan(
       children: _highlightLoopHelper(
         currentScope: null,
-        loopCondition: () => _currentPosition < source.length,
-        scopes: SpanParser.parse(_grammar, source),
+        loopCondition: () => _currentPosition < _processedSource.length,
+        scopes: SpanParser.parse(_grammar!, _processedSource),
       ),
     );
   }
@@ -71,7 +102,7 @@ class SyntaxHighlighter {
     }
     final scopes = _spanStack.last.scopes;
 
-    if (scopes == null || scopes.isEmpty) {
+    if (scopes.isEmpty) {
       return const TextStyle();
     } else if (scopes.length == 1) {
       return _scopeStyles[scopes.first] ?? const TextStyle();
@@ -98,12 +129,12 @@ class SyntaxHighlighter {
   }
 
   List<TextSpan> _highlightLoopHelper({
-    @required ScopeSpan currentScope,
-    @required bool Function() loopCondition,
-    @required List<ScopeSpan> scopes,
+    required ScopeSpan? currentScope,
+    required bool Function() loopCondition,
+    required List<ScopeSpan> scopes,
   }) {
     final sourceSpans = <TextSpan>[];
-    int currentScopeBegin = _currentPosition;
+    int? currentScopeBegin = _currentPosition;
     if (currentScope != null) {
       _spanStack.addLast(currentScope);
     }
@@ -111,8 +142,8 @@ class SyntaxHighlighter {
       if (scopes.isNotEmpty && scopes.first.contains(_currentPosition)) {
         // Encountered the next scoped span. Close the current span and enter
         // the next.
-        final text = source.substring(
-          currentScopeBegin,
+        final text = _processedSource.substring(
+          currentScopeBegin!,
           _currentPosition,
         );
         if (text.isNotEmpty) {
@@ -135,7 +166,7 @@ class SyntaxHighlighter {
       } else if (_atNewline()) {
         currentScopeBegin = _processNewlines(
           sourceSpans,
-          currentScopeBegin,
+          currentScopeBegin!,
         );
       } else {
         ++_currentPosition;
@@ -143,8 +174,8 @@ class SyntaxHighlighter {
     }
     // Reached the end of the text covered by the current span. Close the span
     // and exit the scope.
-    final text = source.substring(
-      currentScopeBegin,
+    final text = _processedSource.substring(
+      currentScopeBegin!,
       _currentPosition,
     );
     if (text.isNotEmpty) {
@@ -162,10 +193,11 @@ class SyntaxHighlighter {
   }
 
   bool _atNewline() =>
-      String.fromCharCode(source.codeUnitAt(_currentPosition)) == '\n';
+      String.fromCharCode(_processedSource.codeUnitAt(_currentPosition)) ==
+      '\n';
 
-  int _processNewlines(List<TextSpan> sourceSpans, int currentScopeBegin) {
-    final text = source.substring(
+  int? _processNewlines(List<TextSpan> sourceSpans, int currentScopeBegin) {
+    final text = _processedSource.substring(
       currentScopeBegin,
       _currentPosition,
     );
@@ -173,7 +205,7 @@ class SyntaxHighlighter {
       sourceSpans.add(
         TextSpan(
           style: _getStyleForSpan(),
-          text: source.substring(
+          text: _processedSource.substring(
             currentScopeBegin,
             _currentPosition,
           ),
@@ -185,8 +217,9 @@ class SyntaxHighlighter {
     do {
       sourceSpans.add(const TextSpan(text: '\n'));
       ++_currentPosition;
-    } while ((_currentPosition < source.length) &&
-        (String.fromCharCode(source.codeUnitAt(_currentPosition)) == '\n'));
+    } while ((_currentPosition < _processedSource.length) &&
+        (String.fromCharCode(_processedSource.codeUnitAt(_currentPosition)) ==
+            '\n'));
     return _currentPosition;
   }
 

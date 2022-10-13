@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+migrate_working_dir/
 
 # IntelliJ related
 *.iml
@@ -25,6 +26,13 @@
 /pubspec.lock
 **/doc/api/
 .dart_tool/
-.vscode/
 .packages
 build/
+
+/.vscode/
+/android/
+/ios/
+/linux/
+/windows/
+/macos/
+/web/

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:desktop_drop/desktop_drop.dart';
+// import 'package:desktop_drop/desktop_drop.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -142,19 +142,19 @@ class _WUploadState extends WState<WUpload> {
   }
 
   Widget dragWrapper(Widget child) {
-    if (widget.$props.drag) {
-      print(' use drag to upload ');
-      return DropTarget(
-        onDragDone: (detail) async {
-          List<PlatformFile> pfiles = await xFilesToPlatformFiles(detail.files);
-          FilePickerResult fpResult = FilePickerResult(pfiles);
-          addAndUpload(fpResult);
-        },
-        onDragEntered: (detail) {},
-        onDragExited: (detail) {},
-        child: child,
-      );
-    }
+    // if (widget.$props.drag) {
+    //   print(' use drag to upload ');
+    //   return DropTarget(
+    //     onDragDone: (detail) async {
+    //       List<PlatformFile> pfiles = await xFilesToPlatformFiles(detail.files);
+    //       FilePickerResult fpResult = FilePickerResult(pfiles);
+    //       addAndUpload(fpResult);
+    //     },
+    //     onDragEntered: (detail) {},
+    //     onDragExited: (detail) {},
+    //     child: child,
+    //   );
+    // }
     return child;
   }
 
