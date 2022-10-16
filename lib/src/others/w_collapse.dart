@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/base_on.dart';
 import 'package:wao_ui/core/base_prop.dart';
@@ -29,28 +26,66 @@ class WCollapse extends WStatefulWidget<WCollapseOn, WCollapseProp,
   State<WCollapse> createState() => _WCollapseState();
 
   WCollapseItem itemWrapper(Widget child, i) {
-    var item;
+    WCollapseItem item;
     if (child is WCollapseItem) {
       item = child;
     } else {
       item = WCollapseItem(
-        props: WCollapseItemProp(name: i, title: ''),
+        props: WCollapseItemProp(name: i, title: '11'),
         slots: WCollapseItemSlot(child),
       );
     }
+    item.$props._accordion = $props.accordion;
+    var originChange = item.$on.change;
+    if (!item.$on._changeWrapped) {
+      item.$on.change = originChange != null
+          ? (v) {
+              onItemChange(item).call(v);
+              originChange.call(v);
+            }
+          : onItemChange(item);
+      item.$on._changeWrapped = true;
+    }
     return item;
+  }
+
+  Function(bool) onItemChange(WCollapseItem item) {
+    return (v) {
+      if ($props.accordion) {
+        for (var element in defaultSlot) {
+          if (element is WCollapseItem && element.hashCode != item.hashCode) {
+            element.$props._expanded.value = false;
+          }
+        }
+        // if (item.$props._expanded.value) {
+        //   $props.model = item.$props.name;
+        // }
+      } else {
+        var values = [];
+        for (var element in $slots.defaultSlot ?? []) {
+          if (element is WCollapseItem && element.$props._expanded.value) {
+            values.add(element.$props.name);
+          }
+        }
+        $props.model = values;
+      }
+      $on.change?.call($props.model);
+    };
   }
 
   @override
   List<SlotTranslator> get slotTranslatorsCustom {
     return [
-      SlotTranslator(Widget, (slot, i, component, len) {
-        var item = itemWrapper(slot, i);
-        if (item.$props._expanded.value) {
-          return Expanded(child: item);
-        }
-        return item;
-      })
+      SlotTranslator(
+        Widget,
+        (slot, i, component, len) {
+          var item = itemWrapper(slot, i);
+          return item;
+        },
+        (slot) {
+          return slot is Widget;
+        },
+      )
     ];
   }
 }
@@ -60,15 +95,10 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     widget.$props.$addModelListener(updateView);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        for (var element in widget.defaultSlot) {
-          element as WCollapseItem;
-          initItemsStatus(element);
-          addItemsListener(element);
-        }
-      });
-    });
+    for (var element in widget.defaultSlot) {
+      element as WCollapseItem;
+      initItemsStatus(element);
+    }
   }
 
   @override
@@ -95,40 +125,13 @@ class _WCollapseState extends WState<WCollapse> with WidgetsBindingObserver {
   void initItemsStatus(WCollapseItem element) {
     element.$props.$model = widget.$props.$model;
     if (widget.$props.accordion) {
-      if (widget.$props.model == element.$props.name) {
-        element.$props._expanded.value = true;
-      }
+      element.$props._expanded.value =
+          widget.$props.model == element.$props.name;
     } else {
       if (widget.$props.model.contains(element.$props.name)) {
         element.$props._expanded.value = true;
       }
     }
-  }
-
-  void addItemsListener(WCollapseItem element) {
-    element.$props._expanded.addListener(() {
-      if (widget.$props.accordion && element.$props._expanded.value) {
-        widget.$props.model = element.$props.name;
-        widget.$on.change?.call(widget.$props.model);
-        for (var other in widget.defaultSlot) {
-          other as WCollapseItem;
-          if (element != other) other.$props._expanded.value = false;
-        }
-      }
-      updateValue();
-    });
-  }
-
-  void updateValue() {
-    widget.$props.model = widget.$props.model ?? [];
-    widget.$props.model.clear();
-    for (var element in widget.defaultSlot) {
-      element as WCollapseItem;
-      if (element.$props._expanded.value) {
-        widget.$props.model.add(element.$props.name);
-      }
-    }
-    widget.$on.change?.call(widget.$props.model);
   }
 
   Color get borderColor {
@@ -189,122 +192,45 @@ class WCollapseItem extends WStatefulWidget<WCollapseItemOn, WCollapseItemProp,
 
   @override
   State<WCollapseItem> createState() => _WCollapseItemState();
-}
-
-class _WCollapseItemState extends WState<WCollapseItem>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  late AnimationController expandController;
-
-  late Animation<double> iconAngle;
-
-  late Animation<double> bodyHeight;
-
-  late Animation<double> bodyOpacity;
 
   @override
+  get $crossAxisAlign {
+    return CrossAxisAlignment.start;
+  }
+}
+
+class _WCollapseItemState extends WState<WCollapseItem> {
+  @override
   void initState() {
-    widget.$props._expanded.addListener(() {
-      widget.$props.$modelNotifyListeners();
-      if (widget.$props._expanded.value) {
-        expandController.forward();
-      } else {
-        expandController.reverse();
-      }
-    });
-
-    expandController = AnimationController(
-      vsync: this,
-      duration: CfgGlobal.duration,
-    );
-
-    expandController.addListener(updateView);
-    iconAngle = Tween(begin: 0.0, end: pi / 2).animate(expandController);
-
-    bodyOpacity = Tween(begin: 0.0, end: 1.0).animate(expandController);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        bodyHeight = Tween(
-          begin: 0.0,
-          end: (scrollKey.currentContext)?.size?.height ?? 200.0,
-        ).animate(expandController);
-      });
-    });
+    widget.$props._expanded.addListener(updateView);
     super.initState();
   }
 
   @override
   void dispose() {
-    widget.$props._expanded.dispose();
-    expandController.dispose();
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+    widget.$props._expanded.dispose();
   }
 
   @override
   Widget wbuild(BuildContext context) {
-    return Column(
-      children: [
-        title,
-        body,
-      ],
-    );
-  }
+    Key? key = widget.$props._accordion ? GlobalKey() : null;
 
-  Widget get title {
-    var titleContent =
-        widget.$slots.title?.call(widget.$props) ?? Text(widget.$props.title);
-    return InkWell(
-      onTap: () {
-        widget.$props._expanded.value = !widget.$props._expanded.value;
+    return ExpansionTile(
+      key: key,
+      initiallyExpanded: widget.$props._expanded.value,
+      onExpansionChanged: (value) {
+        widget.$props._expanded.value = value;
+        widget.$on.change?.call(value);
       },
-      child: SizedBox(
-        height: titleHeight,
-        child: Row(
-          children: [
-            Expanded(child: titleContent),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Transform.rotate(
-                angle: iconAngle.value,
-                child: const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 13,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+      title: titleContent,
+      children: widget.defaultSlot,
     );
   }
 
-  GlobalKey scrollKey = GlobalKey();
-  Widget get body {
-    return borderWrapper(
-      Opacity(
-        opacity: bodyOpacity.value,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: bodyHeight.value),
-          child: Padding(
-            padding: EdgeInsets.only(bottom: bodyPaddingBottom),
-            child: SingleChildScrollView(
-              child: FractionallySizedBox(
-                widthFactor: 1,
-                child: Column(
-                  key: scrollKey,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: widget.defaultSlot,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      border,
-      true,
-    );
+  Widget get titleContent {
+    return widget.$slots.title?.call(widget.$props) ??
+        Text(widget.$props.title);
   }
 
   Border? get border {
@@ -332,12 +258,17 @@ class _WCollapseItemState extends WState<WCollapseItem>
   }
 }
 
-class WCollapseItemOn extends BaseOn {}
+class WCollapseItemOn extends BaseOn {
+  bool _changeWrapped = false;
+  WCollapseItemOn({this.change});
+  Function(bool)? change;
+}
 
 class WCollapseItemProp extends BaseProp with ModelDriveProp {
   late dynamic name;
   late String title;
   late bool disabled;
+  bool _accordion = false;
   final ValueNotifier<bool> _expanded = ValueNotifier(false);
   WCollapseItemProp({this.name, this.title = '', this.disabled = false});
 }

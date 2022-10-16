@@ -53,7 +53,7 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
   beforeBuild() {}
 
   updateView([Function()? fn]) {
-    print('-------------- update view -----------------');
+    print('-------------- update view ----------- $runtimeType $hashCode');
     setState(fn ?? () {});
   }
 
@@ -61,7 +61,7 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
   void deactivate() {
     super.deactivate();
     if (kDebugMode) {
-      print('-----deactivate----$runtimeType');
+      print('-----deactivate----$runtimeType $hashCode');
     }
   }
 
@@ -69,7 +69,7 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
   dispose() {
     super.dispose();
     if (kDebugMode) {
-      print('-----dispose----$runtimeType');
+      print('-----dispose----$runtimeType $hashCode');
     }
   }
 
@@ -77,14 +77,14 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
   void setState(VoidCallback fn) {
     super.setState(fn);
     if (kDebugMode) {
-      print('-----setState----$runtimeType');
+      print('-----setState----$runtimeType $hashCode');
     }
   }
 
   @override
   void initState() {
     if (kDebugMode) {
-      print('-----initState----$runtimeType');
+      print('-----initState----$runtimeType $hashCode');
     }
     super.initState();
   }
@@ -129,7 +129,7 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     return Offstage(
       offstage: !(style.display ?? true),
       child: Container(
-        // alignment: style.textAlign ?? Alignment.centerLeft,
+        alignment: style.textAlign ?? Alignment.centerLeft,
         padding: style.padding,
         margin: style.margin,
         width: style.width,
@@ -188,8 +188,8 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
 
   List<SlotTranslator> get translators {
     List<SlotTranslator> transtators = [
-      ...slotTranslatorsCustom,
       ...slotTranslatorsDefault,
+      ...slotTranslatorsCustom,
     ];
     return transtators;
   }

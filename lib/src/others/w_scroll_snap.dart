@@ -17,7 +17,7 @@ class _WScrollSnapState extends WState<WScrollSnap>
   late ScrollController scrollCtrl;
   Widget snap = Container();
   late BuildContext snapContext;
-  late Function(Function()) snapSetState;
+  Function(Function())? snapSetState = null;
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _WScrollSnapState extends WState<WScrollSnap>
             child: Container(height: bottomHeight)),
       ],
     );
-    snapSetState(() {});
+    snapSetState?.call(() {});
   }
 
   _updateSnap() {
@@ -110,8 +110,10 @@ class _WScrollSnapState extends WState<WScrollSnap>
 
   snapViewport() {
     // b * b / ( a + b )
-    var b =
-        (snapKey?.currentContext?.findRenderObject() as RenderBox).size.height;
+    var b = (snapKey?.currentContext?.findRenderObject() as RenderBox?)
+            ?.size
+            .height ??
+        0;
     return b * b / contentHeight();
   }
 
