@@ -519,6 +519,7 @@ class Clazz {
   static String card = '.card';
   static String carousel = '.carousel';
   static String collapse = '.collapse';
+  static String collapseItem = '.collapse-item';
   static String dialog = '.dialog';
   static String divider = '.divider';
   static String drawer = '.drawer';

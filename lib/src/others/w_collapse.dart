@@ -223,6 +223,11 @@ class _WCollapseItemState extends WState<WCollapseItem> {
         widget.$props._expanded.value = value;
         widget.$on.change?.call(value);
       },
+      // FIXME add a stylesheet for crossAxisAlignment.
+      // expandedCrossAxisAlignment: widget.style.body?.verticalAlign,
+      expandedAlignment: widget.style.body?.textAlign,
+      childrenPadding: widget.style.body?.padding,
+      tilePadding: widget.style.title?.padding,
       title: titleContent,
       children: widget.defaultSlot,
     );

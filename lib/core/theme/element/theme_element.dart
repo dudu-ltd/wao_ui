@@ -16,6 +16,7 @@ import '../../base_style.dart';
 import '../../swatch/size_swatch.dart';
 import 'avatar_css.dart';
 import 'button_css.dart';
+import 'collapse_css.dart';
 import 'decriptions_css.dart';
 import 'input_css.dart';
 import 'menu_css.dart';
@@ -472,4 +473,6 @@ element() {
   colorPicker();
   alert();
   dialog();
+
+  collapse();
 }
