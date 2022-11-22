@@ -222,6 +222,10 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
   Text strToText(String text) {
     return Text(
       text,
+      style: TextStyle(
+        color: style.color,
+        fontSize: style.fontSize,
+      ),
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -244,15 +248,15 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
           return strToText(slot);
         },
       ),
-      // SlotTranslator(
-      //   Icon,
-      //   (slot, i, component, len) {
-      //     return IconTheme(
-      //       data: IconThemeData(color: style.color, size: style.fontSize),
-      //       child: slot,
-      //     );
-      //   },
-      // ),
+      SlotTranslator(
+        Icon,
+        (slot, i, component, len) {
+          return IconTheme(
+            data: IconThemeData(color: style.color, size: style.fontSize),
+            child: slot,
+          );
+        },
+      ),
     ];
   }
 

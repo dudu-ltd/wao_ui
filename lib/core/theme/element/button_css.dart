@@ -160,7 +160,7 @@ button() {
     [
       [_button, '$_button$primarySuf']
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.primaryColor.shade50,
       backgroundColor: CfgGlobal.primaryColor,
       borderColor: CfgGlobal.primaryColor,
     ),
@@ -170,7 +170,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.primaryColor.shade700,
       borderColor: CfgGlobal.primaryColor.shade700,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.primaryColor.shade50,
     ),
     [
       [_button, '$_button$primarySuf', isActive],
@@ -178,7 +178,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.primaryColor.shade900,
       borderColor: CfgGlobal.primaryColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.primaryColor.shade50,
     ),
     [
       [_button, '$_button$primarySuf', isDisabled],
@@ -186,7 +186,7 @@ button() {
       [_button, '$_button$primarySuf', isDisabled, focus],
       [_button, '$_button$primarySuf', isDisabled, hover],
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.primaryColor.shade50,
       backgroundColor: CfgGlobal.primaryColor.shade400,
       borderColor: CfgGlobal.primaryColor.shade400,
     ),
@@ -203,14 +203,14 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.primaryColor,
       borderColor: CfgGlobal.primaryColor,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.primaryColor.shade50,
     ),
     [
       [_button, '$_button$primarySuf', isPlain, active],
     ]: BaseStyle(
       backgroundColor: CfgGlobal.primaryColor.shade900,
       borderColor: CfgGlobal.primaryColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.primaryColor.shade50,
     ),
     [
       [_button, '$_button$primarySuf', isPlain, isDisabled],
@@ -227,7 +227,7 @@ button() {
     [
       [_button, '$_button$successSuf']
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.successColor.shade50,
       backgroundColor: CfgGlobal.successColor,
       borderColor: CfgGlobal.successColor,
     ),
@@ -237,7 +237,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.successColor.shade700,
       borderColor: CfgGlobal.successColor.shade700,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.successColor.shade50,
     ),
     [
       [_button, '$_button$successSuf', isActive],
@@ -245,7 +245,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.successColor.shade900,
       borderColor: CfgGlobal.successColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.successColor.shade50,
     ),
     [
       [_button, '$_button$successSuf', isDisabled],
@@ -253,7 +253,7 @@ button() {
       [_button, '$_button$successSuf', isDisabled, focus],
       [_button, '$_button$successSuf', isDisabled, hover],
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.successColor.shade50,
       backgroundColor: CfgGlobal.successColor.shade400,
       borderColor: CfgGlobal.successColor.shade400,
     ),
@@ -270,14 +270,14 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.successColor,
       borderColor: CfgGlobal.successColor,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.successColor.shade50,
     ),
     [
       [_button, '$_button$successSuf', isPlain, active],
     ]: BaseStyle(
       backgroundColor: CfgGlobal.successColor.shade900,
       borderColor: CfgGlobal.successColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.successColor.shade50,
     ),
     [
       [_button, '$_button$successSuf', isPlain, isDisabled],
@@ -294,7 +294,7 @@ button() {
     [
       [_button, '$_button$warningSuf']
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.warningColor.shade50,
       backgroundColor: CfgGlobal.warningColor,
       borderColor: CfgGlobal.warningColor,
     ),
@@ -304,7 +304,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.warningColor.shade700,
       borderColor: CfgGlobal.warningColor.shade700,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.warningColor.shade50,
     ),
     [
       [_button, '$_button$warningSuf', isActive],
@@ -312,7 +312,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.warningColor.shade900,
       borderColor: CfgGlobal.warningColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.warningColor.shade50,
     ),
     [
       [_button, '$_button$warningSuf', isDisabled],
@@ -320,7 +320,7 @@ button() {
       [_button, '$_button$warningSuf', isDisabled, focus],
       [_button, '$_button$warningSuf', isDisabled, hover],
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.warningColor.shade50,
       backgroundColor: CfgGlobal.warningColor.shade400,
       borderColor: CfgGlobal.warningColor.shade400,
     ),
@@ -337,14 +337,14 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.warningColor,
       borderColor: CfgGlobal.warningColor,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.warningColor.shade50,
     ),
     [
       [_button, '$_button$warningSuf', isPlain, active],
     ]: BaseStyle(
       backgroundColor: CfgGlobal.warningColor.shade900,
       borderColor: CfgGlobal.warningColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.warningColor.shade50,
     ),
     [
       [_button, '$_button$warningSuf', isPlain, isDisabled],
@@ -361,7 +361,7 @@ button() {
     [
       [_button, '$_button$dangerSuf']
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.dangerColor.shade50,
       backgroundColor: CfgGlobal.dangerColor,
       borderColor: CfgGlobal.dangerColor,
     ),
@@ -371,7 +371,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.dangerColor.shade700,
       borderColor: CfgGlobal.dangerColor.shade700,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.dangerColor.shade50,
     ),
     [
       [_button, '$_button$dangerSuf', isActive],
@@ -379,7 +379,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.dangerColor.shade900,
       borderColor: CfgGlobal.dangerColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.dangerColor.shade50,
     ),
     [
       [_button, '$_button$dangerSuf', isDisabled],
@@ -387,7 +387,7 @@ button() {
       [_button, '$_button$dangerSuf', isDisabled, focus],
       [_button, '$_button$dangerSuf', isDisabled, hover],
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.dangerColor.shade50,
       backgroundColor: CfgGlobal.dangerColor.shade400,
       borderColor: CfgGlobal.dangerColor.shade400,
     ),
@@ -404,14 +404,14 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.dangerColor,
       borderColor: CfgGlobal.dangerColor,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.dangerColor.shade50,
     ),
     [
       [_button, '$_button$dangerSuf', isPlain, active],
     ]: BaseStyle(
       backgroundColor: CfgGlobal.dangerColor.shade900,
       borderColor: CfgGlobal.dangerColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.dangerColor.shade50,
     ),
     [
       [_button, '$_button$dangerSuf', isPlain, isDisabled],
@@ -428,7 +428,7 @@ button() {
     [
       [_button, '$_button$infoSuf']
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.infoColor.shade50,
       backgroundColor: CfgGlobal.infoColor,
       borderColor: CfgGlobal.infoColor,
     ),
@@ -438,7 +438,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.infoColor.shade700,
       borderColor: CfgGlobal.infoColor.shade700,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.infoColor.shade50,
     ),
     [
       [_button, '$_button$infoSuf', isActive],
@@ -446,7 +446,7 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.infoColor.shade900,
       borderColor: CfgGlobal.infoColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.infoColor.shade50,
     ),
     [
       [_button, '$_button$infoSuf', isDisabled],
@@ -454,7 +454,7 @@ button() {
       [_button, '$_button$infoSuf', isDisabled, focus],
       [_button, '$_button$infoSuf', isDisabled, hover],
     ]: BaseStyle(
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.infoColor.shade50,
       backgroundColor: CfgGlobal.infoColor.shade400,
       borderColor: CfgGlobal.infoColor.shade400,
     ),
@@ -471,14 +471,14 @@ button() {
     ]: BaseStyle(
       backgroundColor: CfgGlobal.infoColor,
       borderColor: CfgGlobal.infoColor,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.infoColor.shade50,
     ),
     [
       [_button, '$_button$infoSuf', isPlain, active],
     ]: BaseStyle(
       backgroundColor: CfgGlobal.infoColor.shade900,
       borderColor: CfgGlobal.infoColor.shade900,
-      color: CfgGlobal.basicColor.shade50,
+      color: CfgGlobal.infoColor.shade50,
     ),
     [
       [_button, '$_button$infoSuf', isPlain, isDisabled],

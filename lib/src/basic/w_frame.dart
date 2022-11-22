@@ -42,11 +42,10 @@ class WFrame
                         ),
                       )
                     : Container(),
-                $slots.header != null
-                    ? MoveWindow(
-                        child: $slots.header,
-                      )
-                    : Container(),
+                if ($slots.header != null)
+                  MoveWindow(
+                    child: $slots.header,
+                  ),
                 Expanded(child: MoveWindow()),
                 if (isPc) getButtions()
               ],
@@ -66,7 +65,7 @@ class WFrame
       titleSpacing: 0,
     );
     return Scaffold(
-      appBar: isPc ? appBar : null,
+      appBar: isPc && $props.showWindowTitleBarBox ? appBar : null,
       body: Flex(
         direction: Axis.vertical,
         children: [
@@ -97,7 +96,10 @@ class WFrame
 
 class WFrameOn extends BaseOn {}
 
-class WFrameProp extends BaseProp {}
+class WFrameProp extends BaseProp {
+  bool showWindowTitleBarBox = true;
+  WFrameProp({this.showWindowTitleBarBox = true});
+}
 
 class WFrameSlot extends BaseSlot {
   Widget? main;

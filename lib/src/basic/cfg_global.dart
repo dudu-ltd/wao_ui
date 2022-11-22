@@ -25,13 +25,13 @@ class CfgGlobal {
   static MaterialColor primaryColor = const MaterialColor(
     0xFF1890FF,
     <int, Color>{
-      50: Color(0x191890FF),
-      100: Color(0x331890FF),
-      200: Color(0x4c1890FF),
-      300: Color(0x661890FF),
-      400: Color(0x7f1890FF),
-      500: Color(0x991890FF),
-      600: Color(0xb21890FF), //
+      50: Color(0xFFE7F3FF),
+      100: Color(0xFFD1E9FF),
+      200: Color(0xFFB9DDFF),
+      300: Color(0xFFA3D3FF),
+      400: Color(0xFF8BC7FF),
+      500: Color(0xFF74BCFF),
+      600: Color(0xFF5DB1FF), //
       700: Color(0xCC1890FF),
       800: Color(0xFF1373cc),
       900: Color(0xFF1064b2),

@@ -58,7 +58,7 @@ class _IndexPageState extends State<IndexPage>
         ApiPage(
           guideData: waouiGuideData,
           path: 'assets/md/waoui',
-          initialRoute: '/others/WCollapse',
+          initialRoute: '/basic/WButton',
         ),
         ApiPage(
           guideData: materialGuideData,
@@ -68,10 +68,24 @@ class _IndexPageState extends State<IndexPage>
       ],
     );
     return WFrame()
+      ..$props.showWindowTitleBarBox = false
       ..$slots.header = const Text('WaoUI')
       ..$slots.main = Scaffold(
         appBar: AppBar(
           title: Header(child: tabBars),
+          actions: [
+            if (isPc) ...[
+              MinimizeWindowButton(
+                animate: true,
+              ),
+              MaximizeWindowButton(
+                animate: true,
+              ),
+              CloseWindowButton(
+                animate: true,
+              ),
+            ]
+          ],
         ),
         body: tabView,
       );

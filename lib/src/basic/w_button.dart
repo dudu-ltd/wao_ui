@@ -67,10 +67,11 @@ class WButton
       SlotTranslator(
         String,
         (s, i, c, l) {
+          print($slots.$);
           return Text(
             $slots.$,
             style: TextStyle(
-              color: style.color,
+              color: Colors.green, //style.color,
               fontSize: style.fontSize,
             ),
           );

@@ -26,7 +26,7 @@ class _WDrawerState extends WState<WDrawer> {
     Overlay.of(
       context,
       rootOverlay: modalAppendToBody,
-    )?.insert(overlayEntry);
+    ).insert(overlayEntry);
   }
 
   @override
