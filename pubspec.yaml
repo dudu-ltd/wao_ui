@@ -1,7 +1,8 @@
 name: wao_ui
-description: A new Flutter package project.
-version: 0.0.1
-homepage: dudu.ltd
+description: A ui library under development.
+version: 0.0.1-dev.1
+homepage: https://github.com/dudu-ltd/wao_ui
+publish_to: https://pub.dev
 
 environment:
   sdk: '>=2.19.0-306.0.dev <3.0.0'

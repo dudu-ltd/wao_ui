@@ -1,3 +1,7 @@
+// Copyright 2021 All wao_ui authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 import 'package:simple_observable/simple_observable.dart';

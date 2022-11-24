@@ -1,3 +1,7 @@
+// Copyright 2021 All wao_ui authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 // ignore_for_file: overridden_fields, avoid_init_to_null
 
 import 'dart:collection';

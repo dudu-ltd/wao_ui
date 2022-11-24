@@ -1,3 +1,7 @@
+// Copyright 2021 All wao_ui authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, implementation_imports
 
 import 'dart:convert';
@@ -344,7 +348,7 @@ class _WSelectState extends WState<WSelect>
       return panel;
     });
     panelOverlay = overlayEntry;
-    Overlay.of(context)?.insert(overlayEntry);
+    Overlay.of(context).insert(overlayEntry);
   }
 
   hidePanelAction() {

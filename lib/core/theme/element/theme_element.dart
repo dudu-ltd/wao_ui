@@ -1,3 +1,7 @@
+// Copyright 2021 All wao_ui authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
 import 'package:wao_ui/core/theme/element/alert_css.dart';
 import 'package:wao_ui/core/theme/element/badge_css.dart';
@@ -9,7 +13,6 @@ import 'package:wao_ui/core/theme/element/input_number_css.dart';
 import 'package:wao_ui/core/theme/element/pagination_css.dart';
 import 'package:wao_ui/core/theme/element/radio_css.dart';
 import 'package:wao_ui/core/theme/element/result_css.dart';
-import 'package:wao_ui/core/utils/color_util.dart';
 
 import '../../../wao_ui.dart';
 import '../../base_style.dart';

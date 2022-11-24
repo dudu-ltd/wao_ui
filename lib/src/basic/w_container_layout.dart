@@ -154,6 +154,7 @@ class _WContainerLayoutState extends WState<WContainerLayout> {
       ));
     }
     var inner = Align(
+      alignment: Alignment.centerLeft,
       child: Column(
         children: [
           Container(
@@ -163,7 +164,6 @@ class _WContainerLayoutState extends WState<WContainerLayout> {
           )
         ],
       ),
-      alignment: Alignment.centerLeft,
     );
     col.children.add(inner);
     if (isHeader) {
@@ -217,24 +217,24 @@ class _WContainerLayoutState extends WState<WContainerLayout> {
   Widget getEventBarY(Function eventHandle, MouseCursor cursor,
       Container blankWidget, bool isHeader) {
     return Offstage(
+      offstage: !(isHeader ? $props.headerJudge : $props.footerJudge),
       child: Listener(
         onPointerDown: (event) => _setCurrentStartPoint(event.position),
         onPointerMove: (event) => eventHandle(event.position.dy),
         child: MouseRegion(cursor: cursor, child: blankWidget),
       ),
-      offstage: !(isHeader ? $props.headerJudge : $props.footerJudge),
     );
   }
 
   Widget getEventBarX(Function eventHandle, MouseCursor cursor,
       Container blankWidget, bool isLeft) {
     return Offstage(
+      offstage: !(isLeft ? $props.leftJudge : $props.rightJudge),
       child: Listener(
         onPointerDown: (event) => _setCurrentStartPoint(event.position),
         onPointerMove: (event) => eventHandle(event.position.dx),
         child: MouseRegion(cursor: cursor, child: blankWidget),
       ),
-      offstage: !(isLeft ? $props.leftJudge : $props.rightJudge),
     );
   }
 }

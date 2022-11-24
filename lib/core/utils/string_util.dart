@@ -1,5 +1,8 @@
+// Copyright 2021 All wao_ui authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
-import 'package:wao_ui/core/utils/layout_util.dart';
 
 class StringUtil {
   static double stringToSize(String str, BuildContext context) {

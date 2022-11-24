@@ -1,6 +1,11 @@
+// Copyright 2021 All wao_ui authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 library wao_ui;
 
 export 'core/byte_file.dart';
+export 'core/env.dart';
 export 'src/basic/cfg_global.dart';
 export 'src/basic/w_button.dart';
 export 'src/basic/w_container_layout.dart';
@@ -66,3 +71,5 @@ export 'src/nested_route.dart';
 export 'src/tree/tree.dart';
 
 export 'package:flutter_svg/flutter_svg.dart';
+
+export 'package:bitsdojo_window/bitsdojo_window.dart';
