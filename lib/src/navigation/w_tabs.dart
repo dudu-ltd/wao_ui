@@ -62,8 +62,7 @@ class _WTabsState extends WState<WTabs> {
         ),
       );
     } else {
-      tabs = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      tabs = ListView(
         children: content,
       );
     }
@@ -229,7 +228,7 @@ class _WTabsState extends WState<WTabs> {
   }
 
   _body(List<Widget> children) {
-    late Widget body;
+    late Widget body = Container();
     for (var i = 0; i < children.length; i++) {
       var child = children[i];
       child as WTabPane;

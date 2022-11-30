@@ -11,16 +11,23 @@ class _WTreeState extends WState<WTree> {
   @override
   void initState() {
     super.initState();
-    var wp = widget.$props;
     if (wp.data.isNotEmpty && wp.treeData.isEmpty) {
       wp.treeData = WNodeData.listFromJson(wp.data, wp.props);
     }
+  }
+
+  WTreeProp get wp => widget.$props;
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget wbuild(BuildContext context) {
     var cols = <Widget>[];
     for (var node in widget.$props.treeData) {
+      var selectdColor = _getSelectedNodeColor(node, context);
       cols.add(
         MaterialButton(
           padding: EdgeInsets.zero,
@@ -42,21 +49,23 @@ class _WTreeState extends WState<WTree> {
                     children: [
                       Padding(
                         padding: EdgeInsets.fromLTRB(
-                            (widget.$props.level + 1) * 10.0, 0, 0, 0),
+                            (widget.$props.level) * 10.0, 0, 0, 0),
                         child: Icon(
-                            node.children.isEmpty
-                                ? node.icon
-                                : node.isExpand
-                                    ? Icons.keyboard_arrow_down
-                                    : Icons.keyboard_arrow_right,
-                            color: _getSelectedNodeColor(node, context)),
+                          node.isExpand
+                              ? Icons.keyboard_arrow_down
+                              : Icons.keyboard_arrow_right,
+                          color: selectdColor,
+                        ),
                       ),
+                      if (node.icon is IconData)
+                        Icon(node.icon, color: selectdColor),
                       Text(
                         node.label,
                         style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            color: _getSelectedNodeColor(node, context)),
-                      )
+                          overflow: TextOverflow.ellipsis,
+                          color: selectdColor,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -82,7 +91,14 @@ class _WTreeState extends WState<WTree> {
     );
   }
 
-  void changeExpand(node) {
+  void changeExpand(WNodeData node) {
+    if (wp.lazy && !node._loaded && wp.load != null) {
+      wp.load!.call(node, (List<dynamic> children) {
+        node.children = WNodeData.listFromJson(children);
+        node._loaded = true;
+        updateView();
+      });
+    }
     setState(() {
       currentNode = node;
       node.isExpand = !node.isExpand;
@@ -133,7 +149,7 @@ class WTreeProp extends BaseProp with ModelDriveProp {
   String? nodeKey;
   WNodeProps props = WNodeProps();
   bool renderAfterExpand = true;
-  Function(dynamic, dynamic)? load;
+  Function(WNodeData, dynamic)? load;
   Function(dynamic, dynamic, dynamic)? renderContent;
   bool highlightCurrent = false;
   bool defaultExpandAll = true;
@@ -188,12 +204,14 @@ class WNodeProps extends BaseProp with ModelDriveProp {
   late String id;
   late String label;
   late String pid;
+  late String icon;
   late String isExpand;
   late String children;
   WNodeProps({
     this.id = 'id',
     this.label = 'label',
     this.pid = 'pid',
+    this.icon = 'icon',
     this.isExpand = 'isExpand',
     this.children = 'children',
   });
@@ -211,10 +229,15 @@ class WNodeData {
   WNodeData? parent;
   List<WNodeData> children = [];
 
-  WNodeData(
-      {required this.id, required this.label, children, isExpand, this.icon})
-      : children = children ?? [],
-        isExpand = isExpand ?? true;
+  bool _loaded = false;
+
+  WNodeData({
+    required this.id,
+    required this.label,
+    this.children = const [],
+    this.isExpand = true,
+    this.icon,
+  });
 
   Map<String, dynamic> toJson([WNodeProps? prop]) {
     Map<String, dynamic> json = {};
@@ -247,7 +270,7 @@ class WNodeData {
     id = json[prop.id] ?? '';
     label = json[prop.label] ?? '';
     isExpand = json[prop.isExpand] ?? true;
-    icon = json['icon'];
+    icon = json[prop.icon];
     content = json['content'] ?? '';
     data = null;
     var children = json[prop.children] ?? [];
