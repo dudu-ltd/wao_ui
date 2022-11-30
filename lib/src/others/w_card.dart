@@ -31,7 +31,7 @@ class WCard
 
   @override
   Widget wbuild(BuildContext context) {
-    return StatefulBuilder(builder: (context, setState) {
+    var card = StatefulBuilder(builder: (context, setState) {
       return MouseRegion(
         onEnter: (event) {
           isHover = true;
@@ -53,8 +53,12 @@ class WCard
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if ($slots.header != null) ...[
-                        paddingWrapper($slots.header!, padding: padding),
+                      if ($slots.header != null || $props.header != null) ...[
+                        if ($props.header != null)
+                          paddingWrapper(Text($props.header!),
+                              padding: padding),
+                        if ($slots.header != null)
+                          paddingWrapper($slots.header!, padding: padding),
                         const Divider(height: 1),
                       ],
                       paddingWrapper(
@@ -80,6 +84,11 @@ class WCard
         ),
       );
     });
+
+    return InkWell(
+      child: card,
+      onTap: $on.click,
+    );
   }
 
   Color get borderColor {
@@ -111,7 +120,10 @@ class WCard
   }
 }
 
-class WCardOn extends BaseOn {}
+class WCardOn extends BaseOn {
+  void Function()? click;
+  Function(dynamic)? dblclick;
+}
 
 class WCardProp extends BaseProp {
   late String? header;

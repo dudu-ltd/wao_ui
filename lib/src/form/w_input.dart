@@ -81,7 +81,7 @@ class WInputState extends WState<WInput> {
       // cursorHeight: fontSize * 1.6,
       cursorColor: Colors.grey.shade900,
       cursorWidth: 1,
-      obscureText: widget.$props.showPassword && !visiblePassword,
+      obscureText: widget.$props.type == 'password' && !visiblePassword,
       showCursor: showCursor,
       readOnly: widget.$props.readonly,
       minLines: textAreaMinLines,

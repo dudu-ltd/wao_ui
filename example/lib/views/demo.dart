@@ -200,7 +200,7 @@ PS D:\work\meta_number\wao_ui>'''),
 
   ValueNotifier<List> openFiles = ValueNotifier([]);
   ValueNotifier<String> openFile = ValueNotifier('');
-  PlainTree? _fileTree;
+  WTree? _fileTree;
   Widget get tabs {
     return StatefulBuilder(builder: (cxt, setState) {
       openFiles.addListener(() => setState(() {}));
@@ -321,9 +321,11 @@ PS D:\work\meta_number\wao_ui>'''),
   }
 
   Widget get fileTree {
-    return _fileTree = PlainTree(
-      props: PlainTreeProp(data: demoTreeJson),
-    )..$on.nodeClick = (ctx, node) {
+    return _fileTree = WTree(
+      props: WTreeProp()
+        ..data = demoTreeJson
+        ..props = WNodeProps(label: 'text'),
+    )..$on.nodeClick = (ctx, node, d) {
         return () {
           selectFileByNode(node);
         };

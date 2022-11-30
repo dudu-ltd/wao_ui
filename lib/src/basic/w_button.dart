@@ -148,7 +148,7 @@ class _WButtonState extends WState<WButton> {
 }
 
 class WButtonOn extends BaseOn {
-  late void Function() click;
+  void Function()? click;
   WButtonOn({click}) {
     this.click = click ?? () {};
   }

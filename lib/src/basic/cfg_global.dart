@@ -935,21 +935,6 @@ class WTagStyle extends BaseStyle {
   }
 }
 
-class WTreeStyle extends BaseStyle {
-  WTreeStyle({
-    double? width,
-    double? height,
-  }) : super(
-          height: height,
-          width: width,
-        );
-
-  @override
-  WTreeStyle newInstance() {
-    return WTreeStyle();
-  }
-}
-
 class WFormStyle extends BaseStyle {
   WFormStyle({
     double? width,

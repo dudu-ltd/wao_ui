@@ -47,7 +47,7 @@ class _WTabsState extends WState<WTabs> {
   Widget wbuild(BuildContext context) {
     var children = widget.defaultSlot;
     var content = <Widget>[
-      _items(children),
+      widget.$slots.tabsWrapper(_items(children)),
       if (navScroll != null) navScroll!,
       _body(children),
     ];
@@ -101,7 +101,7 @@ class _WTabsState extends WState<WTabs> {
     );
   }
 
-  _items(List<Widget> items) {
+  Widget _items(List<Widget> items) {
     var children = List.generate(items.length, (index) {
       var child = items[index] as WTabPane;
       return _item(child);
@@ -342,6 +342,7 @@ class WTabsProp extends BaseProp with ModelDriveProp<String> {
 }
 
 class WTabsSlot extends BaseSlot {
+  Widget Function(Widget) tabsWrapper = (w) => w;
   WTabsSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 

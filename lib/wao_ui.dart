@@ -6,6 +6,12 @@ library wao_ui;
 
 export 'core/byte_file.dart';
 export 'core/env.dart';
+export 'core/base_mixins.dart';
+export 'core/base_on.dart';
+export 'core/base_style.dart';
+export 'core/base_slot.dart';
+export 'core/base_prop.dart';
+
 export 'src/basic/cfg_global.dart';
 export 'src/basic/w_button.dart';
 export 'src/basic/w_container_layout.dart';
@@ -67,8 +73,6 @@ export 'src/others/w_timeline.dart';
 export 'src/others/w_tooltip.dart';
 export 'src/others/w_scroll_snap.dart';
 export 'src/nested_route.dart';
-
-export 'src/tree/tree.dart';
 
 export 'package:flutter_svg/flutter_svg.dart';
 

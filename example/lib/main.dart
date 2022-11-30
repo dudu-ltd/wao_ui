@@ -15,6 +15,7 @@ import 'third_party/syntax_highlight.dart';
 late ThemeData themeData;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); //必须要添加这个进行初始化 否则下面
   await SyntaxHighlighter.initialize();
   element();
   runApp(const Api());

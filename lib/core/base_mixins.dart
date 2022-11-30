@@ -227,8 +227,8 @@ mixin BaseMixins<O extends BaseOn, P extends BaseProp, S extends BaseSlot,
     return Text(
       text,
       style: TextStyle(
-        color: style.color,
-        fontSize: style.fontSize,
+        color: $style.color,
+        fontSize: $style.fontSize,
       ),
       overflow: TextOverflow.ellipsis,
     );

@@ -220,20 +220,23 @@ class _WCollapseItemState extends WState<WCollapseItem> {
   Widget wbuild(BuildContext context) {
     Key? key = widget.$props._accordion ? GlobalKey() : null;
 
-    return ExpansionTile(
-      key: key,
-      initiallyExpanded: widget.$props._expanded.value,
-      onExpansionChanged: (value) {
-        widget.$props._expanded.value = value;
-        widget.$on.change?.call(value);
-      },
-      // FIXME add a stylesheet for crossAxisAlignment.
-      // expandedCrossAxisAlignment: widget.style.body?.verticalAlign,
-      expandedAlignment: widget.style.body?.textAlign,
-      childrenPadding: widget.style.body?.padding,
-      tilePadding: widget.style.title?.padding,
-      title: titleContent,
-      children: widget.defaultSlot,
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        key: key,
+        initiallyExpanded: widget.$props._expanded.value,
+        onExpansionChanged: (value) {
+          widget.$props._expanded.value = value;
+          widget.$on.change?.call(value);
+        },
+        // FIXME add a stylesheet for crossAxisAlignment.
+        // expandedCrossAxisAlignment: widget.style.body?.verticalAlign,
+        expandedAlignment: widget.style.body?.textAlign,
+        childrenPadding: widget.style.body?.padding,
+        tilePadding: widget.style.title?.padding,
+        title: titleContent,
+        children: widget.defaultSlot,
+      ),
     );
   }
 
