@@ -8,6 +8,14 @@ import 'package:wao_ui/wao_ui.dart';
 class _WTreeState extends WState<WTree> {
   WNodeData? currentNode;
 
+  Widget? expandedIcon(WNodeData node, selectdColor) {
+    var icon = Icon(
+      node.isExpand ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
+      color: selectdColor,
+    );
+    return node.isLeaf ? null : icon;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -48,19 +56,16 @@ class _WTreeState extends WState<WTree> {
                   child: Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.fromLTRB(
-                            (widget.$props.level) * 10.0, 0, 0, 0),
-                        child: Icon(
-                          node.isExpand
-                              ? Icons.keyboard_arrow_down
-                              : Icons.keyboard_arrow_right,
-                          color: selectdColor,
+                        padding: EdgeInsets.only(
+                          left: (widget.$props.level) * wp.indent,
                         ),
+                        child: expandedIcon(node, selectdColor),
                       ),
                       if (node.icon is IconData)
                         Icon(node.icon, color: selectdColor),
                       Text(
                         node.label,
+                        maxLines: 1,
                         style: TextStyle(
                           overflow: TextOverflow.ellipsis,
                           color: selectdColor,
@@ -79,6 +84,8 @@ class _WTreeState extends WState<WTree> {
           on: widget.$on,
           props: WTreeProp()
             ..$model = widget.$props.$model
+            ..lazy = wp.lazy
+            ..load = wp.load
             ..treeData = node.children
             ..level = widget.$props.level + 1,
         );
@@ -92,17 +99,22 @@ class _WTreeState extends WState<WTree> {
   }
 
   void changeExpand(WNodeData node) {
-    if (wp.lazy && !node._loaded && wp.load != null) {
-      wp.load!.call(node, (List<dynamic> children) {
-        node.children = WNodeData.listFromJson(children);
-        node._loaded = true;
-        updateView();
-      });
-    }
-    setState(() {
+    expandFn() {
       currentNode = node;
       node.isExpand = !node.isExpand;
-    });
+    }
+
+    if (wp.lazy && !node._loaded && wp.load != null) {
+      wp.load!.call(node, (List<dynamic>? children) {
+        if (children != null) {
+          node.children = WNodeData.listFromJson(children);
+        }
+        node._loaded = true;
+        updateView(expandFn);
+      });
+    } else {
+      updateView(expandFn);
+    }
   }
 
   GestureTapCallback getNodeClickProxy(ctx, WNodeData node) {
@@ -201,12 +213,15 @@ class WTreeStyle extends BaseStyle {
 }
 
 class WNodeProps extends BaseProp with ModelDriveProp {
-  late String id;
-  late String label;
-  late String pid;
-  late String icon;
-  late String isExpand;
-  late String children;
+  String id;
+  String label;
+  String pid;
+  String icon;
+  String isExpand;
+  String children;
+  String data;
+  String parent;
+  String isLeaf;
   WNodeProps({
     this.id = 'id',
     this.label = 'label',
@@ -214,6 +229,9 @@ class WNodeProps extends BaseProp with ModelDriveProp {
     this.icon = 'icon',
     this.isExpand = 'isExpand',
     this.children = 'children',
+    this.data = 'data',
+    this.parent = 'parent',
+    this.isLeaf = 'isLeaf',
   });
 }
 
@@ -221,13 +239,13 @@ class WNodeData {
   dynamic id = '';
   String label = '';
   dynamic pid;
-  String content = '';
   bool isExpand = true;
-  IconData? icon;
+  bool isLeaf = false;
   dynamic data;
+  List<WNodeData> children = [];
+  IconData? icon;
   WNodeData? current;
   WNodeData? parent;
-  List<WNodeData> children = [];
 
   bool _loaded = false;
 
@@ -236,16 +254,20 @@ class WNodeData {
     required this.label,
     this.children = const [],
     this.isExpand = true,
+    this.isLeaf = false,
     this.icon,
   });
 
   Map<String, dynamic> toJson([WNodeProps? prop]) {
     Map<String, dynamic> json = {};
-    json[prop?.id ?? 'id'] = int.parse(id);
+    json[prop?.id ?? 'id'] = id;
     json[prop?.label ?? 'label'] = label;
     json[prop?.pid ?? 'pid'] = pid;
     json[prop?.isExpand ?? 'isExpand'] = isExpand;
     json[prop?.children ?? 'children'] = children;
+    json[prop?.data ?? 'data'] = data;
+    json[prop?.isLeaf ?? 'isLeaf'] = isLeaf;
+    json[prop?.parent ?? 'parent'] = parent;
     return json;
   }
 
@@ -271,8 +293,9 @@ class WNodeData {
     label = json[prop.label] ?? '';
     isExpand = json[prop.isExpand] ?? true;
     icon = json[prop.icon];
-    content = json['content'] ?? '';
-    data = null;
+    data = json[prop.data];
+    parent = json[prop.parent];
+    isLeaf = json[prop.isLeaf] ?? false;
     var children = json[prop.children] ?? [];
     children.forEach((child) {
       WNodeData node = WNodeData.fromJson(child, prop);
@@ -288,5 +311,10 @@ class WNodeData {
         return findById(node.children, id);
       }
     }
+  }
+
+  @override
+  String toString() {
+    return '${toJson()}';
   }
 }
