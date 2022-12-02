@@ -3,10 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:wao_ui/core/base_on.dart';
-import 'package:wao_ui/core/base_prop.dart';
-import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/color_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
@@ -62,7 +58,8 @@ class _WTabsState extends WState<WTabs> {
         ),
       );
     } else {
-      tabs = ListView(
+      tabs = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: content,
       );
     }
@@ -90,7 +87,7 @@ class _WTabsState extends WState<WTabs> {
     if (widget.$props.type != null) return null;
     late Widget box;
     if (widget.$props.positionIsHorizontal) {
-      box = Container(height: 2);
+      box = Container(height: 1);
     } else {
       box = SizedBox(width: 2, height: height);
     }

@@ -315,14 +315,71 @@ class WButtonGroup extends WStatelessWidget<WButtonGroupOn, WButtonGroupProp,
 
   @override
   Widget wbuild(BuildContext context) {
-    return $row;
+    return $props.direction == Axis.horizontal ? $row : $col;
   }
 }
 
 class WButtonGroupOn extends BaseOn {}
 
-class WButtonGroupProp extends BaseProp {}
+class WButtonGroupProp extends BaseProp {
+  Axis direction = Axis.horizontal;
+}
 
 class WButtonGroupSlot extends BaseSlot {
   WButtonGroupSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+class WIconButtonGroup extends WStatelessWidget<WIconButtonGroupOn,
+    WIconButtonGroupProp, WIconButtonGroupSlot, WIconButtonGroupStyle> {
+  WIconButtonGroup({
+    Key? key,
+    WIconButtonGroupOn? on,
+    WIconButtonGroupProp? props,
+    WIconButtonGroupSlot? slots,
+    WIconButtonGroupStyle? style,
+  }) : super(key: key) {
+    $on = on ?? WIconButtonGroupOn();
+    $props = props ?? WIconButtonGroupProp();
+    $slots = slots ?? WIconButtonGroupSlot(null);
+    $style = style ?? WIconButtonGroupStyle();
+    init();
+  }
+  @override
+  Widget wbuild(BuildContext context) {
+    return WButtonGroup()
+      ..$props.direction = $props.direction
+      ..$slots.$ = icons;
+  }
+
+  get icons {
+    var cmdBtns = <WButton>[];
+    $props.commands?.forEach((key, value) {
+      // FIXME icon 被覆盖问题，使用 props copy 的方式解决
+      var cmdBtn = WButton(
+        props: $props,
+      )
+        ..$props.icon = key
+        ..$on.click = value;
+      cmdBtns.add(cmdBtn);
+    });
+    return cmdBtns;
+  }
+}
+
+class WIconButtonGroupOn extends BaseOn {}
+
+class WIconButtonGroupProp extends WButtonProp {
+  Axis direction = Axis.horizontal;
+  Map<IconData, Function()>? commands;
+}
+
+class WIconButtonGroupSlot extends BaseSlot {
+  WIconButtonGroupSlot(defaultSlotBefore) : super(defaultSlotBefore);
+}
+
+class WIconButtonGroupStyle extends BaseStyle {
+  @override
+  WIconButtonGroupStyle newInstance() {
+    return WIconButtonGroupStyle();
+  }
 }

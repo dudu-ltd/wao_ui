@@ -405,6 +405,19 @@ class WBorder {
     right: WBorder.common,
   );
 
+  static Border onlyBottom = Border(
+    bottom: WBorder.common,
+  );
+  static Border onlyTop = Border(
+    top: WBorder.common,
+  );
+  static Border onlyLeft = Border(
+    left: WBorder.common,
+  );
+  static Border onlyRight = Border(
+    right: WBorder.common,
+  );
+
   var m = {
     'left': 'right',
     'right': 'left',
@@ -428,6 +441,20 @@ class WBorder {
       default:
         throw Exception('[$side] is not be support for border exclude');
     }
+
+    // Border only(String? side) {
+    //   switch (side) {
+    //     case 'left':
+    //       return onlyLeft;
+    //     case 'right':
+    //       return onlyRight;
+    //     case 'top':
+    //       return onlyTop;
+    //     case 'bottom':
+    //       return onlyBottom;
+    //     default:
+    //       throw Exception('[$side] is not be support for border only');
+    //   }
   }
 
   static Border all(String? k, [String? type]) {
@@ -1514,15 +1541,17 @@ class WStepStyle extends BaseStyle {
 }
 
 class WTabsStyle extends BaseStyle {
-  WTabItemStyle? item;
-  WTabsStyle({
-    double? width,
-    double? height,
-    this.item,
-  }) : super(
-          height: height,
-          width: width,
-        );
+  WTabHeaderStyle? item;
+  BaseStyle? tabHeader;
+
+  @override
+  BaseStyle merge<T extends BaseStyle?>(T source, {bool force = false}) {
+    if (source is WTabsStyle) {
+      item?.merge(source.item);
+      tabHeader?.merge(source.tabHeader);
+    }
+    return super.merge(source, force: force);
+  }
 
   @override
   WTabsStyle newInstance() {
@@ -1530,8 +1559,8 @@ class WTabsStyle extends BaseStyle {
   }
 }
 
-class WTabItemStyle extends BaseStyle {
-  WTabItemStyle({
+class WTabHeaderStyle extends BaseStyle {
+  WTabHeaderStyle({
     double? width,
     double? height,
   }) : super(
@@ -1540,8 +1569,8 @@ class WTabItemStyle extends BaseStyle {
         );
 
   @override
-  WTabItemStyle newInstance() {
-    return WTabItemStyle();
+  WTabHeaderStyle newInstance() {
+    return WTabHeaderStyle();
   }
 }
 

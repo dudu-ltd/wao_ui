@@ -81,13 +81,13 @@ class _WScrollSnapState extends WState<WScrollSnap>
   Widget wbuild(BuildContext context) {
     return WContainerLayout()
       ..$slots.$ = SingleChildScrollView(
-        key: scrollKey,
-        controller: scrollCtrl,
+        // key: scrollKey,
+        // controller: scrollCtrl,
         child: widget.$slots.content ?? Container(),
-      )
-      // ..$slots.asideRight = snapBuilder
-      ..$props.rightJudge = true
-      ..$props.asideRightWidth = widget.$style.snapWidth;
+      );
+    // ..$slots.asideRight = snapBuilder
+    // ..$props.rightJudge = true
+    // ..$props.asideRightWidth = widget.$style.snapWidth;
   }
 
   var mask = Column();

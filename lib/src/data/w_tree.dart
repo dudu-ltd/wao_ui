@@ -24,6 +24,7 @@ class _WTreeState extends WState<WTree> {
     }
   }
 
+  @override
   WTreeProp get wp => widget.$props;
 
   @override

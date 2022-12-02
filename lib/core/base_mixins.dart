@@ -54,6 +54,8 @@ abstract class WState<T extends WStatefulWidget> extends State<T> {
     return widget.useBox ? widget.boxWrapper(self, context) : self;
   }
 
+  get wp => widget.$props;
+
   beforeBuild() {}
 
   updateView([Function()? fn]) {
