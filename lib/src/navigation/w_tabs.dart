@@ -200,7 +200,11 @@ class _WTabsState extends WState<WTabs> {
               alignment: Alignment.centerLeft,
               child: Text(
                 label,
-                style: TextStyle(color: textColor, fontSize: textSize),
+                style: TextStyle(
+                    color: widget.$props.model == child.$props.name
+                        ? CfgGlobal.primaryColor
+                        : textColor,
+                    fontSize: textSize),
               ),
             ),
           ),
@@ -230,17 +234,28 @@ class _WTabsState extends WState<WTabs> {
       var child = children[i];
       child as WTabPane;
       if (i == 0) {
-        body = child.$col;
+        body = child;
       }
       if (child.$props.name == widget.$props.model) {
-        body = child.$col;
+        body = child;
       }
     }
     return widget.$props.positionIsVertical
         ? Expanded(child: body)
         : FractionallySizedBox(
             widthFactor: 1,
-            child: body,
+            child: Column(
+              children: List.generate(
+                children.length,
+                (index) {
+                  return Offstage(
+                    offstage: (children[index] as WTabPane).$props.name !=
+                        widget.$props.model,
+                    child: children[index],
+                  );
+                },
+              ),
+            ),
           );
   }
 
@@ -291,7 +306,6 @@ class WTabsProp extends BaseProp with ModelDriveProp<String> {
   late bool stretch;
   late Function(String, String)? beforeLeave;
   WTabsProp({
-    String? model,
     this.type,
     this.closable = false,
     this.addable = false,
@@ -357,11 +371,12 @@ class WTabPane extends WStatelessWidget<WTabPaneOn, WTabPaneProp, WTabPaneSlot,
     $props = props ?? WTabPaneProp();
     $slots = slots ?? WTabPaneSlot(null);
     $style = style ?? WTabPaneStyle();
+    init();
   }
 
   @override
   Widget wbuild(BuildContext context) {
-    return Container();
+    return $col;
   }
 }
 
