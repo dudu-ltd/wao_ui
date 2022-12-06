@@ -721,4 +721,146 @@ regist() {
     )
     ''',
   );
+
+  var paginationTable = Demo(
+    'paginationTable',
+    WTable()
+      ..$props.border = true
+      ..$props.enablePagination = true
+      ..$slots.$ = [
+        WTableColumnProp(
+          fixed: true,
+          prop: (row) => row['date'],
+          label: '日期',
+          width: '150',
+        ),
+        WTableColumnProp(
+          prop: (row) => row['name'],
+          label: '姓名',
+          width: '80',
+        ),
+        WTableColumnProp(
+          prop: (row) => row['province'],
+          label: '省份',
+          width: '80',
+        ),
+        WTableColumnProp(
+          prop: (row) => row['address'],
+          label: '地址',
+          width: '300',
+        ),
+        WTableColumnProp(
+          prop: (row) => row['zip'],
+          label: '邮编',
+          width: '100',
+        ),
+        WTableColumn()
+          ..$props.fixed = 'right'
+          ..$props.label = '操作'
+          ..$slots.$ = (dynamic row) {
+            return Row(
+              children: [
+                WButton()
+                  ..$on.click = (() => print('查看$row'))
+                  ..$props.type = 'text'
+                  ..$slots.$ = '查看',
+                WButton()
+                  ..$on.click = (() => print('编辑$row'))
+                  ..$props.type = 'text'
+                  ..$slots.$ = '编辑',
+              ],
+            );
+          },
+      ]
+      // 关键代码在这
+      ..$props.maxHeight = 200
+      ..$props.data = [
+        {
+          'date': '2016-05-02',
+          'name': '王小虎',
+          'province': '上海',
+          'city': '普陀区',
+          'address': '上海市普陀区金沙江路 1518 弄',
+          'zip': 200333
+        },
+        {
+          'date': '2016-05-04',
+          'name': '王小虎',
+          'province': '上海',
+          'city': '普陀区',
+          'address': '上海市普陀区金沙江路 1517 弄',
+          'zip': 200333
+        },
+        {
+          'date': '2016-05-01',
+          'name': '王小虎',
+          'province': '上海',
+          'city': '普陀区',
+          'address': '上海市普陀区金沙江路 1519 弄',
+          'zip': 200333
+        },
+        {
+          'date': '2016-05-03',
+          'name': '王小虎',
+          'province': '上海',
+          'city': '普陀区',
+          'address': '上海市普陀区金沙江路 1516 弄',
+          'zip': 200333
+        }
+      ],
+    r'''
+  var maxHeightTable = Demo(
+    'maxHeightTable',
+    WTable()
+      ..$slots.$ = [
+        WTableColumnProp(
+          fixed: true,
+          prop: (row) => row['date'],
+          label: '日期',
+          width: '150',
+        ),
+        WTableColumnProp(
+          prop: (row) => row['name'],
+          label: '姓名',
+          width: '80',
+        ),
+        WTableColumnProp(
+          prop: (row) => row['province'],
+          label: '省份',
+          width: '80',
+        ),
+        WTableColumnProp(
+          prop: (row) => row['address'],
+          label: '地址',
+          width: '300',
+        ),
+        WTableColumnProp(
+          prop: (row) => row['zip'],
+          label: '邮编',
+          width: '100',
+        ),
+        WTableColumn()
+          ..$props.fixed = 'right'
+          ..$props.label = '操作'
+          ..$slots.$ = (dynamic row) {
+            return Row(
+              children: [
+                WButton()
+                  ..$on.click = (() => print('查看$row'))
+                  ..$props.type = 'text'
+                  ..$slots.$ = '查看',
+                WButton()
+                  ..$on.click = (() => print('编辑$row'))
+                  ..$props.type = 'text'
+                  ..$slots.$ = '编辑',
+              ],
+            );
+          },
+      ]
+      // 关键代码在这
+      ..$props.maxHeight = 100
+      ..$props.data
+  ''',
+    '',
+  );
 }

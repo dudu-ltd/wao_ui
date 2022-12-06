@@ -2,16 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 import 'package:simple_observable/simple_observable.dart';
-import 'package:wao_ui/core/base_on.dart';
-import 'package:wao_ui/core/base_prop.dart';
-import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
-import 'package:wao_ui/src/basic/cfg_global.dart';
-import 'package:wao_ui/src/data/w_empty.dart';
+import 'package:wao_ui/wao_ui.dart';
 
 class WTable
     extends WStatefulWidget<WTableOn, WTableProp, WTableSlot, WTableStyle> {
@@ -70,6 +67,8 @@ class WTable
 }
 
 class _WTableState extends WState<WTable> {
+  List<dynamic>? dataViewPort;
+
   @override
   void initState() {
     super.initState();
@@ -79,6 +78,24 @@ class _WTableState extends WState<WTable> {
         widget.$props.data = d;
       }),
     );
+  }
+
+  void setDataViewPort(dynamic current) {
+    if (widget.$props.enablePagination) {
+      WPaginationProp pagination = WPaginationProp()
+        ..pageSize = 30
+        ..layout = 'prev, pager, next';
+      var wppp = widget.$props.paginationProp =
+          widget.$props.paginationProp ?? pagination;
+      widget.$props.paginationProp!.total = widget.$props.data.length;
+      var pageSize = wppp.pageSize;
+      var currentPage = wppp.currentPage;
+      var startRow = (currentPage - 1) * pageSize;
+      var endRow = (currentPage) * pageSize;
+      dataViewPort = widget.$props.data
+          .sublist(startRow, min(endRow, widget.$props.data.length));
+      setState(updateView);
+    }
   }
 
   List<DataColumn> get columns2 {
@@ -98,26 +115,38 @@ class _WTableState extends WState<WTable> {
 
   @override
   Widget wbuild(BuildContext context) {
-    return borderWrapper(
-      constWrapper(
-        Column(
-          children: [
-            if (widget.$props.showHeader) getHeader(widget.defaultSlot),
-            if (widget.$props.data.isEmpty && whenEmpty != null)
-              whenEmpty!
-            else if (widget.$props.height != null)
-              sizedScrollWrapper(rows, widget.$props.height, null, true)
-            else if (widget.$props.maxHeight != null)
-              expandedScrollWrapper(rows, true)
-            else
-              ...rows
-          ],
+    setDataViewPort(null);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        borderWrapper(
+          constWrapper(
+            Column(
+              children: [
+                if (widget.$props.showHeader) getHeader(widget.defaultSlot),
+                if (widget.$props.data.isEmpty && whenEmpty != null)
+                  whenEmpty!
+                else if (widget.$props.height != null)
+                  sizedScrollWrapper(rows, widget.$props.height, null, true)
+                else if (widget.$props.maxHeight != null)
+                  expandedScrollWrapper(rows, true)
+                else
+                  ...rows
+              ],
+            ),
+            BoxConstraints(maxHeight: (widget.$props.maxHeight ?? 0)),
+            widget.$props.maxHeight != null,
+          ),
+          Border.fromBorderSide(cfgGlobal.table.rowBorder),
+          widget.$props.border,
         ),
-        BoxConstraints(maxHeight: widget.$props.maxHeight ?? 0),
-        widget.$props.maxHeight != null,
-      ),
-      Border.fromBorderSide(cfgGlobal.table.rowBorder),
-      widget.$props.border,
+        if (widget.$props.enablePagination)
+          WPagination(
+            props: widget.$props.paginationProp!,
+          )
+            ..$on.currentChange = setDataViewPort
+            ..$style.textAlign = Alignment.centerRight,
+      ],
     );
   }
 
@@ -144,9 +173,11 @@ class _WTableState extends WState<WTable> {
   }
 
   List<MouseStateBuilder> get rows {
-    var rowLen = widget.$props.data.length;
+    var data =
+        (dataViewPort?.length ?? 0) > 0 ? dataViewPort : widget.$props.data;
+    var rowLen = data!.length;
     List<MouseStateBuilder> rows = List.generate(rowLen, (r) {
-      dynamic rowData = widget.$props.data[r];
+      dynamic rowData = data[r];
       return MouseStateBuilder(builder: (context, state) {
         var columnLen = actualFields.length;
         var row = Row(
@@ -188,7 +219,7 @@ class _WTableState extends WState<WTable> {
             )
           : null,
       false,
-      margin: cfgGlobal.table.cellMargin,
+      padding: cfgGlobal.table.cellMargin,
     );
   }
 
@@ -277,7 +308,13 @@ class _WTableState extends WState<WTable> {
         columnLen,
         (index) {
           WTableColumn column = columns[index] as WTableColumn;
-          Widget th = getHeaderCell(column);
+          Widget th = colorWrapper(
+            _cellBorderWrapper(
+              getHeaderCell(column),
+              index != columnLen - 1,
+            ),
+            column.$style.backgroundColor,
+          );
           var header = column.$props.width == null
               ? Expanded(
                   child: th,
@@ -286,7 +323,7 @@ class _WTableState extends WState<WTable> {
                   width: double.parse(column.$props.width!),
                   child: th,
                 );
-          return _cellBorderWrapper(header, index != columnLen - 1);
+          return header;
         },
       ),
     );
@@ -301,16 +338,22 @@ class _WTableState extends WState<WTable> {
           Text(
             column.$props.label ?? '',
             textAlign: TextAlign.center,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            maxLines: 1,
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          getHeader(column.defaultSlot)
+          colorWrapper(
+            getHeader(column.defaultSlot),
+            column.$style.backgroundColor,
+          )
         ],
       );
     }
     return Text(
       column.$props.label ?? '',
       textAlign: TextAlign.center,
-      style: const TextStyle(fontWeight: FontWeight.bold),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+      style: TextStyle(fontWeight: FontWeight.bold),
     );
   }
 }
@@ -381,6 +424,8 @@ class WTableProp extends BaseProp {
   bool lazy;
   Function(dynamic row, dynamic treeNode, Function resolve)? load;
   Map<String, dynamic>? treeProps;
+  bool enablePagination;
+  WPaginationProp? paginationProp;
 
   WTableProp({
     this.data = const [],
@@ -411,6 +456,7 @@ class WTableProp extends BaseProp {
       'hasChildren': 'hasChildren',
       'children': 'children'
     },
+    this.enablePagination = false,
   });
 }
 

@@ -1,5 +1,5 @@
 # 表格
-
+<!-- 
 ## 基本表格
 ```widget
 tableBasic
@@ -34,4 +34,9 @@ maxHeightTable
 ## 多级表头
 ```widget
 tableMultiHeader
+``` -->
+
+## 分页表格
+```widget
+paginationTable
 ```

@@ -59,8 +59,8 @@ Widget marginWrapper(Widget child, EdgeInsets margin, {needMargin = true}) {
   return child;
 }
 
-Widget colorWrapper(Widget child, Color color, needColor) {
-  if (needColor) {
+Widget colorWrapper(Widget child, Color? color, [bool needColor = true]) {
+  if (color != null && needColor) {
     return ColoredBox(
       color: color,
       child: child,

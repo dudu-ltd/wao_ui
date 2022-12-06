@@ -722,7 +722,10 @@ class WTableStyle extends BaseStyle {
   Color rowHoverColor = CfgGlobal.primaryColor.shade50;
   BorderSide rowNoBorder = const BorderSide(width: 0);
   BorderSide rowBorder = BorderSide(width: .5, color: Colors.grey.shade300);
-  EdgeInsets cellMargin = const EdgeInsets.fromLTRB(5, 2, 5, 2);
+  EdgeInsets cellMargin = const EdgeInsets.symmetric(
+    vertical: 2,
+    horizontal: 0,
+  );
   @override
   WTableStyle newInstance() {
     return WTableStyle();
