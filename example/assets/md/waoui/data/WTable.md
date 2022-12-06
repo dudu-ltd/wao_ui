@@ -31,7 +31,7 @@ tableFixColumn
 maxHeightTable
 ```
 
-<!-- ## 多级表头
+## 多级表头
 ```widget
 tableMultiHeader
-``` -->
+```

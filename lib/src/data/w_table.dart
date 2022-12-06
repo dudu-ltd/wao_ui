@@ -44,17 +44,17 @@ class WTable
   @override
   _WTableState createState() => _WTableState();
 
-  /**
-      clearSelection	用于多选表格，清空用户的选择	—
-      toggleRowSelection	用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中）	row, selected
-      toggleAllSelection	用于多选表格，切换所有行的选中状态	-
-      toggleRowExpansion	用于可展开表格与树形表格，切换某一行的展开状态，如果使用了第二个参数，则是设置这一行展开与否（expanded 为 true 则展开）	row, expanded
-      setCurrentRow	用于单选表格，设定某一行为选中行，如果调用时不加参数，则会取消目前高亮行的选中状态。	row
-      clearSort	用于清空排序条件，数据会恢复成未排序的状态	—
-      clearFilter	不传入参数时用于清空所有过滤条件，数据会恢复成未过滤的状态，也可传入由columnKey组成的数组以清除指定列的过滤条件	columnKey
-      doLayout	对 Table 进行重新布局。当 Table 或其祖先元素由隐藏切换为显示时，可能需要调用此方法	—
-      sort	手动对 Table 进行排序。参数prop属性指定排序列，order指定排序顺序。
-   */
+  ///
+  /// clearSelection	用于多选表格，清空用户的选择	—
+  /// toggleRowSelection	用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中）	row, selected
+  /// toggleAllSelection	用于多选表格，切换所有行的选中状态	-
+  /// toggleRowExpansion	用于可展开表格与树形表格，切换某一行的展开状态，如果使用了第二个参数，则是设置这一行展开与否（expanded 为 true 则展开）	row, expanded
+  /// setCurrentRow	用于单选表格，设定某一行为选中行，如果调用时不加参数，则会取消目前高亮行的选中状态。	row
+  /// clearSort	用于清空排序条件，数据会恢复成未排序的状态	—
+  /// clearFilter	不传入参数时用于清空所有过滤条件，数据会恢复成未过滤的状态，也可传入由columnKey组成的数组以清除指定列的过滤条件	columnKey
+  /// doLayout	对 Table 进行重新布局。当 Table 或其祖先元素由隐藏切换为显示时，可能需要调用此方法	—
+  /// sort	手动对 Table 进行排序。参数prop属性指定排序列，order指定排序顺序。
+  ///
 
   @override
   List<SlotTranslator> get slotTranslatorsCustom {
@@ -102,7 +102,7 @@ class _WTableState extends WState<WTable> {
       constWrapper(
         Column(
           children: [
-            if (widget.$props.showHeader!) getHeader(widget.defaultSlot),
+            if (widget.$props.showHeader) getHeader(widget.defaultSlot),
             if (widget.$props.data.isEmpty && whenEmpty != null)
               whenEmpty!
             else if (widget.$props.height != null)
@@ -125,8 +125,8 @@ class _WTableState extends WState<WTable> {
     return WEmpty(slots: WEmptySlot(const Text('暂无数据')));
   }
 
-  addActualFields(List<Widget> _columns, List<WTableColumn> actualFields) {
-    for (var column in _columns) {
+  addActualFields(List<Widget> columns, List<WTableColumn> actualFields) {
+    for (var column in columns) {
       column as WTableColumn;
       if (column.defaultSlot is List<WTableColumn>) {
         addActualFields(column.defaultSlot as List<WTableColumn>, actualFields);
@@ -154,10 +154,10 @@ class _WTableState extends WState<WTable> {
             columnLen,
             (c) {
               var column = actualFields[c];
+              var needBorder = c != columnLen - 1;
               return _cellBorderWrapper(
                 cellWidget(column, rowData),
-                columnLen,
-                c,
+                needBorder,
               );
             },
           ),
@@ -179,7 +179,7 @@ class _WTableState extends WState<WTable> {
     return row;
   }
 
-  _cellBorderWrapper(Widget cell, columnLen, c) {
+  _cellBorderWrapper(Widget cell, [bool need = true]) {
     return borderWrapper(
       cell,
       widget.$props.border
@@ -187,7 +187,7 @@ class _WTableState extends WState<WTable> {
               right: cfgGlobal.table.rowBorder,
             )
           : null,
-      c != columnLen - 1,
+      false,
       margin: cfgGlobal.table.cellMargin,
     );
   }
@@ -227,18 +227,20 @@ class _WTableState extends WState<WTable> {
   }
 
   Widget value(WTableColumn column, dynamic row) {
-    var child;
+    dynamic child;
     if (column.$slots.$ is Function) {
       child = (column.$slots.$ as Function).call(row);
-    } else if (column.$slots.$ is List<Widget>) {
-      child = column.defaultSlot;
     } else {
-      var val = column.$props.prop == null ? '' : column.$props.prop?.call(row);
-      child = Text(
-        '$val',
-        overflow: TextOverflow.ellipsis,
-        maxLines: 1,
-      );
+      var val = column.$props.prop == null
+          ? getValueFrom(column, row)
+          : column.$props.prop?.call(row);
+      child = val is Widget
+          ? val
+          : Text(
+              '$val',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            );
     }
     if (child is List<Widget>) {
       return Row(children: child);
@@ -250,12 +252,21 @@ class _WTableState extends WState<WTable> {
     throw ArgumentError.value(child, 'slots ', ' 默认插槽需要是部件或者是函数返回部件。');
   }
 
+  Widget getValueFrom(WTableColumn column, row) {
+    return Row(
+      children: List.generate(column.defaultSlot.length, (index) {
+        var innerColumn = column.defaultSlot[index] as WTableColumn;
+        return cellWidget(innerColumn, row);
+      }),
+    );
+  }
+
   Widget widthWrapper(Widget cell, WTableColumn column) {
     return column.$props.width == null
         ? Expanded(child: cell)
         : SizedBox(
-            child: cell,
             width: double.parse(column.$props.width!),
+            child: cell,
           );
   }
 
@@ -272,10 +283,10 @@ class _WTableState extends WState<WTable> {
                   child: th,
                 )
               : SizedBox(
-                  child: th,
                   width: double.parse(column.$props.width!),
+                  child: th,
                 );
-          return _cellBorderWrapper(header, columnLen, index);
+          return _cellBorderWrapper(header, index != columnLen - 1);
         },
       ),
     );
@@ -287,12 +298,20 @@ class _WTableState extends WState<WTable> {
     } else if (column.defaultSlot.isNotEmpty) {
       return Column(
         children: [
-          Text(column.$props.label ?? ''),
+          Text(
+            column.$props.label ?? '',
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           getHeader(column.defaultSlot)
         ],
       );
     }
-    return Text(column.$props.label ?? '');
+    return Text(
+      column.$props.label ?? '',
+      textAlign: TextAlign.center,
+      style: const TextStyle(fontWeight: FontWeight.bold),
+    );
   }
 }
 
@@ -342,9 +361,9 @@ class WTableProp extends BaseProp {
   late bool stripe;
   late bool border;
   String? size;
-  bool? fit;
-  bool? showHeader;
-  bool? highlightCurrentRow;
+  bool fit;
+  bool showHeader;
+  bool highlightCurrentRow;
   String? currentRowKey;
   Function(dynamic row)? rowKey;
   String? emptyText;
@@ -352,100 +371,51 @@ class WTableProp extends BaseProp {
   List? expandRowKeys;
   dynamic defaultSort;
   String? tooltipEffect;
-  bool? showSummary;
+  bool showSummary;
   String? sumText;
   Function(List columns, List data)? summaryMethod;
   Function(dynamic row, String column, int rowIndex, int columnIndex)?
       spanMethod;
-  bool? selectOnIndeterminate;
+  bool selectOnIndeterminate;
   double? indent;
-  bool? lazy;
+  bool lazy;
   Function(dynamic row, dynamic treeNode, Function resolve)? load;
   Map<String, dynamic>? treeProps;
 
   WTableProp({
-    List? data,
-    double? height,
-    double? maxHeight,
-    bool? stripe,
-    bool? border,
-    String? size,
-    bool? fit,
-    bool? showHeader,
-    bool? highlightCurrentRow,
-    String? currentRowKey,
-    Function(dynamic row)? rowKey,
-    String? emptyText,
-    bool defaultExpandAll = false,
-    List? expandRowKeys,
-    dynamic defaultSort,
-    String? tooltipEffect,
-    bool? showSummary,
-    String? sumText,
-    Function(List columns, List data)? summaryMethod,
-    Function(dynamic row, String column, int rowIndex, int columnIndex)?
-        spanMethod,
-    bool? selectOnIndeterminate,
-    double? indent,
-    bool? lazy,
-    Function(dynamic row, dynamic treeNode, Function resolve)? load,
-    Map<String, dynamic>? treeProps,
-  }) {
-    this.data = data ?? [];
-    this.height = height;
-    this.maxHeight = maxHeight;
-    this.stripe = stripe ?? false;
-    this.border = border ?? false;
-    this.size = size;
-    this.fit = fit ?? true;
-    this.showHeader = showHeader ?? true;
-    this.highlightCurrentRow = highlightCurrentRow ?? false;
-    this.currentRowKey = currentRowKey;
-    this.rowKey = rowKey;
-    this.emptyText = emptyText ?? '暂无数据';
-    this.defaultExpandAll = defaultExpandAll;
-    this.expandRowKeys = expandRowKeys ?? [];
-    this.defaultSort = defaultSort ?? '';
-    this.tooltipEffect = tooltipEffect ?? '';
-    this.showSummary = showSummary ?? false;
-    this.sumText = sumText ?? '';
-    this.summaryMethod = summaryMethod;
-    this.spanMethod = spanMethod;
-    this.selectOnIndeterminate = selectOnIndeterminate ?? true;
-    this.indent = indent ?? 18;
-    this.lazy = lazy ?? false;
-    this.load = load;
-    this.treeProps =
-        treeProps ?? {'hasChildren': 'hasChildren', 'children': 'children'};
-  }
+    this.data = const [],
+    this.height,
+    this.maxHeight,
+    this.stripe = false,
+    this.border = false,
+    this.size,
+    this.fit = true,
+    this.showHeader = true,
+    this.highlightCurrentRow = false,
+    this.currentRowKey,
+    this.rowKey,
+    this.emptyText = '暂无数据',
+    this.defaultExpandAll = false,
+    this.expandRowKeys = const [],
+    this.defaultSort = '',
+    this.tooltipEffect = '',
+    this.showSummary = false,
+    this.sumText = '',
+    this.summaryMethod,
+    this.spanMethod,
+    this.selectOnIndeterminate = true,
+    this.indent = 18,
+    this.lazy = false,
+    this.load,
+    this.treeProps = const {
+      'hasChildren': 'hasChildren',
+      'children': 'children'
+    },
+  });
 }
 
 class WTableSlot extends BaseSlot {
-  /**
-      append	插入至表格最后一行之后的内容，如果需要对表格的内容进行无限滚动操作，可能需要用到这个 slot。若表格有合计行，该 slot 会位于合计行之上。
-   */
-
-  WTableSlot(columns) : super(columns);
-  @override
-  setDefaultSlot() {
-    var columns = $;
-    if (columns == null && defaultSlot == null) defaultSlot = [];
-    if (columns is List<WTableColumn>) {
-      defaultSlot = columns;
-    } else {
-      var _columns = <WTableColumn>[];
-      columns?.forEach((column) {
-        if (column is WTableColumn) {
-          _columns.add(column);
-        } else if (column is WTableColumnProp) {
-          _columns.add(WTableColumn(props: column));
-        } else {
-          throw Exception('目前仅支持 List<WTableColumnProp> 与 List<WTableColumn> ');
-        }
-      });
-      defaultSlot = _columns;
-    }
-  }
+  WTableSlot(super.$);
 }
 
 class WTableColumn extends WStatelessWidget<WTableColumnOn, WTableColumnProp,
@@ -466,6 +436,18 @@ class WTableColumn extends WStatelessWidget<WTableColumnOn, WTableColumnProp,
   @override
   Widget wbuild(BuildContext context) {
     return Container();
+  }
+
+  @override
+  List<SlotTranslator> get slotTranslatorsCustom {
+    return <SlotTranslator>[
+      SlotTranslator(
+        WTableColumnProp,
+        (prop, i, component, len) {
+          return WTableColumn(props: prop);
+        },
+      )
+    ];
   }
 }
 
@@ -495,8 +477,8 @@ class WTableColumnProp extends BaseProp {
   late bool showOverflowTooltip;
   late String align;
   String? headerAlign;
-  // late String? className;
-  // late String? labelClassName;
+  late String? className;
+  late String? labelClassName;
   Function(dynamic row, int index)? selectable;
   late bool reserveSelection;
   List<Map>? filters;
@@ -506,98 +488,37 @@ class WTableColumnProp extends BaseProp {
   List? filteredValue;
 
   WTableColumnProp({
-    String? type,
-    dynamic index,
-    dynamic Function(dynamic row)? columnKey,
-    String? label,
-    dynamic Function(dynamic row)? prop,
-    String? width,
-    String? minWidth,
-    dynamic fixed,
-    Function(dynamic h, {WTableColumn column, int $index})? renderHeader,
-    dynamic sortable,
-    int Function(dynamic a, dynamic b)? sortMethod,
-    dynamic sortBy,
-    List? sortOrders,
-    bool? resizable,
-    Function(dynamic row, WTableColumn column, dynamic cellValue, int index)?
-        formatter,
-    bool? showOverflowTooltip,
-    String? align,
-    String? headerAlign,
-    // className,
-    // labelClassName,
-    Function(dynamic row, int index)? selectable,
-    bool? reserveSelection,
-    List<Map>? filters,
-    String? filterPlacement,
-    bool? filterMultiple,
-    Function(dynamic value, dynamic row, WTableColumn column)? filterMethod,
-    List? filteredValue,
-  }) {
-    this.type = type;
-    this.index = index;
-    this.columnKey = columnKey;
-    this.label = label;
-    this.prop = prop;
-    this.width = width;
-    this.minWidth = minWidth;
-    this.fixed = fixed;
-    this.renderHeader = renderHeader;
-    this.sortable = sortable;
-    this.sortMethod = sortMethod;
-    this.sortBy = sortBy;
-    this.sortOrders = sortOrders = ['ascending', 'descending', null];
-    this.resizable = resizable ?? true;
-    this.formatter = formatter;
-    this.showOverflowTooltip = showOverflowTooltip ?? false;
-    this.align = align ?? 'left';
-    this.headerAlign = headerAlign;
-    // this.className = className;
-    // this.labelClassName = labelClassName;
-    this.selectable = selectable;
-    this.reserveSelection = reserveSelection ?? false;
-    this.filters = filters;
-    this.filterPlacement = filterPlacement;
-    this.filterMultiple = filterMultiple ?? true;
-    this.filterMethod = filterMethod;
-    this.filteredValue = filteredValue;
-  }
+    this.type,
+    this.index,
+    this.columnKey,
+    this.label,
+    this.prop,
+    this.width,
+    this.minWidth,
+    this.fixed,
+    this.renderHeader,
+    this.sortable,
+    this.sortMethod,
+    this.sortBy,
+    this.sortOrders = const ['ascending', 'descending', null],
+    this.resizable = true,
+    this.formatter,
+    this.showOverflowTooltip = false,
+    this.align = 'left',
+    this.headerAlign,
+    this.className,
+    this.labelClassName,
+    this.selectable,
+    this.reserveSelection = false,
+    this.filters,
+    this.filterPlacement,
+    this.filterMultiple = true,
+    this.filterMethod,
+    this.filteredValue,
+  });
 }
 
 class WTableColumnSlot extends BaseSlot {
   Widget Function(dynamic column)? header;
-  // Function([dynamic value, dynamic row, WTableColumn column])? cellBuilder;
-  WTableColumnSlot(defaultSlotBefore, {this.header}) : super(defaultSlotBefore);
-
-  @override
-  setDefaultSlot() {
-    if (defaultSlot != null && defaultSlot!.isNotEmpty) return;
-    var columns = $;
-    if (columns == null && defaultSlot != null) {
-      defaultSlot = [];
-    } else if (columns is List<WTableColumn>) {
-      defaultSlot = columns;
-    } else if (columns is List<dynamic>) {
-      var _columns = <WTableColumn>[];
-      columns.forEach((column) {
-        if (column is WTableColumn) {
-          _columns.add(column);
-        } else if (column is WTableColumnProp) {
-          _columns.add(WTableColumn(props: column));
-        } else {
-          throw Exception('目前仅支持 List<WTableColumnProp> 与 List<WTableColumn> ');
-        }
-      });
-      defaultSlot = _columns;
-    }
-  }
-
-  // @override
-  // setDefaultSlot() {
-  //   super.setDefaultSlot();
-  //   if (defaultSlotBefore is Function) {
-  //     cellBuilder = defaultSlotBefore;
-  //   }
-  // }
+  WTableColumnSlot(super.$, {this.header});
 }

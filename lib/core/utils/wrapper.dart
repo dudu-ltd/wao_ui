@@ -22,10 +22,10 @@ Widget borderWrapper(Widget child, Border? border, bool needBorder,
     if (border != null || borderRadius != null) {
       decoration = const BoxDecoration();
       if (border != null) {
-        decoration.copyWith(border: border);
+        decoration = decoration.copyWith(border: border);
       }
       if (borderRadius != null) {
-        decoration.copyWith(borderRadius: borderRadius);
+        decoration = decoration.copyWith(borderRadius: borderRadius);
       }
     }
     return Container(

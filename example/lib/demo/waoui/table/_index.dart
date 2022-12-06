@@ -597,12 +597,11 @@ regist() {
                   WTableColumnProp(
                     prop: (row) => row['address'],
                     label: '地址',
-                    width: '300',
                   ),
                   WTableColumnProp(
                     prop: (row) => row['zip'],
                     label: '邮编',
-                    width: '120',
+                    width: '80',
                   ),
                 ],
               ),
@@ -610,18 +609,18 @@ regist() {
           ]),
         ),
         // TODO FIXME 修复多级后再追加列无法渲染的问题
-        // WTableColumn(
-        //   props: WTableColumnProp(label: '配送状态', width: '180'),
-        //   slots: WTableColumnSlot((row) {
-        //     return WButton(
-        //       props: WButtonProp(type: 'primary', round: true),
-        //       on: WButtonOn(click: () {
-        //         print(row);
-        //       }),
-        //       slots: WButtonSlot('送达'),
-        //     );
-        //   }),
-        // ),
+        WTableColumn(
+          props: WTableColumnProp(label: '配送状态', width: '80'),
+          slots: WTableColumnSlot((row) {
+            return WButton(
+              props: WButtonProp(type: 'primary', size: 'mini'),
+              on: WButtonOn(click: () {
+                print(row);
+              }),
+              slots: WButtonSlot('送达'),
+            );
+          }),
+        ),
       ]),
       props: WTableProp(data: [
         {

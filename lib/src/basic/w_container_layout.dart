@@ -52,6 +52,7 @@ class _WContainerLayoutState extends WState<WContainerLayout> {
   _changeHeaderHeight(double newY) {
     setState(() {
       $props.headerHeight = $props.headerHeight + (newY - _lastY);
+      widget.$on.headerResize?.call($props.headerHeight);
       _lastY = newY;
     });
   }
@@ -59,6 +60,7 @@ class _WContainerLayoutState extends WState<WContainerLayout> {
   _changeFooterHeight(double newY) {
     setState(() {
       $props.footerHeight -= (newY - _lastY);
+      widget.$on.footerResize?.call($props.footerHeight);
       _lastY = newY;
     });
   }
@@ -67,6 +69,7 @@ class _WContainerLayoutState extends WState<WContainerLayout> {
     setState(() {
       var change = newX - _lastX;
       $props.asideLeftWidth = $props.asideLeftWidth + change;
+      widget.$on.leftResize?.call($props.asideLeftWidth);
       _lastX = newX;
     });
   }
@@ -74,6 +77,7 @@ class _WContainerLayoutState extends WState<WContainerLayout> {
   _changeRightWidth(double newX) {
     setState(() {
       $props.asideRightWidth -= (newX - _lastX);
+      widget.$on.rightResize?.call($props.asideRightWidth);
       _lastX = newX;
     });
   }
@@ -239,7 +243,12 @@ class _WContainerLayoutState extends WState<WContainerLayout> {
   }
 }
 
-class WContainerLayoutOn extends BaseOn {}
+class WContainerLayoutOn extends BaseOn {
+  Function(double)? footerResize;
+  Function(double)? headerResize;
+  Function(double)? leftResize;
+  Function(double)? rightResize;
+}
 
 ///
 ///布局相关属性
