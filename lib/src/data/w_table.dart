@@ -337,7 +337,7 @@ class _WTableState extends WState<WTable> {
         children: [
           Text(
             column.$props.label ?? '',
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
             maxLines: 1,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
@@ -350,7 +350,7 @@ class _WTableState extends WState<WTable> {
     }
     return Text(
       column.$props.label ?? '',
-      textAlign: TextAlign.center,
+      textAlign: TextAlign.left,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
       style: TextStyle(fontWeight: FontWeight.bold),

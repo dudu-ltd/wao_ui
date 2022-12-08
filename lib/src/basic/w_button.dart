@@ -200,6 +200,7 @@ class WButtonProp extends BaseProp with HasFirstAndLastProp {
     active,
     bool? isFirst,
     bool? isLast,
+    this.inGroup = false,
   }) {
     this.isFirst = isFirst ?? this.isFirst;
     this.isLast = isLast ?? this.isLast;
@@ -214,6 +215,25 @@ class WButtonProp extends BaseProp with HasFirstAndLastProp {
     this.iconRight = iconRight;
     this.autofocus = autofocus ?? false;
     this.active = active ?? false;
+  }
+
+  WButtonProp copy() {
+    return WButtonProp(
+      size: this.size,
+      type: this.type,
+      plain: this.plain,
+      round: this.round,
+      circle: this.circle,
+      loading: this.loading,
+      disabled: this.disabled,
+      icon: this.icon,
+      iconRight: this.iconRight,
+      autofocus: this.autofocus,
+      active: this.active,
+      inGroup: this.inGroup,
+      isFirst: this.isFirst,
+      isLast: this.isLast,
+    );
   }
 
   @override
@@ -356,7 +376,7 @@ class WIconButtonGroup extends WStatelessWidget<WIconButtonGroupOn,
     $props.commands?.forEach((key, value) {
       // FIXME icon 被覆盖问题，使用 props copy 的方式解决
       var cmdBtn = WButton(
-        props: $props,
+        props: $props.copy(),
       )
         ..$props.icon = key
         ..$on.click = value;
