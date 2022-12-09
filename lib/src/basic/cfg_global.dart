@@ -379,7 +379,7 @@ class WBorderStyle {
 
 class WBorder {
   static BorderSide common =
-      BorderSide(color: CfgGlobal.infoColor.shade300, width: 1);
+      BorderSide(color: CfgGlobal.infoColor.shade100, width: 1);
 
   static Border excludeLeft = Border(
     top: WBorder.common,

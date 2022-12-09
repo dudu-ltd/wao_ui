@@ -368,7 +368,10 @@ class WIconButtonGroup extends WStatelessWidget<WIconButtonGroupOn,
   Widget wbuild(BuildContext context) {
     return WButtonGroup()
       ..$props.direction = $props.direction
-      ..$slots.$ = icons;
+      ..$slots.$ = [
+        ...icons,
+        ...($slots.defaultSlot ?? []),
+      ];
   }
 
   get icons {

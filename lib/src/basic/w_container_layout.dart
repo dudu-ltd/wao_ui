@@ -21,7 +21,7 @@ class WContainerLayout extends WStatefulWidget<WContainerLayoutOn,
     init();
   }
 
-  static Color devideColor = Colors.grey.shade50;
+  static Color devideColor = Colors.grey.shade100;
   _WContainerLayoutState? state;
 
   @override

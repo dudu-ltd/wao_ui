@@ -187,8 +187,6 @@ class _WTabsState extends WState<WTabs> {
 
   Widget _item(WTabPane child) {
     var label = child.$props.label ?? '';
-    print(
-        'widget.\$props.value ${widget.$props.model} == child.\$props.name ${child.$props.name} : ${widget.$props.model == child.$props.name}');
     return itemEventWrapper(
       itemColorWrapper(
         Padding(
@@ -198,20 +196,38 @@ class _WTabsState extends WState<WTabs> {
             child: Align(
               widthFactor: 1,
               alignment: Alignment.centerLeft,
-              child: Text(
-                label,
-                style: TextStyle(
-                    color: widget.$props.model == child.$props.name
-                        ? CfgGlobal.primaryColor
-                        : textColor,
-                    fontSize: textSize),
-              ),
+              child: itemContent(label, child),
             ),
           ),
         ),
         active: widget.$props.model == child.$props.name,
       ),
       child.$props.name,
+    );
+  }
+
+  Widget itemContent(String label, WTabPane child) {
+    var active = widget.$props.model == child.$props.name;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: active ? CfgGlobal.primaryColor : textColor,
+            fontSize: textSize,
+          ),
+        ),
+        if (active && widget.$props.closable)
+          WButton()
+            ..$props.icon = Icons.close
+            ..$props.plain = true
+            ..$props.circle = true
+            ..$props.type = 'text'
+            ..$on.click = () {
+              widget.$on.tabRemove?.call(label);
+            },
+      ],
     );
   }
 

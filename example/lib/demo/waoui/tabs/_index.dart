@@ -9,6 +9,7 @@ regist() {
       ..$on.tabClick = (e) {
         print(e);
       }
+      ..$props.closable = true
       ..$props.model = 'second'
       ..$slots.$ = [
         WTabPane()
