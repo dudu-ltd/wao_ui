@@ -179,7 +179,7 @@ class _WTableState extends WState<WTable> {
           Border.fromBorderSide(cfgGlobal.table.rowBorder),
           widget.$props.border,
         ),
-        if (maxWidth != null)
+        if (maxWidth != null && widget.$props.data.isNotEmpty)
           Scrollbar(
             controller: bodyHorizontalScrollCtrl,
             trackVisibility: true,
