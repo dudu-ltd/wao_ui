@@ -10,6 +10,8 @@ import 'package:simple_observable/simple_observable.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
 
+import '../../core/utils/layout_util.dart';
+
 class WTable
     extends WStatefulWidget<WTableOn, WTableProp, WTableSlot, WTableStyle> {
   WTable({
@@ -69,6 +71,12 @@ class WTable
 class _WTableState extends WState<WTable> {
   List<dynamic>? dataViewPort;
 
+  ScrollController bodyVerticalScrollCtrl = ScrollController();
+  ScrollController bodyHorizontalScrollCtrl = ScrollController();
+
+  List<ScrollController> rowsHorizontalScrollCtrls = <ScrollController>[];
+  double? maxWidth;
+
   @override
   void initState() {
     super.initState();
@@ -78,6 +86,29 @@ class _WTableState extends WState<WTable> {
         widget.$props.data = d;
       }),
     );
+
+    bodyHorizontalScrollCtrl.addListener(() {
+      if (bodyHorizontalScrollCtrl.hasClients) {
+        var mainOffset = bodyHorizontalScrollCtrl.offset;
+        print(mainOffset);
+        rowsHorizontalScrollCtrls.forEach((sc) {
+          if (sc.hasClients) {
+            sc.jumpTo(mainOffset);
+          }
+        });
+      }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (rowsHorizontalScrollCtrls.length > 1) {
+        setState(() {
+          var tableWidth = getPosition(context).width;
+          print(tableWidth);
+          var mw = rowsHorizontalScrollCtrls[1].position.maxScrollExtent;
+          maxWidth = mw + tableWidth * (tableWidth / mw) * 4;
+        });
+      }
+    });
   }
 
   void setDataViewPort(dynamic current) {
@@ -122,12 +153,20 @@ class _WTableState extends WState<WTable> {
         borderWrapper(
           constWrapper(
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (widget.$props.showHeader) getHeader(widget.defaultSlot),
+                if (widget.$props.showHeader)
+                  _rowHorizontalScrollWrapper(getHeader(widget.defaultSlot)),
                 if (widget.$props.data.isEmpty && whenEmpty != null)
                   whenEmpty!
                 else if (widget.$props.height != null)
-                  sizedScrollWrapper(rows, widget.$props.height, null, true)
+                  sizedScrollWrapper(
+                    rows,
+                    widget.$props.height,
+                    null,
+                    true,
+                    bodyVerticalScrollCtrl,
+                  )
                 else if (widget.$props.maxHeight != null)
                   expandedScrollWrapper(rows, true)
                 else
@@ -140,6 +179,21 @@ class _WTableState extends WState<WTable> {
           Border.fromBorderSide(cfgGlobal.table.rowBorder),
           widget.$props.border,
         ),
+        if (maxWidth != null)
+          Scrollbar(
+            controller: bodyHorizontalScrollCtrl,
+            trackVisibility: true,
+            thumbVisibility: true,
+            thickness: 10,
+            child: SingleChildScrollView(
+              controller: bodyHorizontalScrollCtrl,
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                height: 10.0,
+                width: maxWidth,
+              ),
+            ),
+          ),
         if (widget.$props.enablePagination)
           WPagination(
             props: widget.$props.paginationProp!,
@@ -204,10 +258,25 @@ class _WTableState extends WState<WTable> {
     return rows;
   }
 
+  Widget _rowHorizontalScrollWrapper(Widget child) {
+    ScrollController scrollCtrl = ScrollController();
+    rowsHorizontalScrollCtrls.add(scrollCtrl);
+    return Scrollbar(
+      controller: scrollCtrl,
+      trackVisibility: false,
+      thickness: 0,
+      child: SingleChildScrollView(
+        controller: scrollCtrl,
+        scrollDirection: Axis.horizontal,
+        child: child,
+      ),
+    );
+  }
+
   _rowWrapper(row, MouseState state, rowLen, r) {
     row = _backgroundWrapper(row, state, r);
     row = _divideWrapper(row, rowLen, r);
-    return row;
+    return _rowHorizontalScrollWrapper(row);
   }
 
   _cellBorderWrapper(Widget cell, [bool need = true]) {
@@ -267,10 +336,16 @@ class _WTableState extends WState<WTable> {
           : column.$props.prop?.call(row);
       child = val is Widget
           ? val
-          : Text(
-              '$val',
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+          : Tooltip(
+              message: '$val',
+              triggerMode: TooltipTriggerMode.manual,
+              onTriggered: () {},
+              showDuration: const Duration(milliseconds: 3000),
+              child: Text(
+                '$val',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             );
     }
     if (child is List<Widget>) {

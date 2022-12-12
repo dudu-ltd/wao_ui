@@ -69,12 +69,21 @@ Widget colorWrapper(Widget child, Color? color, [bool needColor = true]) {
   return child;
 }
 
-Widget sizedScrollWrapper(child, height, width, needSized) {
+Widget sizedScrollWrapper(child, height, width, needSized,
+    [ScrollController? controller, Axis direction = Axis.vertical]) {
   if (needSized) {
     if (child is List<Widget>) {
-      child = ListView(children: child);
+      child = ListView(
+        controller: controller,
+        scrollDirection: direction,
+        children: child,
+      );
     } else {
-      child = SingleChildScrollView(child: child);
+      child = SingleChildScrollView(
+        controller: controller,
+        scrollDirection: direction,
+        child: child,
+      );
     }
     return SizedBox(
       child: child,
