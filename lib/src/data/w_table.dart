@@ -90,7 +90,6 @@ class _WTableState extends WState<WTable> {
     bodyHorizontalScrollCtrl.addListener(() {
       if (bodyHorizontalScrollCtrl.hasClients) {
         var mainOffset = bodyHorizontalScrollCtrl.offset;
-        print(mainOffset);
         rowsHorizontalScrollCtrls.forEach((sc) {
           if (sc.hasClients) {
             sc.jumpTo(mainOffset);
@@ -103,7 +102,6 @@ class _WTableState extends WState<WTable> {
       if (rowsHorizontalScrollCtrls.length > 1) {
         setState(() {
           var tableWidth = getPosition(context).width;
-          print(tableWidth);
           var mw = rowsHorizontalScrollCtrls[1].position.maxScrollExtent;
           maxWidth = mw + tableWidth * (tableWidth / mw) * 4;
         });
@@ -179,7 +177,9 @@ class _WTableState extends WState<WTable> {
           Border.fromBorderSide(cfgGlobal.table.rowBorder),
           widget.$props.border,
         ),
-        if (maxWidth != null && widget.$props.data.isNotEmpty)
+        if (maxWidth != null &&
+            widget.$props.data.isNotEmpty &&
+            widget.$props.scrollable)
           Scrollbar(
             controller: bodyHorizontalScrollCtrl,
             trackVisibility: true,
@@ -259,6 +259,7 @@ class _WTableState extends WState<WTable> {
   }
 
   Widget _rowHorizontalScrollWrapper(Widget child) {
+    if (!widget.$props.scrollable) return child;
     ScrollController scrollCtrl = ScrollController();
     rowsHorizontalScrollCtrls.add(scrollCtrl);
     return Scrollbar(
@@ -341,9 +342,8 @@ class _WTableState extends WState<WTable> {
               triggerMode: TooltipTriggerMode.manual,
               onTriggered: () {},
               showDuration: const Duration(milliseconds: 3000),
-              child: Text(
+              child: SelectableText(
                 '$val',
-                overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
             );
@@ -501,6 +501,9 @@ class WTableProp extends BaseProp {
   Map<String, dynamic>? treeProps;
   bool enablePagination;
   WPaginationProp? paginationProp;
+
+  /// requirement: All the columns have width.
+  bool scrollable = false;
 
   WTableProp({
     this.data = const [],
