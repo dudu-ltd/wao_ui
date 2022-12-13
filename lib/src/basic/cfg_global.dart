@@ -724,7 +724,7 @@ class WTableStyle extends BaseStyle {
   BorderSide rowBorder = BorderSide(width: .5, color: Colors.grey.shade300);
   EdgeInsets cellMargin = const EdgeInsets.symmetric(
     vertical: 2,
-    horizontal: 0,
+    horizontal: 4,
   );
   @override
   WTableStyle newInstance() {

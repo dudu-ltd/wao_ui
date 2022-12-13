@@ -77,6 +77,8 @@ class _WTableState extends WState<WTable> {
   List<ScrollController> rowsHorizontalScrollCtrls = <ScrollController>[];
   double? maxWidth;
 
+  int _columns = 0;
+
   @override
   void initState() {
     super.initState();
@@ -103,7 +105,7 @@ class _WTableState extends WState<WTable> {
         setState(() {
           var tableWidth = getPosition(context).width;
           var mw = rowsHorizontalScrollCtrls[1].position.maxScrollExtent;
-          maxWidth = mw + tableWidth * (tableWidth / mw) * 4;
+          maxWidth = mw + tableWidth * (tableWidth / mw) * 8;
         });
       }
     });
@@ -145,8 +147,8 @@ class _WTableState extends WState<WTable> {
   @override
   Widget wbuild(BuildContext context) {
     setDataViewPort(null);
+    _columns = 0;
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         borderWrapper(
           constWrapper(
@@ -235,13 +237,14 @@ class _WTableState extends WState<WTable> {
       return MouseStateBuilder(builder: (context, state) {
         var columnLen = actualFields.length;
         var row = Row(
+          mainAxisSize: MainAxisSize.min,
           children: List.generate(
             columnLen,
             (c) {
               var column = actualFields[c];
               var needBorder = c != columnLen - 1;
               return _cellBorderWrapper(
-                cellWidget(column, rowData),
+                cellWidget(column, rowData, r),
                 needBorder,
               );
             },
@@ -322,34 +325,37 @@ class _WTableState extends WState<WTable> {
     return state.isMouseOver || (widget.$props.stripe && r % 2 == 1);
   }
 
-  Widget cellWidget(WTableColumn column, dynamic row) {
-    Widget child = value(column, row);
+  Widget cellWidget(WTableColumn column, dynamic row, int r) {
+    Widget child = value(column, row, r);
     return widthWrapper(child, column);
   }
 
-  Widget value(WTableColumn column, dynamic row) {
+  Widget value(WTableColumn column, dynamic row, int r) {
     dynamic child;
-    if (column.$slots.$ is Function) {
-      child = (column.$slots.$ as Function).call(row);
+    var val = column.$props.prop == null
+        ? getValueFrom(column, row, r)
+        : column.$props.prop?.call(row);
+    if (column.$props.formatter is Function) {
+      child = column.$props.formatter!.call(row, column, val, r);
     } else {
-      var val = column.$props.prop == null
-          ? getValueFrom(column, row)
-          : column.$props.prop?.call(row);
       child = val is Widget
           ? val
           : Tooltip(
               message: '$val',
               triggerMode: TooltipTriggerMode.manual,
               onTriggered: () {},
-              showDuration: const Duration(milliseconds: 3000),
+              waitDuration: const Duration(milliseconds: 300),
+              showDuration: const Duration(milliseconds: 300),
               child: SelectableText(
                 '$val',
                 maxLines: 1,
+                textWidthBasis: TextWidthBasis.parent,
+                style: TextStyle(overflow: TextOverflow.fade),
               ),
             );
     }
     if (child is List<Widget>) {
-      return Row(children: child);
+      return Row(mainAxisSize: MainAxisSize.min, children: child);
     } else {
       if (child is Widget) {
         return child;
@@ -358,11 +364,12 @@ class _WTableState extends WState<WTable> {
     throw ArgumentError.value(child, 'slots ', ' 默认插槽需要是部件或者是函数返回部件。');
   }
 
-  Widget getValueFrom(WTableColumn column, row) {
+  Widget getValueFrom(WTableColumn column, row, int r) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: List.generate(column.defaultSlot.length, (index) {
         var innerColumn = column.defaultSlot[index] as WTableColumn;
-        return cellWidget(innerColumn, row);
+        return cellWidget(innerColumn, row, r);
       }),
     );
   }
@@ -379,6 +386,7 @@ class _WTableState extends WState<WTable> {
   Widget getHeader(List<Widget> columns) {
     var columnLen = columns.length;
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: List.generate(
         columnLen,
         (index) {
@@ -408,6 +416,9 @@ class _WTableState extends WState<WTable> {
     if (column.$slots.header != null) {
       return column.$slots.header!.call(column);
     } else if (column.defaultSlot.isNotEmpty) {
+      if (column.defaultSlot.isEmpty) {
+        _columns++;
+      }
       return Column(
         children: [
           Text(
