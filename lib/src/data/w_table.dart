@@ -228,35 +228,32 @@ class _WTableState extends WState<WTable> {
     return actualFields;
   }
 
-  List<MouseStateBuilder> get rows {
+  List<Widget> get rows {
     var data =
         (dataViewPort?.length ?? 0) > 0 ? dataViewPort : widget.$props.data;
     var rowLen = data!.length;
-    List<MouseStateBuilder> rows = List.generate(rowLen, (r) {
+    List<Widget> rows = List.generate(rowLen, (r) {
       dynamic rowData = data[r];
-      return MouseStateBuilder(builder: (context, state) {
-        var columnLen = actualFields.length;
-        var row = Row(
-          mainAxisSize: MainAxisSize.min,
-          children: List.generate(
-            columnLen,
-            (c) {
-              var column = actualFields[c];
-              var needBorder = c != columnLen - 1;
-              return _cellBorderWrapper(
-                cellWidget(column, rowData, r),
-                needBorder,
-              );
-            },
-          ),
-        );
-        return _rowWrapper(
-          row,
-          state,
-          rowLen,
-          r,
-        );
-      });
+      var columnLen = actualFields.length;
+      var row = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(
+          columnLen,
+          (c) {
+            var column = actualFields[c];
+            var needBorder = c != columnLen - 1;
+            return _cellBorderWrapper(
+              cellWidget(column, rowData, r),
+              needBorder,
+            );
+          },
+        ),
+      );
+      return _rowWrapper(
+        row,
+        rowLen,
+        r,
+      );
     });
     return rows;
   }
@@ -277,8 +274,8 @@ class _WTableState extends WState<WTable> {
     );
   }
 
-  _rowWrapper(row, MouseState state, rowLen, r) {
-    row = _backgroundWrapper(row, state, r);
+  _rowWrapper(row, rowLen, r) {
+    row = _backgroundWrapper(row, r);
     row = _divideWrapper(row, rowLen, r);
     return _rowHorizontalScrollWrapper(row);
   }
@@ -309,20 +306,34 @@ class _WTableState extends WState<WTable> {
     );
   }
 
-  Widget _backgroundWrapper(Widget row, MouseState state, r) {
-    if (needBackground(state, r)) {
-      return ColoredBox(
-        color: state.isMouseOver
-            ? cfgGlobal.table.rowHoverColor
-            : cfgGlobal.table.stripeColor,
-        child: row,
+  Widget _backgroundWrapper(Widget row, r) {
+    Color? rowBackgroundColor =
+        needBackground(r) ? cfgGlobal.table.stripeColor : null;
+    return StatefulBuilder(builder: (context, setState) {
+      return MouseRegion(
+        onEnter: (e) {
+          if (widget.$props.highlightHover) {
+            print('enter');
+            setState(() => rowBackgroundColor = cfgGlobal.table.rowHoverColor);
+          }
+        },
+        onExit: (e) {
+          print('exit');
+          setState(() => rowBackgroundColor =
+              (needBackground(r) ? cfgGlobal.table.stripeColor : null));
+        },
+        child: rowBackgroundColor == null
+            ? row
+            : ColoredBox(
+                color: rowBackgroundColor!,
+                child: row,
+              ),
       );
-    }
-    return row;
+    });
   }
 
-  bool needBackground(MouseState state, int r) {
-    return state.isMouseOver || (widget.$props.stripe && r % 2 == 1);
+  bool needBackground(int r) {
+    return (widget.$props.stripe && r % 2 == 1);
   }
 
   Widget cellWidget(WTableColumn column, dynamic row, int r) {
@@ -355,7 +366,11 @@ class _WTableState extends WState<WTable> {
             );
     }
     if (child is List<Widget>) {
-      return Row(mainAxisSize: MainAxisSize.min, children: child);
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: child,
+      );
     } else {
       if (child is Widget) {
         return child;
@@ -493,6 +508,7 @@ class WTableProp extends BaseProp {
   bool fit;
   bool showHeader;
   bool highlightCurrentRow;
+  bool highlightHover;
   String? currentRowKey;
   Function(dynamic row)? rowKey;
   String? emptyText;
@@ -526,6 +542,7 @@ class WTableProp extends BaseProp {
     this.fit = true,
     this.showHeader = true,
     this.highlightCurrentRow = false,
+    this.highlightHover = true,
     this.currentRowKey,
     this.rowKey,
     this.emptyText = '暂无数据',
