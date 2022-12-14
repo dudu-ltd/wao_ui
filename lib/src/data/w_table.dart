@@ -313,12 +313,10 @@ class _WTableState extends WState<WTable> {
       return MouseRegion(
         onEnter: (e) {
           if (widget.$props.highlightHover) {
-            print('enter');
             setState(() => rowBackgroundColor = cfgGlobal.table.rowHoverColor);
           }
         },
         onExit: (e) {
-          print('exit');
           setState(() => rowBackgroundColor =
               (needBackground(r) ? cfgGlobal.table.stripeColor : null));
         },
