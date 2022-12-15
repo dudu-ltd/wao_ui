@@ -52,14 +52,13 @@ class WAvatar extends WStatelessWidget<WAvatarOn, WAvatarProp, WAvatarSlot,
   Widget get avatar {
     Widget img;
     if ($props.src != null) {
-      img = WImage(
-        props: WImageProp(
-          src: $props.src,
-          fit: BoxFit.values.firstWhere(
-            (element) => element.name == $props.fit,
-          ),
-        ),
-      );
+      img = WImage()
+        ..$style.height = $style.height
+        ..$style.width = $style.width
+        ..$props.src = $props.src
+        ..$props.fit = BoxFit.values.firstWhere(
+          (element) => element.name == $props.fit,
+        );
     } else if ($slots.$ != null) {
       return img = $slots.$;
     } else {

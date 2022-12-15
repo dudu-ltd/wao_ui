@@ -58,7 +58,7 @@ class _IndexPageState extends State<IndexPage>
         ApiPage(
           guideData: waouiGuideData,
           path: 'assets/md/waoui',
-          initialRoute: '/navigation/WTabs',
+          initialRoute: '/others/WImage',
         ),
         ApiPage(
           guideData: materialGuideData,

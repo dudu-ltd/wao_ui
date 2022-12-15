@@ -47,10 +47,11 @@ class WImage
 
     if ($props.src != null) {
       if ($props.src!.startsWith('assets:')) {
-        print('use assets');
         return Image.asset(
           $props.src!.replaceFirst('assets:', ''),
           fit: $props.fit,
+          width: $style.width,
+          height: $style.height,
           errorBuilder: errorBuilder,
           // loadingBuilder: loadingBuilder,
         );
@@ -58,6 +59,8 @@ class WImage
       return Image.network(
         $props.src!,
         fit: $props.fit,
+        width: $style.width,
+        height: $style.height,
         errorBuilder: errorBuilder,
         loadingBuilder: loadingBuilder,
       );
