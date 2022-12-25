@@ -148,6 +148,7 @@ class _WTableState extends WState<WTable> {
   Widget wbuild(BuildContext context) {
     setDataViewPort(null);
     _columns = 0;
+    print(widget.$props.paginationProp?.totalPage);
     return Column(
       children: [
         borderWrapper(
@@ -196,7 +197,9 @@ class _WTableState extends WState<WTable> {
               ),
             ),
           ),
-        if (widget.$props.enablePagination)
+        if (widget.$props.enablePagination &&
+            !(widget.$props.hidePaginationWhenSingle &&
+                widget.$props.paginationProp!.totalPage < 2))
           WPagination(
             props: widget.$props.paginationProp!,
           )
@@ -525,6 +528,7 @@ class WTableProp extends BaseProp {
   Function(dynamic row, dynamic treeNode, Function resolve)? load;
   Map<String, dynamic>? treeProps;
   bool enablePagination;
+  bool hidePaginationWhenSingle;
   WPaginationProp? paginationProp;
 
   /// requirement: All the columns have width.
@@ -561,6 +565,7 @@ class WTableProp extends BaseProp {
       'children': 'children'
     },
     this.enablePagination = false,
+    this.hidePaginationWhenSingle = true,
   });
 }
 
