@@ -245,7 +245,6 @@ class _WDrawerViewState extends WState<WDrawerView>
         ColoredBox(
           color: Colors.white,
           child: SizedBox(
-            child: view,
             // width: size,
             width: widget.$props.directionIsH
                 ? size
@@ -253,6 +252,7 @@ class _WDrawerViewState extends WState<WDrawerView>
             height: widget.$props.directionIsV
                 ? size
                 : MediaQuery.of(context).size.height,
+            child: view,
           ),
         ),
         shadow: shadow,
@@ -265,7 +265,7 @@ class _WDrawerViewState extends WState<WDrawerView>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.$props.withHeader) header,
-        body,
+        Expanded(child: body),
       ],
     );
   }
@@ -292,9 +292,11 @@ class _WDrawerViewState extends WState<WDrawerView>
   }
 
   Widget get body {
-    return Padding(
-      padding: EdgeInsets.all(bodyPadding),
-      child: widget.$col,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(bodyPadding),
+        child: widget.$col,
+      ),
     );
   }
 
