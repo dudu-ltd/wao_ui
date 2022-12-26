@@ -97,11 +97,24 @@ class _WTabsState extends WState<WTabs> {
     );
   }
 
+  List<Widget> get addBtn {
+    if (widget.$props.addable) {
+      return [
+        WButton()
+          ..$props.type = 'text'
+          ..$props.icon = Icons.add
+          ..$on.click = widget.$on.tabAdd
+      ];
+    }
+    return [];
+  }
+
   Widget _items(List<Widget> items) {
     var children = List.generate(items.length, (index) {
       var child = items[index] as WTabPane;
       return _item(child);
     });
+    children.addAll(addBtn);
     var hs = borderWrapper(
       colorWrapper(
         Wrap(
@@ -329,9 +342,7 @@ class WTabsProp extends BaseProp with ModelDriveProp<String> {
     this.tabPosition = 'top',
     this.stretch = false,
     this.beforeLeave,
-  }) {
-    this.model = model;
-  }
+  });
   var h = ['top', 'bottom'];
 
   var v = ['left', 'right'];
