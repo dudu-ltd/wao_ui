@@ -100,10 +100,13 @@ class _WTabsState extends WState<WTabs> {
   List<Widget> get addBtn {
     if (widget.$props.addable) {
       return [
-        WButton()
-          ..$props.type = 'text'
-          ..$props.icon = Icons.add
-          ..$on.click = widget.$on.tabAdd
+        widget.$slots.addBtn?.call(itemPadding, itemHeight) ??
+            (WButton()
+              ..$props.type = 'text'
+              ..$props.icon = Icons.add
+              ..$on.click = widget.$on.tabAdd
+              ..$style.padding = itemPadding
+              ..$style.height = itemHeight)
       ];
     }
     return [];
@@ -380,6 +383,8 @@ class WTabsProp extends BaseProp with ModelDriveProp<String> {
 
 class WTabsSlot extends BaseSlot {
   Widget Function(Widget) tabsWrapper = (w) => w;
+
+  Widget Function(EdgeInsets padding, double height)? addBtn;
   WTabsSlot(defaultSlotBefore) : super(defaultSlotBefore);
 }
 
