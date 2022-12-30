@@ -171,7 +171,32 @@ class _WTableState extends WState<WTable> {
                 else if (widget.$props.maxHeight != null)
                   expandedScrollWrapper(rows, true)
                 else
-                  ...rows
+                  ...rows,
+                if (maxWidth != null &&
+                    widget.$props.data.isNotEmpty &&
+                    widget.$props.scrollable)
+                  Scrollbar(
+                    controller: bodyHorizontalScrollCtrl,
+                    trackVisibility: true,
+                    thumbVisibility: true,
+                    thickness: 10,
+                    child: SingleChildScrollView(
+                      controller: bodyHorizontalScrollCtrl,
+                      scrollDirection: Axis.horizontal,
+                      child: SizedBox(
+                        height: 10.0,
+                        width: maxWidth,
+                      ),
+                    ),
+                  ),
+                if (widget.$props.enablePagination &&
+                    !(widget.$props.hidePaginationWhenSingle &&
+                        widget.$props.paginationProp!.totalPage < 2))
+                  WPagination(
+                    props: widget.$props.paginationProp!,
+                  )
+                    ..$on.currentChange = setDataViewPort
+                    ..$style.textAlign = widget.$style.paginationAlign,
               ],
             ),
             BoxConstraints(maxHeight: (widget.$props.maxHeight ?? 0)),
@@ -180,31 +205,6 @@ class _WTableState extends WState<WTable> {
           Border.fromBorderSide(cfgGlobal.table.rowBorder),
           widget.$props.border,
         ),
-        if (maxWidth != null &&
-            widget.$props.data.isNotEmpty &&
-            widget.$props.scrollable)
-          Scrollbar(
-            controller: bodyHorizontalScrollCtrl,
-            trackVisibility: true,
-            thumbVisibility: true,
-            thickness: 10,
-            child: SingleChildScrollView(
-              controller: bodyHorizontalScrollCtrl,
-              scrollDirection: Axis.horizontal,
-              child: SizedBox(
-                height: 10.0,
-                width: maxWidth,
-              ),
-            ),
-          ),
-        if (widget.$props.enablePagination &&
-            !(widget.$props.hidePaginationWhenSingle &&
-                widget.$props.paginationProp!.totalPage < 2))
-          WPagination(
-            props: widget.$props.paginationProp!,
-          )
-            ..$on.currentChange = setDataViewPort
-            ..$style.textAlign = Alignment.centerRight,
       ],
     );
   }

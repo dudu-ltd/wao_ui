@@ -136,7 +136,6 @@ class _WPaginationState extends WState<WPagination> {
 
   // TODO 等表单组件可以测试时，补充实现
   Widget get sizes {
-    print('${widget.$props.pageSize}===========');
     return WSelect()
       ..$props.placeholder = '请选择'
       ..$props.model = '${widget.$props.pageSize}'
