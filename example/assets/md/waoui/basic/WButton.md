@@ -12,7 +12,6 @@ buttonByType
 ```
 ### 朴素按钮  `plain=true`  
 
-
 ```widget
 buttonPlain
 ```
@@ -68,15 +67,4 @@ buttonSize
 
 ```widget
 buttonLoading
-```
-
-
-
-## $props   
-
-参数 | 说明 | 类型 | 可选值 | 默认值
---- |---|---|---|---
-size | 尺寸 | String | medium / small / mini | --
-
-
 ```

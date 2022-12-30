@@ -65,19 +65,6 @@ class WButton
         Null,
         (s, i, c, l) => Text('', style: TextStyle(color: style.color)),
       ),
-      SlotTranslator(
-        String,
-        (s, i, c, l) {
-          print($slots.$);
-          return Text(
-            $slots.$,
-            style: TextStyle(
-              color: Colors.green, //style.color,
-              fontSize: style.fontSize,
-            ),
-          );
-        },
-      ),
     ];
   }
 }
