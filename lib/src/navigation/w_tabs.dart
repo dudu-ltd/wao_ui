@@ -261,34 +261,24 @@ class _WTabsState extends WState<WTabs> {
   }
 
   _body(List<Widget> children) {
-    late Widget body = Container();
-    for (var i = 0; i < children.length; i++) {
-      var child = children[i];
+    List<Widget> tabViews = List.generate(children.length, (index) {
+      var child = children[index];
       child as WTabPane;
-      if (i == 0) {
-        body = child;
-      }
-      if (child.$props.name == widget.$props.model) {
-        body = child;
-      }
-    }
+      return Offstage(
+        offstage: child.$props.name != widget.$props.model,
+        child: child,
+      );
+    });
+
     return widget.$props.positionIsVertical
-        ? Expanded(child: body)
-        : FractionallySizedBox(
-            widthFactor: 1,
-            child: Column(
-              children: List.generate(
-                children.length,
-                (index) {
-                  return Offstage(
-                    offstage: (children[index] as WTabPane).$props.name !=
-                        widget.$props.model,
-                    child: children[index],
-                  );
-                },
-              ),
-            ),
-          );
+        ? Expanded(
+            child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: tabViews,
+          ))
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start, children: tabViews);
   }
 
   Color get navScrollColor {
