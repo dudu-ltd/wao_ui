@@ -187,7 +187,7 @@ class WTreeProp extends BaseProp with ModelDriveProp {
 
 class WTreeOn extends BaseOn {
   Function(dynamic, WNodeData, dynamic)? nodeClick;
-  Function(dynamic, dynamic, dynamic)? nodeRightClick;
+  Function(TapUpDetails) Function(dynamic, dynamic, dynamic)? nodeRightClick;
   Function(dynamic, dynamic, dynamic, dynamic)? nodeContextmenu;
   Function(dynamic, dynamic, dynamic)? checkChange;
   Function(dynamic, dynamic)? check;
