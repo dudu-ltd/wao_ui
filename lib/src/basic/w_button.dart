@@ -358,13 +358,17 @@ class WIconButtonGroup extends WStatelessWidget<WIconButtonGroupOn,
       ..$slots.$ = [
         ...icons,
         ...($slots.defaultSlot ?? []),
-      ];
+      ]
+      ..$style.merge($style);
   }
 
   get icons {
-    var cmdBtns = <WButton>[];
+    var cmdBtns = <Widget>[];
     $props.commands?.forEach((key, value) {
-      // FIXME icon 被覆盖问题，使用 props copy 的方式解决
+      if (key is Widget) {
+        cmdBtns.add(key);
+        return;
+      }
       var cmdBtn = WButton(
         props: $props.copy(),
       )
@@ -380,7 +384,7 @@ class WIconButtonGroupOn extends BaseOn {}
 
 class WIconButtonGroupProp extends WButtonProp {
   Axis direction = Axis.horizontal;
-  Map<IconData, Function()>? commands;
+  Map<dynamic, Function()>? commands;
 }
 
 class WIconButtonGroupSlot extends BaseSlot {
