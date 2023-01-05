@@ -10,8 +10,11 @@ import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/theme/element/theme_element.dart';
 import 'package:wao_ui/wao_ui.dart';
 
-class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
-    WDialogStyle> {
+import 'package:flutter/material.dart';
+import 'package:wao_ui/wao_ui.dart';
+
+class WDialog
+    extends WStatefulWidget<WDialogOn, WDialogProp, WDialogSlot, WDialogStyle> {
   WDialog({
     Key? key,
     WDialogOn? on,
@@ -25,18 +28,33 @@ class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
     $style = style ?? WDialogStyle();
     init();
   }
+  @override
+  State<WDialog> createState() => _WDialogState();
+}
 
-  bool _closeFromThen = false;
+class _WDialogState extends WState<WDialog> {
+  @override
+  void initState() {
+    super.initState();
+
+    setShow(context);
+    widget.$props.$addVisibleListener(showCaller);
+  }
+
+  @override
+  dispose() {
+    widget.$props.$removeVisibleListener(showCaller);
+    super.dispose();
+  }
 
   Function(bool value)? show;
+
+  showCaller() => show!(widget.$props.visible);
 
   setShow(BuildContext context) {
     show = ([bool visible = true]) {
       if (!visible) {
-        if (!_closeFromThen) {
-          Navigator.of(context, rootNavigator: true).pop();
-        }
-      } else if ($props.appendToBody) {
+      } else if (widget.$props.appendToBody) {
         showInWindow(context);
       } else {
         showInPage(context);
@@ -52,39 +70,40 @@ class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
   showInPage(context) {
     // ignore: prefer_function_declarations_over_variables
     var builder = (BuildContext context) {
-      var title =
-          $slots.title ?? ($props.title != null ? Text($props.title!) : null);
+      var title = widget.$slots.title ??
+          (widget.$props.title != null ? Text(widget.$props.title!) : null);
 
-      $mainAxisAlign =
-          $props.center ? MainAxisAlignment.center : MainAxisAlignment.start;
-      var actionAxisAlign =
-          $props.center ? MainAxisAlignment.center : MainAxisAlignment.end;
+      widget.$mainAxisAlign = widget.$props.center
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start;
+      var actionAxisAlign = widget.$props.center
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.end;
       return AlertDialog(
         // titlePadding: const EdgeInsets.fromLTRB(5.0, 2.0, 5.0, 0.0),
-        contentPadding: style.contentPadding ??
-            EdgeInsets.fromLTRB(24, 20, 24, $slots.footer == null ? 20.0 : 0.0),
+        contentPadding: widget.style.contentPadding ??
+            EdgeInsets.fromLTRB(
+                24, 20, 24, widget.$slots.footer == null ? 20.0 : 0.0),
         // insetPadding: const EdgeInsets.all(20),
-        buttonPadding: $slots.footer == null
+        buttonPadding: widget.$slots.footer == null
             ? EdgeInsets.zero
-            : style.footPadding ?? EdgeInsets.zero,
+            : widget.style.footPadding ?? EdgeInsets.zero,
         titleTextStyle: const TextStyle(fontSize: 16.0, color: Colors.black),
         alignment: getAlign(context),
         title: title != null ? centerWrapper(title) : null,
-        content: $row,
-        actionsOverflowButtonSpacing: $style.footSpace,
+        content: widget.$row,
+        actionsOverflowButtonSpacing: widget.$style.footSpace,
         actionsAlignment: actionAxisAlign,
-        actions: $slots.footer ?? [],
+        actions: widget.$slots.footer ?? [],
       );
     };
     showDialog(context: context, builder: builder).then((value) {
-      _closeFromThen = true;
-      $props.visible = false;
-      _closeFromThen = false;
+      widget.$props.visible = false;
     });
   }
 
   centerWrapper(Widget child) {
-    return $props.center
+    return widget.$props.center
         ? Align(
             alignment: Alignment.center,
             child: child,
@@ -93,7 +112,7 @@ class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
   }
 
   Alignment getAlign(BuildContext ctx) {
-    var top = $props.top;
+    var top = widget.$props.top;
     if (top.endsWith('vh')) {
       double topRate = double.parse(top.substring(0, top.length - 2)) / 100;
       return Alignment(0.0, topRate - 0.5);
@@ -124,23 +143,21 @@ class WDialog extends WStatelessWidget<WDialogOn, WDialogProp, WDialogSlot,
 
   @override
   Widget wbuild(BuildContext context) {
-    setShow(context);
-    $props.$addVisibleListener(() => show!($props.visible));
-    return $slots.btn != null
+    return widget.$slots.btn != null
         ? InkWell(
             onTap: open,
-            child: $slots.btn!,
+            child: widget.$slots.btn!,
           )
-        : $props.btn != null
+        : widget.$props.btn != null
             ? TextButton(
                 onPressed: open,
-                child: Text($props.btn!),
+                child: Text(widget.$props.btn!),
               )
             : const Offstage();
   }
 
   open() {
-    $props.visible = true;
+    widget.$props.visible = true;
   }
 }
 
