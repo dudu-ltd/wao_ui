@@ -348,7 +348,7 @@ class _WSelectState extends WState<WSelect>
       return panel;
     });
     panelOverlay = overlayEntry;
-    Overlay.of(context).insert(overlayEntry);
+    Overlay.of(context)?.insert(overlayEntry);
   }
 
   hidePanelAction() {
