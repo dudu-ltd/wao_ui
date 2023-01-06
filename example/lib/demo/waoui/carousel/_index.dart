@@ -160,7 +160,7 @@ regist() {
   var carouselImg = Demo(
     'carouselImg',
     WCarousel()
-      ..$style.height = 300
+      ..$style.height = 600
       ..$props.type = 'card'
       ..$props.interval = 4000
       ..$props.trigger = 'hover'
