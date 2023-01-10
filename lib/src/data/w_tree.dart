@@ -64,12 +64,14 @@ class _WTreeState extends WState<WTree> {
                       ),
                       if (node.icon is IconData)
                         Icon(node.icon, color: selectdColor),
-                      Text(
-                        node.label,
-                        maxLines: 1,
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          color: selectdColor,
+                      Expanded(
+                        child: Text(
+                          node.label,
+                          maxLines: 1,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color: selectdColor,
+                          ),
                         ),
                       ),
                     ],
@@ -268,7 +270,7 @@ class WNodeData {
     json[prop?.children ?? 'children'] = children;
     json[prop?.data ?? 'data'] = data;
     json[prop?.isLeaf ?? 'isLeaf'] = isLeaf;
-    json[prop?.parent ?? 'parent'] = parent;
+    // json[prop?.parent ?? 'parent'] = parent;
     return json;
   }
 
