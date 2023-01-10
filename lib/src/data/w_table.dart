@@ -5,7 +5,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:bitsdojo_window/src/widgets/mouse_state_builder.dart';
 import 'package:simple_observable/simple_observable.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
