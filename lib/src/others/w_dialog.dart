@@ -30,6 +30,9 @@ class WDialog
   }
   @override
   State<WDialog> createState() => _WDialogState();
+  open() {
+    $props.visible = true;
+  }
 }
 
 class _WDialogState extends WState<WDialog> {
@@ -145,19 +148,15 @@ class _WDialogState extends WState<WDialog> {
   Widget wbuild(BuildContext context) {
     return widget.$slots.btn != null
         ? InkWell(
-            onTap: open,
+            onTap: widget.open,
             child: widget.$slots.btn!,
           )
         : widget.$props.btn != null
             ? TextButton(
-                onPressed: open,
+                onPressed: widget.open,
                 child: Text(widget.$props.btn!),
               )
             : const Offstage();
-  }
-
-  open() {
-    widget.$props.visible = true;
   }
 }
 
