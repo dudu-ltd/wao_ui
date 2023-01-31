@@ -32,9 +32,17 @@ class _WDrawerState extends WState<WDrawer> {
   @override
   void initState() {
     super.initState();
-    widget.$props.visible?.addListener(() {
-      if (widget.$props.visible?.value) showPanelAction();
-    });
+    widget.$props.visible?.addListener(showPanel);
+  }
+
+  showPanel() {
+    if (widget.$props.visible?.value) showPanelAction();
+  }
+
+  @override
+  void dispose() {
+    widget.$props.visible?.removeListener(showPanel);
+    super.dispose();
   }
 
   @override
