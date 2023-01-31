@@ -3,10 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:wao_ui/core/base_on.dart';
-import 'package:wao_ui/core/base_prop.dart';
-import 'package:wao_ui/core/base_slot.dart';
-import 'package:wao_ui/core/base_mixins.dart';
 import 'package:wao_ui/core/utils/string_util.dart';
 import 'package:wao_ui/core/utils/wrapper.dart';
 import 'package:wao_ui/wao_ui.dart';
@@ -30,7 +26,7 @@ class _WDrawerState extends WState<WDrawer> {
     Overlay.of(
       context,
       rootOverlay: modalAppendToBody,
-    )?.insert(overlayEntry);
+    ).insert(overlayEntry);
   }
 
   @override
@@ -94,6 +90,7 @@ class WDrawerProp extends BaseProp {
   late String? title;
   late bool wrapperClosable;
   late bool withHeader;
+  late bool useScroll = true;
   late ValueNotifier? visible = ValueNotifier(false);
 
   WDrawerProp({
@@ -265,7 +262,7 @@ class _WDrawerViewState extends WState<WDrawerView>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.$props.withHeader) header,
-        Expanded(child: body),
+        Expanded(child: widget.$props.useScroll ? scrollBody : normalBody),
       ],
     );
   }
@@ -291,12 +288,14 @@ class _WDrawerViewState extends WState<WDrawerView>
     );
   }
 
-  Widget get body {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(bodyPadding),
-        child: widget.$col,
-      ),
+  Widget get scrollBody {
+    return SingleChildScrollView(child: normalBody);
+  }
+
+  Padding get normalBody {
+    return Padding(
+      padding: EdgeInsets.all(bodyPadding),
+      child: widget.$col,
     );
   }
 
