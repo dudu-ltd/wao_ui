@@ -13,8 +13,8 @@ regist() {
 
 var data = const {
   'name': 'CorvusY',
-  'mobile': '187****1167',
-  'living': '福建省厦门市XX区XX路XX号 XXX室',
+  'mobile': '福建省厦门市XX区XX路XX号 XXX室e',
+  'living': '福建省厦门市XX区XX路XX号 XXX室eeeeeeeeeeeeeeeeeeee',
   'remark': '自习室',
   'contactAddr': '福建省厦门市XX区XX路XX号',
 };

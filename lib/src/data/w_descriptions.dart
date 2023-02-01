@@ -79,7 +79,7 @@ class WDescriptions extends WStatelessWidget<WDescriptionsOn, WDescriptionsProp,
       var field = $props.fields![i];
       var data = WDescriptionsData(
         label: $props.colon ? '${field['label']}:' : field['label'],
-        value: defaultSlot[field['field']],
+        value: '${defaultSlot[field['field']]}',
       );
       if (i == $props.fields!.length - 1) {
         int span = $props.column - children.length as int;
@@ -252,13 +252,14 @@ class WDescriptionsItem extends WStatelessWidget<WDescriptionsItemOn,
   @override
   Widget wbuild(BuildContext context) {
     var child;
+    var content = _paddingWrapper(defaultSlot.first);
     var children = [
       _colorWrapper(
         _paddingWrapper(
           _borderWrapper(label),
         ),
       ),
-      _paddingWrapper(defaultSlot.first),
+      isVertical($props.direction) ? content : Expanded(child: content),
     ];
     if (isVertical($props.direction)) {
       child = Column(
@@ -309,9 +310,13 @@ class WDescriptionsItem extends WStatelessWidget<WDescriptionsItemOn,
   List<SlotTranslator> get slotTranslatorsDefault => [
         SlotTranslator(String, (s, i, c, l) {
           return FractionallySizedBox(
-            child: Text(
-              s,
-              style: const TextStyle(overflow: TextOverflow.fade),
+            child: Tooltip(
+              message: s,
+              child: Text(
+                s,
+                maxLines: 1,
+                style: const TextStyle(overflow: TextOverflow.ellipsis),
+              ),
             ),
           );
         })
